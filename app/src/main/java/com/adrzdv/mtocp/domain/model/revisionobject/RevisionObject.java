@@ -1,0 +1,94 @@
+package com.adrzdv.mtocp.domain.model.revisionobject;
+
+import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
+import com.adrzdv.mtocp.domain.model.violation.ViolationObject;
+import com.adrzdv.mtocp.domain.model.workers.Worker;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Domain class model for abstract revision object. Stores data about number of revision object,
+ * start and date of revision, indicator of the presence of "Quality Passport", maps of violations
+ * and additional statistics parameters
+ */
+public abstract class RevisionObject {
+    private String number;
+    private Worker worker;
+    private LocalDateTime revisionDateStart;
+    private LocalDateTime revisionDateEnd;
+    private Boolean isQualityPassport;
+    private Map<String, ViolationObject> violationMap;
+    private Map<String, StaticsParam> additionalParams;
+
+    public RevisionObject(String number) {
+        this.number = number;
+        this.revisionDateStart = LocalDateTime.now();
+        this.isQualityPassport = false;
+        this.violationMap = new HashMap<>();
+        this.additionalParams = new HashMap<>();
+    }
+
+    public int countViolation() {
+        return violationMap.values().stream()
+                .mapToInt(ViolationObject::getAmount)
+                .sum();
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public LocalDateTime getRevisionDateStart() {
+        return revisionDateStart;
+    }
+
+    public void setRevisionDateStart(LocalDateTime revisionDateStart) {
+        this.revisionDateStart = revisionDateStart;
+    }
+
+    public LocalDateTime getRevisionDateEnd() {
+        return revisionDateEnd;
+    }
+
+    public void setRevisionDateEnd(LocalDateTime revisionDateEnd) {
+        this.revisionDateEnd = revisionDateEnd;
+    }
+
+    public Boolean getQualityPassport() {
+        return isQualityPassport;
+    }
+
+    public void setQualityPassport(Boolean qualityPassport) {
+        isQualityPassport = qualityPassport;
+    }
+
+    public Worker getWorker() {
+        return worker;
+    }
+
+    public void setWorker(Worker worker) {
+        this.worker = worker;
+    }
+
+    public Map<String, ViolationObject> getViolationMap() {
+        return violationMap;
+    }
+
+    public void setViolationMap(Map<String, ViolationObject> violationMap) {
+        this.violationMap = violationMap;
+    }
+
+    public Map<String, StaticsParam> getAdditionalParams() {
+        return additionalParams;
+    }
+
+    public void setAdditionalParams(Map<String, StaticsParam> additionalParams) {
+        this.additionalParams = additionalParams;
+    }
+}
