@@ -44,6 +44,9 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.runtime.android)
+    implementation(libs.androidx.foundation.android)
+    implementation(libs.androidx.material3.android)
     val roomVersion = "2.7.1"
     val hiltVersion = "2.48.1"
 
