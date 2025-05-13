@@ -19,6 +19,14 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    kapt {
+        correctErrorTypes = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -29,15 +37,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
 dependencies {
 
     val roomVersion = "2.7.1"
-    val hiltVersion = "2.48"
+    val hiltVersion = "2.48.1"
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -50,15 +58,11 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-compiler:$hiltVersion")
-}
-
-kapt {
-    correctErrorTypes = true
 }

@@ -34,4 +34,10 @@ public class DatabaseModule {
         return new ViolationRepositoryImpl(dao);
     }
 
+    @Provides
+    @Singleton
+    public ViolationDao provideViolationDao(AppDatabase appDatabase) {
+        return appDatabase.violationDao();  // Room создаст реализацию
+    }
+
 }

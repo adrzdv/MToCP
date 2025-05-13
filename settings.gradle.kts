@@ -6,11 +6,10 @@ pluginManagement {
     }
 
     plugins {
-        id("com.android.application") version "8.1.4"
-        id("com.android.library") version "8.1.4"
-        kotlin("android") version "1.9.0"
-        kotlin("kapt") version "1.9.0"
-        id("dagger.hilt.android.plugin") version "2.48"
+        id("com.android.application") version "8.2.0"
+        id("com.android.library") version "8.2.0"
+        kotlin("android") version "1.9.21"
+        kotlin("kapt") version "1.9.21"
     }
 }
 dependencyResolutionManagement {
