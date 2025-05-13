@@ -2,7 +2,7 @@ package com.adrzdv.mtocp.domain.model.violation;
 
 import java.util.Map;
 
-public class ViolationObject {
+public class ViolationDomain {
     private String name;
     private int amount;
     private Map<String, String> attributeMap;

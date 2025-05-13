@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.domain.model.revisionobject;
+package com.adrzdv.mtocp.domain.model.revisionobject.basic;
 
 public class TicketTermial extends RevisionObject {
 

@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.domain.model.revisionobject.coach;
+package com.adrzdv.mtocp.domain.model.revisionobject.basic.coach;
 
 import com.adrzdv.mtocp.domain.model.departments.Depot;
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType;

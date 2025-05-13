@@ -1,6 +1,6 @@
-package com.adrzdv.mtocp.domain.model.revisionobject.coach;
+package com.adrzdv.mtocp.domain.model.revisionobject.basic.coach;
 
-import com.adrzdv.mtocp.domain.model.revisionobject.RevisionObject;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
 
 import java.util.HashMap;

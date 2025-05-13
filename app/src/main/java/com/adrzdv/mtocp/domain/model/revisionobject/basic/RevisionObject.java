@@ -1,7 +1,7 @@
-package com.adrzdv.mtocp.domain.model.revisionobject;
+package com.adrzdv.mtocp.domain.model.revisionobject.basic;
 
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
-import com.adrzdv.mtocp.domain.model.violation.ViolationObject;
+import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.domain.model.workers.Worker;
 
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ public abstract class RevisionObject {
     private LocalDateTime revisionDateStart;
     private LocalDateTime revisionDateEnd;
     private Boolean isQualityPassport;
-    private Map<String, ViolationObject> violationMap;
+    private Map<String, ViolationDomain> violationMap;
     private Map<String, StaticsParam> additionalParams;
 
     public RevisionObject(String number) {
@@ -32,7 +32,7 @@ public abstract class RevisionObject {
 
     public int countViolation() {
         return violationMap.values().stream()
-                .mapToInt(ViolationObject::getAmount)
+                .mapToInt(ViolationDomain::getAmount)
                 .sum();
     }
 
@@ -76,11 +76,11 @@ public abstract class RevisionObject {
         this.worker = worker;
     }
 
-    public Map<String, ViolationObject> getViolationMap() {
+    public Map<String, ViolationDomain> getViolationMap() {
         return violationMap;
     }
 
-    public void setViolationMap(Map<String, ViolationObject> violationMap) {
+    public void setViolationMap(Map<String, ViolationDomain> violationMap) {
         this.violationMap = violationMap;
     }
 

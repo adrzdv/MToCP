@@ -1,7 +1,6 @@
-package com.adrzdv.mtocp.domain.model.revisionobject.coach;
+package com.adrzdv.mtocp.domain.model.revisionobject.basic.coach;
 
 import com.adrzdv.mtocp.domain.model.departments.Company;
-import com.adrzdv.mtocp.domain.model.revisionobject.RevisionObject;
 
 public class DinnerCar extends Coach {
     private Company company;

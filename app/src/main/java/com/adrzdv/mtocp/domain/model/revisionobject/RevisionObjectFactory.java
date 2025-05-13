@@ -1,9 +1,11 @@
 package com.adrzdv.mtocp.domain.model.revisionobject;
 
 import com.adrzdv.mtocp.domain.model.enums.RevisionObjectType;
-import com.adrzdv.mtocp.domain.model.revisionobject.coach.BaggageCar;
-import com.adrzdv.mtocp.domain.model.revisionobject.coach.DinnerCar;
-import com.adrzdv.mtocp.domain.model.revisionobject.coach.PassengerCar;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.TicketTermial;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.BaggageCar;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 
 public class RevisionObjectFactory {
 
