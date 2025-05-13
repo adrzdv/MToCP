@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.data.model;
+package com.adrzdv.mtocp.data.db.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
