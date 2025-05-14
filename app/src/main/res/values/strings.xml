@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">MToCP</string>
     <string name="full_app_name">Mobile terminal of collecting quality parameters</string>
+    <string name="start_revision_text">Начать проверку</string>
+    <string name="violation_catalog_string">Справочник</string>
+    <string name="service_menu_string">Настройки</string>
+    <string name="exit_text">Выход</string>
+    <string name="help">Помощь</string>
+    <string name="app_title">Мобильный терминал сбора контроллируемых параметров</string>
+    <string name="main_menu_text">Главное меню</string>
 </resources>
