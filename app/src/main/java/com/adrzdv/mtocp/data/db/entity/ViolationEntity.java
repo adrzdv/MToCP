@@ -19,6 +19,9 @@ public class ViolationEntity {
     @ColumnInfo(name = "name")
     private String name;
     @NonNull
+    @ColumnInfo(name = "short_name")
+    private String shortName;
+    @NonNull
     @ColumnInfo(name = "is_active", defaultValue = "0")
     private Boolean isActive;
     @NonNull
@@ -34,6 +37,7 @@ public class ViolationEntity {
     public ViolationEntity() {
         this.code = 0;
         this.name = "";
+        this.shortName = "";
         this.isActive = false;
         this.inTransit = false;
         this.atStartPoint = false;
@@ -42,12 +46,14 @@ public class ViolationEntity {
 
     public ViolationEntity(@NonNull Integer code,
                            @NonNull String name,
+                           @NonNull String shortName,
                            @NonNull Boolean isActive,
                            @NonNull Boolean inTransit,
                            @NonNull Boolean atStartPoint,
                            @NonNull Boolean atTurnroundPoint) {
         this.code = code;
         this.name = name;
+        this.shortName = shortName;
         this.isActive = isActive;
         this.inTransit = inTransit;
         this.atStartPoint = atStartPoint;
@@ -76,8 +82,17 @@ public class ViolationEntity {
         return name;
     }
 
+    @NonNull
+    public String getShortName() {
+        return shortName;
+    }
+
     public void setName(@NonNull String name) {
         this.name = name;
+    }
+
+    public void setShortName(@NonNull String shortName) {
+        this.shortName = shortName;
     }
 
     @NonNull
