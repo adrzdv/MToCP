@@ -5,13 +5,18 @@ import android.content.Context;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.room.Room;
 
-import dagger.hilt.android.HiltAndroidApp;
+import com.adrzdv.mtocp.data.db.AppDatabase;
+import com.adrzdv.mtocp.data.repository.ViolationRepositoryImpl;
+import com.adrzdv.mtocp.domain.repository.ViolationRepository;
 
-@HiltAndroidApp
 public class App extends Application {
     private static App instance;
     private static Toast currentToast;
+
+    private AppDatabase database;
+    private ViolationRepository violationRepository;
 
     public static App getInstance() {
         return instance;
@@ -19,9 +24,23 @@ public class App extends Application {
 
     @Override
     public void onCreate() {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate();
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         instance = this;
+
+        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "mtocpdb")
+                .createFromAsset("db/mtocpdb.db")
+                .build();
+
+        violationRepository = new ViolationRepositoryImpl(database.violationDao());
+    }
+
+    public AppDatabase getDatabase() {
+        return database;
+    }
+
+    public ViolationRepository getViolationRepository() {
+        return violationRepository;
     }
 
     public static void showToast(Context context, String message) {

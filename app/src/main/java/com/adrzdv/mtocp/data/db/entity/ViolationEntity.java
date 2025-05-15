@@ -3,6 +3,7 @@ package com.adrzdv.mtocp.data.db.entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Objects;
@@ -11,6 +12,7 @@ import java.util.Objects;
 public class ViolationEntity {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
+    @NonNull
     private Integer id;
     @NonNull
     @ColumnInfo(name = "code")
@@ -33,8 +35,12 @@ public class ViolationEntity {
     @NonNull
     @ColumnInfo(name = "at_turnround_point", defaultValue = "0")
     private Boolean atTurnroundPoint;
+    @NonNull
+    @ColumnInfo(name = "at_ticket_office", defaultValue = "0")
+    private Boolean atTicketOffice;
 
     public ViolationEntity() {
+        this.id = 0;
         this.code = 0;
         this.name = "";
         this.shortName = "";
@@ -42,15 +48,19 @@ public class ViolationEntity {
         this.inTransit = false;
         this.atStartPoint = false;
         this.atTurnroundPoint = false;
+        this.atTicketOffice = false;
+
     }
 
+    @Ignore
     public ViolationEntity(@NonNull Integer code,
                            @NonNull String name,
                            @NonNull String shortName,
                            @NonNull Boolean isActive,
                            @NonNull Boolean inTransit,
                            @NonNull Boolean atStartPoint,
-                           @NonNull Boolean atTurnroundPoint) {
+                           @NonNull Boolean atTurnroundPoint,
+                           @NonNull Boolean atTicketOffice) {
         this.code = code;
         this.name = name;
         this.shortName = shortName;
@@ -58,8 +68,10 @@ public class ViolationEntity {
         this.inTransit = inTransit;
         this.atStartPoint = atStartPoint;
         this.atTurnroundPoint = atTurnroundPoint;
+        this.atTicketOffice = atTicketOffice;
     }
 
+    @NonNull
     public Integer getId() {
         return id;
     }
@@ -131,6 +143,15 @@ public class ViolationEntity {
         this.atTurnroundPoint = atTurnroundPoint;
     }
 
+    @NonNull
+    public Boolean getAtTicketOffice() {
+        return atTicketOffice;
+    }
+
+    public void setAtTicketOffice(@NonNull Boolean atTicketOffice) {
+        this.atTicketOffice = atTicketOffice;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof ViolationEntity that)) return false;
@@ -141,4 +162,5 @@ public class ViolationEntity {
     public int hashCode() {
         return Objects.hashCode(code);
     }
+
 }

@@ -8,4 +8,7 @@
     <string name="help">Помощь</string>
     <string name="app_title">Мобильный терминал сбора контроллируемых параметров</string>
     <string name="main_menu_text">Главное меню</string>
+    <string name="search_text_hint">Начните ввод</string>
+    <string name="back_text">Назад</string>
+    <string name="catalog_header_string">Классификатор</string>
 </resources>

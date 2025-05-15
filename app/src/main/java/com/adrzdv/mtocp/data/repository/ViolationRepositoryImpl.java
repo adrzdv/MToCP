@@ -6,13 +6,10 @@ import com.adrzdv.mtocp.domain.repository.ViolationRepository;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class ViolationRepositoryImpl implements ViolationRepository {
 
     private final ViolationDao violationDao;
 
-    @Inject
     public ViolationRepositoryImpl(ViolationDao violationDao) {
         this.violationDao = violationDao;
     }

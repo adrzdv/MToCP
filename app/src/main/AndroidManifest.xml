@@ -17,7 +17,7 @@
             android:name=".ui.activities.ViolationCatalogActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.StartMenu"
+            android:name=".ui.activities.StartMenuActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

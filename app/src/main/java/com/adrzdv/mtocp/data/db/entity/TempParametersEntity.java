@@ -3,6 +3,7 @@ package com.adrzdv.mtocp.data.db.entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.util.Objects;
 public class TempParametersEntity {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
+    @NonNull
     private Integer id;
     @NonNull
     @ColumnInfo(name = "name", defaultValue = "0")
@@ -30,6 +32,7 @@ public class TempParametersEntity {
     private Boolean isTrain;
 
     public TempParametersEntity() {
+        this.id = 0;
         this.name = "";
         this.isActive = false;
         this.dateStart = LocalDate.of(1970, 1, 1);
@@ -37,6 +40,7 @@ public class TempParametersEntity {
         this.isTrain = false;
     }
 
+    @Ignore
     public TempParametersEntity(@NonNull String name,
                                 @NonNull Boolean isActive,
                                 @NonNull LocalDate dateStart,

@@ -49,7 +49,7 @@ public class StartMenuActivity extends AppCompatActivity implements View.OnClick
         if (v.getId() == R.id.start_revision_button) {
 
         } else if (v.getId() == R.id.open_violation_catalog) {
-            Intent intent = new Intent(this, null);
+            Intent intent = new Intent(this, ViolationCatalogActivity.class);
             startActivity(intent);
         } else if (v.getId() == R.id.service_menu_button) {
             Intent intent = new Intent(this, null);

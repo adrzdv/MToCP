@@ -2,7 +2,6 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.kapt")
     id("org.jetbrains.kotlin.android")
-    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -51,8 +50,7 @@ dependencies {
     implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3.android)
-    val roomVersion = "2.7.1"
-    val hiltVersion = "2.48.1"
+    val roomVersion = "2.5.1"
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -67,9 +65,4 @@ dependencies {
 
     kapt("androidx.room:room-compiler:$roomVersion")
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-
-    implementation("com.google.dagger:hilt-android:$hiltVersion")
-    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
 }

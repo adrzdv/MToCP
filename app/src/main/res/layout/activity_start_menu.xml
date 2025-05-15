@@ -30,9 +30,6 @@
                 style="@style/Header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
                 android:text="@string/main_menu_text"
                 app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontal30"
                 app:layout_constraintStart_toStartOf="@+id/guidelineVertical10" />
@@ -147,7 +144,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/guidelineVertical90"
                 app:layout_constraintStart_toStartOf="@+id/guidelineVertical50"
                 app:layout_constraintTop_toBottomOf="@+id/open_violation_catalog" />
-            
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -8,5 +8,4 @@ public interface ViolationRepository {
 
     List<ViolationEntity> getAll();
 
-    //void updateViolation(ViolationEntity violation);
 }

@@ -9,18 +9,22 @@ import com.adrzdv.mtocp.domain.repository.ViolationRepository;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
-import dagger.hilt.android.lifecycle.HiltViewModel;
-
-@HiltViewModel
 public class ViolationViewModel extends ViewModel {
-    private final MutableLiveData<List<ViolationEntity>> violations = new MutableLiveData<>();
 
-    @Inject
+    private final MutableLiveData<List<ViolationEntity>> violations = new MutableLiveData<>();
+    private final ViolationRepository repository;
+
     public ViolationViewModel(ViolationRepository repository) {
-        List<ViolationEntity> violationList = repository.getAll();
-        violations.setValue(violationList);
+        this.repository = repository;
+        loadViolations();
+    }
+
+    private void loadViolations() {
+
+        new Thread(() -> {
+            List<ViolationEntity> violationList = repository.getAll();
+            violations.postValue(violationList);
+        }).start();
     }
 
     public LiveData<List<ViolationEntity>> getViolations() {

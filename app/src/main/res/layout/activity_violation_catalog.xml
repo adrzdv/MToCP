@@ -7,4 +7,67 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.ViolationCatalogActivity">
 
+    <ImageButton
+        android:id="@+id/bckViolationCatalogButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="@string/back_text"
+        android:src="@drawable/ic_back_32"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        style="@style/Header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/catalog_header_string"
+        app:layout_constraintBottom_toTopOf="@+id/catalog_code_violation_search_text_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bckViolationCatalogButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/catalog_code_violation_search_text_input"
+        style="@style/TextInputLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/search_text_hint"
+        android:padding="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/bckViolationCatalogButton">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/RegularTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textCursorDrawable="@color/black" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/spinner_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/catalog_code_violation_search_text_input">
+
+        <Spinner
+            android:id="@+id/spinner_revision_type"
+            style="@style/SpinnerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/catalog_violation_list_recycler_view"
+        style="@style/RegularTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_layout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
