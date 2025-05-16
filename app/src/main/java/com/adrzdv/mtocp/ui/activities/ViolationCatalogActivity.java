@@ -1,9 +1,14 @@
 package com.adrzdv.mtocp.ui.activities;
 
+import static com.adrzdv.mtocp.domain.model.enums.RevisionType.ALL;
+
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,12 +22,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.adrzdv.mtocp.App;
 import com.adrzdv.mtocp.R;
 import com.adrzdv.mtocp.data.db.dao.ViolationDao;
+import com.adrzdv.mtocp.data.db.entity.ViolationEntity;
 import com.adrzdv.mtocp.data.repository.ViolationRepositoryImpl;
 import com.adrzdv.mtocp.databinding.ActivityViolationCatalogBinding;
 import com.adrzdv.mtocp.domain.model.enums.RevisionType;
 import com.adrzdv.mtocp.domain.repository.ViolationRepository;
 import com.adrzdv.mtocp.mapper.ViolationMapper;
 import com.adrzdv.mtocp.ui.adapters.ViolationAdapter;
+import com.adrzdv.mtocp.ui.model.ViolationDto;
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModelFactory;
 
@@ -63,14 +70,29 @@ public class ViolationCatalogActivity extends AppCompatActivity {
         ViolationViewModelFactory factory = new ViolationViewModelFactory(repository);
         violationViewModel = new ViewModelProvider(this, factory).get(ViolationViewModel.class);
 
-        violationViewModel.getViolations().observe(this, violations -> {
-            adapter.updateData(violations.stream().map(ViolationMapper::fromEntityToDomain)
-                    .map(ViolationMapper::fromDomainToDto).collect(Collectors.toList()));
-        });
+        violationViewModel.getFilteredViolations().observe(this, adapter::updateData);
+
+        EditText searchEditText = binding.catalogCodeViolationSearchTextInput.getEditText();
+        if (searchEditText != null) {
+            searchEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    String query = editable.toString();
+                    violationViewModel.filterDataByString(query);
+                }
+            });
+        }
     }
 
     private void initSpinner() {
-
         List<String> typeList = RevisionType.getListOfTypes();
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
@@ -78,28 +100,19 @@ public class ViolationCatalogActivity extends AppCompatActivity {
                 typeList);
         arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         binding.spinnerRevisionType.setAdapter(arrayAdapter);
+
         binding.spinnerRevisionType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedType = typeList.get(position);
-                //filterDataByRevisionType(selectedType);
+                RevisionType type = RevisionType.fromString(selectedType);
+                violationViewModel.filterDataByRevisionType(type);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                //filterDataByRevisionType(RevisionType.ALL.getRevisionTypeTitle());
+                violationViewModel.filterDataByRevisionType(ALL);
             }
         });
-
-
-    }
-
-    private boolean isNumeric(String str) {
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
     }
 }

@@ -20,4 +20,9 @@ public class ViolationMapper {
         return new ViolationDomain(violation.getCode(),
                 violation.getName());
     }
+
+    public static ViolationDto fromEntityToDto(ViolationEntity violation) {
+        return new ViolationDto(violation.getCode(),
+                violation.getName());
+    }
 }
