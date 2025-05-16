@@ -10,6 +10,6 @@ import java.util.List;
 @Dao
 public interface ViolationDao {
 
-    @Query("SELECT * FROM violations")
+    @Query("SELECT * FROM violations WHERE is_active = 1")
     List<ViolationEntity> getAll();
 }

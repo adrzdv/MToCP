@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface ViolationRepository {
 
-    @Query("SELECT * FROM violations WHERE is_active = 1")
     List<ViolationEntity> getAll();
 
 }

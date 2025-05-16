@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:clipToPadding="false"
-    tools:context=".ui.activities.StartMenu">
+    tools:context=".ui.activities.StartMenuActivity">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/startMenuLayout"

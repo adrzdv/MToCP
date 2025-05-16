@@ -55,7 +55,7 @@ public class StartMenuActivity extends AppCompatActivity implements View.OnClick
             Intent intent = new Intent(this, null);
             startActivity(intent);
         } else if (v.getId() == R.id.help) {
-            Intent intent = new Intent(this, null);
+            Intent intent = new Intent(this, HelpActivity.class);
             startActivity(intent);
         } else if (v.getId() == R.id.exit_button) {
             finishAffinity();
