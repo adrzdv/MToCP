@@ -1,16 +1,22 @@
 package com.adrzdv.mtocp.ui.viewmodel;
 
+import static com.adrzdv.mtocp.ErrorCodes.UPDATE_ERROR;
 import static com.adrzdv.mtocp.domain.model.enums.RevisionType.ALL;
+
+import android.database.sqlite.SQLiteConstraintException;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.adrzdv.mtocp.App;
+import com.adrzdv.mtocp.ErrorCodes;
 import com.adrzdv.mtocp.data.db.entity.ViolationEntity;
 import com.adrzdv.mtocp.domain.model.enums.RevisionType;
 import com.adrzdv.mtocp.domain.repository.ViolationRepository;
 import com.adrzdv.mtocp.mapper.ViolationMapper;
 import com.adrzdv.mtocp.ui.model.ViolationDto;
+import com.adrzdv.mtocp.util.Event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +26,7 @@ public class ViolationViewModel extends ViewModel {
 
     private final ViolationRepository repository;
     private final MutableLiveData<List<ViolationDto>> filteredViolations = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<Event<String>> toastMessage = new MutableLiveData<>();
 
     private List<ViolationEntity> allViolations = new ArrayList<>();
     private String currentSearchString = "";
@@ -49,6 +56,21 @@ public class ViolationViewModel extends ViewModel {
     public void filterDataByRevisionType(RevisionType revType) {
         currentRevisionType = revType != null ? revType : ALL;
         applyFilters();
+    }
+
+    public LiveData<Event<String>> getToastMessage() {
+        return toastMessage;
+    }
+
+    public void updateViolation(ViolationEntity violation) {
+        new Thread(() -> {
+            try {
+                repository.updateByCode(violation);
+                loadViolations();
+            } catch (SQLiteConstraintException e) {
+                toastMessage.postValue(new Event<>(ErrorCodes.UPDATE_ERROR.toString()));
+            }
+        }).start();
     }
 
     private void applyFilters() {
