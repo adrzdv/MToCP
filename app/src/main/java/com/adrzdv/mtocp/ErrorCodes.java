@@ -38,6 +38,7 @@ public enum ErrorCodes {
         return null;
     }
 
+    @NonNull
     public String toString() {
         return errorCode + ":\n" + errorText;
     }

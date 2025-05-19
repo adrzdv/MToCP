@@ -5,7 +5,6 @@ import android.net.Uri;
 
 import com.adrzdv.mtocp.ErrorCodes;
 import com.adrzdv.mtocp.data.importmodel.ViolationImport;
-import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.util.ListViolationToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,8 +13,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

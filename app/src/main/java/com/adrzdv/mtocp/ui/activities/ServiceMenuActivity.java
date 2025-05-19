@@ -12,7 +12,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.adrzdv.mtocp.App;
 import com.adrzdv.mtocp.R;
 import com.adrzdv.mtocp.databinding.ActivityServiceMenuBinding;
-import com.adrzdv.mtocp.databinding.ActivityStartMenuBinding;
 import com.adrzdv.mtocp.util.DirectoryHandler;
 
 public class ServiceMenuActivity extends AppCompatActivity implements View.OnClickListener {

@@ -2,8 +2,6 @@ package com.adrzdv.mtocp.data.importmodel;
 
 import androidx.annotation.NonNull;
 
-import com.adrzdv.mtocp.data.db.entity.ViolationEntity;
-
 import java.util.Objects;
 
 public class ViolationImport {
