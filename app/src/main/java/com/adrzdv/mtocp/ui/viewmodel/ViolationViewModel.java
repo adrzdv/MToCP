@@ -73,14 +73,24 @@ public class ViolationViewModel extends ViewModel {
     }
 
     public void updateViolation(ViolationEntity violation) {
-        new Thread(() -> {
+
+        executor.execute(() -> {
             try {
                 repository.updateByCode(violation);
                 loadViolations();
             } catch (SQLiteConstraintException e) {
-                toastMessage.postValue(new Event<>(ErrorCodes.UPDATE_ERROR.toString()));
+                toastMessage.postValue(new Event<>(UPDATE_ERROR.toString()));
             }
-        }).start();
+        });
+
+//        new Thread(() -> {
+//            try {
+//                repository.updateByCode(violation);
+//                loadViolations();
+//            } catch (SQLiteConstraintException e) {
+//                toastMessage.postValue(new Event<>(ErrorCodes.UPDATE_ERROR.toString()));
+//            }
+//        }).start();
     }
 
     private void applyFilters() {
