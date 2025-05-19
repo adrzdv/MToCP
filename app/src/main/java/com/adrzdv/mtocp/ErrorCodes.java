@@ -7,7 +7,8 @@ public enum ErrorCodes {
     UPDATE_ERROR("001#UPDATE", "Ошибка обновления элемента"),
     LOAD_ERROR("002#DATA_LOAD", "Ошибка загрузки данных"),
     NOT_FOUND_ERROR("003#NOT_FOUND:", "Данные не найдены"),
-    INPUT_ERROR("004#INPUT", "Ошибка формата воода даннных");
+    INPUT_ERROR("004#INPUT", "Ошибка формата воода даннных"),
+    UNHANDLED_METHOD("005#UNHANDLE", "Экспорт не поддерживается для этого типа");
 
     @NonNull
     private final String errorCode;

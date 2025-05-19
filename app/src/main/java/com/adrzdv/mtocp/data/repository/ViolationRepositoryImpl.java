@@ -38,4 +38,11 @@ public class ViolationRepositoryImpl implements ViolationRepository {
                 violation.getAtTurnroundPoint(),
                 violation.getAtTicketOffice());
     }
+
+    @Override
+    public void saveAll(List<ViolationEntity> list) {
+        violationDao.insertAll(list);
+    }
+
+
 }

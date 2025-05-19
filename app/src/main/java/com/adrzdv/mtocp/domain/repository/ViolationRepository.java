@@ -16,4 +16,6 @@ public interface ViolationRepository {
 
     void updateByCode(ViolationEntity violation) throws SQLiteConstraintException;
 
+    void saveAll(List<ViolationEntity> list);
+
 }

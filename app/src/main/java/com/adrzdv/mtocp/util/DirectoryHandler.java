@@ -2,8 +2,6 @@ package com.adrzdv.mtocp.util;
 
 import android.os.Environment;
 
-import com.adrzdv.mtocp.App;
-
 import java.io.File;
 
 public class DirectoryHandler {

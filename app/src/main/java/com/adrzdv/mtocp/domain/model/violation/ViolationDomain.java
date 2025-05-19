@@ -7,12 +7,14 @@ import java.util.Objects;
 public class ViolationDomain {
     private Integer code;
     private String name;
+    private String shortName;
     private int amount;
     private Map<String, String> attributeMap;
 
-    public ViolationDomain(Integer code, String name) {
+    public ViolationDomain(Integer code, String name, String shortName) {
         this.code = code;
         this.name = name;
+        this.shortName = shortName;
         this.amount = 1;
         this.attributeMap = new HashMap<>();
     }
@@ -31,6 +33,14 @@ public class ViolationDomain {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public int getAmount() {
@@ -59,4 +69,6 @@ public class ViolationDomain {
     public int hashCode() {
         return Objects.hashCode(code);
     }
+
+
 }

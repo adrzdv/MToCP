@@ -74,4 +74,5 @@ public class StartMenuActivity extends AppCompatActivity implements View.OnClick
             versionText.setText("v?");
         }
     }
+
 }

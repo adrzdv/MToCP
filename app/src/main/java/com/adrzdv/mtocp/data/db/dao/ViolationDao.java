@@ -40,4 +40,7 @@ public interface ViolationDao {
             boolean atTurnroundPoint,
             boolean atTicketOffice
     );
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(List<ViolationEntity> violations);
 }

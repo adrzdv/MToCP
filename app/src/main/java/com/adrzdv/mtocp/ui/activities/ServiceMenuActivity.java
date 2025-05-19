@@ -46,6 +46,8 @@ public class ServiceMenuActivity extends AppCompatActivity implements View.OnCli
             } else {
                 App.showToast(this, "Ошибка очистки директорий");
             }
+        } else if (v.getId() == R.id.load_catalog_button) {
+            return;
         }
     }
 }
