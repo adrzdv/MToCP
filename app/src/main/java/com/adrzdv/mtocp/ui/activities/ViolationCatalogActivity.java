@@ -22,20 +22,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.adrzdv.mtocp.App;
 import com.adrzdv.mtocp.R;
 import com.adrzdv.mtocp.data.db.dao.ViolationDao;
-import com.adrzdv.mtocp.data.db.entity.ViolationEntity;
 import com.adrzdv.mtocp.data.repository.ViolationRepositoryImpl;
 import com.adrzdv.mtocp.databinding.ActivityViolationCatalogBinding;
 import com.adrzdv.mtocp.domain.model.enums.RevisionType;
 import com.adrzdv.mtocp.domain.repository.ViolationRepository;
-import com.adrzdv.mtocp.mapper.ViolationMapper;
 import com.adrzdv.mtocp.ui.adapters.ViolationAdapter;
-import com.adrzdv.mtocp.ui.model.ViolationDto;
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class ViolationCatalogActivity extends AppCompatActivity {

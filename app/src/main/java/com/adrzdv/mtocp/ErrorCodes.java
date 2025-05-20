@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public enum ErrorCodes {
+    SUCCESS("000#SUCCESS", "Данные загружены"),
+    UNKNOWN_ERROR("000#UNKNOWN", "Неизвестная ошибка"),
     UPDATE_ERROR("001#UPDATE", "Ошибка обновления элемента"),
     LOAD_ERROR("002#DATA_LOAD", "Ошибка загрузки данных"),
     NOT_FOUND_ERROR("003#NOT_FOUND:", "Данные не найдены"),

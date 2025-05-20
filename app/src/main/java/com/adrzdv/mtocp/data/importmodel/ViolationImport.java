@@ -9,14 +9,13 @@ public class ViolationImport {
     private Integer id;
     private Integer code;
     private String name;
-
     private String shortName;
     private Boolean isActive;
-
     private Boolean inTransit;
     private Boolean atStartPoint;
     private Boolean atTurnroundPoint;
     private Boolean atTicketOffice;
+
 
     public ViolationImport(@NonNull Integer id,
                            @NonNull Integer code,

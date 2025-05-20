@@ -36,7 +36,7 @@ public class ViolationMapper {
                 violation.getAtTurnroundPoint(),
                 violation.getAtTicketOffice());
 
-        violation.setId(violation.getId());
+        violationEntity.setId(violation.getId());
 
         return violationEntity;
     }

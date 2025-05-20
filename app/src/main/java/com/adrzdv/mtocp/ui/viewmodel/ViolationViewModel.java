@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.ui.viewmodel;
 
+import static com.adrzdv.mtocp.ErrorCodes.SUCCESS;
 import static com.adrzdv.mtocp.ErrorCodes.UPDATE_ERROR;
 import static com.adrzdv.mtocp.domain.model.enums.RevisionType.ALL;
 
@@ -78,19 +79,11 @@ public class ViolationViewModel extends ViewModel {
             try {
                 repository.updateByCode(violation);
                 loadViolations();
+                toastMessage.postValue(new Event<>("UPDATED"));
             } catch (SQLiteConstraintException e) {
                 toastMessage.postValue(new Event<>(UPDATE_ERROR.toString()));
             }
         });
-
-//        new Thread(() -> {
-//            try {
-//                repository.updateByCode(violation);
-//                loadViolations();
-//            } catch (SQLiteConstraintException e) {
-//                toastMessage.postValue(new Event<>(ErrorCodes.UPDATE_ERROR.toString()));
-//            }
-//        }).start();
     }
 
     private void applyFilters() {
@@ -132,9 +125,13 @@ public class ViolationViewModel extends ViewModel {
         if (importedList != null && !importedList.isEmpty()) {
 
             executor.execute(() -> {
-                repository.saveAll(importedList.stream()
+
+                List<ViolationEntity> insertList = importedList.stream()
                         .map(ViolationMapper::fromImportToEntity)
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList());
+
+                repository.saveAll(insertList);
+                toastMessage.postValue(new Event<>(SUCCESS.getErrorTitle()));
             });
 
         }

@@ -5,14 +5,15 @@ import android.net.Uri;
 
 import com.adrzdv.mtocp.ErrorCodes;
 import com.adrzdv.mtocp.data.importmodel.ViolationImport;
-import com.adrzdv.mtocp.util.ListViolationToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,8 +39,9 @@ public class JsonIOManagerViolation implements DataIOManager<ViolationImport> {
                     jsonString.append(line);
                 }
                 String jsonData = jsonString.toString();
-                importedList = gson.fromJson(jsonData, new ListViolationToken().getType());
-
+                Type listType = new TypeToken<List<ViolationImport>>() {
+                }.getType();
+                importedList = gson.fromJson(jsonData, listType);
             }
         } catch (IOException e) {
             return Collections.emptyList();
