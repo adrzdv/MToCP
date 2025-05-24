@@ -21,6 +21,8 @@ import com.adrzdv.mtocp.data.db.dao.ViolationDao;
 import com.adrzdv.mtocp.data.repository.ViolationRepositoryImpl;
 import com.adrzdv.mtocp.databinding.ActivityServiceMenuBinding;
 import com.adrzdv.mtocp.domain.repository.ViolationRepository;
+import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactory;
+import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider;
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModelFactory;
 import com.adrzdv.mtocp.util.DirectoryHandler;
@@ -45,9 +47,7 @@ public class ServiceMenuActivity extends AppCompatActivity implements View.OnCli
             return insets;
         });
 
-        ViolationDao dao = App.getInstance().getDatabase().violationDao();
-        ViolationRepository repository = new ViolationRepositoryImpl(dao);
-        ViolationViewModelFactory factory = new ViolationViewModelFactory(repository);
+        ViewModelFactory factory = ViewModelFactoryProvider.provideFactory();
         violationViewModel = new ViewModelProvider(this, factory).get(ViolationViewModel.class);
 
         filePickerLauncher = registerForActivityResult(
@@ -56,7 +56,11 @@ public class ServiceMenuActivity extends AppCompatActivity implements View.OnCli
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Uri fileUri = result.getData().getData();
                         if (fileUri != null) {
-                            violationViewModel.importViolationFromJson(this, fileUri);
+                            //violationViewModel.importViolationFromJson(this, fileUri);
+
+                            
+
+
                             violationViewModel.getToastMessage().observe(this, event -> {
                                 String message = event.getContentIfNotHandled();
                                 if (message != null) {

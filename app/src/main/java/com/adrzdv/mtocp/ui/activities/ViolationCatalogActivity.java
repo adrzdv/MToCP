@@ -27,6 +27,8 @@ import com.adrzdv.mtocp.databinding.ActivityViolationCatalogBinding;
 import com.adrzdv.mtocp.domain.model.enums.RevisionType;
 import com.adrzdv.mtocp.domain.repository.ViolationRepository;
 import com.adrzdv.mtocp.ui.adapters.ViolationAdapter;
+import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactory;
+import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider;
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModelFactory;
 
@@ -61,11 +63,8 @@ public class ViolationCatalogActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        ViolationDao dao = App.getInstance().getDatabase().violationDao();
-        ViolationRepository repository = new ViolationRepositoryImpl(dao);
-        ViolationViewModelFactory factory = new ViolationViewModelFactory(repository);
+        ViewModelFactory factory = ViewModelFactoryProvider.provideFactory();
         violationViewModel = new ViewModelProvider(this, factory).get(ViolationViewModel.class);
-
         violationViewModel.getFilteredViolations().observe(this, adapter::updateData);
 
         EditText searchEditText = binding.catalogCodeViolationSearchTextInput.getEditText();

@@ -1,11 +1,11 @@
 package com.adrzdv.mtocp.domain.model.revisionobject.basic.coach;
 
-import com.adrzdv.mtocp.domain.model.departments.Depot;
+import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType;
 
 public class PassengerCar extends Coach {
     private PassengerCoachType coachType;
-    private Depot depot;
+    private DepotDomain depotDomain;
 
     public PassengerCar(String number) {
         super(number);
@@ -19,11 +19,11 @@ public class PassengerCar extends Coach {
         this.coachType = coachType;
     }
 
-    public Depot getDepot() {
-        return depot;
+    public DepotDomain getDepot() {
+        return depotDomain;
     }
 
-    public void setDepot(Depot depot) {
-        this.depot = depot;
+    public void setDepot(DepotDomain depotDomain) {
+        this.depotDomain = depotDomain;
     }
 }

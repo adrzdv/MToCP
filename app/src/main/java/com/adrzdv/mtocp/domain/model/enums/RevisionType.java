@@ -2,7 +2,6 @@ package com.adrzdv.mtocp.domain.model.enums;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public enum RevisionType {
     ALL("Полный список"),
@@ -34,6 +33,6 @@ public enum RevisionType {
 
         return Arrays.stream(RevisionType.values())
                 .map(RevisionType::getRevisionTypeTitle)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

@@ -51,13 +51,15 @@ public class TempParametersEntity {
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.isTrain = isTrain;
+        id = 0;
     }
 
+    @NonNull
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(@NonNull Integer id) {
         this.id = id;
     }
 

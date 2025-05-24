@@ -8,7 +8,9 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.room.Room;
 
 import com.adrzdv.mtocp.data.db.AppDatabase;
+import com.adrzdv.mtocp.data.repository.DepotRepositoryImpl;
 import com.adrzdv.mtocp.data.repository.ViolationRepositoryImpl;
+import com.adrzdv.mtocp.domain.repository.DepotRepository;
 import com.adrzdv.mtocp.domain.repository.ViolationRepository;
 
 public class App extends Application {
@@ -16,7 +18,8 @@ public class App extends Application {
     private static Toast currentToast;
 
     private AppDatabase database;
-    private ViolationRepository violationRepository;
+    private static ViolationRepository violationRepository;
+    private static DepotRepository depotRepository;
 
     public static App getInstance() {
         return instance;
@@ -33,14 +36,20 @@ public class App extends Application {
                 .build();
 
         violationRepository = new ViolationRepositoryImpl(database.violationDao());
+        depotRepository = new DepotRepositoryImpl(database.depotDao());
+
     }
 
     public AppDatabase getDatabase() {
         return database;
     }
 
-    public ViolationRepository getViolationRepository() {
+    public static ViolationRepository getViolationRepository() {
         return violationRepository;
+    }
+
+    public static DepotRepository getDepotRepository() {
+        return depotRepository;
     }
 
     public static void showToast(Context context, String message) {

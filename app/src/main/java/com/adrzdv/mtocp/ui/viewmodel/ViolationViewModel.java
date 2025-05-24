@@ -4,46 +4,51 @@ import static com.adrzdv.mtocp.ErrorCodes.SUCCESS;
 import static com.adrzdv.mtocp.ErrorCodes.UPDATE_ERROR;
 import static com.adrzdv.mtocp.domain.model.enums.RevisionType.ALL;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
-import android.net.Uri;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.adrzdv.mtocp.App;
-import com.adrzdv.mtocp.ErrorCodes;
 import com.adrzdv.mtocp.data.db.entity.ViolationEntity;
 import com.adrzdv.mtocp.data.importmodel.ViolationImport;
 import com.adrzdv.mtocp.domain.model.enums.RevisionType;
-import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.domain.repository.ViolationRepository;
 import com.adrzdv.mtocp.mapper.ViolationMapper;
 import com.adrzdv.mtocp.ui.model.ViolationDto;
 import com.adrzdv.mtocp.util.Event;
-import com.adrzdv.mtocp.util.dataiomanager.DataIOManager;
-import com.adrzdv.mtocp.util.dataiomanager.DataIOManagerFactory;
-import com.adrzdv.mtocp.util.dataiomanager.JsonIOManagerFactory;
+import com.adrzdv.mtocp.util.importmanager.ImportHandlerRegistry;
+import com.adrzdv.mtocp.util.importmanager.ImportManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 public class ViolationViewModel extends ViewModel {
 
     private final ViolationRepository repository;
-    private final MutableLiveData<List<ViolationDto>> filteredViolations = new MutableLiveData<>(new ArrayList<>());
-    private final MutableLiveData<Event<String>> toastMessage = new MutableLiveData<>();
-    private List<ViolationEntity> allViolations = new ArrayList<>();
-    private String currentSearchString = "";
-    private RevisionType currentRevisionType = ALL;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final MutableLiveData<List<ViolationDto>> filteredViolations;
+    private final MutableLiveData<Event<String>> toastMessage;
+    private final ImportHandlerRegistry registry;
+    private final ImportManager manager;
+    private List<ViolationEntity> allViolations;
+    private String currentSearchString;
+    private RevisionType currentRevisionType;
+    private final ExecutorService executor;
+
 
     public ViolationViewModel(ViolationRepository repository) {
         this.repository = repository;
+        this.filteredViolations = new MutableLiveData<>(new ArrayList<>());
+        this.toastMessage = new MutableLiveData<>();
+        this.allViolations = new ArrayList<>();
+        registry = new ImportHandlerRegistry();
+        registry.register(ViolationImport.class, this::handle);
+        this.currentSearchString = "";
+        this.currentRevisionType = ALL;
+        this.executor = Executors.newSingleThreadExecutor();
+        manager = new ImportManager(registry, executor);
         loadViolations();
     }
 
@@ -91,13 +96,13 @@ public class ViolationViewModel extends ViewModel {
 
         result = switch (currentRevisionType) {
             case IN_TRANSIT ->
-                    result.stream().filter(ViolationEntity::getInTransit).collect(Collectors.toList());
+                    result.stream().filter(ViolationEntity::getInTransit).toList();
             case AT_START_POINT ->
-                    result.stream().filter(ViolationEntity::getAtStartPoint).collect(Collectors.toList());
+                    result.stream().filter(ViolationEntity::getAtStartPoint).toList();
             case AT_TURNROUND_POINT ->
-                    result.stream().filter(ViolationEntity::getAtTurnroundPoint).collect(Collectors.toList());
+                    result.stream().filter(ViolationEntity::getAtTurnroundPoint).toList();
             case AT_TICKET_OFFICE ->
-                    result.stream().filter(ViolationEntity::getAtTicketOffice).collect(Collectors.toList());
+                    result.stream().filter(ViolationEntity::getAtTicketOffice).toList();
             default -> result;
         };
 
@@ -107,34 +112,22 @@ public class ViolationViewModel extends ViewModel {
                 String name = violation.getName().toLowerCase();
                 String code = String.valueOf(violation.getCode());
                 return name.contains(str) || code.contains(str);
-            }).collect(Collectors.toList());
+            }).toList();
         }
 
         List<ViolationDto> dtoList = result.stream()
                 .map(ViolationMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
 
         filteredViolations.postValue(dtoList);
     }
-
-    public void importViolationFromJson(Context context, Uri uri) {
-        JsonIOManagerFactory<ViolationImport> factory = new JsonIOManagerFactory<>();
-        DataIOManager<ViolationImport> manager = factory.createManager(ViolationImport.class);
-        List<ViolationImport> importedList = manager.importData(context, uri);
-
-        if (importedList != null && !importedList.isEmpty()) {
-
-            executor.execute(() -> {
-
-                List<ViolationEntity> insertList = importedList.stream()
-                        .map(ViolationMapper::fromImportToEntity)
-                        .collect(Collectors.toList());
-
-                repository.saveAll(insertList);
-                toastMessage.postValue(new Event<>(SUCCESS.getErrorTitle()));
-            });
-
-        }
-
+    private void handle(List<ViolationImport> list) {
+        executor.execute(() -> {
+            List<ViolationEntity> entities = list.stream()
+                    .map(ViolationMapper::fromImportToEntity)
+                    .toList();
+            repository.saveAll(entities);
+            toastMessage.postValue(new Event<>(SUCCESS.getErrorTitle()));
+        });
     }
 }

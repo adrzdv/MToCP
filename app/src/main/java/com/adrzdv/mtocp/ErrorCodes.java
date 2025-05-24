@@ -10,7 +10,8 @@ public enum ErrorCodes {
     LOAD_ERROR("002#DATA_LOAD", "Ошибка загрузки данных"),
     NOT_FOUND_ERROR("003#NOT_FOUND:", "Данные не найдены"),
     INPUT_ERROR("004#INPUT", "Ошибка формата воода даннных"),
-    UNHANDLED_METHOD("005#UNHANDLE", "Экспорт не поддерживается для этого типа");
+    UNHANDLED_METHOD("005#UNHANDLE", "Экспорт не поддерживается для этого типа"),
+    UNSUPPORTED_CLASS("006#", "Неизвестный класс");
 
     @NonNull
     private final String errorCode;

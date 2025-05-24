@@ -10,10 +10,10 @@ android {
 
     defaultConfig {
         applicationId = "com.adrzdv.mtocp"
-        minSdk = 28
+        minSdk = 34
         targetSdk = 35
         versionCode = 1
-        versionName = "0.2.0-beta"
+        versionName = "0.3.0-beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
