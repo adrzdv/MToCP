@@ -43,7 +43,7 @@ public class DepotMapper {
 
     public static DepotWithBranch fromImportToPOJO(DepotImport depot) {
 
-
+        return null;
 
     }
 }
