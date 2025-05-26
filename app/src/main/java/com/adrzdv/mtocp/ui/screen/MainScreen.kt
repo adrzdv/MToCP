@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.ConfirmDialog
+import com.adrzdv.mtocp.ui.component.MenuButton
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import kotlin.text.Typography
 
@@ -134,56 +135,7 @@ fun StartMenuScreen(
 }
 
 
-@Composable
-fun MenuButton(
-    text: String,
-    icon: Painter,
-    onClick: () -> Unit
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .padding(8.dp)
-            .width(140.dp)
-    ) {
-        Button(
-            onClick = onClick,
-            colors = ButtonDefaults
-                .buttonColors(containerColor = Color(0xFF4CAF50)),
-            shape = RoundedCornerShape(12.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(110.dp)
-                .shadow(
-                    elevation = 8.dp,
-                    shape = RoundedCornerShape(12.dp),
-                    clip = false
-                )
-                .background(Color.Green, shape = RoundedCornerShape(12.dp))
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(
-                    painter = icon,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .padding(bottom = 4.dp),
-                    tint = Color.White
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = text,
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    style = CustomTypography.bodyMedium,
-                    fontSize = 14.sp
-                )
-            }
-        }
-    }
-}
+
 
 @Preview(showBackground = true)
 @Composable

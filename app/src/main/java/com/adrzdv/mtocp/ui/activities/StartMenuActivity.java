@@ -40,7 +40,8 @@ public class StartMenuActivity extends AppCompatActivity {
                     return Unit.INSTANCE;
                 },
                 () -> {
-                    // onServiceMenuClick
+                    Intent intent = new Intent(this, ServiceMenuActivity.class);
+                    startActivity(intent);
                     return Unit.INSTANCE;
                 },
                 () -> {
