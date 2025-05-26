@@ -19,7 +19,6 @@
 
     <TextView
         android:id="@+id/header_textview"
-        style="@style/Header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -67,7 +66,8 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/clean_dirs_button"
-        style="@style/MainGreenButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/clean_dir_string"
         app:icon="@drawable/ic_clear_data_24_white"
         app:iconGravity="top"
@@ -78,7 +78,8 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/load_catalog_button"
-        style="@style/MainGreenButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/load_catalog_string"
         app:icon="@drawable/ic_catalog_24_white"
         app:iconGravity="top"

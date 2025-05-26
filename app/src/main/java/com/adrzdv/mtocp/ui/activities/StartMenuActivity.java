@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.compose.ui.platform.ComposeView;
 
 import com.adrzdv.mtocp.R;
-import com.adrzdv.mtocp.databinding.ActivityStartMenuBinding;
 import com.adrzdv.mtocp.ui.screen.MainScreenWrapperKt;
 
 import kotlin.Unit;
@@ -60,18 +59,6 @@ public class StartMenuActivity extends AppCompatActivity {
 
         setContentView(composeView);
 
-    }
-
-    private void setVersionText() {
-        TextView versionText = findViewById(R.id.app_version_text);
-        try {
-            String version = getPackageManager()
-                    .getPackageInfo(getPackageName(), 0).versionName;
-            String verRes = "ver." + version;
-            versionText.setText(verRes);
-        } catch (PackageManager.NameNotFoundException e) {
-            versionText.setText("v?");
-        }
     }
 
 }
