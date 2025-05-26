@@ -3,13 +3,11 @@ package com.adrzdv.mtocp.ui.activities;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.compose.ui.platform.ComposeView;
 
-import com.adrzdv.mtocp.R;
-import com.adrzdv.mtocp.ui.screen.MainScreenWrapperKt;
+import com.adrzdv.mtocp.ui.screen.wrapper.MainScreenWrapperKt;
 
 import kotlin.Unit;
 

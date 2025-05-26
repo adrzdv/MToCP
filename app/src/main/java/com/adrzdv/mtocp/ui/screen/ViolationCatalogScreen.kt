@@ -105,12 +105,23 @@ fun ViolationCatalogScreen(
 
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(violations) { violation ->
-                Text(
-                    text = "${violation.code} - ${violation.name}",
-                    style = CustomTypography.bodyLarge,
-                    modifier = Modifier.padding(8.dp)
-                )
-                HorizontalDivider()
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = violation.code.toString(),
+                        style = CustomTypography.bodyLarge,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        text = violation.name,
+                        style = CustomTypography.bodyLarge,
+                        modifier = Modifier.weight(5f)
+                    )
+                }
             }
         }
     }

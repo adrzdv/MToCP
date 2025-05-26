@@ -7,7 +7,7 @@ import androidx.compose.ui.platform.ComposeView;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.adrzdv.mtocp.domain.model.enums.RevisionType;
-import com.adrzdv.mtocp.ui.screen.ViolationCatalogScreenWrapperKt;
+import com.adrzdv.mtocp.ui.screen.wrapper.ViolationCatalogScreenWrapperKt;
 import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider;
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel;
 
