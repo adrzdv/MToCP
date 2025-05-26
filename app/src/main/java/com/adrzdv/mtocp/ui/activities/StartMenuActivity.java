@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.ui.activities;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -14,8 +15,6 @@ import com.adrzdv.mtocp.ui.screen.MainScreenWrapperKt;
 import kotlin.Unit;
 
 public class StartMenuActivity extends AppCompatActivity {
-
-    private ActivityStartMenuBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,8 @@ public class StartMenuActivity extends AppCompatActivity {
                     return Unit.INSTANCE;
                 },
                 () -> {
-                    // onOpenViolationCatalogClick
+                    Intent intent = new Intent(this, ViolationCatalogActivity.class);
+                    startActivity(intent);
                     return Unit.INSTANCE;
                 },
                 () -> {

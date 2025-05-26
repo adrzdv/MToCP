@@ -23,13 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.ConfirmDialog
-
-val regularButtonFont = FontFamily(
-    Font(R.font.rrgpro_medium, FontWeight.Normal)
-)
-val headerFont = FontFamily(
-    Font(R.font.rrgpro_bold, FontWeight.Normal)
-)
+import com.adrzdv.mtocp.ui.theme.CustomTypography
+import kotlin.text.Typography
 
 @Composable
 fun StartMenuScreen(
@@ -55,13 +50,12 @@ fun StartMenuScreen(
                 .align(Alignment.TopCenter),
             horizontalAlignment = Alignment.Start
         ) {
-            Spacer(modifier = Modifier.height(16.dp)) // эквивалент top guideline
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = stringResource(R.string.main_menu_text),
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.padding(start = 16.dp),
-                fontFamily = headerFont
+                style = CustomTypography.displayLarge,
+                modifier = Modifier.padding(start = 16.dp)
             )
 
             Spacer(modifier = Modifier.height(32.dp)) // аналог горизонтального отступа до кнопок
@@ -183,7 +177,7 @@ fun MenuButton(
                     text = text,
                     color = Color.White,
                     textAlign = TextAlign.Center,
-                    fontFamily = regularButtonFont,
+                    style = CustomTypography.bodyMedium,
                     fontSize = 14.sp
                 )
             }
