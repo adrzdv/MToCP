@@ -51,7 +51,8 @@ public class StartMenuActivity extends AppCompatActivity {
                     return Unit.INSTANCE;
                 },
                 () -> {
-                    // onHelpClick
+                    Intent intent = new Intent(this, HelpActivity.class);
+                    startActivity(intent);
                     return Unit.INSTANCE;
                 },
                 versionName
