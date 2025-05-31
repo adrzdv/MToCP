@@ -1,7 +1,5 @@
 package com.adrzdv.mtocp.ui.viewmodel;
 
-import static com.adrzdv.mtocp.ErrorCodes.SUCCESS;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -44,36 +42,4 @@ public class DepotWithBranchViewModel extends ViewModel {
         return depotList;
     }
 
-    private void handle(List<DepotImport> list) {
-        executor.execute(() -> {
-
-            List<DepotEntity> depotEntities = list.stream()
-                    .map(DepotMapper::fromImportToEntity)
-                    .toList();
-
-            List<BranchEntity> branchEntities = list.stream()
-                    .map(DepotImport::getBranch)
-                    .map(BranchMapper::fromImportToEntity)
-                    .toList();
-
-            List<DepotWithBranch> depWithBrList = new ArrayList<>();
-
-//            for() {
-//
-//            }
-
-            repository.saveAll(depWithBrList);
-        });
-    }
-
-
-//    private void handle(List<ViolationImport> list) {
-//        executor.execute(() -> {
-//            List<ViolationEntity> entities = list.stream()
-//                    .map(ViolationMapper::fromImportToEntity)
-//                    .collect(Collectors.toList());
-//            repository.saveAll(entities);
-//            toastMessage.postValue(new Event<>(SUCCESS.getErrorTitle()));
-//        });
-//    }
 }

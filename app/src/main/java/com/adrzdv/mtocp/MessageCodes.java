@@ -3,7 +3,7 @@ package com.adrzdv.mtocp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public enum ErrorCodes {
+public enum MessageCodes {
     SUCCESS("000#SUCCESS", "Данные загружены"),
     UNKNOWN_ERROR("000#UNKNOWN", "Неизвестная ошибка"),
     UPDATE_ERROR("001#UPDATE", "Ошибка обновления элемента"),
@@ -18,7 +18,7 @@ public enum ErrorCodes {
     @NonNull
     private final String errorText;
 
-    ErrorCodes(@NonNull String errorCode, @NonNull String errorHeader) {
+    MessageCodes(@NonNull String errorCode, @NonNull String errorHeader) {
         this.errorCode = errorCode;
         this.errorText = errorHeader;
     }
@@ -34,8 +34,8 @@ public enum ErrorCodes {
     }
 
     @Nullable
-    public static ErrorCodes fromCode(String code) {
-        for (ErrorCodes e : values()) {
+    public static MessageCodes fromCode(String code) {
+        for (MessageCodes e : values()) {
             if (e.errorCode.equals(code)) return e;
         }
         return null;

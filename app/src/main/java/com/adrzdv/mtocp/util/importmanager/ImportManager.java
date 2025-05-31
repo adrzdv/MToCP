@@ -3,7 +3,7 @@ package com.adrzdv.mtocp.util.importmanager;
 import android.content.Context;
 import android.net.Uri;
 
-import com.adrzdv.mtocp.ErrorCodes;
+import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.data.importmodel.DepotImport;
 import com.adrzdv.mtocp.data.importmodel.ViolationImport;
 import com.google.gson.Gson;
@@ -32,13 +32,13 @@ public class ImportManager {
             ImportData data = gson.fromJson(reader, ImportData.class);
 
             executor.execute(() -> {
-                applyHandler(data.getViolations(), ViolationImport.class);
+                applyHandler(data.getViolationList(), ViolationImport.class);
                 applyHandler(data.getDepotsList(), DepotImport.class);
-                onResult.accept(ErrorCodes.SUCCESS.getErrorTitle());
             });
+            onResult.accept(MessageCodes.SUCCESS.getErrorTitle());
 
         } catch (Exception e) {
-            onResult.accept(ErrorCodes.LOAD_ERROR.toString());
+            onResult.accept(MessageCodes.LOAD_ERROR.toString());
         }
     }
 

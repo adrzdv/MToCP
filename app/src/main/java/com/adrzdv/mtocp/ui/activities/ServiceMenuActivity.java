@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.ComposeView;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.adrzdv.mtocp.App;
+import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.ui.screen.wrapper.ServiceScreenWrapperKt;
 import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider;
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel;
@@ -26,16 +27,14 @@ public class ServiceMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ViolationViewModel violationViewModel = new ViewModelProvider(this, ViewModelFactoryProvider.provideFactory())
-                .get(ViolationViewModel.class);
-
         filePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Uri fileUri = result.getData().getData();
                         if (fileUri != null) {
-                            //violationViewModel.importViolationFromJson(this, fileUri);
+                            App.getImportManager().importFromJson(this, fileUri,
+                                    message -> App.showToast(this, message));
                         }
                     }
                 }

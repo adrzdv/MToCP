@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey;
 
 import java.util.Objects;
 
-@Entity(tableName = "branch")
+@Entity(tableName = "branches")
 public class BranchEntity {
     @NonNull
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
     private Integer id;
     @NonNull

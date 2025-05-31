@@ -13,13 +13,13 @@ import java.util.Objects;
         foreignKeys = @ForeignKey(
                 entity = BranchEntity.class,
                 parentColumns = "id",
-                childColumns = "branchId",
+                childColumns = "id_branch",
                 onDelete = ForeignKey.CASCADE
         )
 )
 public class DepotEntity {
     @NonNull
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
     private Integer id;
     @NonNull
@@ -29,7 +29,7 @@ public class DepotEntity {
     @ColumnInfo(name = "s_name")
     private String shortName;
     @NonNull
-    @ColumnInfo(name = "branchId")
+    @ColumnInfo(name = "id_branch")
     private Integer branchId;
     @NonNull
     @ColumnInfo(name = "is_active")

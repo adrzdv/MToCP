@@ -8,7 +8,7 @@ public class DepotWithBranch {
     public DepotEntity depot;
 
     @Relation(
-            parentColumn = "branchId",
+            parentColumn = "id_branch",
             entityColumn = "id"
     )
     public BranchEntity branch;

@@ -1,6 +1,6 @@
 package com.adrzdv.mtocp.ui.viewmodel;
 
-import static com.adrzdv.mtocp.ErrorCodes.UNSUPPORTED_CLASS;
+import static com.adrzdv.mtocp.MessageCodes.UNSUPPORTED_CLASS;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

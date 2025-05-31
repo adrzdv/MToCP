@@ -9,11 +9,19 @@ public class ImportData {
     private List<ViolationImport> violationList;
     private List<DepotImport> depotsList;
 
-    public List<ViolationImport> getViolations() {
+    public List<ViolationImport> getViolationList() {
         return this.violationList;
     }
 
     public List<DepotImport> getDepotsList() {
         return this.depotsList;
+    }
+
+    public void setViolationList(List<ViolationImport> violationList) {
+        this.violationList = violationList;
+    }
+
+    public void setDepotsList(List<DepotImport> depotsList) {
+        this.depotsList = depotsList;
     }
 }

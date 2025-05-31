@@ -1,7 +1,7 @@
 package com.adrzdv.mtocp.ui.viewmodel;
 
-import static com.adrzdv.mtocp.ErrorCodes.SUCCESS;
-import static com.adrzdv.mtocp.ErrorCodes.UPDATE_ERROR;
+import static com.adrzdv.mtocp.MessageCodes.SUCCESS;
+import static com.adrzdv.mtocp.MessageCodes.UPDATE_ERROR;
 import static com.adrzdv.mtocp.domain.model.enums.RevisionType.ALL;
 
 import android.database.sqlite.SQLiteConstraintException;
@@ -17,7 +17,6 @@ import com.adrzdv.mtocp.domain.repository.ViolationRepository;
 import com.adrzdv.mtocp.mapper.ViolationMapper;
 import com.adrzdv.mtocp.ui.model.ViolationDto;
 import com.adrzdv.mtocp.util.Event;
-import com.adrzdv.mtocp.util.importmanager.ImportHandlerRegistry;
 import com.adrzdv.mtocp.util.importmanager.ImportManager;
 
 import java.util.ArrayList;
@@ -30,8 +29,8 @@ public class ViolationViewModel extends ViewModel {
     private final ViolationRepository repository;
     private final MutableLiveData<List<ViolationDto>> filteredViolations;
     private final MutableLiveData<Event<String>> toastMessage;
-    private final ImportHandlerRegistry registry;
-    private final ImportManager manager;
+    //private final ImportHandlerRegistry registry;
+    //private final ImportManager manager;
     private List<ViolationEntity> allViolations;
     private String currentSearchString;
     private RevisionType currentRevisionType;
@@ -43,12 +42,13 @@ public class ViolationViewModel extends ViewModel {
         this.filteredViolations = new MutableLiveData<>(new ArrayList<>());
         this.toastMessage = new MutableLiveData<>();
         this.allViolations = new ArrayList<>();
-        registry = new ImportHandlerRegistry();
-        registry.register(ViolationImport.class, this::handle);
+        //registry = new ImportHandlerRegistry();
+        //this.manager = manager;
+        //registry.register(ViolationImport.class, this::handle);
         this.currentSearchString = "";
         this.currentRevisionType = ALL;
         this.executor = Executors.newSingleThreadExecutor();
-        manager = new ImportManager(registry, executor);
+        //manager = new ImportManager(registry, executor);
         loadViolations();
     }
 
@@ -95,8 +95,7 @@ public class ViolationViewModel extends ViewModel {
         List<ViolationEntity> result = new ArrayList<>(allViolations);
 
         result = switch (currentRevisionType) {
-            case IN_TRANSIT ->
-                    result.stream().filter(ViolationEntity::getInTransit).toList();
+            case IN_TRANSIT -> result.stream().filter(ViolationEntity::getInTransit).toList();
             case AT_START_POINT ->
                     result.stream().filter(ViolationEntity::getAtStartPoint).toList();
             case AT_TURNROUND_POINT ->
@@ -121,6 +120,7 @@ public class ViolationViewModel extends ViewModel {
 
         filteredViolations.postValue(dtoList);
     }
+
     private void handle(List<ViolationImport> list) {
         executor.execute(() -> {
             List<ViolationEntity> entities = list.stream()
