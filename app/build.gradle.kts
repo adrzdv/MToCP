@@ -13,7 +13,7 @@ android {
         minSdk = 34
         targetSdk = 35
         versionCode = 1
-        versionName = "0.3.3-beta"
+        versionName = "0.3.4-beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -55,6 +55,8 @@ android {
 
 dependencies {
 
+    //implementation(libs.androidx.navigation.compose.jvmstubs)
+    implementation("androidx.navigation:navigation-compose:2.9.0")
     val composeBom = platform("androidx.compose:compose-bom:2024.05.00")
     implementation(composeBom)
 

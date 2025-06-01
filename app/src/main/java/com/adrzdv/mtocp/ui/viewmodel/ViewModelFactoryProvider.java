@@ -16,8 +16,8 @@ public class ViewModelFactoryProvider {
 
         creators.put(ViolationViewModel.class,
                 () -> new ViolationViewModel((App.getViolationRepository())));
-        creators.put(DepotWithBranchViewModel.class,
-                () -> new DepotWithBranchViewModel(App.getDepotRepository()));
+        creators.put(DepotViewModel.class,
+                () -> new DepotViewModel(App.getDepotRepository()));
 
         return new ViewModelFactory(creators);
     }

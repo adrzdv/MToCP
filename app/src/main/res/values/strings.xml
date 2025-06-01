@@ -9,9 +9,11 @@
     <string name="app_title">Мобильный терминал сбора контроллируемых параметров</string>
     <string name="main_menu_text">Главное меню</string>
     <string name="search_text_hint">Поиск нарушения</string>
+    <string name="search_depot_hint">Поиск предприятия</string>
     <string name="back_text">Назад</string>
     <string name="header_catalog">Классификатор</string>
     <string name="header_service">Настройки</string>
     <string name="clean_dir_string">Очистить директории</string>
     <string name="load_catalog_string">Загрузить справочники</string>
+    <string name="header_depot">Список предприятий</string>
 </resources>

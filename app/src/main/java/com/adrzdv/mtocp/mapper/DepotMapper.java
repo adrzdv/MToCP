@@ -5,10 +5,11 @@ import com.adrzdv.mtocp.data.db.entity.DepotWithBranch;
 import com.adrzdv.mtocp.data.importmodel.DepotImport;
 import com.adrzdv.mtocp.domain.model.departments.BranchDomain;
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
+import com.adrzdv.mtocp.ui.model.DepotDto;
 
 public class DepotMapper {
 
-    public static DepotDomain fromPOJOEntityToDomain(DepotWithBranch depotWithBranch) {
+    public static DepotDomain fromJoinModelToDomain(DepotWithBranch depotWithBranch) {
 
         return new DepotDomain(depotWithBranch.depot.getId(),
                 depotWithBranch.depot.getName(),
@@ -41,9 +42,13 @@ public class DepotMapper {
                 depot.getPhoneNumber());
     }
 
-    public static DepotWithBranch fromImportToPOJO(DepotImport depot) {
-
-        return null;
-
+    public static DepotDto fromDomainToDto(DepotDomain depot) {
+        return new DepotDto(depot.getName(),
+                depot.getShortName(),
+                depot.getPhoneNumber(),
+                depot.getBranchDomain().getName(),
+                depot.getBranchDomain().getShortName());
     }
+
+
 }

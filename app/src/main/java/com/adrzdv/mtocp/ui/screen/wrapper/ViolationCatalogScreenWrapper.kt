@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.asFlow
+import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
 
 fun ComposeView.showViolationCatalogScreen(
@@ -13,10 +14,6 @@ fun ComposeView.showViolationCatalogScreen(
     revisionTypes: List<String>
 ) {
     setContent {
-        val violations by viewModel.getFilteredViolations()
-            .asFlow()
-            .collectAsState(initial = emptyList())
-
         ViolationCatalogScreen(
             onBackClick = onBackClick,
             viewModel = viewModel,

@@ -29,8 +29,6 @@ public class ViolationViewModel extends ViewModel {
     private final ViolationRepository repository;
     private final MutableLiveData<List<ViolationDto>> filteredViolations;
     private final MutableLiveData<Event<String>> toastMessage;
-    //private final ImportHandlerRegistry registry;
-    //private final ImportManager manager;
     private List<ViolationEntity> allViolations;
     private String currentSearchString;
     private RevisionType currentRevisionType;
@@ -42,13 +40,9 @@ public class ViolationViewModel extends ViewModel {
         this.filteredViolations = new MutableLiveData<>(new ArrayList<>());
         this.toastMessage = new MutableLiveData<>();
         this.allViolations = new ArrayList<>();
-        //registry = new ImportHandlerRegistry();
-        //this.manager = manager;
-        //registry.register(ViolationImport.class, this::handle);
         this.currentSearchString = "";
         this.currentRevisionType = ALL;
         this.executor = Executors.newSingleThreadExecutor();
-        //manager = new ImportManager(registry, executor);
         loadViolations();
     }
 
@@ -121,13 +115,4 @@ public class ViolationViewModel extends ViewModel {
         filteredViolations.postValue(dtoList);
     }
 
-    private void handle(List<ViolationImport> list) {
-        executor.execute(() -> {
-            List<ViolationEntity> entities = list.stream()
-                    .map(ViolationMapper::fromImportToEntity)
-                    .toList();
-            repository.saveAll(entities);
-            toastMessage.postValue(new Event<>(SUCCESS.getErrorTitle()));
-        });
-    }
 }

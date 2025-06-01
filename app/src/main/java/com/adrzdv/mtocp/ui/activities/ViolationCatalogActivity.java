@@ -7,7 +7,9 @@ import androidx.compose.ui.platform.ComposeView;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.adrzdv.mtocp.domain.model.enums.RevisionType;
+import com.adrzdv.mtocp.ui.screen.wrapper.InfoCatalogScreenWrapperKt;
 import com.adrzdv.mtocp.ui.screen.wrapper.ViolationCatalogScreenWrapperKt;
+import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider;
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel;
 
@@ -20,19 +22,27 @@ public class ViolationCatalogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ViolationViewModel viewModel = new ViewModelProvider(
+        ViolationViewModel violationViewModel = new ViewModelProvider(
                 this,
                 ViewModelFactoryProvider.provideFactory()
         ).get(ViolationViewModel.class);
 
+        DepotViewModel depotViewModel = new ViewModelProvider(
+                this,
+                ViewModelFactoryProvider.provideFactory()
+        ).get(DepotViewModel.class);
+
+
+
         ComposeView composeView = new ComposeView(this);
-        ViolationCatalogScreenWrapperKt.showViolationCatalogScreen(composeView,
+        InfoCatalogScreenWrapperKt.showInfoCatalogScreen(composeView,
                 () -> {
                     finish();
                     return Unit.INSTANCE;
                 },
-                viewModel,
-                RevisionType.getListOfTypes());
+                violationViewModel,
+                RevisionType.getListOfTypes(),
+                depotViewModel);
 
         setContentView(composeView);
 
