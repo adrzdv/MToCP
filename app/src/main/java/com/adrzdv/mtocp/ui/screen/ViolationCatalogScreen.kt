@@ -47,7 +47,7 @@ fun ViolationCatalogScreen(
             }
             Text(
                 text = stringResource(R.string.header_catalog),
-                style = CustomTypography.titleLarge,
+                style = CustomTypography.displayLarge,
                 modifier = Modifier
                     .padding(start = 8.dp)
             )
@@ -71,8 +71,12 @@ fun ViolationCatalogScreen(
                 focusedTextColor = Color.Black,
                 unfocusedTextColor = Color.Black,
             ),
-            label = { Text(stringResource(R.string.search_text_hint),
-                style = CustomTypography.labelLarge) },
+            label = {
+                Text(
+                    stringResource(R.string.search_text_hint),
+                    style = CustomTypography.labelLarge
+                )
+            },
             modifier = Modifier
                 .background(Color.Transparent)
                 .fillMaxWidth(),

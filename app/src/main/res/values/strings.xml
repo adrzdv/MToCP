@@ -15,7 +15,7 @@
     <string name="header_service">Настройки</string>
     <string name="clean_dir_string">Очистить директории</string>
     <string name="load_catalog_string">Загрузить справочники</string>
-    <string name="header_depot">Список предприятий</string>
-    <string name="header_company">Список компаний</string>
+    <string name="header_depot">Структурные подразделения</string>
+    <string name="header_company">Перевозчики</string>
     <string name="search_company_hint">Поиск перевозчика</string>
 </resources>

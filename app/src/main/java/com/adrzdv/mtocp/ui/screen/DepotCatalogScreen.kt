@@ -58,7 +58,7 @@ fun DepotCatalogScreen(
             }
             Text(
                 text = stringResource(R.string.header_depot),
-                style = CustomTypography.titleLarge,
+                style = CustomTypography.displayLarge,
                 modifier = Modifier
                     .padding(start = 8.dp)
             )

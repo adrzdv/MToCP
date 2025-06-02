@@ -4,6 +4,7 @@ import ViolationCatalogScreen
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
@@ -57,7 +58,9 @@ fun InfoCatalogScreen(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet (
+                modifier = Modifier.width(240.dp)
+            ) {
                 Spacer(Modifier.height(16.dp))
                 menuItems.forEach() { menuItem ->
                     NavigationDrawerItem(
@@ -81,7 +84,7 @@ fun InfoCatalogScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { "Info" },
+                    title = { Spacer(modifier = Modifier.height(0.dp)) },
                     navigationIcon = {
                         IconButton(onClick = {
                             scope.launch { drawerState.open() }

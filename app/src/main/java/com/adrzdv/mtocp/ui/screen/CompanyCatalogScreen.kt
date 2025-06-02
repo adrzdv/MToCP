@@ -28,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -37,6 +36,7 @@ import androidx.lifecycle.asFlow
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -63,7 +63,7 @@ fun CompanyCatalogScreen(
             }
             Text(
                 text = stringResource(R.string.header_company),
-                style = CustomTypography.titleLarge,
+                style = CustomTypography.displayLarge,
                 modifier = Modifier
                     .padding(start = 8.dp)
             )
@@ -103,9 +103,15 @@ fun CompanyCatalogScreen(
 
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(companies) { company ->
-                val formattedDate = company.expirationDate.format(
-                    DateTimeFormatter.ofPattern("dd.MM.yyyy")
-                )
+                val displayText = if (company.expirationDate == LocalDate
+                        .of(9999, 1, 1)
+                ) {
+                    "БЕССРОЧНЫЙ"
+                } else {
+                    "до ${company.expirationDate.format(DateTimeFormatter
+                        .ofPattern("dd.MM.yyyy"))}"
+                }
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -119,23 +125,28 @@ fun CompanyCatalogScreen(
 
                     Spacer(modifier = Modifier.height(4.dp))
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "${company.contractNumber}, до ${formattedDate}",
-                            style = CustomTypography.bodyMedium,
-                            color = Color.Gray
+                    Text(
+                        text = company.contractNumber,
+                        style = CustomTypography.bodyMedium,
+                        color = Color.Gray
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Text(
+                        text = displayText,
+                        style = CustomTypography.bodyMedium,
+                        color = Color.Gray
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Text(
+                        text = company.branch,
+                        style = CustomTypography.bodyMedium,
+                        color = Color.Gray,
+
                         )
-
-                        Text(
-                            text = company.branch,
-                            style = CustomTypography.bodyMedium,
-                            color = Color.Gray,
-
-                            )
-                    }
 
                 }
             }
