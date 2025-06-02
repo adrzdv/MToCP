@@ -27,6 +27,7 @@ import com.adrzdv.mtocp.ui.component.MenuButton
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import kotlin.text.Typography
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StartMenuScreen(
     onStartRevisionClick: () -> Unit,
@@ -38,103 +39,113 @@ fun StartMenuScreen(
 ) {
     var showExitDialog by remember { mutableStateOf(false) }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 12.dp)
-    ) {
-        Column(
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Spacer(modifier = Modifier.height(0.dp)) }
+            )
+        }
+    ) { innerPadding ->
+
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp)
-                .verticalScroll(rememberScrollState())
-                .align(Alignment.TopCenter),
-            horizontalAlignment = Alignment.Start
+                .padding(innerPadding)
+                .padding(bottom = 12.dp)
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState())
+                    .align(Alignment.TopCenter),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = stringResource(R.string.main_menu_text),
+                    style = CustomTypography.displayLarge,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+
+                Spacer(modifier = Modifier.height(32.dp)) // аналог горизонтального отступа до кнопок
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    MenuButton(
+                        text = stringResource(R.string.start_revision_text),
+                        icon = painterResource(R.drawable.ic_start_revision_32_white),
+                        onClick = onStartRevisionClick
+                    )
+                    MenuButton(
+                        text = stringResource(R.string.violation_catalog_string),
+                        icon = painterResource(R.drawable.ic_list_24_white),
+                        onClick = onOpenViolationCatalogClick
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    MenuButton(
+                        text = stringResource(R.string.service_menu_string),
+                        icon = painterResource(R.drawable.ic_tool_48_white),
+                        onClick = onServiceMenuClick
+                    )
+                    MenuButton(
+                        text = stringResource(R.string.exit_text),
+                        icon = painterResource(R.drawable.ic_exit_24_white),
+                        onClick = {
+                            showExitDialog = true
+                        }
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    MenuButton(
+                        text = stringResource(R.string.help),
+                        icon = painterResource(R.drawable.ic_help_24_white),
+                        onClick = onHelpClick
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(32.dp))
+            }
 
             Text(
-                text = stringResource(R.string.main_menu_text),
-                style = CustomTypography.displayLarge,
-                modifier = Modifier.padding(start = 16.dp)
+                text = appVersion,
+                fontSize = 12.sp,
+                color = Color.DarkGray,
+                modifier = Modifier.align(Alignment.BottomCenter)
             )
 
-            Spacer(modifier = Modifier.height(32.dp)) // аналог горизонтального отступа до кнопок
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                MenuButton(
-                    text = stringResource(R.string.start_revision_text),
-                    icon = painterResource(R.drawable.ic_start_revision_32_white),
-                    onClick = onStartRevisionClick
-                )
-                MenuButton(
-                    text = stringResource(R.string.violation_catalog_string),
-                    icon = painterResource(R.drawable.ic_list_24_white),
-                    onClick = onOpenViolationCatalogClick
+            if (showExitDialog) {
+                ConfirmDialog(
+                    title = "Выход",
+                    message = "Вы уверены, что хотите выйти?",
+                    onConfirm = {
+                        showExitDialog = false
+                        onExitClick()
+                    },
+                    onDismiss = { showExitDialog = false }
                 )
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                MenuButton(
-                    text = stringResource(R.string.service_menu_string),
-                    icon = painterResource(R.drawable.ic_tool_48_white),
-                    onClick = onServiceMenuClick
-                )
-                MenuButton(
-                    text = stringResource(R.string.exit_text),
-                    icon = painterResource(R.drawable.ic_exit_24_white),
-                    onClick = {
-                        showExitDialog = true
-                    }
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                MenuButton(
-                    text = stringResource(R.string.help),
-                    icon = painterResource(R.drawable.ic_help_24_white),
-                    onClick = onHelpClick
-                )
-            }
-
-            Spacer(modifier = Modifier.height(32.dp))
         }
 
-        Text(
-            text = appVersion,
-            fontSize = 12.sp,
-            color = Color.DarkGray,
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
 
-        if (showExitDialog) {
-            ConfirmDialog(
-                title = "Выход",
-                message = "Вы уверены, что хотите выйти?",
-                onConfirm = {
-                    showExitDialog = false
-                    onExitClick()
-                },
-                onDismiss = { showExitDialog = false }
-            )
-        }
     }
 }
-
-
 
 
 @Preview(showBackground = true)
