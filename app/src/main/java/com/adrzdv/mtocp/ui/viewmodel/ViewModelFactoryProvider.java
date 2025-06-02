@@ -15,9 +15,11 @@ public class ViewModelFactoryProvider {
                 Provider<? extends ViewModel>> creators = new HashMap<>();
 
         creators.put(ViolationViewModel.class,
-                () -> new ViolationViewModel((App.getViolationRepository())));
+                () -> new ViolationViewModel(App.getViolationRepository()));
         creators.put(DepotViewModel.class,
                 () -> new DepotViewModel(App.getDepotRepository()));
+        creators.put(CompanyViewModel.class,
+                ()-> new CompanyViewModel(App.getCompanyRepository()));
 
         return new ViewModelFactory(creators);
     }

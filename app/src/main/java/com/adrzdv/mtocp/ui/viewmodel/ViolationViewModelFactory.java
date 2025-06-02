@@ -16,6 +16,8 @@ public class ViolationViewModelFactory implements ViewModelProvider.Factory {
             return (T) new ViolationViewModel(App.getViolationRepository());
         } else if (modelClass.isAssignableFrom(DepotViewModel.class)) {
             return (T) new DepotViewModel(App.getDepotRepository());
+        } else if(modelClass.isAssignableFrom(CompanyViewModel.class)) {
+            return (T) new CompanyViewModel(App.getCompanyRepository());
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

@@ -16,4 +16,6 @@
     <string name="clean_dir_string">Очистить директории</string>
     <string name="load_catalog_string">Загрузить справочники</string>
     <string name="header_depot">Список предприятий</string>
+    <string name="header_company">Список компаний</string>
+    <string name="search_company_hint">Поиск перевозчика</string>
 </resources>

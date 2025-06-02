@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
 import kotlinx.coroutines.launch
@@ -37,7 +38,8 @@ fun InfoCatalogScreen(
     onBackClick: () -> Unit,
     violationViewModel: ViolationViewModel,
     revisionTypes: List<String>,
-    depotViewModel: DepotViewModel
+    depotViewModel: DepotViewModel,
+    companyViewMode: CompanyViewModel
 ) {
 
     //Navigation controller, drawer state (opened/closed), and val for coroutine
@@ -48,7 +50,8 @@ fun InfoCatalogScreen(
     //Main elements of menu
     val menuItems = listOf(
         MenuElementItem("violations", "Классификатор", Icons.Default.Home),
-        MenuElementItem("depot", "Предприятия", Icons.Default.Info)
+        MenuElementItem("depot", "Предприятия", Icons.Default.Info),
+        MenuElementItem("company", "Перевозчики", Icons.Default.Info)
     )
 
     ModalNavigationDrawer(
@@ -78,7 +81,7 @@ fun InfoCatalogScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { "NULL" },
+                    title = { "Info" },
                     navigationIcon = {
                         IconButton(onClick = {
                             scope.launch { drawerState.open() }
@@ -105,6 +108,13 @@ fun InfoCatalogScreen(
                     DepotCatalogScreen(
                         onBackClick = onBackClick,
                         viewModel = depotViewModel
+                    )
+                }
+
+                composable("company") {
+                    CompanyCatalogScreen(
+                        onBackClick = onBackClick,
+                        viewModel = companyViewMode
                     )
                 }
             }

@@ -20,7 +20,7 @@
             android:name=".ui.activities.HelpActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.ViolationCatalogActivity"
+            android:name=".ui.activities.InfoCatalogActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.StartMenuActivity"

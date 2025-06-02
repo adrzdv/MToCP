@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.util.importmanager;
+package com.adrzdv.mtocp.util.importmanager.handlers;
 
 import java.util.List;
 

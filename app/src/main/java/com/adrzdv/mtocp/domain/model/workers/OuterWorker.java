@@ -1,20 +1,20 @@
 package com.adrzdv.mtocp.domain.model.workers;
 
-import com.adrzdv.mtocp.domain.model.departments.Company;
+import com.adrzdv.mtocp.domain.model.departments.CompanyDomain;
 
 public class OuterWorker extends Worker {
-    private Company company;
+    private CompanyDomain companyDomain;
 
-    public OuterWorker(int id, String name, Company company) {
+    public OuterWorker(int id, String name, CompanyDomain companyDomain) {
         super(id, name);
-        this.company = company;
+        this.companyDomain = companyDomain;
     }
 
-    public Company getCompany() {
-        return company;
+    public CompanyDomain getCompany() {
+        return companyDomain;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setCompany(CompanyDomain companyDomain) {
+        this.companyDomain = companyDomain;
     }
 }

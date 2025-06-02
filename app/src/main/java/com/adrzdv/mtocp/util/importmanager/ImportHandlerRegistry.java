@@ -1,5 +1,7 @@
 package com.adrzdv.mtocp.util.importmanager;
 
+import com.adrzdv.mtocp.util.importmanager.handlers.ImportHandler;
+
 import java.util.HashMap;
 import java.util.Map;
 

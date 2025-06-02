@@ -1,6 +1,7 @@
-package com.adrzdv.mtocp.util.importmanager;
+package com.adrzdv.mtocp.util.importmanager.handlers;
 
-import com.adrzdv.mtocp.MessageCodes;
+import static com.adrzdv.mtocp.MessageCodes.SUCCESS;
+
 import com.adrzdv.mtocp.data.db.entity.BranchEntity;
 import com.adrzdv.mtocp.data.db.entity.DepotEntity;
 import com.adrzdv.mtocp.data.db.entity.DepotWithBranch;
@@ -13,23 +14,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
-public class DepotImportHandler implements ImportHandler<DepotImport> {
+public class DepotImportHandler extends BaseImportHandler<DepotImport> {
 
     private final DepotRepository repository;
-    private final Consumer<String> toastCallback;
 
     public DepotImportHandler(DepotRepository depotRepository,
                               Consumer<String> toastCallback) {
+        super(toastCallback);
         this.repository = depotRepository;
-        this.toastCallback = toastCallback;
     }
 
     @Override
     public void handle(List<DepotImport> items) {
-
 
         List<DepotEntity> depotEntities = items.stream()
                 .map(DepotMapper::fromImportToEntity)
@@ -54,8 +52,6 @@ public class DepotImportHandler implements ImportHandler<DepotImport> {
         }
 
         repository.saveAll(depWithBrList);
-        toastCallback.accept(MessageCodes.SUCCESS.toString());
-
-
+        showSuccessToast(SUCCESS.toString());
     }
 }

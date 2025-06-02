@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.util.importmanager;
+package com.adrzdv.mtocp.util.importmanager.handlers;
 
 import static com.adrzdv.mtocp.MessageCodes.SUCCESS;
 
@@ -8,20 +8,18 @@ import com.adrzdv.mtocp.domain.repository.ViolationRepository;
 import com.adrzdv.mtocp.mapper.ViolationMapper;
 
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
-public class ViolationImportHandler implements ImportHandler<ViolationImport> {
+public class ViolationImportHandler extends BaseImportHandler<ViolationImport> {
 
     private final ViolationRepository repository;
-    private final Consumer<String> toastCallback;
 
     public ViolationImportHandler(
             ViolationRepository repository,
             Consumer<String> toastCallback
     ) {
+        super(toastCallback);
         this.repository = repository;
-        this.toastCallback = toastCallback;
     }
 
     @Override
@@ -31,7 +29,6 @@ public class ViolationImportHandler implements ImportHandler<ViolationImport> {
                 .map(ViolationMapper::fromImportToEntity)
                 .toList();
         repository.saveAll(entities);
-        toastCallback.accept(SUCCESS.toString());
-
+        showSuccessToast(SUCCESS.toString());
     }
 }

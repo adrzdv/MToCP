@@ -18,7 +18,7 @@ import java.util.concurrent.Executors;
 public class DepotViewModel extends ViewModel {
     private final DepotRepository repository;
     private List<DepotDomain> allDepotList;
-    private final MutableLiveData<List<DepotDto>> filterdDepotList;
+    private final MutableLiveData<List<DepotDto>> filteredDepotList;
     private String currentSearchString;
     private final ExecutorService executor;
 
@@ -26,22 +26,13 @@ public class DepotViewModel extends ViewModel {
         this.repository = repository;
         this.executor = Executors.newSingleThreadExecutor();
         this.allDepotList = new ArrayList<>();
-        this.filterdDepotList = new MutableLiveData<>(new ArrayList<>());
+        this.filteredDepotList = new MutableLiveData<>(new ArrayList<>());
         this.currentSearchString = "";
         loadData();
     }
 
-    private void loadData() {
-        executor.execute(() -> {
-            List<DepotWithBranch> depotListFromDb = repository.getAll();
-            allDepotList = depotListFromDb.stream().map(DepotMapper::fromJoinModelToDomain)
-                    .toList();
-            applyFilter();
-        });
-    }
-
     public LiveData<List<DepotDto>> getFilteredDepots() {
-        return filterdDepotList;
+        return filteredDepotList;
     }
 
     public void filterByString(String string) {
@@ -49,7 +40,7 @@ public class DepotViewModel extends ViewModel {
         applyFilter();
     }
 
-    public void applyFilter() {
+    private void applyFilter() {
         String str = currentSearchString.toLowerCase();
         List<DepotDomain> res = new ArrayList<>(allDepotList);
 
@@ -63,7 +54,16 @@ public class DepotViewModel extends ViewModel {
                 .map(DepotMapper::fromDomainToDto)
                 .toList();
 
-        filterdDepotList.postValue(dtoList);
+        filteredDepotList.postValue(dtoList);
+    }
+
+    private void loadData() {
+        executor.execute(() -> {
+            List<DepotWithBranch> depotListFromDb = repository.getAll();
+            allDepotList = depotListFromDb.stream().map(DepotMapper::fromJoinModelToDomain)
+                    .toList();
+            applyFilter();
+        });
     }
 
 }

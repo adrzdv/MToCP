@@ -1,6 +1,7 @@
 package com.adrzdv.mtocp.ui.activities;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.compose.ui.platform.ComposeView;
@@ -8,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.adrzdv.mtocp.domain.model.enums.RevisionType;
 import com.adrzdv.mtocp.ui.screen.wrapper.InfoCatalogScreenWrapperKt;
-import com.adrzdv.mtocp.ui.screen.wrapper.ViolationCatalogScreenWrapperKt;
+import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider;
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel;
@@ -16,7 +17,7 @@ import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel;
 import kotlin.Unit;
 
 
-public class ViolationCatalogActivity extends AppCompatActivity {
+public class InfoCatalogActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,10 @@ public class ViolationCatalogActivity extends AppCompatActivity {
                 ViewModelFactoryProvider.provideFactory()
         ).get(DepotViewModel.class);
 
+        CompanyViewModel companyViewModel = new ViewModelProvider(
+                this,
+                ViewModelFactoryProvider.provideFactory()
+        ).get(CompanyViewModel.class);
 
 
         ComposeView composeView = new ComposeView(this);
@@ -42,7 +47,9 @@ public class ViolationCatalogActivity extends AppCompatActivity {
                 },
                 violationViewModel,
                 RevisionType.getListOfTypes(),
-                depotViewModel);
+                depotViewModel,
+                companyViewModel
+        );
 
         setContentView(composeView);
 

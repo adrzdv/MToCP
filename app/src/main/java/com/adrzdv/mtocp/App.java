@@ -11,16 +11,17 @@ import androidx.room.Room;
 import com.adrzdv.mtocp.data.db.AppDatabase;
 import com.adrzdv.mtocp.data.importmodel.DepotImport;
 import com.adrzdv.mtocp.data.importmodel.ViolationImport;
+import com.adrzdv.mtocp.data.repository.CompanyRepositoryImpl;
 import com.adrzdv.mtocp.data.repository.DepotRepositoryImpl;
 import com.adrzdv.mtocp.data.repository.ViolationRepositoryImpl;
+import com.adrzdv.mtocp.domain.repository.CompanyRepository;
 import com.adrzdv.mtocp.domain.repository.DepotRepository;
 import com.adrzdv.mtocp.domain.repository.ViolationRepository;
-import com.adrzdv.mtocp.util.importmanager.DepotImportHandler;
+import com.adrzdv.mtocp.util.importmanager.handlers.DepotImportHandler;
 import com.adrzdv.mtocp.util.importmanager.ImportHandlerRegistry;
 import com.adrzdv.mtocp.util.importmanager.ImportManager;
-import com.adrzdv.mtocp.util.importmanager.ViolationImportHandler;
+import com.adrzdv.mtocp.util.importmanager.handlers.ViolationImportHandler;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -31,6 +32,7 @@ public class App extends Application {
     private AppDatabase database;
     private static ViolationRepository violationRepository;
     private static DepotRepository depotRepository;
+    private static CompanyRepository companyRepository;
     private static ExecutorService executor;
     private static ImportHandlerRegistry registry;
     private static ImportManager importManager;
@@ -51,6 +53,7 @@ public class App extends Application {
 
         violationRepository = new ViolationRepositoryImpl(database.violationDao());
         depotRepository = new DepotRepositoryImpl(database.depotDao());
+        companyRepository = new CompanyRepositoryImpl(database.companyDao());
 
         executor = Executors.newSingleThreadExecutor();
 
@@ -83,6 +86,10 @@ public class App extends Application {
 
     public static DepotRepository getDepotRepository() {
         return depotRepository;
+    }
+
+    public static CompanyRepository getCompanyRepository() {
+        return companyRepository;
     }
 
     public static void showToast(Context context, String message) {

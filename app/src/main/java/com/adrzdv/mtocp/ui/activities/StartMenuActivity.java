@@ -35,7 +35,7 @@ public class StartMenuActivity extends AppCompatActivity {
                     return Unit.INSTANCE;
                 },
                 () -> {
-                    Intent intent = new Intent(this, ViolationCatalogActivity.class);
+                    Intent intent = new Intent(this, InfoCatalogActivity.class);
                     startActivity(intent);
                     return Unit.INSTANCE;
                 },
