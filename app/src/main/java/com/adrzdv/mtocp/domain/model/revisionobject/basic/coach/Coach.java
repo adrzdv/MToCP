@@ -6,6 +6,10 @@ import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Domain class model for abstract coach object.
+ * Stores data about static parameters in coach
+ */
 public abstract class Coach extends RevisionObject {
     private Map<String, StaticsParam> staticParamsMap;
 

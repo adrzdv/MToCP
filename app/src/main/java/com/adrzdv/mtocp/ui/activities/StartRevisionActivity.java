@@ -1,0 +1,42 @@
+package com.adrzdv.mtocp.ui.activities;
+
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.compose.ui.platform.ComposeView;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.adrzdv.mtocp.domain.model.enums.OrdersTypes;
+import com.adrzdv.mtocp.ui.screen.wrapper.StartRevisionScreenWrapperKt;
+import com.adrzdv.mtocp.ui.viewmodel.AutocompleteViewModel;
+import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel;
+import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider;
+
+import kotlin.Unit;
+
+public class StartRevisionActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        AutocompleteViewModel autocompleteViewModel = new ViewModelProvider(this,
+                ViewModelFactoryProvider.provideFactory()).get(AutocompleteViewModel.class);
+        OrderViewModel orderViewModel = new ViewModelProvider(this,
+                ViewModelFactoryProvider.provideFactory()).get(OrderViewModel.class);
+
+        ComposeView composeView = new ComposeView(this);
+        StartRevisionScreenWrapperKt.showStartRevisionScreen(composeView,
+                orderViewModel,
+                autocompleteViewModel,
+                OrdersTypes.getTypeList(),
+                () -> {
+                    finish();
+                    return Unit.INSTANCE;
+                });
+
+        setContentView(composeView);
+
+    }
+
+}

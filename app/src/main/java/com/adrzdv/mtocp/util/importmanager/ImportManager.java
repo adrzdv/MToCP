@@ -6,6 +6,7 @@ import android.net.Uri;
 import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.data.importmodel.CompanyImport;
 import com.adrzdv.mtocp.data.importmodel.DepotImport;
+import com.adrzdv.mtocp.data.importmodel.TrainImport;
 import com.adrzdv.mtocp.data.importmodel.ViolationImport;
 import com.adrzdv.mtocp.util.importmanager.handlers.ImportHandler;
 import com.google.gson.Gson;
@@ -37,6 +38,7 @@ public class ImportManager {
                 applyHandler(data.getViolationList(), ViolationImport.class);
                 applyHandler(data.getDepotsList(), DepotImport.class);
                 applyHandler(data.getCompanyList(), CompanyImport.class);
+                applyHandler(data.getTrainList(), TrainImport.class);
             });
             onResult.accept(MessageCodes.SUCCESS.getErrorTitle());
 

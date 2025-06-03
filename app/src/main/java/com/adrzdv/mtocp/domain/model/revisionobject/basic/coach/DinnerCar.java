@@ -2,6 +2,9 @@ package com.adrzdv.mtocp.domain.model.revisionobject.basic.coach;
 
 import com.adrzdv.mtocp.domain.model.departments.CompanyDomain;
 
+/**
+ * Domain class model for dinner coach
+ */
 public class DinnerCar extends Coach {
     private CompanyDomain companyDomain;
 

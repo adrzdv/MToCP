@@ -1,5 +1,8 @@
 package com.adrzdv.mtocp.domain.model.enums;
 
+/**
+ * Enum of passenger coaches types
+ */
 public enum PassengerCoachType {
     INTERREGIONAL("МО"),
     OPEN_CLASS_SLEEPING("ПЛ"),

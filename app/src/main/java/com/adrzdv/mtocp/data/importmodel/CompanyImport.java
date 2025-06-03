@@ -5,6 +5,10 @@ import androidx.annotation.NonNull;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * Company import model
+ * This model is using for import company data from json
+ */
 public class CompanyImport {
     private Long els;
     private String name;

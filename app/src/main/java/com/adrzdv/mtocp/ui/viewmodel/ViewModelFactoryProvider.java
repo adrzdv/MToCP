@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class ViewModelFactoryProvider {
 
-    public static ViewModelFactory provideFactory() {
+    public static CustomViewModelProvider provideFactory() {
 
         Map<Class<? extends androidx.lifecycle.ViewModel>,
                 Provider<? extends ViewModel>> creators = new HashMap<>();
@@ -19,9 +19,13 @@ public class ViewModelFactoryProvider {
         creators.put(DepotViewModel.class,
                 () -> new DepotViewModel(App.getDepotRepository()));
         creators.put(CompanyViewModel.class,
-                ()-> new CompanyViewModel(App.getCompanyRepository()));
+                () -> new CompanyViewModel(App.getCompanyRepository()));
+        creators.put(OrderViewModel.class,
+                () -> new OrderViewModel(App.getTrainRepository()));
+        creators.put(AutocompleteViewModel.class,
+                () -> new AutocompleteViewModel(App.getTrainRepository()));
 
-        return new ViewModelFactory(creators);
+        return new CustomViewModelProvider(creators);
     }
 
 

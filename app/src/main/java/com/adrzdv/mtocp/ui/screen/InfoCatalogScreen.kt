@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,11 +21,13 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
@@ -50,15 +50,15 @@ fun InfoCatalogScreen(
 
     //Main elements of menu
     val menuItems = listOf(
-        MenuElementItem("violations", "Классификатор", Icons.Default.Home),
-        MenuElementItem("depot", "Предприятия", Icons.Default.Info),
-        MenuElementItem("company", "Перевозчики", Icons.Default.Info)
+        MenuElementItem("violations", "Классификатор", painterResource(R.drawable.ic_catalog)),
+        MenuElementItem("depot", "Предприятия", painterResource(R.drawable.ic_contract)),
+        MenuElementItem("company", "Перевозчики", painterResource(R.drawable.ic_train))
     )
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet (
+            ModalDrawerSheet(
                 modifier = Modifier.width(240.dp)
             ) {
                 Spacer(Modifier.height(16.dp))
@@ -129,5 +129,5 @@ fun InfoCatalogScreen(
 data class MenuElementItem(
     val route: String,
     val title: String,
-    val icon: ImageVector
+    val icon: Painter
 )

@@ -8,11 +8,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Map;
 
-public class ViewModelFactory implements ViewModelProvider.Factory {
+public class CustomViewModelProvider implements ViewModelProvider.Factory {
 
     private final Map<Class<? extends ViewModel>, Provider<? extends ViewModel>> creators;
 
-    public ViewModelFactory(Map<Class<? extends ViewModel>, Provider<? extends ViewModel>> creators) {
+    public CustomViewModelProvider(Map<Class<? extends ViewModel>, Provider<? extends ViewModel>> creators) {
         this.creators = creators;
     }
 
@@ -30,7 +30,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             }
         }
         if (creator == null) {
-            throw new IllegalArgumentException(UNSUPPORTED_CLASS.toString() + ": " + modelClass);
+            throw new IllegalArgumentException(UNSUPPORTED_CLASS + ": " + modelClass);
         }
         return (T) creator.get();
     }

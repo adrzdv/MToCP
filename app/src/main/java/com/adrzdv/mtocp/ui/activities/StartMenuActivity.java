@@ -31,7 +31,8 @@ public class StartMenuActivity extends AppCompatActivity {
         ComposeView composeView = new ComposeView(this);
         MainScreenWrapperKt.showStartMenuScreen(composeView,
                 () -> {
-                    // onStartRevisionClick
+                    Intent intent = new Intent(this, StartRevisionActivity.class);
+                    startActivity(intent);
                     return Unit.INSTANCE;
                 },
                 () -> {

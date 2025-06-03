@@ -3,6 +3,9 @@ package com.adrzdv.mtocp.domain.model.enums;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Enum of revision types
+ */
 public enum RevisionType {
     ALL("Полный список"),
     IN_TRANSIT("В пути"),

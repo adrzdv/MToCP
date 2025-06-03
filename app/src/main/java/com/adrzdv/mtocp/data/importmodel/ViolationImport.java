@@ -4,6 +4,10 @@ import androidx.annotation.NonNull;
 
 import java.util.Objects;
 
+/**
+ * Violation import model
+ * This model is using for import violation data from json
+ */
 public class ViolationImport {
 
     private Integer id;

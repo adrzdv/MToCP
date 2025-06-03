@@ -2,10 +2,10 @@ package com.adrzdv.mtocp.domain.model.workers;
 
 import com.adrzdv.mtocp.domain.model.departments.CompanyDomain;
 
-public class OuterWorker extends Worker {
+public class OuterWorkerDomain extends WorkerDomain {
     private CompanyDomain companyDomain;
 
-    public OuterWorker(int id, String name, CompanyDomain companyDomain) {
+    public OuterWorkerDomain(int id, String name, CompanyDomain companyDomain) {
         super(id, name);
         this.companyDomain = companyDomain;
     }

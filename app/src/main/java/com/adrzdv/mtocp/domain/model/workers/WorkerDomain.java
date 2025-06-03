@@ -1,10 +1,13 @@
 package com.adrzdv.mtocp.domain.model.workers;
 
-public abstract class Worker {
+/**
+ * Domain class for worker
+ */
+public abstract class WorkerDomain {
     private int id;
     private String name;
 
-    public Worker(int id, String name) {
+    public WorkerDomain(int id, String name) {
         this.id = id;
         this.name = name;
     }

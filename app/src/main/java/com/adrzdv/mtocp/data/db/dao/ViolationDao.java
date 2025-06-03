@@ -16,11 +16,13 @@ public interface ViolationDao {
     @Query("SELECT * FROM violations WHERE is_active = 1")
     List<ViolationEntity> getAll();
 
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.ROLLBACK)
     void addNew(ViolationEntity violation);
 
+    @Transaction
     @Query("""
-                UPDATE violations SET 
+                UPDATE violations SET
                     name = :name,
                     short_name = :shortName,
                     is_active = :isActive,
@@ -41,6 +43,7 @@ public interface ViolationDao {
             boolean atTicketOffice
     );
 
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<ViolationEntity> violations);
 }

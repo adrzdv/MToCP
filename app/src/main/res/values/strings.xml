@@ -18,4 +18,8 @@
     <string name="header_depot">Структурные подразделения</string>
     <string name="header_company">Перевозчики</string>
     <string name="search_company_hint">Поиск перевозчика</string>
+    <string name="header_start_revision">Начало проверки</string>
+    <string name="input_text_hint">Начните ввод</string>
+    <string name="input_search_object_hint">Введите номер объекта проверки</string>
+    <string name="label_choose_revtype">Выберите тип проверки</string>
 </resources>

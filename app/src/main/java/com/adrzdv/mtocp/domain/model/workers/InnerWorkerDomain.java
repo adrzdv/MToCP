@@ -2,10 +2,10 @@ package com.adrzdv.mtocp.domain.model.workers;
 
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
 
-public class InnerWorker extends Worker {
+public class InnerWorkerDomain extends WorkerDomain {
     private DepotDomain depotDomain;
 
-    public InnerWorker(int id, String name, DepotDomain depotDomain) {
+    public InnerWorkerDomain(int id, String name, DepotDomain depotDomain) {
         super(id, name);
         this.depotDomain = depotDomain;
     }

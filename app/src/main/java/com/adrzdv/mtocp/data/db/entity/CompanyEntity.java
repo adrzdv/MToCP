@@ -12,12 +12,11 @@ import java.time.LocalDate;
         foreignKeys = @ForeignKey(
                 entity = BranchEntity.class,
                 parentColumns = "id",
-                childColumns = "id_branch",
-                onDelete = ForeignKey.CASCADE
+                childColumns = "id_branch"
         ))
 public class CompanyEntity {
     @NonNull
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey
     @ColumnInfo(name = "els")
     private Long els;
     @NonNull

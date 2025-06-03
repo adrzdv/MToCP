@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.adrzdv.mtocp.App;
 
-public class ViolationViewModelFactory implements ViewModelProvider.Factory {
+public class CustomViewModelFactory implements ViewModelProvider.Factory {
 
     @NonNull
     @Override
@@ -16,8 +16,12 @@ public class ViolationViewModelFactory implements ViewModelProvider.Factory {
             return (T) new ViolationViewModel(App.getViolationRepository());
         } else if (modelClass.isAssignableFrom(DepotViewModel.class)) {
             return (T) new DepotViewModel(App.getDepotRepository());
-        } else if(modelClass.isAssignableFrom(CompanyViewModel.class)) {
+        } else if (modelClass.isAssignableFrom(CompanyViewModel.class)) {
             return (T) new CompanyViewModel(App.getCompanyRepository());
+        } else if (modelClass.isAssignableFrom(OrderViewModel.class)) {
+            return (T) new OrderViewModel(App.getTrainRepository());
+        } else if (modelClass.isAssignableFrom(AutocompleteViewModel.class)) {
+            return (T) new AutocompleteViewModel(App.getTrainRepository());
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

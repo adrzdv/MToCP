@@ -4,6 +4,10 @@ import androidx.annotation.NonNull;
 
 import java.util.Objects;
 
+/**
+ * Depot import model
+ * This model is using for import depot data from json
+ */
 public class DepotImport {
     private Integer id;
     private String name;
