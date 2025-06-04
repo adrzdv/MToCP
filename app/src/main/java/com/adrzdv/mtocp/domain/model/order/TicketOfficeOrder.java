@@ -10,8 +10,9 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
 
     public TicketOfficeOrder(String numberOrder,
                              LocalDateTime revisionDateStart,
-                             LocalDateTime getRevisionDateEnd) {
-        super(numberOrder, revisionDateStart, getRevisionDateEnd);
+                             LocalDateTime getRevisionDateEnd,
+                             String route) {
+        super(numberOrder, revisionDateStart, getRevisionDateEnd, route);
     }
 
     @Override

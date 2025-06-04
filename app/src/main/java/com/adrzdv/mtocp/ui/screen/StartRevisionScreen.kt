@@ -9,9 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import java.text.SimpleDateFormat
+import java.util.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,12 +41,18 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.rememberCoroutineScope
+import com.adrzdv.mtocp.MessageCodes
+import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.RevisionTypeDropdown
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import com.adrzdv.mtocp.ui.viewmodel.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
+import kotlinx.coroutines.launch
+import java.text.ParseException
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,16 +67,59 @@ fun StartRevisionScreen(
     val suggestions by autocompleteViewModel.filteredItems.observeAsState(emptyList())
     var selectedOrderType by remember { mutableStateOf("") }
     val isInputEnabled = selectedOrderType.isNotBlank()
+    val format = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
+    val localDateTimeFormater = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+    val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
     var orderNumber by remember { mutableStateOf("") }
     var dateStart by remember { mutableStateOf("") }
     var orderRoute by remember { mutableStateOf("") }
     var dateEnd by remember { mutableStateOf("") }
     var showExitDialog by remember { mutableStateOf(false) }
-    val context = LocalContext.current
 
     BackHandler(enabled = true) {
         showExitDialog = true
+    }
+
+    fun generateOrder() {
+        if (orderNumber.isBlank()
+            || orderRoute.isBlank()
+            || dateStart.isBlank()
+            || dateEnd.isBlank()
+        ) {
+            scope.launch {
+                snackbarHostState.showSnackbar(
+                    message = MessageCodes.BLANK_FIELDS_ERROR.errorTitle,
+                )
+            }
+            return
+        }
+        try {
+            val start = LocalDateTime.parse(dateStart, localDateTimeFormater)
+            val end = LocalDateTime.parse(dateEnd, localDateTimeFormater)
+
+            orderViewModel.setOrderNumber(orderNumber)
+            orderViewModel.setDateStart(start)
+            orderViewModel.setDateEnd(end)
+            orderViewModel.setRoute(orderRoute)
+            orderViewModel.createOrder()
+
+            scope.launch {
+                snackbarHostState.showSnackbar(
+                    message = MessageCodes.CREATE_SUCCESS.errorTitle
+                )
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            scope.launch {
+                snackbarHostState.showSnackbar(
+                    message = MessageCodes.ORDER_CREATE_ERROR.errorTitle,
+                )
+            }
+        }
     }
 
     fun showDateTimePicker(onDateTimeSelected: (String) -> Unit) {
@@ -101,12 +150,13 @@ fun StartRevisionScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    // Обработчик нажатия
+                    // тут мы чет должны делать, после того, как все сохранено
+                    generateOrder()
                 },
-                containerColor = Color(0xFF6200EE),
+                containerColor = Color(0xFF4CAF50),
                 contentColor = Color.White
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Добавить")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.save_string))
             }
         },
         topBar = {
@@ -129,6 +179,10 @@ fun StartRevisionScreen(
                         )
                     }
                 })
+        }, snackbarHost = {
+            CustomSnackbarHost(
+                hostState = snackbarHostState
+            )
         }
     ) { innerPadding ->
         Column(
@@ -227,7 +281,26 @@ fun StartRevisionScreen(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() }
                         ) {
-                            showDateTimePicker { selected -> dateStart = selected }
+                            showDateTimePicker { selected ->
+                                try {
+                                    val start = format.parse(selected)
+                                    val now = Calendar.getInstance()
+
+                                    now.add(Calendar.HOUR_OF_DAY, -1)
+
+                                    if (start != null && start.after(now.time)) {
+                                        dateStart = selected
+                                    } else {
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar(
+                                                message = MessageCodes.DATE_ERROR.errorTitle
+                                            )
+                                        }
+                                    }
+                                } catch (e: ParseException) {
+                                    e.printStackTrace()
+                                }
+                            }
                         },
                     enabled = false,
                     readOnly = true,
@@ -256,7 +329,26 @@ fun StartRevisionScreen(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() }
                         ) {
-                            showDateTimePicker { selected -> dateEnd = selected }
+                            showDateTimePicker { selected ->
+                                try {
+                                    val start = format.parse(dateStart)
+                                    val end = format.parse(selected)
+
+                                    if (start != null && end != null) {
+                                        if (end.after(start)) {
+                                            dateEnd = selected
+                                        } else {
+                                            scope.launch {
+                                                snackbarHostState.showSnackbar(
+                                                    message = MessageCodes.DATE_ERROR.errorTitle
+                                                )
+                                            }
+                                        }
+                                    }
+                                } catch (e: ParseException) {
+                                    e.printStackTrace()
+                                }
+                            }
                         },
                     enabled = false,
                     readOnly = true,
@@ -284,14 +376,10 @@ fun StartRevisionScreen(
                         onDismiss = { showExitDialog = false }
                     )
                 }
-
-//                MenuButton(
-//
-//                ) {
-//
-//                }
             }
 
         }
     }
 }
+
+

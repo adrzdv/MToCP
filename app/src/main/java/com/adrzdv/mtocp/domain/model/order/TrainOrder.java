@@ -10,8 +10,9 @@ public class TrainOrder extends Order implements CollectableOrder {
 
     public TrainOrder(String numberOrder,
                       LocalDateTime dateStart,
-                      LocalDateTime dateEnd) {
-        super(numberOrder, dateStart, dateEnd);
+                      LocalDateTime dateEnd,
+                      String route) {
+        super(numberOrder, dateStart, dateEnd, route);
     }
 
     public String getRoute() {

@@ -28,4 +28,5 @@
     <string name="order_end_date_hint">Дата/время окончания</string>
     <string name="order_data_hint">Выберите тип проверки и заполните поля</string>
     <string name="menu_string">Меню</string>
+    <string name="save_string">Сохранить</string>
 </resources>

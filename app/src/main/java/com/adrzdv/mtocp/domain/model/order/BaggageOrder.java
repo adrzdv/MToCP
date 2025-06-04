@@ -12,8 +12,9 @@ public class BaggageOrder extends Order {
 
     public BaggageOrder(String numberOrder,
                         LocalDateTime revisionDateStart,
-                        LocalDateTime getRevisionDateEnd) {
-        super(numberOrder, revisionDateStart, getRevisionDateEnd);
+                        LocalDateTime getRevisionDateEnd,
+                        String route) {
+        super(numberOrder, revisionDateStart, getRevisionDateEnd, route);
         coachMap = new HashMap<>();
     }
 }

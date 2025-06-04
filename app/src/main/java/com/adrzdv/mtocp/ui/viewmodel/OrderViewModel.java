@@ -11,9 +11,16 @@ import com.adrzdv.mtocp.domain.model.order.CollectableOrder;
 import com.adrzdv.mtocp.domain.model.order.Order;
 import com.adrzdv.mtocp.domain.model.order.OrderFactory;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
+import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
 import com.adrzdv.mtocp.domain.repository.TrainRepository;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class OrderViewModel extends ViewModel {
 
@@ -26,9 +33,12 @@ public class OrderViewModel extends ViewModel {
     private String objectNumber;
     private LocalDateTime dateStart;
     private LocalDateTime dateEnd;
+    private String route;
+    private ExecutorService executor;
 
     public OrderViewModel(TrainRepository trainRepository) {
         this.trainRepository = trainRepository;
+        executor = Executors.newSingleThreadExecutor();
     }
 
     public void setSelectedType(OrdersTypes selectedType) {
@@ -51,17 +61,22 @@ public class OrderViewModel extends ViewModel {
         this.dateEnd = dateEnd;
     }
 
+    public void setRoute(String route) {
+        this.route = route;
+    }
+
     public void createOrder() {
 
         if (selectedType != null && !objectNumber.isBlank()) {
             Order newOrder = OrderFactory.createOrder(selectedType,
                     orderNumber,
                     dateStart,
-                    dateEnd);
+                    dateEnd,
+                    route);
 
             if (newOrder instanceof CollectableOrder collectableOrder) {
                 ObjectCollector collector = createCollector(objectNumber);
-                if(collector != null) {
+                if (collector != null) {
                     collectableOrder.setCollector(collector);
                 }
             }
@@ -74,9 +89,16 @@ public class OrderViewModel extends ViewModel {
     public ObjectCollector createCollector(String objectNumber) {
 
         if (selectedType.equals(PASSENGER_TRAIN)) {
+            Future<TrainDomain> future = executor.submit(() -> trainRepository.getTrain(objectNumber));
 
-            return trainRepository.getTrain(objectNumber);
-
+            try {
+                TrainDomain train = future.get();
+                if (train != null) {
+                    return train;
+                }
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
         } else if (selectedType.equals(TICKET_OFFICE)) {
             return null;
         }

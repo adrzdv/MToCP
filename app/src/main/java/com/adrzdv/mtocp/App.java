@@ -34,7 +34,6 @@ import java.util.concurrent.Executors;
 public class App extends Application {
     private static App instance;
     private static Toast currentToast;
-
     private AppDatabase database;
     private static ViolationRepository violationRepository;
     private static DepotRepository depotRepository;

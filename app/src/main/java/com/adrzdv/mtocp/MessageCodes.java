@@ -9,9 +9,17 @@ public enum MessageCodes {
     UPDATE_ERROR("001#UPDATE", "Ошибка обновления элемента"),
     LOAD_ERROR("002#DATA_LOAD", "Ошибка загрузки данных"),
     NOT_FOUND_ERROR("003#NOT_FOUND:", "Данные не найдены"),
-    INPUT_ERROR("004#INPUT", "Ошибка формата воода даннных"),
+    INPUT_ERROR("004#INPUT", "Ошибка формата ввода даннных"),
     UNHANDLED_METHOD("005#UNHANDLE", "Экспорт не поддерживается для этого типа"),
-    UNSUPPORTED_CLASS("006#", "Неизвестный класс");
+    UNSUPPORTED_CLASS("006#", "Неизвестный класс"),
+    DATE_ERROR("007#DATE_ERROR", "Ошибка ввода даты"),
+    COACH_ERROR("008#COACH_ERROR", "Ошибка ввода номера вагона"),
+    ORDER_CREATE_ERROR("009#ORDER_CREATE", "Ошибка создания уведомления"),
+    BLANK_FIELDS_ERROR("010#BLANK_ERROR", "Имеются пустые поля"),
+    CREATE_SUCCESS("011#SUCCESS_CREATION", "Данные успешно добавлены"),
+    DIRECTORY_SUCCESS("012#DIRECTORY_SUCCESS", "Директории очищены"),
+    DIRECTORY_FAIL("013#DIRECTORY_ERROR", "Ошибка очистки директорий"),
+    FILE_MANAGER_ERROR("014#FMANAGER_ERROR", "Файловый менеджер отсутствует");
 
     @NonNull
     private final String errorCode;
