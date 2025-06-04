@@ -33,7 +33,6 @@ import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 
 @Composable
 fun DepotCatalogScreen(
-    onBackClick: () -> Unit,
     viewModel: DepotViewModel
 ) {
     var searchText by remember { mutableStateOf("") }
@@ -42,30 +41,12 @@ fun DepotCatalogScreen(
         .collectAsState(initial = emptyList())
     val context = LocalContext.current
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-//    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBackClick) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_back_32),
-                    contentDescription = stringResource(R.string.back_text)
-                )
-            }
-            Text(
-                text = stringResource(R.string.header_depot),
-                style = CustomTypography.displayLarge,
-                modifier = Modifier
-                    .padding(start = 8.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
         OutlinedTextField(
             value = searchText,
             onValueChange = {

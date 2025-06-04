@@ -12,8 +12,8 @@ object CustomTypography {
     )
     val titleLarge = TextStyle(
         fontFamily = RRGPro,
-        fontWeight = FontWeight.Medium,
-        fontSize = 20.sp
+        fontWeight = FontWeight.Bold,
+        fontSize = 22.sp
     )
     val bodyLarge = TextStyle(
         fontFamily = FSRail,

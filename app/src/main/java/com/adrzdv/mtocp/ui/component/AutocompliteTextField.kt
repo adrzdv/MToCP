@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.ui.theme.CustomTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +43,6 @@ fun AutocompleteTextField(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        // Сам TextField
         TextField(
             value = query,
             onValueChange = {
@@ -51,7 +51,13 @@ fun AutocompleteTextField(
                     expanded = true
                 }
             },
-            label = { Text(stringResource(R.string.input_text_hint)) },
+            label = {
+                Text(
+                    stringResource(R.string.input_text_hint),
+                    style = CustomTypography.labelLarge
+                )
+            },
+            textStyle = CustomTypography.bodyLarge,
             modifier = Modifier
                 .menuAnchor(MenuAnchorType.PrimaryEditable)
                 .fillMaxWidth(),
@@ -81,7 +87,12 @@ fun AutocompleteTextField(
         ) {
             suggestions.forEach { suggestion ->
                 DropdownMenuItem(
-                    text = { Text(suggestion) },
+                    text = {
+                        Text(
+                            suggestion,
+                            style = CustomTypography.bodyLarge
+                        )
+                    },
                     onClick = {
                         onQueryChanged(suggestion)
                         onSuggestionSelected(suggestion)

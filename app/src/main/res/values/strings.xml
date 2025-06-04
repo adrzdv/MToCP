@@ -22,4 +22,10 @@
     <string name="input_text_hint">Начните ввод</string>
     <string name="input_search_object_hint">Введите номер объекта проверки</string>
     <string name="label_choose_revtype">Выберите тип проверки</string>
+    <string name="order_number_hint">Номер уведомления</string>
+    <string name="order_route_hint">Место проверки</string>
+    <string name="order_start_date_hint">Дата/время начала</string>
+    <string name="order_end_date_hint">Дата/время окончания</string>
+    <string name="order_data_hint">Выберите тип проверки и заполните поля</string>
+    <string name="menu_string">Меню</string>
 </resources>

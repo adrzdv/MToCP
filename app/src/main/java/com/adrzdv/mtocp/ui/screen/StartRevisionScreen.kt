@@ -1,15 +1,22 @@
 package com.adrzdv.mtocp.ui.screen
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -21,16 +28,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.OrdersTypes
 import com.adrzdv.mtocp.ui.component.AutocompleteTextField
+import com.adrzdv.mtocp.ui.component.ConfirmDialog
+import androidx.activity.compose.BackHandler
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import com.adrzdv.mtocp.ui.component.RevisionTypeDropdown
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import com.adrzdv.mtocp.ui.viewmodel.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
+import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,11 +62,73 @@ fun StartRevisionScreen(
     var selectedOrderType by remember { mutableStateOf("") }
     val isInputEnabled = selectedOrderType.isNotBlank()
 
+    var orderNumber by remember { mutableStateOf("") }
+    var dateStart by remember { mutableStateOf("") }
+    var orderRoute by remember { mutableStateOf("") }
+    var dateEnd by remember { mutableStateOf("") }
+    var showExitDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    BackHandler(enabled = true) {
+        showExitDialog = true
+    }
+
+    fun showDateTimePicker(onDateTimeSelected: (String) -> Unit) {
+        val calendar = Calendar.getInstance()
+
+        DatePickerDialog(
+            context,
+            { _, year, month, day ->
+                TimePickerDialog(
+                    context,
+                    { _, hour, minute ->
+                        val selected =
+                            "%02d.%02d.%04d %02d:%02d".format(day, month + 1, year, hour, minute)
+                        onDateTimeSelected(selected)
+                    },
+                    calendar.get(Calendar.HOUR_OF_DAY),
+                    calendar.get(Calendar.MINUTE),
+                    true
+                ).show()
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
+
     Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    // Обработчик нажатия
+                },
+                containerColor = Color(0xFF6200EE),
+                contentColor = Color.White
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Добавить")
+            }
+        },
         topBar = {
             TopAppBar(
-                title = { Spacer(modifier = Modifier.height(0.dp)) }
-            )
+                title = {
+                    Text(
+                        text = stringResource(R.string.header_start_revision),
+                        style = CustomTypography.titleLarge
+                    )
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            showExitDialog = true
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_back_32),
+                            contentDescription = stringResource(R.string.back_text)
+                        )
+                    }
+                })
         }
     ) { innerPadding ->
         Column(
@@ -60,28 +139,12 @@ fun StartRevisionScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = onBackClick) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_back_32),
-                        contentDescription = stringResource(R.string.back_text)
-                    )
-                }
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 Text(
-                    text = stringResource(R.string.header_start_revision),
-                    style = CustomTypography.displayLarge,
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    //text = stringResource("R.string.inp"),
-                    text = "TEXT",
+                    text = stringResource(R.string.order_data_hint),
                     style = CustomTypography.labelLarge
                 )
                 RevisionTypeDropdown(
@@ -108,7 +171,127 @@ fun StartRevisionScreen(
                     enabled = isInputEnabled
                 )
             }
-        }
 
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                OutlinedTextField(
+                    value = orderNumber,
+                    textStyle = CustomTypography.bodyLarge,
+                    onValueChange = { orderNumber = it },
+                    label = { Text(text = stringResource(R.string.order_number_hint)) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color(0xFFCCCCCC),
+                        unfocusedBorderColor = Color(0xFFCCCCCC),
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedLabelColor = Color.Gray,
+                        unfocusedLabelColor = Color.Gray,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
+                    )
+                )
+
+                OutlinedTextField(
+                    value = orderRoute,
+                    textStyle = CustomTypography.bodyLarge,
+                    onValueChange = { orderRoute = it },
+                    label = { Text(stringResource(R.string.order_route_hint)) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color(0xFFCCCCCC),
+                        unfocusedBorderColor = Color(0xFFCCCCCC),
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedLabelColor = Color.Gray,
+                        unfocusedLabelColor = Color.Gray,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
+                    )
+                )
+
+                // Date/time start
+                OutlinedTextField(
+                    value = dateStart,
+                    textStyle = CustomTypography.bodyLarge,
+                    onValueChange = {},
+                    label = { Text(stringResource(R.string.order_start_date_hint)) },
+                    singleLine = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ) {
+                            showDateTimePicker { selected -> dateStart = selected }
+                        },
+                    enabled = false,
+                    readOnly = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color(0xFFCCCCCC),
+                        unfocusedBorderColor = Color(0xFFCCCCCC),
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedLabelColor = Color.Gray,
+                        unfocusedLabelColor = Color.Gray,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
+                    )
+                )
+
+                // Date/time end
+                OutlinedTextField(
+                    value = dateEnd,
+                    textStyle = CustomTypography.bodyLarge,
+                    onValueChange = {},
+                    label = { Text(stringResource(R.string.order_end_date_hint)) },
+                    singleLine = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ) {
+                            showDateTimePicker { selected -> dateEnd = selected }
+                        },
+                    enabled = false,
+                    readOnly = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color(0xFFCCCCCC),
+                        unfocusedBorderColor = Color(0xFFCCCCCC),
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedLabelColor = Color.Gray,
+                        unfocusedLabelColor = Color.Gray,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
+                    )
+                )
+
+                if (showExitDialog) {
+                    ConfirmDialog(
+                        title = "Выход",
+                        message = "Вы уверены, что хотите закончить?\n" +
+                                "Несохраненные данные будут утеряны",
+                        onConfirm = {
+                            showExitDialog = false
+                            onBackClick()
+                        },
+                        onDismiss = { showExitDialog = false }
+                    )
+                }
+
+//                MenuButton(
+//
+//                ) {
+//
+//                }
+            }
+
+        }
     }
 }

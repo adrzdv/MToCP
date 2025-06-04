@@ -38,7 +38,6 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun CompanyCatalogScreen(
-    onBackClick: () -> Unit,
     viewModel: CompanyViewModel
 ) {
     var searchText by remember { mutableStateOf("") }
@@ -51,23 +50,6 @@ fun CompanyCatalogScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBackClick) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_back_32),
-                    contentDescription = stringResource(R.string.back_text)
-                )
-            }
-            Text(
-                text = stringResource(R.string.header_company),
-                style = CustomTypography.displayLarge,
-                modifier = Modifier
-                    .padding(start = 8.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
         OutlinedTextField(
             value = searchText,
             onValueChange = {
@@ -105,8 +87,12 @@ fun CompanyCatalogScreen(
                 ) {
                     "БЕССРОЧНЫЙ"
                 } else {
-                    "до ${company.expirationDate.format(DateTimeFormatter
-                        .ofPattern("dd.MM.yyyy"))}"
+                    "до ${
+                        company.expirationDate.format(
+                            DateTimeFormatter
+                                .ofPattern("dd.MM.yyyy")
+                        )
+                    }"
                 }
 
                 Column(

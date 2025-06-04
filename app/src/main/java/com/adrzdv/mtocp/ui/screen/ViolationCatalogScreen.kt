@@ -21,7 +21,6 @@ import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
 
 @Composable
 fun ViolationCatalogScreen(
-    onBackClick: () -> Unit,
     viewModel: ViolationViewModel,
     revisionTypes: List<String>
 ) {
@@ -37,24 +36,6 @@ fun ViolationCatalogScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBackClick) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_back_32),
-                    contentDescription = stringResource(R.string.back_text)
-                )
-            }
-            Text(
-                text = stringResource(R.string.header_catalog),
-                style = CustomTypography.displayLarge,
-                modifier = Modifier
-                    .padding(start = 8.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
         OutlinedTextField(
             value = searchText,
             onValueChange = {
