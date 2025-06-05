@@ -1,18 +1,18 @@
 package com.adrzdv.mtocp.ui.screen.wrapper
 
 import androidx.compose.ui.platform.ComposeView
-import com.adrzdv.mtocp.ui.screen.StartRevisionScreen
+import com.adrzdv.mtocp.ui.screen.RevisionScreen
 import com.adrzdv.mtocp.ui.viewmodel.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 
-fun ComposeView.showStartRevisionScreen(
+fun ComposeView.showRevisionScreen(
     orderViewModel: OrderViewModel,
     autocompleteViewModel: AutocompleteViewModel,
     ordersTypes: List<String>,
     onBackClick: () -> Unit
 ) {
     setContent {
-        StartRevisionScreen(
+        RevisionScreen(
             orderViewModel = orderViewModel,
             autocompleteViewModel = autocompleteViewModel,
             orderTypes = ordersTypes,

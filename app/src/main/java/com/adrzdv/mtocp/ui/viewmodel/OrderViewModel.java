@@ -41,6 +41,26 @@ public class OrderViewModel extends ViewModel {
         executor = Executors.newSingleThreadExecutor();
     }
 
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public LocalDateTime getDateStart() {
+        return dateStart;
+    }
+
+    public LocalDateTime getDateEnd() {
+        return dateEnd;
+    }
+
+    public OrdersTypes getSelectedType() {
+        return selectedType;
+    }
+
     public void setSelectedType(OrdersTypes selectedType) {
         this.selectedType = selectedType;
     }
@@ -89,7 +109,14 @@ public class OrderViewModel extends ViewModel {
     public ObjectCollector createCollector(String objectNumber) {
 
         if (selectedType.equals(PASSENGER_TRAIN)) {
-            Future<TrainDomain> future = executor.submit(() -> trainRepository.getTrain(objectNumber));
+            Future<TrainDomain> future = executor.submit(
+                    () -> {
+                        int index = objectNumber.indexOf(" ");
+
+                        String number = objectNumber.substring(0, index);
+                        return trainRepository.getTrain(number);
+                    }
+            );
 
             try {
                 TrainDomain train = future.get();

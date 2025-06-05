@@ -38,11 +38,12 @@ import com.adrzdv.mtocp.domain.model.enums.OrdersTypes
 import com.adrzdv.mtocp.ui.component.AutocompleteTextField
 import com.adrzdv.mtocp.ui.component.ConfirmDialog
 import androidx.activity.compose.BackHandler
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.navigation.NavController
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.RevisionTypeDropdown
@@ -61,29 +62,47 @@ fun StartRevisionScreen(
     orderViewModel: OrderViewModel,
     autocompleteViewModel: AutocompleteViewModel,
     orderTypes: List<String>,
+    navController: NavController,
     onBackClick: () -> Unit
 ) {
     val query by autocompleteViewModel.query.observeAsState("")
     val suggestions by autocompleteViewModel.filteredItems.observeAsState(emptyList())
-    var selectedOrderType by remember { mutableStateOf("") }
-    val isInputEnabled = selectedOrderType.isNotBlank()
+
     val format = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
     val localDateTimeFormater = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    var orderNumber by remember { mutableStateOf("") }
-    var dateStart by remember { mutableStateOf("") }
-    var orderRoute by remember { mutableStateOf("") }
-    var dateEnd by remember { mutableStateOf("") }
+    var orderNumber by rememberSaveable { mutableStateOf(orderViewModel.orderNumber ?: "") }
+    var orderRoute by rememberSaveable { mutableStateOf(orderViewModel.route ?: "") }
+    var dateStart by rememberSaveable {
+        mutableStateOf(
+            orderViewModel.dateStart?.format(
+                localDateTimeFormater
+            ) ?: ""
+        )
+    }
+    var dateEnd by rememberSaveable {
+        mutableStateOf(
+            orderViewModel.dateEnd?.format(
+                localDateTimeFormater
+            ) ?: ""
+        )
+    }
+    var selectedOrderType by rememberSaveable {
+        mutableStateOf(orderViewModel.selectedType?.subscription ?: "")
+    }
+
+    val isInputEnabled = selectedOrderType.isNotBlank()
+
     var showExitDialog by remember { mutableStateOf(false) }
 
     BackHandler(enabled = true) {
         showExitDialog = true
     }
 
-    fun generateOrder() {
+    fun generateOrder(): Boolean {
         if (orderNumber.isBlank()
             || orderRoute.isBlank()
             || dateStart.isBlank()
@@ -94,7 +113,7 @@ fun StartRevisionScreen(
                     message = MessageCodes.BLANK_FIELDS_ERROR.errorTitle,
                 )
             }
-            return
+            return false
         }
         try {
             val start = LocalDateTime.parse(dateStart, localDateTimeFormater)
@@ -106,11 +125,7 @@ fun StartRevisionScreen(
             orderViewModel.setRoute(orderRoute)
             orderViewModel.createOrder()
 
-            scope.launch {
-                snackbarHostState.showSnackbar(
-                    message = MessageCodes.CREATE_SUCCESS.errorTitle
-                )
-            }
+            return true
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -119,6 +134,7 @@ fun StartRevisionScreen(
                     message = MessageCodes.ORDER_CREATE_ERROR.errorTitle,
                 )
             }
+            return false
         }
     }
 
@@ -150,13 +166,17 @@ fun StartRevisionScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    // тут мы чет должны делать, после того, как все сохранено
-                    generateOrder()
+                    if (generateOrder()) {
+                        navController.navigate("addCrew")
+                    }
                 },
                 containerColor = Color(0xFF4CAF50),
                 contentColor = Color.White
             ) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.save_string))
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_save_48_white),
+                    contentDescription = stringResource(R.string.save_string)
+                )
             }
         },
         topBar = {

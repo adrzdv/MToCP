@@ -29,4 +29,6 @@
     <string name="order_data_hint">Выберите тип проверки и заполните поля</string>
     <string name="menu_string">Меню</string>
     <string name="save_string">Сохранить</string>
+    <string name="masters_object">Руководители объекта</string>
+    <string name="revision_string">Мониторинг</string>
 </resources>

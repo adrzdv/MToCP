@@ -7,7 +7,7 @@ import androidx.compose.ui.platform.ComposeView;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.adrzdv.mtocp.domain.model.enums.OrdersTypes;
-import com.adrzdv.mtocp.ui.screen.wrapper.StartRevisionScreenWrapperKt;
+import com.adrzdv.mtocp.ui.screen.wrapper.RevisionScreenWrapperKt;
 import com.adrzdv.mtocp.ui.viewmodel.AutocompleteViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider;
@@ -26,7 +26,7 @@ public class StartRevisionActivity extends AppCompatActivity {
                 ViewModelFactoryProvider.provideFactory()).get(OrderViewModel.class);
 
         ComposeView composeView = new ComposeView(this);
-        StartRevisionScreenWrapperKt.showStartRevisionScreen(composeView,
+        RevisionScreenWrapperKt.showRevisionScreen(composeView,
                 orderViewModel,
                 autocompleteViewModel,
                 OrdersTypes.getTypeList(),
