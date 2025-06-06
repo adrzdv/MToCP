@@ -40,6 +40,14 @@ public class DepotViewModel extends ViewModel {
         applyFilter();
     }
 
+    public DepotDomain getDepotDomain(String depotName) {
+
+        return allDepotList.stream()
+                .filter(depot -> depot.getName().equals(depotName))
+                .findFirst().orElse(null);
+
+    }
+
     private void applyFilter() {
         String str = currentSearchString.toLowerCase();
         List<DepotDomain> res = new ArrayList<>(allDepotList);

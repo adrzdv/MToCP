@@ -9,7 +9,7 @@ public class WorkerMapper {
         return new InnerWorkerDto(worker.getId(),
                 worker.getName(),
                 worker.getWorkerType().getDescription(),
-                worker.getDepot().getShortName());
+                worker.getDepotDomain().getShortName());
 
     }
 }

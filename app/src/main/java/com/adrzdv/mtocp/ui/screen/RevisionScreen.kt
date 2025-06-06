@@ -29,12 +29,14 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.ConfirmDialog
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import com.adrzdv.mtocp.ui.viewmodel.AutocompleteViewModel
+import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RevisionScreen(
     orderViewModel: OrderViewModel,
+    depotViewModel: DepotViewModel,
     autocompleteViewModel: AutocompleteViewModel,
     orderTypes: List<String>,
     onBackClick: () -> Unit
@@ -84,9 +86,10 @@ fun RevisionScreen(
                 )
             }
             composable("addCrew") {
-                AddCrewAndCoachesScreen(
+                AddCrewScreen(
                     orderViewModel = orderViewModel,
                     navController = navRevisionController,
+                    depotViewModel = depotViewModel,
                     onBackPress = {
                         navRevisionController.popBackStack()
                     }

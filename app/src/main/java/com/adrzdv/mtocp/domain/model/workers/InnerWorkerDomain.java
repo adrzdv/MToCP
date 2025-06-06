@@ -11,11 +11,11 @@ public class InnerWorkerDomain extends WorkerDomain {
         this.depotDomain = depotDomain;
     }
 
-    public DepotDomain getDepot() {
+    public DepotDomain getDepotDomain() {
         return depotDomain;
     }
 
-    public void setDepot(DepotDomain depotDomain) {
+    public void setDepotDomain(DepotDomain depotDomain) {
         this.depotDomain = depotDomain;
     }
 }
