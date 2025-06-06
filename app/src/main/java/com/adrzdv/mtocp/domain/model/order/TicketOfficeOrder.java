@@ -19,4 +19,13 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
     public void setCollector(ObjectCollector collector) {
         this.ticketOffice = collector;
     }
+
+    @Override
+    public ObjectCollector getCollector() {
+        return ticketOffice;
+    }
+
+    public ObjectCollector getTicketOffice() {
+        return ticketOffice;
+    }
 }

@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
+import com.adrzdv.mtocp.ui.theme.CustomTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,7 +32,12 @@ fun DropdownMenuField(
             value = selectedOption,
             onValueChange = {},
             readOnly = true,
-            label = { Text(label) },
+            label = {
+                Text(
+                    text = label,
+                    style = CustomTypography.labelLarge
+                )
+            },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },
@@ -42,7 +48,12 @@ fun DropdownMenuField(
         ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             options.forEach { selectedOption ->
                 DropdownMenuItem(
-                    text = { Text(selectedOption) },
+                    text = {
+                        Text(
+                            text = selectedOption,
+                            style = CustomTypography.bodyMedium
+                        )
+                    },
                     onClick = {
                         onOptionSelected(selectedOption)
                         expanded = false

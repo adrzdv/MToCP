@@ -96,8 +96,8 @@ fun RevisionScreen(
                 )
             }
 
-//            composable("company") {
-//                CompanyCatalogScreen(
+//            composable("addCoaches") {
+//                AddCoachesScreen(
 //                    viewModel = companyViewMode
 //                )
 //            }

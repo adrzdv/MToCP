@@ -19,7 +19,8 @@ public enum MessageCodes {
     CREATE_SUCCESS("011#SUCCESS_CREATION", "Данные успешно добавлены"),
     DIRECTORY_SUCCESS("012#DIRECTORY_SUCCESS", "Директории очищены"),
     DIRECTORY_FAIL("013#DIRECTORY_ERROR", "Ошибка очистки директорий"),
-    FILE_MANAGER_ERROR("014#FMANAGER_ERROR", "Файловый менеджер отсутствует");
+    FILE_MANAGER_ERROR("014#FMANAGER_ERROR", "Файловый менеджер отсутствует"),
+    CREW_ERROR("015#CREW_ERROR", "Отсутствует ЛНП/ПЭМ");
 
     @NonNull
     private final String errorCode;

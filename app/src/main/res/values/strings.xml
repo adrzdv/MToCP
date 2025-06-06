@@ -31,4 +31,13 @@
     <string name="save_string">Сохранить</string>
     <string name="masters_object">Руководители объекта</string>
     <string name="revision_string">Мониторинг</string>
+    <string name="add_string">Добавить</string>
+    <string name="clean_string">Очистить</string>
+    <string name="cancel">Отмена</string>
+    <string name="worker_id">Табельный номер</string>
+    <string name="worker_name">ФИО</string>
+    <string name="worker_type">Должность</string>
+    <string name="worker_depot">Предприятие</string>
+    <string name="delete">Удалить</string>
+    <string name="new_worker">Новый работник</string>
 </resources>

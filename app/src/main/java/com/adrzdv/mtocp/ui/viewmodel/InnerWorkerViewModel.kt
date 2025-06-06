@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
 
-class WorkerViewModel : ViewModel() {
+class InnerWorkerViewModel : ViewModel() {
     private val _workers = mutableStateListOf<InnerWorkerDomain>()
     val workers: List<InnerWorkerDomain> = _workers
 

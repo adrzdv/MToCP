@@ -31,4 +31,9 @@ public class TrainOrder extends Order implements CollectableOrder {
     public void setCollector(ObjectCollector collector) {
         this.train = collector;
     }
+
+    @Override
+    public ObjectCollector getCollector() {
+        return train;
+    }
 }

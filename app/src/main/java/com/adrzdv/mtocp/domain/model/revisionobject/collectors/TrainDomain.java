@@ -1,6 +1,7 @@
 package com.adrzdv.mtocp.domain.model.revisionobject.collectors;
 
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
+import com.adrzdv.mtocp.domain.model.enums.WorkerTypes;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
 import java.util.HashMap;
@@ -16,18 +17,21 @@ public class TrainDomain extends ObjectCollector {
     private DepotDomain depot;
     private Boolean isVideo;
     private Boolean isProgressive;
+    private Boolean isDinnerCar;
 
     public TrainDomain(String number,
                        String route,
                        DepotDomain depot,
                        Boolean isVideo,
-                       Boolean isProgressive) {
+                       Boolean isProgressive,
+                       Boolean isDinnerCar) {
         super(number);
         this.route = route;
         this.workerMap = new HashMap<>();
         this.depot = depot;
         this.isVideo = isVideo;
         this.isProgressive = isProgressive;
+        this.isDinnerCar = isDinnerCar;
     }
 
     public String getRoute() {
@@ -68,5 +72,22 @@ public class TrainDomain extends ObjectCollector {
 
     public void setDepot(DepotDomain depot) {
         this.depot = depot;
+    }
+
+    public Boolean getDinnerCar() {
+        return isDinnerCar;
+    }
+
+    public void setDinnerCar(Boolean dinnerCar) {
+        isDinnerCar = dinnerCar;
+    }
+
+    public void addWorker(WorkerDomain workerDomain) {
+        workerMap.put(workerDomain.getWorkerType().getDescription(), workerDomain);
+    }
+
+    public boolean checkAllCrewIsAdded() {
+        return workerMap.containsKey(WorkerTypes.TRAIN_MANAGER.getDescription())
+                && workerMap.containsKey(WorkerTypes.MECHANIC.getDescription());
     }
 }

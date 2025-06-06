@@ -38,8 +38,7 @@ import com.adrzdv.mtocp.domain.model.enums.OrdersTypes
 import com.adrzdv.mtocp.ui.component.AutocompleteTextField
 import com.adrzdv.mtocp.ui.component.ConfirmDialog
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -67,13 +66,11 @@ fun StartRevisionScreen(
 ) {
     val query by autocompleteViewModel.query.observeAsState("")
     val suggestions by autocompleteViewModel.filteredItems.observeAsState(emptyList())
-
     val format = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
     val localDateTimeFormater = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
-
     var orderNumber by rememberSaveable { mutableStateOf(orderViewModel.orderNumber ?: "") }
     var orderRoute by rememberSaveable { mutableStateOf(orderViewModel.route ?: "") }
     var dateStart by rememberSaveable {
@@ -95,7 +92,6 @@ fun StartRevisionScreen(
     }
 
     val isInputEnabled = selectedOrderType.isNotBlank()
-
     var showExitDialog by remember { mutableStateOf(false) }
 
     BackHandler(enabled = true) {
@@ -123,6 +119,7 @@ fun StartRevisionScreen(
             orderViewModel.setDateStart(start)
             orderViewModel.setDateEnd(end)
             orderViewModel.setRoute(orderRoute)
+
             orderViewModel.createOrder()
 
             return true
@@ -164,20 +161,27 @@ fun StartRevisionScreen(
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(
+            ExtendedFloatingActionButton(
+                containerColor = Color(0xFF4CAF50),
+                contentColor = Color.White,
+                text = {
+                    Text(
+                        text = stringResource(R.string.save_string),
+                        style = CustomTypography.labelLarge
+                    )
+                },
+                icon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_save_32_white),
+                        contentDescription = stringResource(R.string.save_string)
+                    )
+                },
                 onClick = {
                     if (generateOrder()) {
                         navController.navigate("addCrew")
                     }
-                },
-                containerColor = Color(0xFF4CAF50),
-                contentColor = Color.White
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_save_48_white),
-                    contentDescription = stringResource(R.string.save_string)
-                )
-            }
+                }
+            )
         },
         topBar = {
             TopAppBar(
