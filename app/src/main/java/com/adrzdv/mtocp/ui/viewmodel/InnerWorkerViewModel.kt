@@ -9,7 +9,9 @@ class InnerWorkerViewModel : ViewModel() {
     val workers: List<InnerWorkerDomain> = _workers
 
     fun addWorker(worker: InnerWorkerDomain) {
-        _workers.add(worker)
+        if (!_workers.contains(worker)) {
+            _workers.add(worker)
+        }
     }
 
     fun removeWorker(worker: InnerWorkerDomain) {

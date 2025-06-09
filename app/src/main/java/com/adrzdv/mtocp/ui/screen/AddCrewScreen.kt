@@ -135,6 +135,7 @@ fun AddCrewScreen(
                 MediumMenuButton(
                     onClick = {
                         viewModel.cleanWorkers()
+                        orderViewModel.clearCrew()
                     },
                     icon = {
                         Icon(

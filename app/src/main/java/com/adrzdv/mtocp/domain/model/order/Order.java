@@ -1,8 +1,10 @@
 package com.adrzdv.mtocp.domain.model.order;
 
+import com.adrzdv.mtocp.domain.validation.RegularValidator;
+
 import java.time.LocalDateTime;
 
-public abstract class Order {
+public abstract class Order extends RegularValidator {
     private String number;
     private LocalDateTime revisionDateStart;
     private LocalDateTime getRevisionDateEnd;
@@ -49,4 +51,8 @@ public abstract class Order {
     public void setRoute(String route) {
         this.route = route;
     }
+
+    public abstract void clearCrewWorkers();
+    public abstract void clearRevisionObjects();
+    public abstract boolean checkCrew();
 }

@@ -11,7 +11,7 @@ public enum MessageCodes {
     NOT_FOUND_ERROR("003#NOT_FOUND:", "Данные не найдены"),
     INPUT_ERROR("004#INPUT", "Ошибка формата ввода даннных"),
     UNHANDLED_METHOD("005#UNHANDLE", "Экспорт не поддерживается для этого типа"),
-    UNSUPPORTED_CLASS("006#", "Неизвестный класс"),
+    UNSUPPORTED_CLASS("006#ILLEGAL_CLASS", "Неизвестный класс"),
     DATE_ERROR("007#DATE_ERROR", "Ошибка ввода даты"),
     COACH_ERROR("008#COACH_ERROR", "Ошибка ввода номера вагона"),
     ORDER_CREATE_ERROR("009#ORDER_CREATE", "Ошибка создания уведомления"),
@@ -20,7 +20,8 @@ public enum MessageCodes {
     DIRECTORY_SUCCESS("012#DIRECTORY_SUCCESS", "Директории очищены"),
     DIRECTORY_FAIL("013#DIRECTORY_ERROR", "Ошибка очистки директорий"),
     FILE_MANAGER_ERROR("014#FMANAGER_ERROR", "Файловый менеджер отсутствует"),
-    CREW_ERROR("015#CREW_ERROR", "Отсутствует ЛНП/ПЭМ");
+    CREW_ERROR("015#CREW_ERROR", "Отсутствует ЛНП/ПЭМ"),
+    PATTERN_MATCHES_ERROR("016#PATTERN_ERROR", "Ошибка соответствия данных");
 
     @NonNull
     private final String errorCode;

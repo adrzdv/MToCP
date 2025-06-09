@@ -90,4 +90,8 @@ public class TrainDomain extends ObjectCollector {
         return workerMap.containsKey(WorkerTypes.TRAIN_MANAGER.getDescription())
                 && workerMap.containsKey(WorkerTypes.MECHANIC.getDescription());
     }
+
+    public void clearCrewMap() {
+        workerMap.clear();
+    }
 }

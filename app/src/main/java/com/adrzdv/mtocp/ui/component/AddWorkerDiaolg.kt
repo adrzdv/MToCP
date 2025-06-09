@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -17,10 +16,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.adrzdv.mtocp.App
+import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
@@ -41,6 +42,7 @@ fun AddWorkerDialog(
     var name by remember { mutableStateOf("") }
     var selectedWorkerType by remember { mutableStateOf<WorkerTypes?>(null) }
     var selectedDepot by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     fun addWorker(
         number: String,
@@ -50,8 +52,8 @@ fun AddWorkerDialog(
     ) {
         val depotDomain = depotViewModel.getDepotDomain(selectedDepot)
         val worker = InnerWorkerDomain(number.toInt(), name, depotDomain, workerType)
-        innerWorkerViewModel.addWorker(worker)
         orderViewModel.addWorker(worker)
+        innerWorkerViewModel.addWorker(worker)
     }
 
     AlertDialog(
@@ -60,12 +62,17 @@ fun AddWorkerDialog(
         confirmButton = {
             Button(
                 onClick = {
-                    selectedWorkerType?.let {
-                        selectedWorkerType?.let { workerType ->
-                            addWorker(tabNumber, name, selectedDepot, workerType)
-                            onDismiss()
+                    try {
+                        selectedWorkerType?.let {
+                            selectedWorkerType?.let { workerType ->
+                                addWorker(tabNumber, name, selectedDepot, workerType)
+                                onDismiss()
+                            }
                         }
+                    } catch (e: IllegalArgumentException) {
+                        App.showToast(context, MessageCodes.PATTERN_MATCHES_ERROR.errorTitle)
                     }
+
                 },
                 colors = ButtonDefaults
                     .buttonColors(containerColor = AppColors.MAIN_GREEN.color),

@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
@@ -38,7 +37,8 @@ fun AddCoachDialog(
 ) {
     var coachNumber by remember { mutableStateOf("") }
     var selectedDepot by remember { mutableStateOf("") }
-    var checkedTrailingCat by remember { mutableStateOf(false) }
+    var checkedTrailingCar by remember { mutableStateOf(false) }
+    var trailingRoute by remember { mutableStateOf("") }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -98,20 +98,13 @@ fun AddCoachDialog(
                     textStyle = AppTypography.bodyMedium
                 )
 
-                DropdownMenuField(
-                    label = stringResource(R.string.worker_depot),
-                    options = depotViewModel.filteredDepots.value?.map { it.name } ?: emptyList(),
-                    selectedOption = selectedDepot,
-                    onOptionSelected = { selectedDepot = it }
-                )
-
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start
                 ) {
                     Checkbox(
-                        checked = checkedTrailingCat,
-                        onCheckedChange = { checkedTrailingCat = it }
+                        checked = checkedTrailingCar,
+                        onCheckedChange = { checkedTrailingCar = it }
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
@@ -119,6 +112,31 @@ fun AddCoachDialog(
                         style = AppTypography.labelLarge
                     )
                 }
+
+                DropdownMenuField(
+                    label = stringResource(R.string.worker_depot),
+                    options = depotViewModel.filteredDepots.value?.map { it.name } ?: emptyList(),
+                    selectedOption = selectedDepot,
+                    onOptionSelected = { selectedDepot = it }
+                )
+
+                OutlinedTextField(
+                    value = trailingRoute,
+                    enabled = checkedTrailingCar,
+                    onValueChange = { trailingRoute = it },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = AppColors.OUTLINE_GREEN.color,
+                        focusedContainerColor = AppColors.OFF_WHITE.color
+                    ),
+                    label = {
+                        Text(
+                            text = stringResource(R.string.trailing_route),
+                            style = AppTypography.labelMedium
+                        )
+                    },
+                    singleLine = true,
+                    textStyle = AppTypography.bodyMedium
+                )
             }
         }
     )

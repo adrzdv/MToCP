@@ -7,14 +7,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.adrzdv.mtocp.domain.model.enums.OrdersTypes;
-import com.adrzdv.mtocp.domain.model.order.BaggageOrder;
 import com.adrzdv.mtocp.domain.model.order.CollectableOrder;
 import com.adrzdv.mtocp.domain.model.order.Order;
 import com.adrzdv.mtocp.domain.model.order.OrderFactory;
-import com.adrzdv.mtocp.domain.model.order.TicketOfficeOrder;
-import com.adrzdv.mtocp.domain.model.order.TrainOrder;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
-import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TicketOfficeDomain;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 import com.adrzdv.mtocp.domain.repository.TrainRepository;
@@ -136,24 +133,46 @@ public class OrderViewModel extends ViewModel {
         return null;
     }
 
+    public void clearRevisionObjects() {
+        Order currOrder = order.getValue();
+
+        if (currOrder != null) {
+            currOrder.clearRevisionObjects();
+            order.setValue(currOrder);
+        }
+
+    }
+
+    public void clearCrew() {
+        Order currOrder = order.getValue();
+
+        if (currOrder != null) {
+            currOrder.clearCrewWorkers();
+            order.setValue(currOrder);
+        }
+
+    }
+
+    public void addRevisionObject(RevisionObject revisionObject) {
+
+        Order currOrder = order.getValue();
+
+        if (currOrder != null) {
+            currOrder.addRevisionObject(revisionObject);
+            order.setValue(currOrder);
+        }
+
+    }
+
     public void addWorker(WorkerDomain workerDomain) {
 
         Order currOrder = order.getValue();
 
-        if (currOrder instanceof TrainOrder trainOrder
-                && trainOrder.getTrain() instanceof TrainDomain train) {
-
-            train.addWorker(workerDomain);
+        if (currOrder != null) {
+            currOrder.addWorker(workerDomain);
             order.setValue(currOrder);
-
-        } else if (currOrder instanceof TicketOfficeOrder ticketOfficeOrder
-                && ticketOfficeOrder.getTicketOffice() instanceof TicketOfficeDomain ticketOffice) {
-
-            ticketOffice.setHeadOfOffice(workerDomain);
-
-        } else if (currOrder instanceof BaggageOrder) {
-
         }
+
     }
 
     public void addQualityPassport(boolean isQualityPassport) {
@@ -177,19 +196,9 @@ public class OrderViewModel extends ViewModel {
 
         Order currOrder = order.getValue();
 
-        if (currOrder instanceof TrainOrder that) {
-            ObjectCollector train = that.getTrain();
-
-            if (train instanceof TrainDomain trainDomain) {
-                return trainDomain.checkAllCrewIsAdded();
-            }
-
-            return false;
-
-        } else if (currOrder instanceof TicketOfficeOrder that) {
-            return false;
+        if (currOrder != null) {
+            return currOrder.checkCrew();
         }
-
         return false;
     }
 

@@ -54,7 +54,7 @@ fun AutocompleteTextField(
             },
             label = {
                 Text(
-                    stringResource(R.string.input_text_hint),
+                    stringResource(R.string.object_number),
                     style = AppTypography.labelLarge
                 )
             },

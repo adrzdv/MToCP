@@ -68,4 +68,8 @@ public abstract class ObjectCollector {
 
         return objectsMap.size();
     }
+
+    public void clearObjects() {
+        objectsMap.clear();
+    }
 }

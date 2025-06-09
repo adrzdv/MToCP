@@ -44,4 +44,6 @@
     <string name="quality_passport">Паспорт качества</string>
     <string name="yes_string">Да</string>
     <string name="coach_number">Номер вагона</string>
+    <string name="trailing_route">Маршрут вагона</string>
+    <string name="object_number">Номер объекта проверки</string>
 </resources>

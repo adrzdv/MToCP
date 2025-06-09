@@ -30,4 +30,8 @@ public class TicketOfficeDomain extends ObjectCollector {
     public void setHeadOfOffice(WorkerDomain headOfOffice) {
         this.headOfOffice = headOfOffice;
     }
+
+    public void removeOfficeHeader() {
+        headOfOffice = null;
+    }
 }
