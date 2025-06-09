@@ -19,7 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
-import com.adrzdv.mtocp.ui.theme.CustomTypography
+import com.adrzdv.mtocp.ui.theme.AppColors
+import com.adrzdv.mtocp.ui.theme.AppTypography
 
 @Composable
 fun InnerWorkerItemCard(worker: InnerWorkerDomain, onDeleteClick: () -> Unit) {
@@ -27,7 +28,7 @@ fun InnerWorkerItemCard(worker: InnerWorkerDomain, onDeleteClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        colors = CardDefaults.cardColors(containerColor = AppColors.SURFACE.color) //change color!!!
     ) {
         Row(
             modifier = Modifier
@@ -38,7 +39,7 @@ fun InnerWorkerItemCard(worker: InnerWorkerDomain, onDeleteClick: () -> Unit) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     worker.name,
-                    style = CustomTypography.bodyLarge
+                    style = AppTypography.bodyLarge
                 )
                 val info = listOfNotNull(
                     worker.workerType?.description,
@@ -47,7 +48,7 @@ fun InnerWorkerItemCard(worker: InnerWorkerDomain, onDeleteClick: () -> Unit) {
                 if (info.isNotBlank()) {
                     Text(
                         info,
-                        style = CustomTypography.bodyMedium
+                        style = AppTypography.bodyMedium
                     )
                 }
             }

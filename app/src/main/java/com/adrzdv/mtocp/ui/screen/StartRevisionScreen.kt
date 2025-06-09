@@ -43,9 +43,12 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.navigation.NavController
+import com.adrzdv.mtocp.App
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.RevisionTypeDropdown
+import com.adrzdv.mtocp.ui.theme.AppColors
+import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import com.adrzdv.mtocp.ui.viewmodel.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
@@ -162,12 +165,12 @@ fun StartRevisionScreen(
     Scaffold(
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                containerColor = Color(0xFF4CAF50),
+                containerColor = AppColors.MAIN_GREEN.color,
                 contentColor = Color.White,
                 text = {
                     Text(
                         text = stringResource(R.string.save_string),
-                        style = CustomTypography.labelLarge
+                        style = AppTypography.labelLarge
                     )
                 },
                 icon = {
@@ -188,7 +191,7 @@ fun StartRevisionScreen(
                 title = {
                     Text(
                         text = stringResource(R.string.header_start_revision),
-                        style = CustomTypography.titleLarge
+                        style = AppTypography.titleLarge
                     )
                 },
                 navigationIcon = {
@@ -223,7 +226,7 @@ fun StartRevisionScreen(
             ) {
                 Text(
                     text = stringResource(R.string.order_data_hint),
-                    style = CustomTypography.labelLarge
+                    style = CustomTypography.labelMedium
                 )
                 RevisionTypeDropdown(
                     revisionTypes = orderTypes,
@@ -258,11 +261,16 @@ fun StartRevisionScreen(
                     value = orderNumber,
                     textStyle = CustomTypography.bodyLarge,
                     onValueChange = { orderNumber = it },
-                    label = { Text(text = stringResource(R.string.order_number_hint)) },
+                    label = {
+                        Text(
+                            text = stringResource(R.string.order_number_hint),
+                            style = AppTypography.labelMedium
+                        )
+                    },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFFCCCCCC),
+                        focusedBorderColor = AppColors.OUTLINE_GREEN.color,
                         unfocusedBorderColor = Color(0xFFCCCCCC),
                         focusedContainerColor = Color.White,
                         unfocusedContainerColor = Color.White,
@@ -277,11 +285,16 @@ fun StartRevisionScreen(
                     value = orderRoute,
                     textStyle = CustomTypography.bodyLarge,
                     onValueChange = { orderRoute = it },
-                    label = { Text(stringResource(R.string.order_route_hint)) },
+                    label = {
+                        Text(
+                            stringResource(R.string.order_route_hint),
+                            style = AppTypography.labelMedium
+                        )
+                    },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFFCCCCCC),
+                        focusedBorderColor = AppColors.OUTLINE_GREEN.color,
                         unfocusedBorderColor = Color(0xFFCCCCCC),
                         focusedContainerColor = Color.White,
                         unfocusedContainerColor = Color.White,
@@ -297,7 +310,12 @@ fun StartRevisionScreen(
                     value = dateStart,
                     textStyle = CustomTypography.bodyLarge,
                     onValueChange = {},
-                    label = { Text(stringResource(R.string.order_start_date_hint)) },
+                    label = {
+                        Text(
+                            stringResource(R.string.order_start_date_hint),
+                            style = AppTypography.labelMedium
+                        )
+                    },
                     singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -345,7 +363,12 @@ fun StartRevisionScreen(
                     value = dateEnd,
                     textStyle = CustomTypography.bodyLarge,
                     onValueChange = {},
-                    label = { Text(stringResource(R.string.order_end_date_hint)) },
+                    label = {
+                        Text(
+                            stringResource(R.string.order_end_date_hint),
+                            style = AppTypography.labelMedium
+                        )
+                    },
                     singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -390,7 +413,7 @@ fun StartRevisionScreen(
 
                 if (showExitDialog) {
                     ConfirmDialog(
-                        title = "Выход",
+                        title = stringResource(R.string.exit_text),
                         message = "Вы уверены, что хотите закончить?\n" +
                                 "Несохраненные данные будут утеряны",
                         onConfirm = {

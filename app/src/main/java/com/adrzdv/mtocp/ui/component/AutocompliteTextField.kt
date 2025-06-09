@@ -20,7 +20,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.ui.theme.CustomTypography
+import com.adrzdv.mtocp.ui.theme.AppColors
+import com.adrzdv.mtocp.ui.theme.AppTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,10 +55,10 @@ fun AutocompleteTextField(
             label = {
                 Text(
                     stringResource(R.string.input_text_hint),
-                    style = CustomTypography.labelLarge
+                    style = AppTypography.labelLarge
                 )
             },
-            textStyle = CustomTypography.bodyLarge,
+            textStyle = AppTypography.bodyLarge,
             modifier = Modifier
                 .menuAnchor(MenuAnchorType.PrimaryEditable)
                 .fillMaxWidth(),
@@ -66,7 +67,7 @@ fun AutocompleteTextField(
             enabled = enabled,
             readOnly = false,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color(0xFFCCCCCC),
+                focusedBorderColor = AppColors.OUTLINE_GREEN.color,
                 unfocusedBorderColor = Color(0xFFCCCCCC),
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
@@ -90,7 +91,7 @@ fun AutocompleteTextField(
                     text = {
                         Text(
                             suggestion,
-                            style = CustomTypography.bodyLarge
+                            style = AppTypography.bodyLarge
                         )
                     },
                     onClick = {

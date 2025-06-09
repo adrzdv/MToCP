@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.kapt")
     id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -31,7 +32,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
+        kotlinCompilerExtensionVersion = "1.5.13"
     }
 
     buildTypes {
@@ -58,6 +59,7 @@ dependencies {
     //implementation(libs.androidx.navigation.compose.jvmstubs)
     implementation("androidx.navigation:navigation-compose:2.9.0")
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.room.runtime.android)
     val composeBom = platform("androidx.compose:compose-bom:2024.05.00")
     implementation(composeBom)
 

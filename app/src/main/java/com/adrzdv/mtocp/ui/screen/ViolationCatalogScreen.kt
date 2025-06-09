@@ -16,6 +16,7 @@ import androidx.lifecycle.asFlow
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.ui.component.RevisionTypeDropdown
+import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
 
@@ -43,7 +44,7 @@ fun ViolationCatalogScreen(
                 viewModel.filterDataByString(it)
             },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color(0xFFCCCCCC),
+                focusedBorderColor = AppColors.OUTLINE_GREEN.color,
                 unfocusedBorderColor = Color(0xFFCCCCCC),
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
@@ -55,7 +56,7 @@ fun ViolationCatalogScreen(
             label = {
                 Text(
                     stringResource(R.string.search_text_hint),
-                    style = CustomTypography.labelLarge
+                    style = CustomTypography.labelMedium
                 )
             },
             modifier = Modifier

@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,13 +17,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
-import com.adrzdv.mtocp.ui.theme.CustomTypography
+import com.adrzdv.mtocp.ui.theme.AppColors
+import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.InnerWorkerViewModel
@@ -62,23 +66,30 @@ fun AddWorkerDialog(
                         }
                     }
                 },
+                colors = ButtonDefaults
+                    .buttonColors(containerColor = AppColors.MAIN_GREEN.color),
+                border = null,
                 enabled = tabNumber.isNotBlank()
                         && name.isNotBlank()
                         && selectedWorkerType != null
                         && selectedDepot.isNotBlank()
             ) {
-                Text(stringResource(R.string.add_string))
+                Text(
+                    stringResource(R.string.add_string),
+                    style = AppTypography.bodyMedium
+                )
             }
         },
         dismissButton = {
-            OutlinedButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel))
-            }
+            CustomOutlinedButton(
+                onClick = onDismiss,
+                stringResource(R.string.cancel)
+            )
         },
         title = {
             Text(
                 text = stringResource(R.string.new_worker),
-                style = CustomTypography.displayLarge
+                style = AppTypography.titleMedium
             )
         },
         text = {
@@ -91,27 +102,33 @@ fun AddWorkerDialog(
                 OutlinedTextField(
                     value = tabNumber,
                     onValueChange = { tabNumber = it },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = AppColors.OUTLINE_GREEN.color
+                    ),
                     label = {
                         Text(
                             text = stringResource(R.string.worker_id),
-                            style = CustomTypography.labelLarge
+                            style = AppTypography.labelMedium
                         )
                     },
                     singleLine = true,
-                    textStyle = CustomTypography.bodyMedium
+                    textStyle = AppTypography.bodyMedium
                 )
 
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = AppColors.OUTLINE_GREEN.color
+                    ),
                     label = {
                         Text(
                             text = stringResource(R.string.worker_name),
-                            style = CustomTypography.labelLarge
+                            style = AppTypography.labelMedium
                         )
                     },
                     singleLine = true,
-                    textStyle = CustomTypography.bodyMedium
+                    textStyle = AppTypography.bodyMedium
                 )
 
                 DropdownMenuField(

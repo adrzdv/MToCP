@@ -1,45 +1,39 @@
 package com.adrzdv.mtocp.ui.component
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 
 @Composable
-fun MediumMenuButton(
+fun CustomOutlinedButton(
     onClick: () -> Unit,
-    icon: @Composable () -> Unit,
     text: String
 ) {
     OutlinedButton(
         onClick = onClick,
-        colors = ButtonDefaults
-            .buttonColors(containerColor = AppColors.MAIN_GREEN.color),
-        border = null
+        border = null,
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = AppColors.MAIN_GREEN.color
+        )
     ) {
-        icon()
-        Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = text,
-            style = AppTypography.labelLarge
+            style = AppTypography.bodyMedium
         )
-
     }
 }
 
 @Preview
 @Composable
-fun ButtonPreview() {
-    MediumMenuButton(
+fun ShowCustomOutline() {
+    CustomOutlinedButton(
         onClick = {},
-        icon = {},
-        text = "TEXT"
+        text = "Some text"
     )
 }

@@ -18,17 +18,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.asFlow
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.ui.theme.CustomTypography
+import com.adrzdv.mtocp.ui.theme.AppColors
+import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 
 @Composable
@@ -54,7 +53,7 @@ fun DepotCatalogScreen(
                 viewModel.filterByString(it)
             },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color(0xFFCCCCCC),
+                focusedBorderColor = AppColors.OUTLINE_GREEN.color,
                 unfocusedBorderColor = Color(0xFFCCCCCC),
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
@@ -66,7 +65,7 @@ fun DepotCatalogScreen(
             label = {
                 Text(
                     stringResource(R.string.search_depot_hint),
-                    style = CustomTypography.labelLarge
+                    style = AppTypography.labelMedium
                 )
             },
             modifier = Modifier
@@ -86,7 +85,7 @@ fun DepotCatalogScreen(
                 ) {
                     Text(
                         text = depot.name,
-                        style = CustomTypography.bodyLarge,
+                        style = AppTypography.bodyLarge,
                         color = Color.Black
                     )
 
@@ -98,13 +97,13 @@ fun DepotCatalogScreen(
                     ) {
                         Text(
                             text = depot.shortName,
-                            style = CustomTypography.bodyMedium,
+                            style = AppTypography.bodyMedium,
                             color = Color.Gray
                         )
 
                         Text(
                             text = depot.phoneNumber,
-                            style = CustomTypography.bodyMedium,
+                            style = AppTypography.bodyMedium,
                             color = Color.Black,
                             modifier = Modifier.clickable {
                                 val clip = ClipData.newPlainText("phone", depot.phoneNumber)
@@ -117,7 +116,7 @@ fun DepotCatalogScreen(
 
                     Text(
                         text = "${depot.branchName}, ${depot.branchShortName}",
-                        style = CustomTypography.bodyMedium,
+                        style = AppTypography.bodyMedium,
                         color = Color.DarkGray
                     )
                 }

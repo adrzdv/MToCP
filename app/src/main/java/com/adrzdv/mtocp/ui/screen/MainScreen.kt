@@ -1,31 +1,22 @@
 package com.adrzdv.mtocp.ui.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.ConfirmDialog
 import com.adrzdv.mtocp.ui.component.MenuButton
-import com.adrzdv.mtocp.ui.theme.CustomTypography
-import kotlin.text.Typography
+import com.adrzdv.mtocp.ui.theme.AppTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,11 +56,11 @@ fun StartMenuScreen(
 
                 Text(
                     text = stringResource(R.string.main_menu_text),
-                    style = CustomTypography.displayLarge,
+                    style = AppTypography.titleLarge,
                     modifier = Modifier.padding(start = 16.dp)
                 )
 
-                Spacer(modifier = Modifier.height(32.dp)) // аналог горизонтального отступа до кнопок
+                Spacer(modifier = Modifier.height(32.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -132,7 +123,7 @@ fun StartMenuScreen(
 
             if (showExitDialog) {
                 ConfirmDialog(
-                    title = "Выход",
+                    title = stringResource(R.string.exit_text),
                     message = "Вы уверены, что хотите выйти?",
                     onConfirm = {
                         showExitDialog = false

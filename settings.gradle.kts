@@ -8,8 +8,9 @@ pluginManagement {
     plugins {
         id("com.android.application") version "8.10.1"
         id("com.android.library") version "8.10.1"
-        kotlin("android") version "1.9.22"
-        kotlin("kapt") version "1.9.22"
+        kotlin("android") version "2.1.10"
+        kotlin("kapt") version "2.1.10"
+        id("org.jetbrains.kotlin.plugin.compose") version "2.1.10"
     }
 }
 dependencyResolutionManagement {

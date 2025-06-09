@@ -40,4 +40,8 @@
     <string name="worker_depot">Предприятие</string>
     <string name="delete">Удалить</string>
     <string name="new_worker">Новый работник</string>
+    <string name="new_coach">Новый вагон</string>
+    <string name="quality_passport">Паспорт качества</string>
+    <string name="yes_string">Да</string>
+    <string name="coach_number">Номер вагона</string>
 </resources>

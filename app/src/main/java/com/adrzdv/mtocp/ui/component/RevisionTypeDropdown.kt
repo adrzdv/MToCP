@@ -10,7 +10,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.adrzdv.mtocp.ui.theme.CustomTypography
+import com.adrzdv.mtocp.ui.theme.AppColors
+import com.adrzdv.mtocp.ui.theme.AppTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,7 +42,7 @@ fun RevisionTypeDropdown(
                 .fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color(0xFFCCCCCC),
+                focusedBorderColor = AppColors.OUTLINE_GREEN.color,
                 unfocusedBorderColor = Color(0xFFCCCCCC),
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
@@ -64,7 +65,7 @@ fun RevisionTypeDropdown(
                     text = {
                         Text(
                             type,
-                            style = CustomTypography.bodyLarge
+                            style = AppTypography.bodyLarge
                         )
                     },
                     onClick = {

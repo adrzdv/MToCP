@@ -13,24 +13,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.adrzdv.mtocp.ui.theme.CustomTypography
+import com.adrzdv.mtocp.ui.theme.AppColors
+import com.adrzdv.mtocp.ui.theme.AppTypography
 
 @Composable
 fun CustomSnackbarHost(
     hostState: SnackbarHostState,
-    backgroundColor: Color = Color(0xFF4CAF50).copy(alpha = 0.5f)
 ) {
     SnackbarHost(
         hostState = hostState,
         snackbar = { snackbarData ->
             Snackbar(
-                containerColor = backgroundColor,
+                containerColor = AppColors.ERROR.color,
                 contentColor = Color.White,
-                shape = RoundedCornerShape(30.dp),
+                shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
                     .padding(8.dp)
-                    .widthIn(min = 0.dp, max = 320.dp),
+                    .widthIn(min = 120.dp, max = 420.dp),
                 action = {
                     snackbarData.visuals.actionLabel?.let {
                         TextButton(onClick = {
@@ -44,7 +45,7 @@ fun CustomSnackbarHost(
                 Text(
                     snackbarData.visuals.message,
                     color = Color.White,
-                    style = CustomTypography.labelLarge,
+                    style = AppTypography.labelLarge,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )

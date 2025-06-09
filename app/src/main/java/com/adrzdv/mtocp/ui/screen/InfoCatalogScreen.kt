@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -22,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,7 +33,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.ui.theme.CustomTypography
+import com.adrzdv.mtocp.ui.theme.AppColors
+import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
@@ -77,7 +80,12 @@ fun InfoCatalogScreen(
                 Spacer(Modifier.height(16.dp))
                 menuItems.forEach() { menuItem ->
                     NavigationDrawerItem(
-                        label = { Text(menuItem.title) },
+                        label = {
+                            Text(
+                                text = menuItem.title,
+                                style = AppTypography.labelSmall
+                            )
+                        },
                         icon = { Icon(menuItem.icon, contentDescription = null) },
                         selected = navController.currentDestination?.route == menuItem.route,
                         onClick = {
@@ -88,7 +96,15 @@ fun InfoCatalogScreen(
                                     popUpTo(0)
                                 }
                             }
-                        }
+                        },
+                        colors = NavigationDrawerItemDefaults.colors(
+                            selectedContainerColor = AppColors.MAIN_GREEN.color,
+                            selectedIconColor = Color.White,
+                            selectedTextColor = Color.White,
+                            unselectedContainerColor = Color.Transparent,
+                            unselectedIconColor = Color.Gray,
+                            unselectedTextColor = Color.Gray
+                        ),
                     )
                 }
             }
@@ -101,7 +117,7 @@ fun InfoCatalogScreen(
                         Spacer(modifier = Modifier.height(0.dp))
                         Text(
                             text = currentTitle,
-                            style = CustomTypography.titleLarge
+                            style = AppTypography.titleLarge
                         )
                     },
                     navigationIcon = {

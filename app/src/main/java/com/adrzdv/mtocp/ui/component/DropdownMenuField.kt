@@ -10,7 +10,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
-import com.adrzdv.mtocp.ui.theme.CustomTypography
+import com.adrzdv.mtocp.ui.theme.AppColors
+import com.adrzdv.mtocp.ui.theme.AppTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,11 +32,14 @@ fun DropdownMenuField(
         OutlinedTextField(
             value = selectedOption,
             onValueChange = {},
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = AppColors.OUTLINE_GREEN.color
+            ),
             readOnly = true,
             label = {
                 Text(
                     text = label,
-                    style = CustomTypography.labelLarge
+                    style = AppTypography.labelMedium
                 )
             },
             trailingIcon = {
@@ -51,7 +55,7 @@ fun DropdownMenuField(
                     text = {
                         Text(
                             text = selectedOption,
-                            style = CustomTypography.bodyMedium
+                            style = AppTypography.bodyMedium
                         )
                     },
                     onClick = {
