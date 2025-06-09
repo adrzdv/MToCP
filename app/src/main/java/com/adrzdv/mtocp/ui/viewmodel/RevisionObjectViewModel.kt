@@ -1,22 +1,22 @@
 package com.adrzdv.mtocp.ui.viewmodel
 
-import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject
 
-class RevisionObjectViewModel: ViewModel() {
-    private val _coaches = mutableStateMapOf<String, RevisionObject>()
-    val coaches: Map<String, RevisionObject> = _coaches
+class RevisionObjectViewModel<T: RevisionObject>: ViewModel() {
+    private val _revObjects = mutableStateListOf<T>()
+    val revObjects: List<T> = _revObjects
 
-    fun addRevObject(revObject: RevisionObject) {
-        _coaches.put(revObject.number, revObject)
+    fun addRevObject(item: T) {
+        _revObjects.add(item)
     }
 
-    fun removeRevObject(revObject: RevisionObject) {
-        _coaches.remove(revObject.number)
+    fun removeRevObject(item: T) {
+        _revObjects.remove(item)
     }
 
     fun cleanMap() {
-        _coaches.clear()
+        _revObjects.clear()
     }
 }

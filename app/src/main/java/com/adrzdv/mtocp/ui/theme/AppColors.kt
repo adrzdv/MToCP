@@ -12,5 +12,5 @@ enum class AppColors(val color: Color) {
     SURFACE(Color.White),
     OFF_WHITE(Color(0xFFFAFAF9)),
     ERROR(Color(0xFFC62828)),
-    LIGHT_GREY(Color(0xFFF0F0F0))
+    LIGHT_GRAY(Color(0xFFF0F0F0))
 }

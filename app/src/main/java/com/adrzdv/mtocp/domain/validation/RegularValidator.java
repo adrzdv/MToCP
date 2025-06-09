@@ -18,7 +18,7 @@ public abstract class RegularValidator {
         doAddRevisionObject(o);
     }
 
-    public final void addWorker(WorkerDomain worker) {
+    public final void addCreWorker(WorkerDomain worker) {
         validateWorker(worker);
         doAddWorker(worker);
     }

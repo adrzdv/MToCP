@@ -100,13 +100,80 @@ public class OrderViewModel extends ViewModel {
                     collectableOrder.setCollector(collector);
                 }
             }
-
             order.setValue(newOrder);
-
         }
     }
 
-    public ObjectCollector createCollector(String objectNumber) {
+    public void clearRevisionObjects() {
+        Order currOrder = order.getValue();
+        if (currOrder != null) {
+            currOrder.clearRevisionObjects();
+            order.setValue(currOrder);
+        }
+    }
+
+    public void clearCrew() {
+        Order currOrder = order.getValue();
+        if (currOrder != null) {
+            currOrder.clearCrewWorkers();
+            order.setValue(currOrder);
+        }
+    }
+
+    public void deleteCrewWorker(WorkerDomain worker) {
+        Order currOrder = order.getValue();
+        if (currOrder != null) {
+            currOrder.deleteCrewWorker(worker);
+            order.setValue(currOrder);
+        }
+    }
+
+    public void deleteRevisionObject(RevisionObject o) {
+        Order currOrder = order.getValue();
+        if (currOrder != null) {
+            currOrder.deleteRevisionObject(o);
+            order.setValue(currOrder);
+        }
+    }
+
+    public void addRevisionObject(RevisionObject revisionObject) {
+        Order currOrder = order.getValue();
+        if (currOrder != null) {
+            currOrder.addRevisionObject(revisionObject);
+            order.setValue(currOrder);
+        }
+    }
+
+    public void addCrewWorker(WorkerDomain workerDomain) {
+        Order currOrder = order.getValue();
+        if (currOrder != null) {
+            currOrder.addCreWorker(workerDomain);
+            order.setValue(currOrder);
+        }
+    }
+
+    public void addQualityPassport(boolean isQualityPassport) {
+        Order currOrder = order.getValue();
+
+        if (currOrder != null) {
+            if (currOrder instanceof CollectableOrder that) {
+                that.setIsQualityPassport(isQualityPassport);
+                order.setValue(currOrder);
+            }
+
+        }
+
+    }
+
+    public boolean checkCrew() {
+        Order currOrder = order.getValue();
+        if (currOrder != null) {
+            return currOrder.checkCrew();
+        }
+        return false;
+    }
+
+    private ObjectCollector createCollector(String objectNumber) {
 
         if (selectedType.equals(PASSENGER_TRAIN)) {
             Future<TrainDomain> future = executor.submit(
@@ -129,77 +196,6 @@ public class OrderViewModel extends ViewModel {
         } else if (selectedType.equals(TICKET_OFFICE)) {
             return null;
         }
-
         return null;
     }
-
-    public void clearRevisionObjects() {
-        Order currOrder = order.getValue();
-
-        if (currOrder != null) {
-            currOrder.clearRevisionObjects();
-            order.setValue(currOrder);
-        }
-
-    }
-
-    public void clearCrew() {
-        Order currOrder = order.getValue();
-
-        if (currOrder != null) {
-            currOrder.clearCrewWorkers();
-            order.setValue(currOrder);
-        }
-
-    }
-
-    public void addRevisionObject(RevisionObject revisionObject) {
-
-        Order currOrder = order.getValue();
-
-        if (currOrder != null) {
-            currOrder.addRevisionObject(revisionObject);
-            order.setValue(currOrder);
-        }
-
-    }
-
-    public void addWorker(WorkerDomain workerDomain) {
-
-        Order currOrder = order.getValue();
-
-        if (currOrder != null) {
-            currOrder.addWorker(workerDomain);
-            order.setValue(currOrder);
-        }
-
-    }
-
-    public void addQualityPassport(boolean isQualityPassport) {
-
-        Order currOrder = order.getValue();
-
-        if (currOrder instanceof CollectableOrder that) {
-            ObjectCollector collector = that.getCollector();
-
-            if (collector != null) {
-                collector.setQualityPassport(isQualityPassport);
-                that.setCollector(collector);
-                order.setValue(currOrder);
-            }
-
-        }
-
-    }
-
-    public boolean checkCrew() {
-
-        Order currOrder = order.getValue();
-
-        if (currOrder != null) {
-            return currOrder.checkCrew();
-        }
-        return false;
-    }
-
 }

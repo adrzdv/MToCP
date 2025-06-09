@@ -36,7 +36,7 @@ fun AddWorkerDialog(
     orderViewModel: OrderViewModel,
     depotViewModel: DepotViewModel,
     onDismiss: () -> Unit,
-    innerWorkerViewModel: InnerWorkerViewModel = viewModel(),
+    innerWorkerViewModel: InnerWorkerViewModel,
 ) {
     var tabNumber by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
@@ -52,7 +52,7 @@ fun AddWorkerDialog(
     ) {
         val depotDomain = depotViewModel.getDepotDomain(selectedDepot)
         val worker = InnerWorkerDomain(number.toInt(), name, depotDomain, workerType)
-        orderViewModel.addWorker(worker)
+        orderViewModel.addCrewWorker(worker)
         innerWorkerViewModel.addWorker(worker)
     }
 

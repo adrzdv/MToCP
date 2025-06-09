@@ -1,5 +1,7 @@
 package com.adrzdv.mtocp.domain.model.order;
 
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
+import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 import com.adrzdv.mtocp.domain.validation.RegularValidator;
 
 import java.time.LocalDateTime;
@@ -55,4 +57,6 @@ public abstract class Order extends RegularValidator {
     public abstract void clearCrewWorkers();
     public abstract void clearRevisionObjects();
     public abstract boolean checkCrew();
+    public abstract void deleteCrewWorker(WorkerDomain worker);
+    public abstract void deleteRevisionObject(RevisionObject o);
 }

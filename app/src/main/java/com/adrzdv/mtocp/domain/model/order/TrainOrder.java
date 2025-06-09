@@ -43,8 +43,14 @@ public class TrainOrder extends Order implements CollectableOrder {
         return train.checkAllCrewIsAdded();
     }
 
-    public ObjectCollector getTrain() {
-        return train;
+    @Override
+    public void deleteCrewWorker(WorkerDomain worker) {
+        train.deleteCreWorker(worker);
+    }
+
+    @Override
+    public void deleteRevisionObject(RevisionObject o) {
+        train.deleteRevisionObject(o);
     }
 
     @Override

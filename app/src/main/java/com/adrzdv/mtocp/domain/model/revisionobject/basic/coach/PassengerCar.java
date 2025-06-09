@@ -10,7 +10,7 @@ import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType;
 public class PassengerCar extends Coach {
     private PassengerCoachType coachType;
     private DepotDomain depotDomain;
-    private Boolean isTrailong;
+    private Boolean isTrailing;
 
     public PassengerCar(String number) {
         super(number);
@@ -24,12 +24,12 @@ public class PassengerCar extends Coach {
         this.coachType = coachType;
     }
 
-    public Boolean getTrailong() {
-        return isTrailong;
+    public Boolean getTrailing() {
+        return isTrailing;
     }
 
-    public void setTrailong(Boolean trailong) {
-        isTrailong = trailong;
+    public void setTrailing(Boolean trailing) {
+        isTrailing = trailing;
     }
 
     public DepotDomain getDepotDomain() {

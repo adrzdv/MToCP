@@ -39,6 +39,16 @@ public class BaggageOrder extends Order {
     }
 
     @Override
+    public void deleteCrewWorker(WorkerDomain worker) {
+        workerMap.remove(worker.getId());
+    }
+
+    @Override
+    public void deleteRevisionObject(RevisionObject o) {
+        coachMap.remove(o.getNumber());
+    }
+
+    @Override
     protected void doAddWorker(WorkerDomain worker) {
         if (worker instanceof OuterWorkerDomain that) {
             workerMap.put(that.getId(), that);

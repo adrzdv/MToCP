@@ -94,4 +94,8 @@ public class TrainDomain extends ObjectCollector {
     public void clearCrewMap() {
         workerMap.clear();
     }
+
+    public void deleteCreWorker(WorkerDomain worker) {
+        workerMap.remove(worker.getWorkerType().getDescription());
+    }
 }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,7 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.ui.component.AddCoachDialog
+import com.adrzdv.mtocp.ui.component.CoachItemCard
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.MediumMenuButton
 import com.adrzdv.mtocp.ui.theme.AppColors
@@ -45,12 +48,11 @@ fun AddCoachScreen(
     orderViewModel: OrderViewModel,
     navController: NavController,
     depotViewModel: DepotViewModel,
-    onBackPressed: () -> Unit,
-    coachViewModel: RevisionObjectViewModel = viewModel()
+    coachViewModel: RevisionObjectViewModel<PassengerCar> = viewModel()
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     var showDialog by remember { mutableStateOf(false) }
-    val coaches = coachViewModel.coaches
+    val coaches = coachViewModel.revObjects
     val scope = rememberCoroutineScope()
 
     Scaffold(
@@ -64,7 +66,7 @@ fun AddCoachScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = {
-
+                        navController.popBackStack()
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_back_32),
@@ -125,7 +127,8 @@ fun AddCoachScreen(
 
                 MediumMenuButton(
                     onClick = {
-
+                        orderViewModel.clearRevisionObjects()
+                        coachViewModel.cleanMap()
                     },
                     icon = {
                         Icon(
@@ -143,7 +146,12 @@ fun AddCoachScreen(
                 verticalArrangement = Arrangement.spacedBy(6.dp),
                 modifier = Modifier.fillMaxSize()
             ) {
-
+                items(coaches) { coach ->
+                    CoachItemCard(coach = coach) {
+                        coachViewModel.removeRevObject(coach)
+                        orderViewModel.deleteRevisionObject(coach)
+                    }
+                }
             }
         }
     }
@@ -154,7 +162,8 @@ fun AddCoachScreen(
             depotViewModel,
             onDismiss = {
                 showDialog = false
-            }
+            },
+            coachViewModel
         )
     }
 }

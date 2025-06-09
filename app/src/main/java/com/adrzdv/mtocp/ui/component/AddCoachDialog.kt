@@ -11,6 +11,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -21,24 +23,50 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.adrzdv.mtocp.App
+import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.domain.model.departments.DepotDomain
+import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.RevisionObjectViewModel
 
 @Composable
 fun AddCoachDialog(
     orderViewModel: OrderViewModel,
     depotViewModel: DepotViewModel,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    coachViewModel: RevisionObjectViewModel<PassengerCar>
 ) {
     var coachNumber by remember { mutableStateOf("") }
     var selectedDepot by remember { mutableStateOf("") }
     var checkedTrailingCar by remember { mutableStateOf(false) }
     var trailingRoute by remember { mutableStateOf("") }
+    var typeCoachSelected by remember { mutableStateOf<PassengerCoachType?>(null) }
+    val context = LocalContext.current
+
+    fun addCoach() {
+        val revObject = PassengerCar(coachNumber)
+        val depot: DepotDomain = depotViewModel.getDepotDomain(selectedDepot)
+        revObject.depotDomain = depot
+        revObject.trailing = checkedTrailingCar
+        revObject.coachType = typeCoachSelected
+        revObject.coachRoute = trailingRoute
+        try {
+            orderViewModel.addRevisionObject(revObject)
+            coachViewModel.addRevObject(revObject)
+            onDismiss()
+        } catch (e: IllegalArgumentException) {
+            App.showToast(context, MessageCodes.PATTERN_MATCHES_ERROR.errorTitle)
+        }
+    }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -46,7 +74,7 @@ fun AddCoachDialog(
         confirmButton = {
             Button(
                 onClick = {
-
+                    addCoach()
                 },
                 colors = ButtonDefaults
                     .buttonColors(
@@ -85,8 +113,7 @@ fun AddCoachDialog(
                     value = coachNumber,
                     onValueChange = { coachNumber = it },
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = AppColors.OUTLINE_GREEN.color,
-                        focusedContainerColor = AppColors.OFF_WHITE.color
+                        focusedBorderColor = AppColors.OUTLINE_GREEN.color
                     ),
                     label = {
                         Text(
@@ -98,20 +125,16 @@ fun AddCoachDialog(
                     textStyle = AppTypography.bodyMedium
                 )
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    Checkbox(
-                        checked = checkedTrailingCar,
-                        onCheckedChange = { checkedTrailingCar = it }
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = stringResource(R.string.quality_passport),
-                        style = AppTypography.labelLarge
-                    )
-                }
+                DropdownMenuField(
+                    label = stringResource(R.string.coach_type),
+                    options = PassengerCoachType.values().map { it.revisionObjectTitle },
+                    selectedOption = typeCoachSelected?.revisionObjectTitle ?: "",
+                    onOptionSelected = { selected ->
+                        typeCoachSelected = PassengerCoachType.values().firstOrNull() {
+                            it.revisionObjectTitle == selected
+                        }
+                    }
+                )
 
                 DropdownMenuField(
                     label = stringResource(R.string.worker_depot),
@@ -120,13 +143,31 @@ fun AddCoachDialog(
                     onOptionSelected = { selectedDepot = it }
                 )
 
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Checkbox(
+                        checked = checkedTrailingCar,
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = AppColors.MAIN_GREEN.color,
+                            checkmarkColor = AppColors.OFF_WHITE.color
+                        ),
+                        onCheckedChange = { checkedTrailingCar = it }
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = stringResource(R.string.trailing_string),
+                        style = AppTypography.labelLarge
+                    )
+                }
+
                 OutlinedTextField(
                     value = trailingRoute,
                     enabled = checkedTrailingCar,
                     onValueChange = { trailingRoute = it },
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = AppColors.OUTLINE_GREEN.color,
-                        focusedContainerColor = AppColors.OFF_WHITE.color
+                        focusedBorderColor = AppColors.OUTLINE_GREEN.color
                     ),
                     label = {
                         Text(

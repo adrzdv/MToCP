@@ -72,4 +72,12 @@ public abstract class ObjectCollector {
     public void clearObjects() {
         objectsMap.clear();
     }
+
+    public void deleteRevisionObject(RevisionObject o) {
+        objectsMap.remove(o.getNumber());
+    }
+
+    public void addRevisionObject(RevisionObject o) {
+        objectsMap.put(o.getNumber(), o);
+    }
 }

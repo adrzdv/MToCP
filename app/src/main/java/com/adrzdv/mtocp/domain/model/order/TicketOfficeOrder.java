@@ -36,6 +36,16 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
     }
 
     @Override
+    public void deleteCrewWorker(WorkerDomain worker) {
+        clearCrewWorkers();
+    }
+
+    @Override
+    public void deleteRevisionObject(RevisionObject o) {
+        ticketOffice.getObjectsMap().remove(o.getNumber());
+    }
+
+    @Override
     public void setCollector(ObjectCollector collector) {
         if (collector instanceof TicketOfficeDomain that) {
             this.ticketOffice = that;

@@ -94,19 +94,13 @@ fun RevisionScreen(
                     orderViewModel = orderViewModel,
                     navController = navRevisionController,
                     depotViewModel = depotViewModel,
-                    onBackPress = {
-                        navRevisionController.popBackStack()
-                    }
                 )
             }
             composable("addCoaches") {
                 AddCoachScreen(
                     orderViewModel = orderViewModel,
                     depotViewModel = depotViewModel,
-                    navController = navRevisionController,
-                    onBackPressed = {
-                        navRevisionController.popBackStack()
-                    }
+                    navController = navRevisionController
                 )
             }
         }

@@ -46,4 +46,6 @@
     <string name="coach_number">Номер вагона</string>
     <string name="trailing_route">Маршрут вагона</string>
     <string name="object_number">Номер объекта проверки</string>
+    <string name="trailing_string">Прицепной</string>
+    <string name="coach_type">Тип вагона</string>
 </resources>

@@ -46,11 +46,10 @@ fun AddCrewScreen(
     orderViewModel: OrderViewModel,
     navController: NavController,
     depotViewModel: DepotViewModel,
-    onBackPress: () -> Unit,
-    viewModel: InnerWorkerViewModel = viewModel()
+    workerViewModel: InnerWorkerViewModel = viewModel()
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
-    val workers = viewModel.workers
+    val workers = workerViewModel.workers
     var showDialog by remember { mutableStateOf(false) }
     var checkedQualityPassport by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -65,7 +64,7 @@ fun AddCrewScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { onBackPress() }) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_back_32),
                             contentDescription = stringResource(R.string.back_text)
@@ -134,7 +133,7 @@ fun AddCrewScreen(
 
                 MediumMenuButton(
                     onClick = {
-                        viewModel.cleanWorkers()
+                        workerViewModel.cleanWorkers()
                         orderViewModel.clearCrew()
                     },
                     icon = {
@@ -153,6 +152,10 @@ fun AddCrewScreen(
             ) {
                 Checkbox(
                     checked = checkedQualityPassport,
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = AppColors.MAIN_GREEN.color,
+                        checkmarkColor = AppColors.OFF_WHITE.color
+                    ),
                     onCheckedChange = { checkedQualityPassport = it }
                 )
                 Spacer(modifier = Modifier.width(6.dp))
@@ -170,7 +173,8 @@ fun AddCrewScreen(
             ) {
                 items(workers) { worker ->
                     InnerWorkerItemCard(worker = worker) {
-                        viewModel.removeWorker(worker)
+                        workerViewModel.removeWorker(worker)
+                        orderViewModel.deleteCrewWorker(worker)
                     }
                 }
             }
@@ -183,7 +187,8 @@ fun AddCrewScreen(
             depotViewModel,
             onDismiss = {
                 showDialog = false
-            }
+            },
+            innerWorkerViewModel = workerViewModel
         )
     }
 }
