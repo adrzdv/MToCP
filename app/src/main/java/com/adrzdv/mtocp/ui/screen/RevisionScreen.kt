@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.ConfirmDialog
+import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import com.adrzdv.mtocp.ui.viewmodel.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
@@ -74,7 +76,9 @@ fun RevisionScreen(
         NavHost(
             navController = navRevisionController,
             startDestination = "startRevision",
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(innerPadding)
+                .background(color = AppColors.OFF_WHITE.color)
         ) {
             composable("startRevision") {
                 StartRevisionScreen(
@@ -95,11 +99,16 @@ fun RevisionScreen(
                     }
                 )
             }
-//            composable("addCoaches") {
-//                AddCoachScreen(
-//
-//                )
-//            }
+            composable("addCoaches") {
+                AddCoachScreen(
+                    orderViewModel = orderViewModel,
+                    depotViewModel = depotViewModel,
+                    navController = navRevisionController,
+                    onBackPressed = {
+                        navRevisionController.popBackStack()
+                    }
+                )
+            }
         }
     }
 

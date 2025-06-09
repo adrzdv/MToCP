@@ -1,6 +1,8 @@
 package com.adrzdv.mtocp.ui.component
 
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -23,6 +25,7 @@ fun ConfirmDialog(
     val buttonConfirmationStyle = AppTypography.labelLarge
     AlertDialog(
         onDismissRequest = onDismiss,
+        containerColor = AppColors.OFF_WHITE.color,
         title = {
             Text(
                 text = title,
@@ -39,7 +42,8 @@ fun ConfirmDialog(
             TextButton(onClick = onConfirm) {
                 Text(
                     text = confirmText,
-                    style = buttonConfirmationStyle
+                    style = buttonConfirmationStyle,
+                    color = AppColors.MAIN_GREEN.color
                 )
             }
         },
@@ -47,7 +51,8 @@ fun ConfirmDialog(
             TextButton(onClick = onDismiss) {
                 Text(
                     text = dismissText,
-                    style = buttonConfirmationStyle
+                    style = buttonConfirmationStyle,
+                    color = AppColors.MAIN_GREEN.color
                 )
             }
         }

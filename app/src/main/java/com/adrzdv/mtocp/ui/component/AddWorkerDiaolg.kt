@@ -56,6 +56,7 @@ fun AddWorkerDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
+        containerColor = AppColors.OFF_WHITE.color,
         confirmButton = {
             Button(
                 onClick = {
