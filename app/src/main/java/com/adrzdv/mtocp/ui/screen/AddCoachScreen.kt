@@ -45,6 +45,7 @@ import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.RevisionObjectViewModel
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -143,6 +144,65 @@ fun AddCoachScreen(
                     },
                     stringResource(R.string.clean_string)
                 )
+            }
+
+            HorizontalDivider()
+
+            //add text fields
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Уведомление:",
+                    style = AppTypography.bodyLarge
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+                val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+                val formattedDate = orderViewModel.dateEnd.format(formatter)
+                Text(
+                    text = "${orderViewModel.orderNumber} от $formattedDate",
+                    style = AppTypography.bodyLarge
+                )
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Маршрут:",
+                    style = AppTypography.bodyLarge
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = orderViewModel.route,
+                    style = AppTypography.bodyLarge
+                )
+            }
+
+            if (train != null) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Номер объекта:",
+                        style = AppTypography.bodyLarge
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "${train.number} ${train.route}",
+                        style = AppTypography.bodyLarge
+                    )
+                }
             }
 
             HorizontalDivider()
