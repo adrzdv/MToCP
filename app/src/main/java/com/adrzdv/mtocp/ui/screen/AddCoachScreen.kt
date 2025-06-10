@@ -66,7 +66,7 @@ fun AddCoachScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(R.string.masters_object),
+                        text = stringResource(R.string.train_scheme),
                         style = AppTypography.titleLarge
                     )
                 },
@@ -184,25 +184,6 @@ fun AddCoachScreen(
                     text = orderViewModel.route,
                     style = AppTypography.bodyLarge
                 )
-            }
-
-            if (train != null) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Номер объекта:",
-                        style = AppTypography.bodyLarge
-                    )
-
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "${train.number} ${train.route}",
-                        style = AppTypography.bodyLarge
-                    )
-                }
             }
 
             HorizontalDivider()
