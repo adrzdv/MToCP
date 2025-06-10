@@ -16,6 +16,8 @@ import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 import com.adrzdv.mtocp.domain.repository.TrainRepository;
 
+import org.jspecify.annotations.Nullable;
+
 import java.time.LocalDateTime;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -160,9 +162,7 @@ public class OrderViewModel extends ViewModel {
                 that.setIsQualityPassport(isQualityPassport);
                 order.setValue(currOrder);
             }
-
         }
-
     }
 
     public boolean checkCrew() {
@@ -171,6 +171,14 @@ public class OrderViewModel extends ViewModel {
             return currOrder.checkCrew();
         }
         return false;
+    }
+
+    public @Nullable ObjectCollector getCollector() {
+        Order currOrder = order.getValue();
+        if (currOrder instanceof CollectableOrder that) {
+            return that.getCollector();
+        }
+        return null;
     }
 
     private ObjectCollector createCollector(String objectNumber) {
