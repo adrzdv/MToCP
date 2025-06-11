@@ -21,7 +21,8 @@ public enum MessageCodes {
     DIRECTORY_FAIL("013#DIRECTORY_ERROR", "Ошибка очистки директорий"),
     FILE_MANAGER_ERROR("014#FMANAGER_ERROR", "Файловый менеджер отсутствует"),
     CREW_ERROR("015#CREW_ERROR", "Отсутствует ЛНП/ПЭМ"),
-    PATTERN_MATCHES_ERROR("016#PATTERN_ERROR", "Ошибка соответствия данных");
+    PATTERN_MATCHES_ERROR("016#PATTERN_ERROR", "Ошибка соответствия данных"),
+    DUPLICATE_ERROR("017#DUPLICATE", "Объект уже добавлен");
 
     @NonNull
     private final String errorCode;

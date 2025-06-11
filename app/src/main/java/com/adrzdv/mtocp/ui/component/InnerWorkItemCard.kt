@@ -48,7 +48,7 @@ fun InnerWorkerItemCard(worker: InnerWorkerDomain, onDeleteClick: () -> Unit) {
                 )
                 val info = listOfNotNull(
                     worker.workerType?.description,
-                    worker.depotDomain?.name
+                    worker.depotDomain?.shortName
                 ).joinToString(", ")
                 if (info.isNotBlank()) {
                     Text(

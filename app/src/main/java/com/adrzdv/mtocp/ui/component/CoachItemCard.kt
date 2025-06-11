@@ -44,7 +44,7 @@ fun CoachItemCard(
             Column(modifier = Modifier.weight(1f)) {
                 val coachNumber = listOfNotNull(
                     coach.number,
-                    coach.coachType.revisionObjectTitle
+                    coach.coachType.passengerCoachTitle
                 ).joinToString(", ")
                 Text(
                     coachNumber,

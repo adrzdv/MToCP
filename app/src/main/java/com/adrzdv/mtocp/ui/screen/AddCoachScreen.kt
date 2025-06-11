@@ -3,12 +3,9 @@ package com.adrzdv.mtocp.ui.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -34,11 +31,15 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
 import com.adrzdv.mtocp.ui.component.AddCoachDialog
+import com.adrzdv.mtocp.ui.component.AppFullscreenDialog
 import com.adrzdv.mtocp.ui.component.CoachItemCard
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
+import com.adrzdv.mtocp.ui.component.InfoBlockWithLabel
+import com.adrzdv.mtocp.ui.component.InfoRowBlock
 import com.adrzdv.mtocp.ui.component.MediumMenuButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
@@ -88,7 +89,7 @@ fun AddCoachScreen(
                 contentColor = Color.White,
                 containerColor = AppColors.MAIN_GREEN.color,
                 onClick = {
-
+                    //after save
                 },
                 icon = {
                     Icon(
@@ -135,6 +136,7 @@ fun AddCoachScreen(
                     onClick = {
                         orderViewModel.clearRevisionObjects()
                         coachViewModel.cleanMap()
+                        orderViewModel.updateTrainScheme()
                     },
                     icon = {
                         Icon(
@@ -148,66 +150,39 @@ fun AddCoachScreen(
 
             HorizontalDivider()
 
-            //add text fields
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Уведомление:",
-                    style = AppTypography.bodyLarge
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
+            if (train != null) {
                 val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
                 val formattedDate = orderViewModel.dateEnd.format(formatter)
-                Text(
-                    text = "${orderViewModel.orderNumber} от $formattedDate",
-                    style = AppTypography.bodyLarge
+                val train = orderViewModel.collector as TrainDomain
+
+                val trainScheme = StringBuilder()
+                trainScheme.append("ВСЕГО: ")
+                    .append((orderViewModel.collector as TrainDomain).countObjects()).append(" (")
+
+                for (type in PassengerCoachType.entries) {
+                    val coaches = train.countPassCoachType(type)
+                    if (coaches > 0) {
+                        trainScheme.append(type.passengerCoachTitle).append("-").append(coaches)
+                    }
+                }
+                trainScheme.append(")")
+                val propList =
+                    listOf(
+                        stringResource(R.string.order_text)
+                                to "${orderViewModel.orderNumber} от $formattedDate",
+                        stringResource(R.string.route) to orderViewModel.route,
+                        stringResource(R.string.object_data) to train.number + " " + train.route,
+                        stringResource(R.string.scheme) to trainScheme.toString()
+                    )
+
+                InfoBlockWithLabel(
+                    stringResource(R.string.info),
+                    propList
                 )
+
             }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Маршрут:",
-                    style = AppTypography.bodyLarge
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = orderViewModel.route,
-                    style = AppTypography.bodyLarge
-                )
-            }
-
-            HorizontalDivider()
 
             //add text fields
-
-            if (train != null) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Номер объекта:",
-                        style = AppTypography.bodyLarge
-                    )
-
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = train.number + " " + train.route,
-                        style = AppTypography.bodyLarge
-                    )
-                }
-            }
 
             HorizontalDivider()
 

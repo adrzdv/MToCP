@@ -79,6 +79,7 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
         }
     }
 
+    //ADD FOR THROWING ILLEGALSTATE WHEN DUPLICATE
     @Override
     protected void doAddRevisionObject(RevisionObject o) {
         if (o instanceof TicketTermial termial) {

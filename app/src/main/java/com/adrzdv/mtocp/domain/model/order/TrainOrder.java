@@ -86,6 +86,9 @@ public class TrainOrder extends Order implements CollectableOrder {
     @Override
     protected void doAddRevisionObject(RevisionObject o) {
         if (o instanceof PassengerCar passengerCar) {
+            if (train.getObjectsMap().containsKey(o.getNumber())) {
+                throw new IllegalStateException("Object already exists; Object: " + o.getNumber());
+            }
             train.getObjectsMap().put(passengerCar.getNumber(), passengerCar);
         } else {
             throw new IllegalArgumentException("Expected PassengerCar.class; Got: " +

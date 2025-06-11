@@ -3,10 +3,12 @@ package com.adrzdv.mtocp.ui.viewmodel;
 import static com.adrzdv.mtocp.domain.model.enums.OrdersTypes.PASSENGER_TRAIN;
 import static com.adrzdv.mtocp.domain.model.enums.OrdersTypes.TICKET_OFFICE;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.adrzdv.mtocp.domain.model.enums.OrdersTypes;
+import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType;
 import com.adrzdv.mtocp.domain.model.order.CollectableOrder;
 import com.adrzdv.mtocp.domain.model.order.Order;
 import com.adrzdv.mtocp.domain.model.order.OrderFactory;
@@ -24,9 +26,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import kotlinx.coroutines.flow.MutableStateFlow;
+import kotlinx.coroutines.flow.StateFlow;
+
 public class OrderViewModel extends ViewModel {
 
     private final MutableLiveData<Order> order = new MutableLiveData<>();
+    private final MutableLiveData<String> trainScheme = new MutableLiveData<>();
     private OrdersTypes selectedType;
     private final TrainRepository trainRepository;
     //private final TicketOfficeRepository ticketOfficeRepository;
@@ -85,6 +91,10 @@ public class OrderViewModel extends ViewModel {
 
     public void setRoute(String route) {
         this.route = route;
+    }
+
+    public LiveData<String> getTrainScheme() {
+        return trainScheme;
     }
 
     public void createOrder() {
@@ -179,6 +189,34 @@ public class OrderViewModel extends ViewModel {
             return that.getCollector();
         }
         return null;
+    }
+
+    public void updateTrainScheme() {
+
+        Order currOrder = order.getValue();
+
+        if (currOrder instanceof CollectableOrder that) {
+            if (!(that.getCollector() instanceof TrainDomain train)) return;
+
+            StringBuilder builder = new StringBuilder();
+            builder.append("ВСЕГО: ")
+                    .append(train.countObjects())
+                    .append(" (");
+
+            for (PassengerCoachType type : PassengerCoachType.values()) {
+                int count = train.countPassCoachType(type);
+                if (count > 0) {
+                    builder.append(type.getPassengerCoachTitle()).append("-").append(count).append(" ");
+                }
+            }
+
+            builder.append(")");
+            trainScheme.setValue(builder.toString().trim());
+        } else {
+            return;
+        }
+
+
     }
 
     private ObjectCollector createCollector(String objectNumber) {

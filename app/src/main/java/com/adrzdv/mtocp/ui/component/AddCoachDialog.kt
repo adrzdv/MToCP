@@ -11,7 +11,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -65,6 +64,8 @@ fun AddCoachDialog(
             onDismiss()
         } catch (e: IllegalArgumentException) {
             App.showToast(context, MessageCodes.PATTERN_MATCHES_ERROR.errorTitle)
+        } catch (e: IllegalStateException) {
+            App.showToast(context, MessageCodes.DUPLICATE_ERROR.errorTitle)
         }
     }
 
@@ -127,11 +128,11 @@ fun AddCoachDialog(
 
                 DropdownMenuField(
                     label = stringResource(R.string.coach_type),
-                    options = PassengerCoachType.values().map { it.revisionObjectTitle },
-                    selectedOption = typeCoachSelected?.revisionObjectTitle ?: "",
+                    options = PassengerCoachType.values().map { it.passengerCoachTitle },
+                    selectedOption = typeCoachSelected?.passengerCoachTitle ?: "",
                     onOptionSelected = { selected ->
                         typeCoachSelected = PassengerCoachType.values().firstOrNull() {
-                            it.revisionObjectTitle == selected
+                            it.passengerCoachTitle == selected
                         }
                     }
                 )

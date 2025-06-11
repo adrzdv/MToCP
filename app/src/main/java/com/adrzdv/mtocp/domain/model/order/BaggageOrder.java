@@ -55,6 +55,7 @@ public class BaggageOrder extends Order {
         }
     }
 
+    //ADD FOR THROWING ILLEGALSTATE WHEN DUPLICATE
     @Override
     protected void doAddRevisionObject(RevisionObject o) {
         if (o instanceof BaggageCar baggageCar) {

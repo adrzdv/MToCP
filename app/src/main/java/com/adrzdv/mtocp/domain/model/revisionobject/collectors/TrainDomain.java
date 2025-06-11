@@ -1,7 +1,9 @@
 package com.adrzdv.mtocp.domain.model.revisionobject.collectors;
 
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
+import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType;
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
 import java.util.HashMap;
@@ -98,4 +100,15 @@ public class TrainDomain extends ObjectCollector {
     public void deleteCreWorker(WorkerDomain worker) {
         workerMap.remove(worker.getWorkerType().getDescription());
     }
+
+    public int countPassCoachType(PassengerCoachType type) {
+        return (int) getObjectsMap().values().stream()
+                .filter(o -> o instanceof PassengerCar)
+                .map(o -> (PassengerCar) o)
+                .filter(car -> car.getCoachType() == type)
+                .count();
+
+    }
+
+
 }

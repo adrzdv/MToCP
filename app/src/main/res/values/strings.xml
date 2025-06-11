@@ -49,4 +49,9 @@
     <string name="trailing_string">Прицепной</string>
     <string name="coach_type">Тип вагона</string>
     <string name="train_scheme">Состав поезда</string>
+    <string name="order_text">Уведомление</string>
+    <string name="route">Маршрут</string>
+    <string name="scheme">Схема</string>
+    <string name="object_data">Данные объекта</string>
+    <string name="info">Информация</string>
 </resources>
