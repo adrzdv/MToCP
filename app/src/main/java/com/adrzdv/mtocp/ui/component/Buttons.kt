@@ -11,17 +11,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 
@@ -70,12 +68,44 @@ fun MenuButton(
     }
 }
 
-@Preview
 @Composable
-fun PreviewMenuButton() {
-    MenuButton(
-        text = "Some text",
-        icon = painterResource(R.drawable.ic_start_revision_32_white),
-        onClick = {}
-    )
+fun MediumMenuButton(
+    onClick: () -> Unit,
+    icon: @Composable () -> Unit,
+    text: String
+) {
+    OutlinedButton(
+        onClick = onClick,
+        colors = ButtonDefaults
+            .buttonColors(containerColor = AppColors.MAIN_GREEN.color),
+        border = null
+    ) {
+        icon()
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = text,
+            style = AppTypography.labelLarge
+        )
+
+    }
+}
+
+@Composable
+fun CustomOutlinedButton(
+    onClick: () -> Unit,
+    text: String
+) {
+    OutlinedButton(
+        onClick = onClick,
+        border = null,
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = AppColors.MAIN_GREEN.color
+        )
+    ) {
+        Text(
+            text = text,
+            style = AppTypography.bodyMedium
+        )
+    }
 }

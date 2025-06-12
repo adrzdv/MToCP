@@ -1,26 +1,40 @@
 package com.adrzdv.mtocp.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.ui.theme.AppColors
+import com.adrzdv.mtocp.ui.theme.AppTypography
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppFullscreenDialog(
-    onDismiss: () -> Unit
+    title: String,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+    content: @Composable () -> Unit
 ) {
     Dialog(
         onDismissRequest = onDismiss,
@@ -29,18 +43,50 @@ fun AppFullscreenDialog(
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White),
+                .background(AppColors.LIGHT_GRAY.color),
             shape = RectangleShape
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text("Это полноэкранный диалог", style = MaterialTheme.typography.titleLarge)
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                OutlinedButton(onClick = onDismiss) {
-                    Text("Закрыть")
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Text(
+                                text = title,
+                                style = AppTypography.titleLarge
+                            )
+                        },
+                        navigationIcon = {
+                            IconButton(
+                                onClick = onDismiss
+                            ) {
+                                Icon(
+                                    Icons.Default.Close,
+                                    contentDescription = stringResource(R.string.cancel)
+                                )
+                            }
+                        },
+                        actions = {
+                            TextButton(
+                                onClick = onConfirm
+                            ) {
+                                Text(
+                                    stringResource(R.string.save_string),
+                                    style = AppTypography.labelLarge
+                                )
+                            }
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Column(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .padding(horizontal = 12.dp)
+                        .background(AppColors.LIGHT_GRAY.color),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    content()
                 }
             }
         }

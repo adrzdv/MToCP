@@ -414,5 +414,3 @@ fun StartRevisionScreen(
         }
     }
 }
-
-

@@ -1,10 +1,15 @@
 package com.adrzdv.mtocp.domain.validation;
 
 import com.adrzdv.mtocp.MessageCodes;
+import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.Coach;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public abstract class RegularValidator {
@@ -12,6 +17,7 @@ public abstract class RegularValidator {
     public final void addRevisionObject(RevisionObject o) {
         if (o instanceof Coach c) {
             validateCoach(c);
+            validateCoachType(c);
         } else {
             validateTerminal(o);
         }
@@ -44,6 +50,26 @@ public abstract class RegularValidator {
         if (!Pattern.matches(typicalCoach, o.getNumber())
                 && !Pattern.matches(suburbCoach, o.getNumber())) {
             throw new IllegalArgumentException(MessageCodes.PATTERN_MATCHES_ERROR.toString());
+        }
+    }
+
+    private void validateCoachType(RevisionObject o) {
+        Map<PassengerCoachType, List<Integer>> patterns = Map.of(
+                PassengerCoachType.LUXURY, List.of(0),
+                PassengerCoachType.FIRST_CLASS_SLEEPER, List.of(0),
+                PassengerCoachType.COMPARTMENT, List.of(0, 1),
+                PassengerCoachType.OPEN_CLASS_SLEEPING, List.of(2),
+                PassengerCoachType.INTERREGIONAL, List.of(3));
+        String number = o.getNumber();
+        if (o instanceof PassengerCar c && !o.getNumber().isEmpty()) {
+            PassengerCoachType type = c.getCoachType();
+            if (!patterns.get(type).contains(Integer.parseInt(
+                    String.valueOf(number.charAt(number.indexOf("-") + 1))))
+                    && !(type == PassengerCoachType.INTERREGIONAL && o.getNumber().length() == 5)) {
+                throw new IllegalArgumentException(MessageCodes.PATTERN_MATCHES_ERROR.toString());
+            }
+        } else {
+            throw new ClassCastException(MessageCodes.CAST_ERROR.toString());
         }
     }
 

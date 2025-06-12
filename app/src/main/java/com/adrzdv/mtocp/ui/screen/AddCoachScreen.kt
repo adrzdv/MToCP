@@ -57,9 +57,9 @@ fun AddCoachScreen(
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     var showDialog by remember { mutableStateOf(false) }
+    var showAddDinnerDialog by remember { mutableStateOf(false) }
     val coaches = coachViewModel.revObjects
     val train = orderViewModel.collector as? TrainDomain
-    val scope = rememberCoroutineScope()
     val trainScheme by orderViewModel.trainScheme.observeAsState("-")
 
     Scaffold(

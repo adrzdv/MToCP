@@ -56,4 +56,6 @@
     <string name="info">Информация</string>
     <string name="clear_text">Очистить</string>
     <string name="empty_string">Не может быть пустым</string>
+    <string name="dinner_department">Дирекция питания</string>
+    <string name="dinner_company">Арендатор</string>
 </resources>

@@ -15,12 +15,66 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
+
+@Composable
+fun CoachItemCard(
+    coach: PassengerCar,
+    onDeleteClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = AppColors.OFF_WHITE.color,
+            contentColor = AppColors.MAIN_GREEN.color
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                val coachNumber = listOfNotNull(
+                    coach.number,
+                    coach.coachType.passengerCoachTitle
+                ).joinToString(", ")
+                Text(
+                    coachNumber,
+                    style = AppTypography.bodyLarge
+                )
+                var coachInfo = ""
+                if (coach.trailing == true) {
+                    coachInfo = listOfNotNull(
+                        "Прицепной",
+                        coach.depotDomain.shortName,
+                        coach.coachRoute
+                    ).joinToString("\n")
+                } else {
+                    coachInfo = coach.depotDomain.shortName
+                }
+                Text(
+                    coachInfo,
+                    style = AppTypography.bodyMedium
+                )
+            }
+            IconButton(onClick = onDeleteClick) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_delete_32_white),
+                    contentDescription = stringResource(R.string.delete)
+                )
+            }
+        }
+    }
+}
 
 @Composable
 fun InnerWorkerItemCard(worker: InnerWorkerDomain, onDeleteClick: () -> Unit) {
@@ -63,20 +117,4 @@ fun InnerWorkerItemCard(worker: InnerWorkerDomain, onDeleteClick: () -> Unit) {
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun InnerWorkerItemCardPreview() {
-    val sampleWorker = InnerWorkerDomain(
-        1,
-        "Иванов Иван",
-        null,
-        null
-    )
-
-    InnerWorkerItemCard(
-        worker = sampleWorker,
-        onDeleteClick = {}
-    )
 }

@@ -22,7 +22,8 @@ public enum MessageCodes {
     FILE_MANAGER_ERROR("014#FMANAGER_ERROR", "Файловый менеджер отсутствует"),
     CREW_ERROR("015#CREW_ERROR", "Отсутствует ЛНП/ПЭМ"),
     PATTERN_MATCHES_ERROR("016#PATTERN_ERROR", "Ошибка соответствия данных"),
-    DUPLICATE_ERROR("017#DUPLICATE", "Объект уже добавлен");
+    DUPLICATE_ERROR("017#DUPLICATE", "Объект уже добавлен"),
+    CAST_ERROR("018#CAST_ERROR", "Ошибка класса");
 
     @NonNull
     private final String errorCode;
