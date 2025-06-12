@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -51,6 +52,7 @@ fun InfoBlockWithLabel(
                 .padding(start = 12.dp)
                 .background(AppColors.OFF_WHITE.color)
                 .padding(horizontal = 4.dp)
+                .offset(y = (-4).dp)
         )
     }
 }

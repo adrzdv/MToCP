@@ -212,11 +212,7 @@ public class OrderViewModel extends ViewModel {
 
             builder.append(")");
             trainScheme.setValue(builder.toString().trim());
-        } else {
-            return;
         }
-
-
     }
 
     private ObjectCollector createCollector(String objectNumber) {

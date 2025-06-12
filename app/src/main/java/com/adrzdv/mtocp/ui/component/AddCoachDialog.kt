@@ -61,6 +61,7 @@ fun AddCoachDialog(
         try {
             orderViewModel.addRevisionObject(revObject)
             coachViewModel.addRevObject(revObject)
+            orderViewModel.updateTrainScheme()
             onDismiss()
         } catch (e: IllegalArgumentException) {
             App.showToast(context, MessageCodes.PATTERN_MATCHES_ERROR.errorTitle)

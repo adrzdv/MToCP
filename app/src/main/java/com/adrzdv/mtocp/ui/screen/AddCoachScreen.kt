@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -61,6 +62,7 @@ fun AddCoachScreen(
     val coaches = coachViewModel.revObjects
     val train = orderViewModel.collector as? TrainDomain
     val scope = rememberCoroutineScope()
+    val trainScheme by orderViewModel.trainScheme.observeAsState("-")
 
     Scaffold(
         topBar = {
@@ -137,6 +139,7 @@ fun AddCoachScreen(
                         orderViewModel.clearRevisionObjects()
                         coachViewModel.cleanMap()
                         orderViewModel.updateTrainScheme()
+
                     },
                     icon = {
                         Icon(
@@ -155,24 +158,13 @@ fun AddCoachScreen(
                 val formattedDate = orderViewModel.dateEnd.format(formatter)
                 val train = orderViewModel.collector as TrainDomain
 
-                val trainScheme = StringBuilder()
-                trainScheme.append("ВСЕГО: ")
-                    .append((orderViewModel.collector as TrainDomain).countObjects()).append(" (")
-
-                for (type in PassengerCoachType.entries) {
-                    val coaches = train.countPassCoachType(type)
-                    if (coaches > 0) {
-                        trainScheme.append(type.passengerCoachTitle).append("-").append(coaches)
-                    }
-                }
-                trainScheme.append(")")
                 val propList =
                     listOf(
                         stringResource(R.string.order_text)
                                 to "${orderViewModel.orderNumber} от $formattedDate",
-                        stringResource(R.string.route) to orderViewModel.route,
-                        stringResource(R.string.object_data) to train.number + " " + train.route,
-                        stringResource(R.string.scheme) to trainScheme.toString()
+                        stringResource(R.string.route) to (orderViewModel.route ?: "-"),
+                        stringResource(R.string.object_data) to "${train.number} ${train.route ?: ""}",
+                        stringResource(R.string.scheme) to (trainScheme ?: "-")
                     )
 
                 InfoBlockWithLabel(
@@ -181,8 +173,6 @@ fun AddCoachScreen(
                 )
 
             }
-
-            //add text fields
 
             HorizontalDivider()
 
@@ -194,6 +184,7 @@ fun AddCoachScreen(
                     CoachItemCard(coach = coach) {
                         coachViewModel.removeRevObject(coach)
                         orderViewModel.deleteRevisionObject(coach)
+                        orderViewModel.updateTrainScheme()
                     }
                 }
             }
