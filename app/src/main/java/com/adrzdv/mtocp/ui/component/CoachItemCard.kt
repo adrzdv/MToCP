@@ -31,7 +31,7 @@ fun CoachItemCard(
             .fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = AppColors.LIGHT_GRAY.color,
+            containerColor = AppColors.OFF_WHITE.color,
             contentColor = AppColors.MAIN_GREEN.color
         )
     ) {

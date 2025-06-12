@@ -55,6 +55,7 @@ fun AddCrewScreen(
     val scope = rememberCoroutineScope()
 
     Scaffold(
+        containerColor = AppColors.LIGHT_GRAY.color,
         topBar = {
             TopAppBar(
                 title = {
@@ -70,7 +71,14 @@ fun AddCrewScreen(
                             contentDescription = stringResource(R.string.back_text)
                         )
                     }
-                }
+                },
+                colors = TopAppBarColors(
+                    containerColor = AppColors.LIGHT_GREEN.color,
+                    scrolledContainerColor = AppColors.LIGHT_GREEN.color,
+                    titleContentColor = AppColors.OFF_WHITE.color,
+                    navigationIconContentColor = AppColors.OFF_WHITE.color,
+                    actionIconContentColor = AppColors.OFF_WHITE.color
+                )
             )
         },
 

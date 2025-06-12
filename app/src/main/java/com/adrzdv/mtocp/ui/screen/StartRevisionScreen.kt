@@ -2,8 +2,6 @@ package com.adrzdv.mtocp.ui.screen
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,8 +13,6 @@ import java.util.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -38,16 +34,16 @@ import com.adrzdv.mtocp.domain.model.enums.OrdersTypes
 import com.adrzdv.mtocp.ui.component.AutocompleteTextField
 import com.adrzdv.mtocp.ui.component.ConfirmDialog
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavController
-import com.adrzdv.mtocp.App
 import com.adrzdv.mtocp.MessageCodes
+import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
+import com.adrzdv.mtocp.ui.component.ReadOnlyDatePickerField
 import com.adrzdv.mtocp.ui.component.RevisionTypeDropdown
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
@@ -69,6 +65,16 @@ fun StartRevisionScreen(
     navController: NavController,
     onBackClick: () -> Unit
 ) {
+    //Exception flags
+    var isOrderNumberError by remember { mutableStateOf(false) }
+    var isRouteError by remember { mutableStateOf(false) }
+    var isDateStartError by remember { mutableStateOf(false) }
+    var isDateEndError by remember { mutableStateOf(false) }
+    var isDateStartTimeError by remember { mutableStateOf(false) }
+    var isDateEndTimeError by remember { mutableStateOf(false) }
+    var isTypeError by remember { mutableStateOf(false) }
+    var isObjectNumberError by remember { mutableStateOf(false) }
+    //Other val/var
     val query by autocompleteViewModel.query.observeAsState("")
     val suggestions by autocompleteViewModel.filteredItems.observeAsState(emptyList())
     val format = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
@@ -96,6 +102,10 @@ fun StartRevisionScreen(
         mutableStateOf(orderViewModel.selectedType?.subscription ?: "")
     }
 
+    var selectedObjectNumber by rememberSaveable {
+        mutableStateOf(orderViewModel.collector?.number ?: "")
+    }
+
     val isInputEnabled = selectedOrderType.isNotBlank()
     var showExitDialog by remember { mutableStateOf(false) }
 
@@ -103,30 +113,65 @@ fun StartRevisionScreen(
         showExitDialog = true
     }
 
-    fun generateOrder(): Boolean {
-        if (orderNumber.isBlank()
-            || orderRoute.isBlank()
-            || dateStart.isBlank()
-            || dateEnd.isBlank()
-        ) {
-            scope.launch {
-                snackbarHostState.showSnackbar(
-                    message = MessageCodes.BLANK_FIELDS_ERROR.errorTitle,
-                )
+    fun checkStartDate(
+        selectedDate: String
+    ): Boolean {
+        val start = format.parse(selectedDate)
+        val now = Calendar.getInstance()
+        now.add(Calendar.HOUR_OF_DAY, -1)
+        if (start != null && start.after(now.time)) {
+            return true
+        }
+        return false
+    }
+
+    fun checkEndDate(
+        startDate: String,
+        selectedEnd: String
+    ): Boolean {
+        return try {
+            val start = format.parse(startDate)
+            val end = format.parse(selectedEnd)
+
+            if (start != null && end != null) {
+                if (end.after(start)) {
+                    val durationMillis = end.time - start.time
+                    val durationHours = durationMillis / (1000 * 60 * 60)
+                    return durationHours <= 16
+                }
             }
+            false
+        } catch (e: ParseException) {
+            false
+        }
+    }
+
+    fun generateOrder(): Boolean {
+
+        isOrderNumberError = orderNumber.isBlank()
+        isRouteError = orderRoute.isBlank()
+        isDateStartError = dateStart.isBlank()
+        isDateEndError = dateEnd.isBlank()
+        isTypeError = selectedOrderType.isEmpty()
+        isObjectNumberError = selectedObjectNumber.isEmpty()
+
+        if (isOrderNumberError
+            || isRouteError
+            || isDateStartError
+            || isDateEndError
+            || isTypeError
+            || isObjectNumberError
+        ) {
             return false
         }
         try {
             val start = LocalDateTime.parse(dateStart, localDateTimeFormater)
             val end = LocalDateTime.parse(dateEnd, localDateTimeFormater)
-
             orderViewModel.setOrderNumber(orderNumber)
             orderViewModel.setDateStart(start)
             orderViewModel.setDateEnd(end)
             orderViewModel.setRoute(orderRoute)
-
             orderViewModel.createOrder()
-
             return true
 
         } catch (e: Exception) {
@@ -165,6 +210,7 @@ fun StartRevisionScreen(
     }
 
     Scaffold(
+        containerColor = AppColors.LIGHT_GRAY.color,
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 containerColor = AppColors.MAIN_GREEN.color,
@@ -207,7 +253,15 @@ fun StartRevisionScreen(
                             contentDescription = stringResource(R.string.back_text)
                         )
                     }
-                })
+                },
+                colors = TopAppBarColors(
+                    containerColor = AppColors.LIGHT_GREEN.color,
+                    scrolledContainerColor = AppColors.LIGHT_GREEN.color,
+                    titleContentColor = AppColors.OFF_WHITE.color,
+                    navigationIconContentColor = AppColors.OFF_WHITE.color,
+                    actionIconContentColor = AppColors.OFF_WHITE.color
+                )
+            )
         }, snackbarHost = {
             CustomSnackbarHost(
                 hostState = snackbarHostState
@@ -231,16 +285,21 @@ fun StartRevisionScreen(
                 )
                 RevisionTypeDropdown(
                     revisionTypes = orderTypes,
+                    isError = isTypeError,
+                    errorMessage = stringResource(R.string.empty_string),
                     selectedRevision = selectedOrderType,
                     onRevisionSelected = {
                         selectedOrderType = it
+                        isTypeError = false
                         orderViewModel.setSelectedType(OrdersTypes.getFromString(it))
                         autocompleteViewModel.setOrderType(OrdersTypes.getFromString(it))
                     }
                 )
             }
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 AutocompleteTextField(
                     query = query,
                     suggestions = suggestions,
@@ -248,9 +307,13 @@ fun StartRevisionScreen(
                         autocompleteViewModel.onQueryChanged(input)
                     },
                     onSuggestionSelected = { selected ->
+                        selectedObjectNumber = selected
                         orderViewModel.setObjectNumber(selected)
+                        isObjectNumberError = false
                     },
-                    enabled = isInputEnabled
+                    enabled = isInputEnabled,
+                    isError = isObjectNumberError,
+                    errorMessage = stringResource(R.string.empty_string)
                 )
             }
 
@@ -258,158 +321,80 @@ fun StartRevisionScreen(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                OutlinedTextField(
+
+                CustomOutlinedTextField(
                     value = orderNumber,
-                    textStyle = CustomTypography.bodyLarge,
-                    onValueChange = { orderNumber = it },
-                    label = {
-                        Text(
-                            text = stringResource(R.string.order_number_hint),
-                            style = AppTypography.labelMedium
-                        )
+                    onValueChange = {
+                        orderNumber = it
+                        isOrderNumberError = false
                     },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = AppColors.OUTLINE_GREEN.color,
-                        unfocusedBorderColor = Color(0xFFCCCCCC),
-                        focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White,
-                        focusedLabelColor = Color.Gray,
-                        unfocusedLabelColor = Color.Gray,
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black
-                    )
+                    isError = isOrderNumberError,
+                    errorText = stringResource(R.string.empty_string),
+                    label = stringResource(R.string.order_number_hint),
+                    modifier = Modifier.fillMaxWidth()
                 )
 
-                OutlinedTextField(
+                CustomOutlinedTextField(
                     value = orderRoute,
-                    textStyle = CustomTypography.bodyLarge,
-                    onValueChange = { orderRoute = it },
-                    label = {
-                        Text(
-                            stringResource(R.string.order_route_hint),
-                            style = AppTypography.labelMedium
-                        )
+                    onValueChange = {
+                        orderRoute = it
+                        isRouteError = false
                     },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = AppColors.OUTLINE_GREEN.color,
-                        unfocusedBorderColor = Color(0xFFCCCCCC),
-                        focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White,
-                        focusedLabelColor = Color.Gray,
-                        unfocusedLabelColor = Color.Gray,
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black
-                    )
+                    isError = isRouteError,
+                    errorText = stringResource(R.string.empty_string),
+                    label = stringResource(R.string.order_route_hint),
+                    modifier = Modifier.fillMaxWidth()
                 )
 
-                // Date/time start
-                OutlinedTextField(
+                ReadOnlyDatePickerField(
                     value = dateStart,
-                    textStyle = CustomTypography.bodyLarge,
-                    onValueChange = {},
-                    label = {
-                        Text(
-                            stringResource(R.string.order_start_date_hint),
-                            style = AppTypography.labelMedium
-                        )
-                    },
-                    singleLine = true,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ) {
-                            showDateTimePicker { selected ->
-                                try {
-                                    val start = format.parse(selected)
-                                    val now = Calendar.getInstance()
-
-                                    now.add(Calendar.HOUR_OF_DAY, -1)
-
-                                    if (start != null && start.after(now.time)) {
-                                        dateStart = selected
-                                    } else {
-                                        scope.launch {
-                                            snackbarHostState.showSnackbar(
-                                                message = MessageCodes.DATE_ERROR.errorTitle
-                                            )
-                                        }
-                                    }
-                                } catch (e: ParseException) {
-                                    e.printStackTrace()
+                    errorBlankMessage = stringResource(R.string.empty_string),
+                    errorTimeMessage = MessageCodes.DATE_ERROR.errorTitle,
+                    labelText = stringResource(R.string.order_start_date_hint),
+                    isBlankError = isDateStartError,
+                    isFormatError = isDateStartTimeError,
+                    onClick = {
+                        showDateTimePicker { selected ->
+                            try {
+                                isDateStartError = false
+                                isDateStartTimeError = false
+                                if (checkStartDate(selected)) {
+                                    dateStart = selected
+                                } else {
+                                    isDateStartTimeError = true
                                 }
+                            } catch (e: ParseException) {
+                                e.printStackTrace()
                             }
-                        },
-                    enabled = false,
-                    readOnly = true,
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFFCCCCCC),
-                        unfocusedBorderColor = Color(0xFFCCCCCC),
-                        focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White,
-                        focusedLabelColor = Color.Gray,
-                        unfocusedLabelColor = Color.Gray,
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black
-                    )
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
                 )
 
-                // Date/time end
-                OutlinedTextField(
+                ReadOnlyDatePickerField(
                     value = dateEnd,
-                    textStyle = CustomTypography.bodyLarge,
-                    onValueChange = {},
-                    label = {
-                        Text(
-                            stringResource(R.string.order_end_date_hint),
-                            style = AppTypography.labelMedium
-                        )
-                    },
-                    singleLine = true,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ) {
-                            showDateTimePicker { selected ->
-                                try {
-                                    val start = format.parse(dateStart)
-                                    val end = format.parse(selected)
-
-                                    if (start != null && end != null) {
-                                        if (end.after(start)) {
-                                            dateEnd = selected
-                                        } else {
-                                            scope.launch {
-                                                snackbarHostState.showSnackbar(
-                                                    message = MessageCodes.DATE_ERROR.errorTitle
-                                                )
-                                            }
-                                        }
-                                    }
-                                } catch (e: ParseException) {
-                                    e.printStackTrace()
+                    errorBlankMessage = stringResource(R.string.empty_string),
+                    errorTimeMessage = MessageCodes.DATE_ERROR.errorTitle,
+                    labelText = stringResource(R.string.order_end_date_hint),
+                    isBlankError = isDateEndError,
+                    isFormatError = isDateEndTimeError,
+                    onClick = {
+                        showDateTimePicker { selected ->
+                            try {
+                                isDateEndError = false
+                                isDateEndTimeError = false
+                                if (checkEndDate(dateStart, selected)
+                                ) {
+                                    dateEnd = selected
+                                } else {
+                                    isDateEndTimeError = true
                                 }
+                            } catch (e: ParseException) {
+                                e.printStackTrace()
                             }
-                        },
-                    enabled = false,
-                    readOnly = true,
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFFCCCCCC),
-                        unfocusedBorderColor = Color(0xFFCCCCCC),
-                        focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White,
-                        focusedLabelColor = Color.Gray,
-                        unfocusedLabelColor = Color.Gray,
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black
-                    )
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 if (showExitDialog) {

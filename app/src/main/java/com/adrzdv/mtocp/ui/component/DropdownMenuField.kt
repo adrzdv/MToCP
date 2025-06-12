@@ -34,7 +34,7 @@ fun DropdownMenuField(
             onValueChange = {},
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AppColors.OUTLINE_GREEN.color,
-                focusedContainerColor = AppColors.OFF_WHITE.color
+                focusedContainerColor = AppColors.LIGHT_GRAY.color
             ),
             readOnly = true,
             label = {

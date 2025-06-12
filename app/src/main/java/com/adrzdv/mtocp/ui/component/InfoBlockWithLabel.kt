@@ -12,7 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
@@ -33,7 +32,7 @@ fun InfoBlockWithLabel(
                     shape = RoundedCornerShape(8.dp)
                 )
                 .padding(top = 12.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
-                .background(AppColors.OFF_WHITE.color)
+                .background(AppColors.LIGHT_GRAY.color)
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(6.dp)
@@ -50,24 +49,9 @@ fun InfoBlockWithLabel(
             color = AppColors.OUTLINE_GREEN.color,
             modifier = Modifier
                 .padding(start = 12.dp)
-                .background(AppColors.OFF_WHITE.color)
+                .background(AppColors.LIGHT_GRAY.color)
                 .padding(horizontal = 4.dp)
                 .offset(y = (-4).dp)
         )
     }
-}
-
-@Preview
-@Composable
-fun PreviewInfoBlock() {
-    val rows = listOf(
-        "Sample" to "SamTxt",
-        "SSS" to "TstST"
-    )
-
-    InfoBlockWithLabel(
-        "Label",
-        rows
-        //"TEXT"
-    )
 }

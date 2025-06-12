@@ -26,9 +26,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import kotlinx.coroutines.flow.MutableStateFlow;
-import kotlinx.coroutines.flow.StateFlow;
-
 public class OrderViewModel extends ViewModel {
 
     private final MutableLiveData<Order> order = new MutableLiveData<>();

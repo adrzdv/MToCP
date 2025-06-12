@@ -10,6 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -43,11 +47,26 @@ fun CompanyCatalogScreen(
 
     Column(
         modifier = Modifier
+            .background(AppColors.LIGHT_GRAY.color)
             .fillMaxSize()
             .padding(16.dp)
     ) {
         OutlinedTextField(
             value = searchText,
+            trailingIcon = {
+                if (searchText.isNotEmpty()) {
+                    IconButton(onClick = {
+                        searchText = ""
+                        viewModel.filterByString(searchText)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(R.string.clear_text),
+                            tint = Color.Gray
+                        )
+                    }
+                }
+            },
             onValueChange = {
                 searchText = it
                 viewModel.filterByString(it)

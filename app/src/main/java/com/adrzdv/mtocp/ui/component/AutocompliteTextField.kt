@@ -2,9 +2,12 @@ package com.adrzdv.mtocp.ui.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -30,7 +33,9 @@ fun AutocompleteTextField(
     suggestions: List<String>,
     onQueryChanged: (String) -> Unit,
     onSuggestionSelected: (String) -> Unit,
-    enabled: Boolean
+    enabled: Boolean,
+    isError: Boolean,
+    errorMessage: String
 ) {
     var expanded by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
@@ -52,6 +57,25 @@ fun AutocompleteTextField(
                     expanded = true
                 }
             },
+            isError = isError,
+            supportingText = {
+                if (isError && errorMessage.isNotBlank()) {
+                    Text(
+                        text = errorMessage,
+                        color = AppColors.ERROR.color,
+                        style = AppTypography.labelSmall
+                    )
+                }
+            },
+            trailingIcon = {
+                if (isError && errorMessage.isNotBlank()) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        tint = AppColors.ERROR.color,
+                        contentDescription = ""
+                    )
+                }
+            },
             label = {
                 Text(
                     stringResource(R.string.object_number),
@@ -67,8 +91,8 @@ fun AutocompleteTextField(
             enabled = enabled,
             readOnly = false,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = AppColors.OUTLINE_GREEN.color,
-                unfocusedBorderColor = Color(0xFFCCCCCC),
+                focusedBorderColor = if (isError) AppColors.ERROR.color else AppColors.OUTLINE_GREEN.color,
+                unfocusedBorderColor = if (isError) AppColors.ERROR.color else Color(0xFFCCCCCC),
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
                 focusedLabelColor = Color.Gray,

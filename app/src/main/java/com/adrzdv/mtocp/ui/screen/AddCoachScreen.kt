@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -32,15 +33,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
 import com.adrzdv.mtocp.ui.component.AddCoachDialog
-import com.adrzdv.mtocp.ui.component.AppFullscreenDialog
 import com.adrzdv.mtocp.ui.component.CoachItemCard
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.InfoBlockWithLabel
-import com.adrzdv.mtocp.ui.component.InfoRowBlock
 import com.adrzdv.mtocp.ui.component.MediumMenuButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
@@ -65,6 +63,7 @@ fun AddCoachScreen(
     val trainScheme by orderViewModel.trainScheme.observeAsState("-")
 
     Scaffold(
+        containerColor = AppColors.LIGHT_GRAY.color,
         topBar = {
             TopAppBar(
                 title = {
@@ -82,7 +81,14 @@ fun AddCoachScreen(
                             contentDescription = stringResource(R.string.back_text)
                         )
                     }
-                }
+                },
+                colors = TopAppBarColors(
+                    containerColor = AppColors.LIGHT_GREEN.color,
+                    scrolledContainerColor = AppColors.LIGHT_GREEN.color,
+                    titleContentColor = AppColors.OFF_WHITE.color,
+                    navigationIconContentColor = AppColors.OFF_WHITE.color,
+                    actionIconContentColor = AppColors.OFF_WHITE.color
+                )
             )
         },
 

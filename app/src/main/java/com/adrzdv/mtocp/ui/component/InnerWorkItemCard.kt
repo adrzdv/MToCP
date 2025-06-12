@@ -1,6 +1,5 @@
 package com.adrzdv.mtocp.ui.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.domain.model.departments.DepotDomain
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
@@ -31,7 +29,7 @@ fun InnerWorkerItemCard(worker: InnerWorkerDomain, onDeleteClick: () -> Unit) {
             .fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = AppColors.LIGHT_GRAY.color,
+            containerColor = AppColors.OFF_WHITE.color,
             contentColor = AppColors.MAIN_GREEN.color
         )
     ) {

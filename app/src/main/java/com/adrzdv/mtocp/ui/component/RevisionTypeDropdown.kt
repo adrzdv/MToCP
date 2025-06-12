@@ -18,6 +18,8 @@ import com.adrzdv.mtocp.ui.theme.AppTypography
 fun RevisionTypeDropdown(
     revisionTypes: List<String>,
     selectedRevision: String,
+    isError: Boolean,
+    errorMessage: String,
     onRevisionSelected: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -32,7 +34,17 @@ fun RevisionTypeDropdown(
         OutlinedTextField(
             value = selectedRevision,
             onValueChange = {},
+            isError = isError,
             readOnly = true,
+            supportingText = {
+                if (isError) {
+                    Text(
+                        text = errorMessage,
+                        color = AppColors.ERROR.color,
+                        style = AppTypography.labelSmall
+                    )
+                }
+            },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },
@@ -42,8 +54,8 @@ fun RevisionTypeDropdown(
                 .fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = AppColors.OUTLINE_GREEN.color,
-                unfocusedBorderColor = Color(0xFFCCCCCC),
+                focusedBorderColor = if (isError) AppColors.ERROR.color else AppColors.OUTLINE_GREEN.color,
+                unfocusedBorderColor = if (isError) AppColors.ERROR.color else Color(0xFFCCCCCC),
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
                 focusedLabelColor = Color.Gray,
@@ -76,14 +88,4 @@ fun RevisionTypeDropdown(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun ShowSpinner() {
-    RevisionTypeDropdown(
-        listOf("test"),
-        "ttt",
-        onRevisionSelected = {}
-    )
 }

@@ -12,8 +12,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.adrzdv.mtocp.App
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain
@@ -49,6 +46,9 @@ fun AddCoachDialog(
     var checkedTrailingCar by remember { mutableStateOf(false) }
     var trailingRoute by remember { mutableStateOf("") }
     var typeCoachSelected by remember { mutableStateOf<PassengerCoachType?>(null) }
+    var isCoachPatterError by remember { mutableStateOf(false) }
+    var isDuplicateCoachError by remember { mutableStateOf(false) }
+    var isRouteError by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     fun addCoach() {
@@ -58,21 +58,25 @@ fun AddCoachDialog(
         revObject.trailing = checkedTrailingCar
         revObject.coachType = typeCoachSelected
         revObject.coachRoute = trailingRoute
+        if (checkedTrailingCar && trailingRoute.isBlank()) {
+            isRouteError = true
+            return
+        }
         try {
             orderViewModel.addRevisionObject(revObject)
             coachViewModel.addRevObject(revObject)
             orderViewModel.updateTrainScheme()
             onDismiss()
         } catch (e: IllegalArgumentException) {
-            App.showToast(context, MessageCodes.PATTERN_MATCHES_ERROR.errorTitle)
+            isCoachPatterError = true
         } catch (e: IllegalStateException) {
-            App.showToast(context, MessageCodes.DUPLICATE_ERROR.errorTitle)
+            isDuplicateCoachError = true
         }
     }
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = AppColors.OFF_WHITE.color,
+        containerColor = AppColors.LIGHT_GRAY.color,
         confirmButton = {
             Button(
                 onClick = {
@@ -85,6 +89,7 @@ fun AddCoachDialog(
                 border = null,
                 enabled = coachNumber.isNotBlank()
                         && selectedDepot.isNotBlank()
+                        && typeCoachSelected != null
             ) {
                 Text(
                     stringResource(R.string.add_string),
@@ -111,20 +116,20 @@ fun AddCoachDialog(
                     .padding(top = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                OutlinedTextField(
+                CustomOutlinedTextField(
                     value = coachNumber,
-                    onValueChange = { coachNumber = it },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = AppColors.OUTLINE_GREEN.color
-                    ),
-                    label = {
-                        Text(
-                            text = stringResource(R.string.coach_number),
-                            style = AppTypography.labelMedium
-                        )
+                    onValueChange = {
+                        coachNumber = it
+                        isCoachPatterError = false
+                        isDuplicateCoachError = false
                     },
-                    singleLine = true,
-                    textStyle = AppTypography.bodyMedium
+                    isError = isCoachPatterError || isDuplicateCoachError,
+                    errorText = when {
+                        isCoachPatterError -> MessageCodes.PATTERN_MATCHES_ERROR.errorTitle
+                        isDuplicateCoachError -> MessageCodes.DUPLICATE_ERROR.errorTitle
+                        else -> ""
+                    },
+                    label = stringResource(R.string.coach_number)
                 )
 
                 DropdownMenuField(
@@ -164,22 +169,37 @@ fun AddCoachDialog(
                     )
                 }
 
-                OutlinedTextField(
+                CustomOutlinedTextField(
                     value = trailingRoute,
-                    enabled = checkedTrailingCar,
-                    onValueChange = { trailingRoute = it },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = AppColors.OUTLINE_GREEN.color
-                    ),
-                    label = {
-                        Text(
-                            text = stringResource(R.string.trailing_route),
-                            style = AppTypography.labelMedium
-                        )
+                    isEnabled = checkedTrailingCar,
+                    onValueChange = {
+                        trailingRoute = it
+                        isRouteError = false
                     },
-                    singleLine = true,
-                    textStyle = AppTypography.bodyMedium
+                    isError = isRouteError,
+                    errorText = stringResource(R.string.empty_string),
+                    label = stringResource(R.string.trailing_route)
                 )
+
+//                OutlinedTextField(
+//                    value = trailingRoute,
+//                    enabled = checkedTrailingCar,
+//                    onValueChange = {
+//                        trailingRoute = it
+//                        isRouteError = false
+//                    },
+//                    colors = OutlinedTextFieldDefaults.colors(
+//                        focusedBorderColor = AppColors.OUTLINE_GREEN.color
+//                    ),
+//                    label = {
+//                        Text(
+//                            text = stringResource(R.string.trailing_route),
+//                            style = AppTypography.labelMedium
+//                        )
+//                    },
+//                    singleLine = true,
+//                    textStyle = AppTypography.bodyMedium
+//                )
             }
         }
     )

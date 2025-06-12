@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.ConfirmDialog
 import com.adrzdv.mtocp.ui.component.MenuButton
+import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,9 +32,19 @@ fun StartMenuScreen(
     var showExitDialog by remember { mutableStateOf(false) }
 
     Scaffold(
+        contentColor = AppColors.LIGHT_GRAY.color,
         topBar = {
             TopAppBar(
-                title = { Spacer(modifier = Modifier.height(0.dp)) }
+                title = {
+                    Spacer(modifier = Modifier.height(0.dp))
+                },
+                colors = TopAppBarColors(
+                    containerColor = AppColors.MAIN_GREEN.color,
+                    scrolledContainerColor = AppColors.MAIN_GREEN.color,
+                    titleContentColor = AppColors.MAIN_GREEN.color,
+                    navigationIconContentColor = AppColors.MAIN_GREEN.color,
+                    actionIconContentColor = AppColors.MAIN_GREEN.color
+                )
             )
         }
     ) { innerPadding ->
@@ -57,7 +68,8 @@ fun StartMenuScreen(
                 Text(
                     text = stringResource(R.string.main_menu_text),
                     style = AppTypography.titleLarge,
-                    modifier = Modifier.padding(start = 16.dp)
+                    modifier = Modifier.padding(start = 16.dp),
+                    color = AppColors.MAIN_GREEN.color
                 )
 
                 Spacer(modifier = Modifier.height(32.dp))

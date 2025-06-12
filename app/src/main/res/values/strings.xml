@@ -54,4 +54,6 @@
     <string name="scheme">Схема</string>
     <string name="object_data">Данные объекта</string>
     <string name="info">Информация</string>
+    <string name="clear_text">Очистить</string>
+    <string name="empty_string">Не может быть пустым</string>
 </resources>

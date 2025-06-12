@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,10 +14,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.adrzdv.mtocp.App
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
@@ -41,7 +37,7 @@ fun AddWorkerDialog(
     var name by remember { mutableStateOf("") }
     var selectedWorkerType by remember { mutableStateOf<WorkerTypes?>(null) }
     var selectedDepot by remember { mutableStateOf("") }
-    val context = LocalContext.current
+    var isWorkerFormatError by remember { mutableStateOf(false) }
 
     fun addWorker(
         number: String,
@@ -57,7 +53,7 @@ fun AddWorkerDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = AppColors.OFF_WHITE.color,
+        containerColor = AppColors.LIGHT_GRAY.color,
         confirmButton = {
             Button(
                 onClick = {
@@ -69,7 +65,7 @@ fun AddWorkerDialog(
                             }
                         }
                     } catch (e: IllegalArgumentException) {
-                        App.showToast(context, MessageCodes.PATTERN_MATCHES_ERROR.errorTitle)
+                        isWorkerFormatError = true
                     }
 
                 },
@@ -106,36 +102,26 @@ fun AddWorkerDialog(
                     .padding(top = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                OutlinedTextField(
+
+                CustomOutlinedTextField(
                     value = tabNumber,
-                    onValueChange = { tabNumber = it },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = AppColors.OUTLINE_GREEN.color
-                    ),
-                    label = {
-                        Text(
-                            text = stringResource(R.string.worker_id),
-                            style = AppTypography.labelMedium
-                        )
+                    onValueChange = {
+                        tabNumber = it
                     },
-                    singleLine = true,
-                    textStyle = AppTypography.bodyMedium
+                    isError = false,
+                    errorText = "",
+                    label = stringResource(R.string.worker_id)
                 )
 
-                OutlinedTextField(
+                CustomOutlinedTextField(
                     value = name,
-                    onValueChange = { name = it },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = AppColors.OUTLINE_GREEN.color
-                    ),
-                    label = {
-                        Text(
-                            text = stringResource(R.string.worker_name),
-                            style = AppTypography.labelMedium
-                        )
+                    onValueChange = {
+                        name = it
+                        isWorkerFormatError = false
                     },
-                    singleLine = true,
-                    textStyle = AppTypography.bodyMedium
+                    isError = isWorkerFormatError,
+                    errorText = MessageCodes.PATTERN_MATCHES_ERROR.errorTitle,
+                    label = stringResource(R.string.worker_name)
                 )
 
                 DropdownMenuField(
