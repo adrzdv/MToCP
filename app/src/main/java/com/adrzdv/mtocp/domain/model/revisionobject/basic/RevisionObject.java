@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.domain.model.revisionobject.basic;
 
+import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
@@ -19,7 +20,7 @@ public abstract class RevisionObject {
     private LocalDateTime revisionDateStart;
     private LocalDateTime revisionDateEnd;
     private Boolean isQualityPassport;
-    private Map<String, ViolationDomain> violationMap;
+    private Map<Integer, ViolationDomain> violationMap;
     private Map<String, StaticsParam> additionalParams;
 
     public RevisionObject(String number) {
@@ -76,11 +77,11 @@ public abstract class RevisionObject {
         this.workerDomain = workerDomain;
     }
 
-    public Map<String, ViolationDomain> getViolationMap() {
+    public Map<Integer, ViolationDomain> getViolationMap() {
         return violationMap;
     }
 
-    public void setViolationMap(Map<String, ViolationDomain> violationMap) {
+    public void setViolationMap(Map<Integer, ViolationDomain> violationMap) {
         this.violationMap = violationMap;
     }
 
@@ -90,5 +91,24 @@ public abstract class RevisionObject {
 
     public void setAdditionalParams(Map<String, StaticsParam> additionalParams) {
         this.additionalParams = additionalParams;
+    }
+
+    public void addViolation(ViolationDomain violation) {
+
+        if (!violationMap.containsKey(violation.getCode())) {
+            throw new IllegalArgumentException(MessageCodes.DUPLICATE_ERROR.getErrorTitle()
+                    + violation.getName());
+        }
+
+        violationMap.put(violation.getCode(), violation);
+    }
+
+    public void deleteViolation(ViolationDomain violation) {
+        if (!violationMap.containsKey(violation.getCode())) {
+            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getErrorTitle()
+                    + violation.getClass());
+        }
+
+        violationMap.remove(violation.getCode());
     }
 }

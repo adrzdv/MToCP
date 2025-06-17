@@ -4,6 +4,7 @@ import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.TicketTermial;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TicketOfficeDomain;
+import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
@@ -63,6 +64,16 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
     @Override
     public void setIsQualityPassport(Boolean isQualityPassport) {
         ticketOffice.setQualityPassport(isQualityPassport);
+    }
+
+    @Override
+    public void addViolationInCollector(String objNumber, ViolationDomain violation) {
+        ticketOffice.addViolationToObject(objNumber, violation);
+    }
+
+    @Override
+    public void deleteViolationInCollector(String objNumber, ViolationDomain violation) {
+        ticketOffice.deleteViolationInObject(objNumber, violation);
     }
 
     public ObjectCollector getTicketOffice() {

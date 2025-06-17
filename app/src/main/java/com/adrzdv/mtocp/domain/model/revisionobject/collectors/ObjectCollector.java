@@ -1,7 +1,9 @@
 package com.adrzdv.mtocp.domain.model.revisionobject.collectors;
 
+import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
+import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -79,5 +81,24 @@ public abstract class ObjectCollector {
 
     public void addRevisionObject(RevisionObject o) {
         objectsMap.put(o.getNumber(), o);
+    }
+
+    public void addViolationToObject(String objNumber, ViolationDomain violation) {
+
+        if (!objectsMap.containsKey(objNumber) && objectsMap.get(objNumber) == null) {
+            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getErrorTitle());
+        }
+
+        objectsMap.get(objNumber).addViolation(violation);
+    }
+
+    public void deleteViolationInObject(String objNumber, ViolationDomain violation) {
+
+        if (!objectsMap.containsKey(objNumber) && objectsMap.get(objNumber) == null) {
+            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getErrorTitle());
+        }
+
+        objectsMap.get(objNumber).deleteViolation(violation);
+
     }
 }

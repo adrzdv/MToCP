@@ -15,6 +15,7 @@ import com.adrzdv.mtocp.domain.model.order.OrderFactory;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
+import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 import com.adrzdv.mtocp.domain.repository.TrainRepository;
 
@@ -210,6 +211,27 @@ public class OrderViewModel extends ViewModel {
             builder.append(")");
             trainScheme.setValue(builder.toString().trim());
         }
+    }
+
+    public void addViolation(String objNumber, ViolationDomain violation) {
+
+        Order currOrder = order.getValue();
+
+        if (currOrder instanceof CollectableOrder that) {
+            that.addViolationInCollector(objNumber, violation);
+        }
+
+        order.setValue(currOrder);
+    }
+
+    public void deleteViolation(String objNumber, ViolationDomain violation) {
+        Order currOrder = order.getValue();
+
+        if (currOrder instanceof CollectableOrder that) {
+            that.deleteViolationInCollector(objNumber, violation);
+        }
+
+        order.setValue(currOrder);
     }
 
     private ObjectCollector createCollector(String objectNumber) {
