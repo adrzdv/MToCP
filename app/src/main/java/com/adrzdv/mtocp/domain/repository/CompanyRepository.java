@@ -10,4 +10,6 @@ public interface CompanyRepository {
     List<CompanyWithBranch> getAll();
 
     void saveAll(List<CompanyEntity> entities);
+
+    List<CompanyWithBranch> getDinnerCompanies();
 }

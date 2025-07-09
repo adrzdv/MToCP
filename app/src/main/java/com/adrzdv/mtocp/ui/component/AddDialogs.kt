@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain
@@ -32,10 +33,12 @@ import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
+import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.InnerWorkerViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.RevisionObjectViewModel
+import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
 
 @Composable
 fun AddDinnerCarDialog(
@@ -49,6 +52,16 @@ fun AddDinnerCarDialog(
     var selectedCompany by remember { mutableStateOf("") }
     var selectedType by remember { mutableStateOf<DinnerCarsType?>(null) }
     var isNumberError by remember { mutableStateOf(false) }
+    val companyViewModel: CompanyViewModel = viewModel(
+        factory = ViewModelFactoryProvider.provideFactory()
+    )
+    companyViewModel.filterDinner()
+
+//    //тут надо решить проблему с асинхронной загрузкой данных
+//    //в данный момент передаются все
+//    LaunchedEffect(Unit) {
+//        companyViewModel.filterDinner()
+//    }
 
     fun addDinnerCar() {
 
@@ -78,17 +91,18 @@ fun AddDinnerCarDialog(
                     }
                 }
             )
+
             //Для дирекции
             DropdownMenuField(
                 label = stringResource(R.string.dinner_department),
-                options = listOf(),
+                options = depotViewModel.filteredDepots.value?.map { it.name } ?: emptyList(),
                 selectedOption = "",
                 onOptionSelected = {}
             )
             //Для арендаторов
             DropdownMenuField(
                 label = stringResource(R.string.dinner_company),
-                options = listOf(),
+                options = companyViewModel.filteredCompanies.value?.map { it.name } ?: emptyList(),
                 selectedOption = "",
                 onOptionSelected = {}
             )

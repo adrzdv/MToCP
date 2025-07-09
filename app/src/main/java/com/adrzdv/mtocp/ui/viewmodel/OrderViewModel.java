@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.adrzdv.mtocp.domain.model.enums.OrdersTypes;
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType;
+import com.adrzdv.mtocp.domain.model.order.BaggageOrder;
 import com.adrzdv.mtocp.domain.model.order.CollectableOrder;
 import com.adrzdv.mtocp.domain.model.order.Order;
 import com.adrzdv.mtocp.domain.model.order.OrderFactory;
@@ -219,8 +220,9 @@ public class OrderViewModel extends ViewModel {
 
         if (currOrder instanceof CollectableOrder that) {
             that.addViolationInCollector(objNumber, violation);
+        } else if (currOrder instanceof BaggageOrder bOrder) {
+            bOrder.addViolation(objNumber, violation);
         }
-
         order.setValue(currOrder);
     }
 
@@ -229,6 +231,8 @@ public class OrderViewModel extends ViewModel {
 
         if (currOrder instanceof CollectableOrder that) {
             that.deleteViolationInCollector(objNumber, violation);
+        } else if (currOrder instanceof BaggageOrder bOrder) {
+            bOrder.deleteViolation(objNumber, violation);
         }
 
         order.setValue(currOrder);

@@ -15,10 +15,15 @@ import java.util.List;
 public interface CompanyDao {
 
     @Transaction
-    @Query("SELECT * FROM companies WHERE is_active = 1 AND date(expiration_date) > date('now') ")
+    @Query("SELECT * FROM companies WHERE is_active = 1 AND date(expiration_date) > date('now')")
     List<CompanyWithBranch> getAll();
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<CompanyEntity> entities);
+
+    @Transaction
+    @Query("SELECT * FROM companies WHERE is_active = 1 AND date(expiration_date) > date('now') " +
+            "AND is_dinner_department = 1")
+    List<CompanyWithBranch> getAllDinnerCompany();
 }

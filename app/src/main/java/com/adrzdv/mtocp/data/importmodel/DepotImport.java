@@ -1,6 +1,7 @@
 package com.adrzdv.mtocp.data.importmodel;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.Objects;
 
@@ -14,17 +15,20 @@ public class DepotImport {
     private String shortName;
     private BranchImport branch;
     private String phoneNumber;
+    private Boolean isDinnerDepot;
 
     public DepotImport(@NonNull Integer id,
                        @NonNull String name,
                        @NonNull String shortName,
                        @NonNull BranchImport branch,
-                       @NonNull String phoneNumber) {
+                       @NonNull String phoneNumber,
+                       @Nullable Boolean isDinnerDepot) {
         this.id = id;
         this.name = name;
         this.shortName = shortName;
         this.branch = branch;
         this.phoneNumber = phoneNumber;
+        this.isDinnerDepot = isDinnerDepot;
     }
 
     @NonNull
@@ -71,6 +75,14 @@ public class DepotImport {
         this.phoneNumber = phoneNumber;
     }
 
+    public Boolean getDinnerDepot() {
+        return isDinnerDepot;
+    }
+
+    public void setDinnerDepot(Boolean dinnerDepot) {
+        isDinnerDepot = dinnerDepot;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof DepotImport that)) return false;
@@ -81,6 +93,7 @@ public class DepotImport {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
 
 
 }

@@ -16,19 +16,22 @@ public class CompanyImport {
     private String contract;
     private LocalDate expirationDate;
     private Integer branchId;
+    private Boolean isDinnerDepartment;
 
     public CompanyImport(@NonNull Long els,
                          @NonNull String name,
                          @NonNull Boolean isActive,
                          @NonNull String contract,
                          @NonNull LocalDate expirationDate,
-                         @NonNull Integer branchId) {
+                         @NonNull Integer branchId,
+                         @NonNull Boolean isDinnerDepartment) {
         this.els = els;
         this.name = name;
         this.isActive = isActive;
         this.contract = contract;
         this.expirationDate = expirationDate;
         this.branchId = branchId;
+        this.isDinnerDepartment = isDinnerDepartment;
     }
 
     @NonNull
@@ -85,6 +88,14 @@ public class CompanyImport {
         this.branchId = branchId;
     }
 
+    public Boolean getDinnerDepartment() {
+        return isDinnerDepartment;
+    }
+
+    public void setDinnerDepartment(Boolean dinnerDepartment) {
+        isDinnerDepartment = dinnerDepartment;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof CompanyImport that)) return false;
@@ -96,4 +107,6 @@ public class CompanyImport {
     public int hashCode() {
         return Objects.hash(els, branchId);
     }
+
+
 }

@@ -13,4 +13,6 @@ public interface DepotRepository {
     DepotWithBranch getDepotById(int id);
 
     void saveAll(List<DepotWithBranch> list);
+
+    List<DepotWithBranch> getDinnerDepots();
 }

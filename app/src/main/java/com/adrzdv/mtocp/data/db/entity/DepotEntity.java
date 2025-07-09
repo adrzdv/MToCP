@@ -1,6 +1,7 @@
 package com.adrzdv.mtocp.data.db.entity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -36,6 +37,9 @@ public class DepotEntity {
     @NonNull
     @ColumnInfo(name = "phone_number")
     private String phoneNumber;
+    @Nullable
+    @ColumnInfo(name = "is_dinner_depot")
+    private Boolean isDinnerDepot;
 
     public DepotEntity() {
         id = 0;
@@ -44,6 +48,7 @@ public class DepotEntity {
         branchId = 0;
         isActive = false;
         phoneNumber = "";
+        isDinnerDepot = false;
     }
 
     public DepotEntity(@NonNull Integer id,
@@ -51,13 +56,15 @@ public class DepotEntity {
                        @NonNull String shortName,
                        @NonNull Integer branchId,
                        @NonNull Boolean isActive,
-                       @NonNull String phoneNumber) {
+                       @NonNull String phoneNumber,
+                       @Nullable Boolean isDinnerDepot) {
         this.id = id;
         this.name = name;
         this.shortName = shortName;
         this.branchId = branchId;
         this.isActive = isActive;
         this.phoneNumber = phoneNumber;
+        this.isDinnerDepot = isDinnerDepot;
     }
 
     @Override
@@ -126,5 +133,14 @@ public class DepotEntity {
 
     public void setPhoneNumber(@NonNull String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Nullable
+    public Boolean getDinnerDepot() {
+        return isDinnerDepot;
+    }
+
+    public void setDinnerDepot(@Nullable Boolean dinnerDepot) {
+        isDinnerDepot = dinnerDepot;
     }
 }

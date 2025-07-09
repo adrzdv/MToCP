@@ -5,6 +5,7 @@ import com.adrzdv.mtocp.data.db.entity.CompanyEntity;
 import com.adrzdv.mtocp.data.db.entity.CompanyWithBranch;
 import com.adrzdv.mtocp.domain.repository.CompanyRepository;
 
+import java.util.Collections;
 import java.util.List;
 
 public class CompanyRepositoryImpl implements CompanyRepository {
@@ -24,4 +25,11 @@ public class CompanyRepositoryImpl implements CompanyRepository {
     public void saveAll(List<CompanyEntity> entities) {
         dao.insertAll(entities);
     }
+
+    @Override
+    public List<CompanyWithBranch> getDinnerCompanies() {
+        return dao.getAllDinnerCompany();
+    }
+
+
 }

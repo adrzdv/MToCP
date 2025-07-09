@@ -9,6 +9,7 @@ public class CompanyDomain {
     private String contractNumber;
     private LocalDate expirationDate;
     private BranchDomain branchDomain;
+    private Boolean isDinnerDepartment;
 
     public CompanyDomain() {
 
@@ -19,13 +20,15 @@ public class CompanyDomain {
                          Boolean isActive,
                          String contractNumber,
                          LocalDate expirationDate,
-                         BranchDomain branchDomain) {
+                         BranchDomain branchDomain,
+                         Boolean isDinnerDepartment) {
         this.els = els;
         this.name = name;
         this.isActive = isActive;
         this.contractNumber = contractNumber;
         this.expirationDate = expirationDate;
         this.branchDomain = branchDomain;
+        this.isDinnerDepartment = isDinnerDepartment;
     }
 
 
@@ -75,5 +78,13 @@ public class CompanyDomain {
 
     public void setBranchDomain(BranchDomain branchDomain) {
         this.branchDomain = branchDomain;
+    }
+
+    public Boolean getDinnerDepartment() {
+        return isDinnerDepartment;
+    }
+
+    public void setDinnerDepartment(Boolean dinnerDepartment) {
+        isDinnerDepartment = dinnerDepartment;
     }
 }

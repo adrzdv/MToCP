@@ -36,5 +36,8 @@ public interface DepotDao {
         insertDepot(depot);
     }
 
+    @Transaction
+    @Query("SELECT * FROM depots WHERE is_active = 1 AND is_dinner_depot = 1")
+    List<DepotWithBranch> getDinnerDepots();
 
 }

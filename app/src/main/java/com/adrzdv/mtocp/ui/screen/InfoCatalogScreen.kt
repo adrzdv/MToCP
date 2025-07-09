@@ -1,7 +1,6 @@
 package com.adrzdv.mtocp.ui.screen
 
 import ViolationCatalogScreen
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -69,6 +68,7 @@ fun InfoCatalogScreen(
             "Структурные подразделения",
             painterResource(R.drawable.ic_contract)
         ),
+        MenuElementItem("dinner", "Дирекции", painterResource(R.drawable.ic_train)),
         MenuElementItem("company", "Перевозчики", painterResource(R.drawable.ic_train))
     )
 
@@ -136,7 +136,11 @@ fun InfoCatalogScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = onBackClick) {
+                        IconButton(onClick = {
+                            depotViewModel.resetDinnerFilter()
+                            companyViewMode.resetDinnerFilter()
+                            onBackClick()
+                        }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_home_24_white),
                                 contentDescription = stringResource(R.string.back_text)
@@ -173,6 +177,12 @@ fun InfoCatalogScreen(
                 composable("company") {
                     CompanyCatalogScreen(
                         viewModel = companyViewMode
+                    )
+                }
+
+                composable("dinner") {
+                    DinnerDepotCatalogScreen(
+                        viewModel = depotViewModel
                     )
                 }
             }

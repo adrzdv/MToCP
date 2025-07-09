@@ -26,13 +26,13 @@ fun ConfirmDialog(
         title = {
             Text(
                 text = title,
-                style = AppTypography.titleMedium
+                style = AppTypography.titleLarge
             )
         },
         text = {
             Text(
                 text = message,
-                style = AppTypography.bodyMedium
+                style = AppTypography.bodyLarge
             )
         },
         confirmButton = {

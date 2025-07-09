@@ -18,7 +18,8 @@ public class DepotMapper {
                 new BranchDomain(depotWithBranch.branch.getId(),
                         depotWithBranch.branch.getName(),
                         depotWithBranch.branch.getShortName()),
-                depotWithBranch.depot.getActive());
+                depotWithBranch.depot.getActive(),
+                depotWithBranch.depot.getDinnerDepot());
 
     }
 
@@ -29,7 +30,8 @@ public class DepotMapper {
                 depot.getShortName(),
                 depot.getBranchDomain().getId(),
                 depot.getActive(),
-                depot.getPhoneNumber());
+                depot.getPhoneNumber(),
+                depot.getDinnerDepot());
     }
 
     public static DepotEntity fromImportToEntity(DepotImport depot) {
@@ -39,7 +41,8 @@ public class DepotMapper {
                 depot.getShortName(),
                 depot.getBranch().getId(),
                 depot.getBranch().getActive(),
-                depot.getPhoneNumber());
+                depot.getPhoneNumber(),
+                depot.getDinnerDepot());
     }
 
     public static DepotDto fromDomainToDto(DepotDomain depot) {

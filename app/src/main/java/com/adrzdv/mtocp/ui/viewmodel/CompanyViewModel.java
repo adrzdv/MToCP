@@ -21,6 +21,7 @@ public class CompanyViewModel extends ViewModel {
     private final MutableLiveData<List<CompanyDto>> filteredList;
     private String currSearchStr;
     private final ExecutorService executor;
+    private boolean isDinner;
 
     public CompanyViewModel(CompanyRepository repository) {
         this.repository = repository;
@@ -28,6 +29,7 @@ public class CompanyViewModel extends ViewModel {
         this.allCompanies = new ArrayList<>();
         this.filteredList = new MutableLiveData<>(new ArrayList<>());
         this.currSearchStr = "";
+        this.isDinner = false;
         loadData();
     }
 
@@ -50,9 +52,31 @@ public class CompanyViewModel extends ViewModel {
         });
     }
 
+    public void filterDinner() {
+        isDinner = true;
+        applyFilter();
+    }
+
+    public void resetDinnerFilter() {
+        isDinner = false;
+        applyFilter();
+    }
+
     private void applyFilter() {
         String str = currSearchStr.toLowerCase();
         List<CompanyDomain> res = new ArrayList<>(allCompanies);
+
+        if (isDinner) {
+            res = res.stream()
+                    .filter(company ->
+                            Boolean.TRUE.equals(company.getDinnerDepartment()))
+                    .toList();
+        } else {
+            res = res.stream()
+                    .filter(company ->
+                            Boolean.TRUE.equals(company.getDinnerDepartment() == null))
+                    .toList();
+        }
 
         if (!str.isEmpty()) {
             res = res.stream()

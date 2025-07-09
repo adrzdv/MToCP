@@ -1,7 +1,9 @@
 package com.adrzdv.mtocp.domain.model.order;
 
+import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.BaggageCar;
+import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.domain.model.workers.OuterWorkerDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
@@ -55,14 +57,30 @@ public class BaggageOrder extends Order {
         }
     }
 
-    //ADD FOR THROWING ILLEGALSTATE WHEN DUPLICATE
     @Override
     protected void doAddRevisionObject(RevisionObject o) {
         if (o instanceof BaggageCar baggageCar) {
+            if (coachMap.containsKey(o.getNumber())) {
+                throw new IllegalArgumentException(MessageCodes.DUPLICATE_ERROR.getErrorTitle());
+            }
             coachMap.put(baggageCar.getNumber(), baggageCar);
         } else {
             throw new IllegalArgumentException("Expected BaggageCar.class; Got: "
                     + o.getClass().getSimpleName());
         }
+    }
+
+    public void addViolation(String objNumber, ViolationDomain violation) {
+        if (!coachMap.containsKey(objNumber) && coachMap.get(objNumber) == null) {
+            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getErrorTitle());
+        }
+        coachMap.get(objNumber).addViolation(violation);
+    }
+
+    public void deleteViolation(String objNumber, ViolationDomain violation) {
+        if (!coachMap.containsKey(objNumber) && coachMap.get(objNumber) == null) {
+            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getErrorTitle());
+        }
+        coachMap.get(objNumber).deleteViolation(violation);
     }
 }

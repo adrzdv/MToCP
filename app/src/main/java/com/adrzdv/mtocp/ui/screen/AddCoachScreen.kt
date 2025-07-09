@@ -36,12 +36,14 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
 import com.adrzdv.mtocp.ui.component.AddCoachDialog
+import com.adrzdv.mtocp.ui.component.AddDinnerCarDialog
 import com.adrzdv.mtocp.ui.component.CoachItemCard
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.InfoBlockWithLabel
 import com.adrzdv.mtocp.ui.component.MediumMenuButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
+import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.RevisionObjectViewModel
@@ -155,6 +157,17 @@ fun AddCoachScreen(
                     },
                     stringResource(R.string.clean_string)
                 )
+
+                MediumMenuButton(
+                    onClick = { showAddDinnerDialog = true },
+                    icon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_add_itew_white),
+                            contentDescription = null
+                        )
+                    },
+                    stringResource(R.string.dinner_add)
+                )
             }
 
             HorizontalDivider()
@@ -205,6 +218,17 @@ fun AddCoachScreen(
                 showDialog = false
             },
             coachViewModel
+        )
+    }
+
+    if(showAddDinnerDialog) {
+        depotViewModel.filterDinner()
+        AddDinnerCarDialog(
+            orderViewModel,
+            depotViewModel,
+            onDismiss = {
+                showDialog = false
+            }
         )
     }
 }
