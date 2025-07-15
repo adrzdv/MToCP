@@ -27,6 +27,7 @@ fun StartMenuScreen(
     onServiceMenuClick: () -> Unit,
     onExitClick: () -> Unit,
     onHelpClick: () -> Unit,
+    onRequestWebClick: () -> Unit,
     appVersion: String
 ) {
     var showExitDialog by remember { mutableStateOf(false) }
@@ -117,6 +118,12 @@ fun StartMenuScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     MenuButton(
+                        text = stringResource(R.string.request_number),
+                        icon = painterResource(R.drawable.ic_help_24_white),
+                        onClick = onRequestWebClick
+                    )
+
+                    MenuButton(
                         text = stringResource(R.string.help),
                         icon = painterResource(R.drawable.ic_help_24_white),
                         onClick = onHelpClick
@@ -160,6 +167,7 @@ fun PreviewMainScreen() {
         onServiceMenuClick = {},
         onExitClick = {},
         onHelpClick = {},
+        onRequestWebClick = {},
         appVersion = "v1.0.0"
     )
 }

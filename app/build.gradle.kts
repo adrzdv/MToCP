@@ -7,14 +7,14 @@ plugins {
 
 android {
     namespace = "com.adrzdv.mtocp"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.adrzdv.mtocp"
-        minSdk = 34
+        minSdk = 30                                                 //Android 11+
         targetSdk = 35
         versionCode = 1
-        versionName = "0.4.0-beta"
+        versionName = "0.5.1-beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -91,5 +91,7 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
 
     implementation("com.google.code.gson:gson:2.10.1")
+
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
 }

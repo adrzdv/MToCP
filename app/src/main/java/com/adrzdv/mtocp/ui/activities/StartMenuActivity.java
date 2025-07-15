@@ -55,6 +55,11 @@ public class StartMenuActivity extends AppCompatActivity {
                     startActivity(intent);
                     return Unit.INSTANCE;
                 },
+                () -> {
+                    Intent intent = new Intent(this, RequestWebActivity.class);
+                    startActivity(intent);
+                    return Unit.INSTANCE;
+                },
                 versionName
         );
 

@@ -37,6 +37,7 @@ import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.InnerWorkerViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.RequestWebViewModel
 import com.adrzdv.mtocp.ui.viewmodel.RevisionObjectViewModel
 import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
 
@@ -358,5 +359,66 @@ fun AddWorkerDialog(
             }
         }
     )
+}
+
+@Composable
+fun CustomAlertDialog(
+    viewModel: RequestWebViewModel,
+    title: String
+) {
+
+    val workerName = viewModel.workerName
+
+    AlertDialog(
+        onDismissRequest = { viewModel.dismissDialogs() },
+        title = {
+            Text(
+                text = title,
+                style = AppTypography.titleMedium
+            )
+        },
+        containerColor = AppColors.LIGHT_GRAY.color,
+        confirmButton = {
+            Button(
+                onClick = {
+                    viewModel.getNumber()
+                },
+                colors = ButtonDefaults
+                    .buttonColors(containerColor = AppColors.MAIN_GREEN.color),
+                border = null
+            ) {
+                Text(
+                    stringResource(R.string.add_string),
+                    style = AppTypography.bodyMedium
+                )
+            }
+        },
+        dismissButton = {
+            CustomOutlinedButton(
+                onClick = { viewModel.dismissDialogs() },
+                stringResource(R.string.cancel)
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+
+                CustomOutlinedTextField(
+                    value = workerName,
+                    onValueChange = {
+                        viewModel.onWorkerNameChanged(it)
+                    },
+                    isError = false,
+                    errorText = "",
+                    label = stringResource(R.string.worker_name)
+                )
+            }
+        }
+    )
+
 }
 
