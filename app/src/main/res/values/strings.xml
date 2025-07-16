@@ -64,4 +64,6 @@
     <string name="web_request_string">WEB-запросы</string>
     <string name="ok_string">OK</string>
     <string name="doc_number_string">Номер акта</string>
+    <string name="ask_exit_string">Вы уверены, что хотите выйти?</string>
+    <string name="warning_unsaved_data">Несохраненные данные будут утеряны.</string>
 </resources>

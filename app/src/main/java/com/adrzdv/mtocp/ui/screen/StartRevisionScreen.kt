@@ -10,12 +10,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -36,7 +33,6 @@ import com.adrzdv.mtocp.ui.component.ConfirmDialog
 import androidx.activity.compose.BackHandler
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.navigation.NavController
@@ -56,7 +52,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StartRevisionScreen(
     orderViewModel: OrderViewModel,
@@ -234,35 +229,7 @@ fun StartRevisionScreen(
                 }
             )
         },
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.header_start_revision),
-                        style = AppTypography.titleLarge
-                    )
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            showExitDialog = true
-                        }
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_back_32),
-                            contentDescription = stringResource(R.string.back_text)
-                        )
-                    }
-                },
-                colors = TopAppBarColors(
-                    containerColor = AppColors.LIGHT_GREEN.color,
-                    scrolledContainerColor = AppColors.LIGHT_GREEN.color,
-                    titleContentColor = AppColors.OFF_WHITE.color,
-                    navigationIconContentColor = AppColors.OFF_WHITE.color,
-                    actionIconContentColor = AppColors.OFF_WHITE.color
-                )
-            )
-        }, snackbarHost = {
+        snackbarHost = {
             CustomSnackbarHost(
                 hostState = snackbarHostState
             )
@@ -400,8 +367,8 @@ fun StartRevisionScreen(
                 if (showExitDialog) {
                     ConfirmDialog(
                         title = stringResource(R.string.exit_text),
-                        message = "Вы уверены, что хотите закончить?\n" +
-                                "Несохраненные данные будут утеряны",
+                        message = stringResource(R.string.ask_exit_string) + "\n" +
+                                stringResource(R.string.warning_unsaved_data),
                         onConfirm = {
                             showExitDialog = false
                             onBackClick()

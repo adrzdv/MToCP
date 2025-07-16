@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.adrzdv.mtocp.App;
 
+@Deprecated
 public class CustomViewModelFactory implements ViewModelProvider.Factory {
 
     @NonNull

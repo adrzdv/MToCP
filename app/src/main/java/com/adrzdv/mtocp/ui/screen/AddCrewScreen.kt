@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.*
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.getValue
@@ -40,7 +38,6 @@ import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.InnerWorkerViewModel
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddCrewScreen(
     orderViewModel: OrderViewModel,
@@ -56,32 +53,6 @@ fun AddCrewScreen(
 
     Scaffold(
         containerColor = AppColors.LIGHT_GRAY.color,
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.masters_object),
-                        style = AppTypography.titleLarge
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_back_32),
-                            contentDescription = stringResource(R.string.back_text)
-                        )
-                    }
-                },
-                colors = TopAppBarColors(
-                    containerColor = AppColors.LIGHT_GREEN.color,
-                    scrolledContainerColor = AppColors.LIGHT_GREEN.color,
-                    titleContentColor = AppColors.OFF_WHITE.color,
-                    navigationIconContentColor = AppColors.OFF_WHITE.color,
-                    actionIconContentColor = AppColors.OFF_WHITE.color
-                )
-            )
-        },
-
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 contentColor = Color.White,

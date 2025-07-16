@@ -1,8 +1,7 @@
 package com.adrzdv.mtocp.ui.screen
 
+import android.app.Activity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -18,9 +17,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -46,17 +45,39 @@ fun RevisionScreen(
     val scope = rememberCoroutineScope()
     val navBackStackEntry by navRevisionController.currentBackStackEntryAsState()
     var showExitDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    val currentRoute =
+        navRevisionController.currentBackStackEntryAsState().value?.destination?.route
+    val title = when (currentRoute) {
+        "startRevision" -> stringResource(R.string.header_start_revision)
+        "addCrew" -> stringResource(R.string.masters_object)
+        "addCoaches" -> stringResource(R.string.train_scheme)
+        else -> ""
+    }
 
     Scaffold(
         containerColor = AppColors.LIGHT_GRAY.color,
         topBar = {
             TopAppBar(
                 title = {
-                    Spacer(modifier = Modifier.height(0.dp))
                     Text(
-                        text = stringResource(R.string.revision_string),
+                        text = title,
                         style = CustomTypography.titleLarge
                     )
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        val popped = navRevisionController.popBackStack()
+                        if (!popped) {
+                            showExitDialog = true
+                        }
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_back_32),
+                            contentDescription = stringResource(R.string.back_text)
+                        )
+                    }
                 },
                 actions = {
                     IconButton(
@@ -115,9 +136,9 @@ fun RevisionScreen(
 
     if (showExitDialog) {
         ConfirmDialog(
-            title = "Выход",
-            message = "Вы уверены, что хотите закончить?\n" +
-                    "Несохраненные данные будут утеряны",
+            title = stringResource(R.string.exit_text),
+            message = stringResource(R.string.ask_exit_string) + "\n" +
+                    stringResource(R.string.warning_unsaved_data),
             onConfirm = {
                 showExitDialog = false
                 onBackClick()

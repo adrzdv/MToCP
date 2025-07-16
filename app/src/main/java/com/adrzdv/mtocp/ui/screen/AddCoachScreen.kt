@@ -66,34 +66,6 @@ fun AddCoachScreen(
 
     Scaffold(
         containerColor = AppColors.LIGHT_GRAY.color,
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.train_scheme),
-                        style = AppTypography.titleLarge
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.popBackStack()
-                    }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_back_32),
-                            contentDescription = stringResource(R.string.back_text)
-                        )
-                    }
-                },
-                colors = TopAppBarColors(
-                    containerColor = AppColors.LIGHT_GREEN.color,
-                    scrolledContainerColor = AppColors.LIGHT_GREEN.color,
-                    titleContentColor = AppColors.OFF_WHITE.color,
-                    navigationIconContentColor = AppColors.OFF_WHITE.color,
-                    actionIconContentColor = AppColors.OFF_WHITE.color
-                )
-            )
-        },
-
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 contentColor = Color.White,
