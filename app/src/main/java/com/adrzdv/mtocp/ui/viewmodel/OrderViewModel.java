@@ -190,6 +190,16 @@ public class OrderViewModel extends ViewModel {
         return null;
     }
 
+    public void toggleDinnerCar(boolean flag) {
+
+        Order currOrder = order.getValue();
+
+        if (currOrder instanceof CollectableOrder that) {
+            if (!(that.getCollector() instanceof TrainDomain train)) return;
+            train.setDinnerCar(flag);
+        }
+    }
+
     public void updateTrainScheme() {
 
         Order currOrder = order.getValue();
@@ -210,6 +220,11 @@ public class OrderViewModel extends ViewModel {
             }
 
             builder.append(")");
+
+            if (train.getDinnerCar()) {
+                builder.append(" в т.ч. 1 ВР");
+            }
+
             trainScheme.setValue(builder.toString().trim());
         }
     }

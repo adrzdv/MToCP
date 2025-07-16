@@ -49,7 +49,6 @@ import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.RevisionObjectViewModel
 import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddCoachScreen(
     orderViewModel: OrderViewModel,
@@ -199,7 +198,7 @@ fun AddCoachScreen(
             orderViewModel,
             depotViewModel,
             onDismiss = {
-                showDialog = false
+                showAddDinnerDialog = false
             }
         )
     }

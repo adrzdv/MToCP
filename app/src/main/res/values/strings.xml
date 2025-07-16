@@ -66,4 +66,5 @@
     <string name="doc_number_string">Номер акта</string>
     <string name="ask_exit_string">Вы уверены, что хотите выйти?</string>
     <string name="warning_unsaved_data">Несохраненные данные будут утеряны.</string>
+    <string name="parallel_selection_string">Не могут быть выбраны одновременно</string>
 </resources>

@@ -29,6 +29,7 @@ import com.adrzdv.mtocp.domain.model.departments.DepotDomain
 import com.adrzdv.mtocp.domain.model.enums.DinnerCarsType
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
 import com.adrzdv.mtocp.ui.theme.AppColors
@@ -48,11 +49,16 @@ fun AddDinnerCarDialog(
     onDismiss: () -> Unit
 ) {
 
+    var isHasDinner by remember { mutableStateOf(false) }
     var coachNumber by remember { mutableStateOf("") }
     var selectedDepot by remember { mutableStateOf("") }
     var selectedCompany by remember { mutableStateOf("") }
     var selectedType by remember { mutableStateOf<DinnerCarsType?>(null) }
     var isNumberError by remember { mutableStateOf(false) }
+    var isDepotEmpty by remember { mutableStateOf(false) }
+    var isCompanyEmpty by remember { mutableStateOf(false) }
+    var isDepotWhenCompanySelected by remember { mutableStateOf(false) }
+    var isCompanyWhenDepotSelected by remember { mutableStateOf(false) }
     val companyViewModel: CompanyViewModel = viewModel(
         factory = ViewModelFactoryProvider.provideFactory()
     )
@@ -65,7 +71,32 @@ fun AddDinnerCarDialog(
 //    }
 
     fun addDinnerCar() {
+        val revObject = DinnerCar(coachNumber)
+        if (selectedDepot.isEmpty() && selectedCompany.isEmpty()) {
+            isDepotEmpty = true
+            isCompanyEmpty = true
+            return
+        } else if (selectedDepot.isNotEmpty() && selectedCompany.isNotEmpty()) {
+            isDepotWhenCompanySelected = true
+            isCompanyWhenDepotSelected = true
+            return
+        }
 
+        try {
+            revObject.type = selectedType
+            if (selectedDepot.isNotEmpty()) {
+                revObject.depot = depotViewModel.getDepotDomain(selectedDepot)
+            } else {
+                revObject.companyDomain = companyViewModel.getCompanyDomain(selectedCompany)
+            }
+            orderViewModel.addRevisionObject(revObject)
+            isHasDinner = true
+            orderViewModel.toggleDinnerCar(isHasDinner)
+            orderViewModel.updateTrainScheme()
+            onDismiss()
+        } catch (e: IllegalArgumentException) {
+            isNumberError = true
+        }
     }
 
     AppFullscreenDialog(
@@ -96,16 +127,28 @@ fun AddDinnerCarDialog(
             //Для дирекции
             DropdownMenuField(
                 label = stringResource(R.string.dinner_department),
+                isError = isDepotEmpty || isCompanyWhenDepotSelected,
+                errorMessage = when {
+                    isDepotEmpty -> stringResource(R.string.empty_string)
+                    isCompanyWhenDepotSelected -> stringResource(R.string.parallel_selection_string)
+                    else -> ""
+                },
                 options = depotViewModel.filteredDepots.value?.map { it.name } ?: emptyList(),
-                selectedOption = "",
-                onOptionSelected = {}
+                selectedOption = selectedDepot,
+                onOptionSelected = { selectedDepot = it }
             )
             //Для арендаторов
             DropdownMenuField(
                 label = stringResource(R.string.dinner_company),
+                isError = isCompanyEmpty || isDepotWhenCompanySelected,
+                errorMessage = when {
+                    isCompanyEmpty -> stringResource(R.string.empty_string)
+                    isDepotWhenCompanySelected -> stringResource(R.string.parallel_selection_string)
+                    else -> ""
+                },
                 options = companyViewModel.filteredCompanies.value?.map { it.name } ?: emptyList(),
-                selectedOption = "",
-                onOptionSelected = {}
+                selectedOption = selectedCompany,
+                onOptionSelected = { selectedCompany = it }
             )
         }
     )

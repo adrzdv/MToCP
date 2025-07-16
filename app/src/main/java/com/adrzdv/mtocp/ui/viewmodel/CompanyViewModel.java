@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.adrzdv.mtocp.data.db.entity.CompanyWithBranch;
 import com.adrzdv.mtocp.domain.model.departments.CompanyDomain;
+import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
 import com.adrzdv.mtocp.domain.repository.CompanyRepository;
 import com.adrzdv.mtocp.mapper.CompanyMapper;
 import com.adrzdv.mtocp.ui.model.CompanyDto;
@@ -33,6 +34,13 @@ public class CompanyViewModel extends ViewModel {
         loadData();
     }
 
+    public CompanyDomain getCompanyDomain(String companyName) {
+
+        return allCompanies.stream()
+                .filter(company -> company.getName().equals(companyName))
+                .findFirst().orElse(null);
+    }
+
     public LiveData<List<CompanyDto>> getFilteredCompanies() {
         return filteredList;
     }
@@ -40,16 +48,6 @@ public class CompanyViewModel extends ViewModel {
     public void filterByString(String str) {
         currSearchStr = str != null ? str.trim() : "";
         applyFilter();
-    }
-
-    private void loadData() {
-        executor.execute(() -> {
-            List<CompanyWithBranch> companiesFromDb = repository.getAll();
-            allCompanies = companiesFromDb.stream()
-                    .map(CompanyMapper::fromPojoToDomain)
-                    .toList();
-            applyFilter();
-        });
     }
 
     public void filterDinner() {
@@ -89,5 +87,15 @@ public class CompanyViewModel extends ViewModel {
                 .toList();
 
         filteredList.postValue(dtoList);
+    }
+
+    private void loadData() {
+        executor.execute(() -> {
+            List<CompanyWithBranch> companiesFromDb = repository.getAll();
+            allCompanies = companiesFromDb.stream()
+                    .map(CompanyMapper::fromPojoToDomain)
+                    .toList();
+            applyFilter();
+        });
     }
 }

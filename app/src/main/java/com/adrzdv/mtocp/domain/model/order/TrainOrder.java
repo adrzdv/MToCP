@@ -1,6 +1,7 @@
 package com.adrzdv.mtocp.domain.model.order;
 
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
@@ -101,6 +102,11 @@ public class TrainOrder extends Order implements CollectableOrder {
                 throw new IllegalStateException("Object already exists; Object: " + o.getNumber());
             }
             train.getObjectsMap().put(passengerCar.getNumber(), passengerCar);
+        } else if (o instanceof DinnerCar dinnerCar) {
+            if (train.getObjectsMap().containsKey(o.getNumber())) {
+                throw new IllegalStateException("Object already exists; Object: " + o.getNumber());
+            }
+            train.getObjectsMap().put(dinnerCar.getNumber(), dinnerCar);
         } else {
             throw new IllegalArgumentException("Expected PassengerCar.class; Got: " +
                     o.getClass().getSimpleName());

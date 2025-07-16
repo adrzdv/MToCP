@@ -1,9 +1,11 @@
 package com.adrzdv.mtocp.domain.validation;
 
 import com.adrzdv.mtocp.MessageCodes;
+import com.adrzdv.mtocp.domain.model.enums.DinnerCarsType;
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.Coach;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
@@ -60,12 +62,23 @@ public abstract class RegularValidator {
                 PassengerCoachType.COMPARTMENT, List.of(0, 1),
                 PassengerCoachType.OPEN_CLASS_SLEEPING, List.of(2),
                 PassengerCoachType.INTERREGIONAL, List.of(3));
+
+        Map<DinnerCarsType, List<Integer>> dinnerPatterns = Map.of(
+                DinnerCarsType.BISTRO, List.of(6),
+                DinnerCarsType.RESTAURANT, List.of(6)
+        );
+
         String number = o.getNumber();
+        int firstDigit = Integer.parseInt(String.valueOf(number.charAt(number.indexOf("-") + 1)));
         if (o instanceof PassengerCar c && !o.getNumber().isEmpty()) {
             PassengerCoachType type = c.getCoachType();
-            if (!patterns.get(type).contains(Integer.parseInt(
-                    String.valueOf(number.charAt(number.indexOf("-") + 1))))
+            if (!patterns.get(type).contains(firstDigit)
                     && !(type == PassengerCoachType.INTERREGIONAL && o.getNumber().length() == 5)) {
+                throw new IllegalArgumentException(MessageCodes.PATTERN_MATCHES_ERROR.toString());
+            }
+        } else if (o instanceof DinnerCar c && !c.getNumber().isEmpty()) {
+            DinnerCarsType type = c.getType();
+            if (!dinnerPatterns.get(type).contains(firstDigit)) {
                 throw new IllegalArgumentException(MessageCodes.PATTERN_MATCHES_ERROR.toString());
             }
         } else {
