@@ -101,15 +101,25 @@ public class TrainOrder extends Order implements CollectableOrder {
             if (train.getObjectsMap().containsKey(o.getNumber())) {
                 throw new IllegalStateException("Object already exists; Object: " + o.getNumber());
             }
-            train.getObjectsMap().put(passengerCar.getNumber(), passengerCar);
+            train.addRevisionObject(passengerCar);
         } else if (o instanceof DinnerCar dinnerCar) {
             if (train.getObjectsMap().containsKey(o.getNumber())) {
                 throw new IllegalStateException("Object already exists; Object: " + o.getNumber());
             }
-            train.getObjectsMap().put(dinnerCar.getNumber(), dinnerCar);
+            if (train.getDinnerCar()) {
+                train.removeDinnerCar();
+                train.addRevisionObject(dinnerCar);
+            } else {
+                train.addRevisionObject(dinnerCar);
+            }
         } else {
-            throw new IllegalArgumentException("Expected PassengerCar.class; Got: " +
+            throw new IllegalArgumentException("Expected Coach.class; Got: " +
                     o.getClass().getSimpleName());
         }
     }
+
+    public void removeDinnerCoach() {
+        train.removeDinnerCar();
+    }
+
 }

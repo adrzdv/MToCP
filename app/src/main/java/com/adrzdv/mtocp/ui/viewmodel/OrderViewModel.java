@@ -13,6 +13,7 @@ import com.adrzdv.mtocp.domain.model.order.BaggageOrder;
 import com.adrzdv.mtocp.domain.model.order.CollectableOrder;
 import com.adrzdv.mtocp.domain.model.order.Order;
 import com.adrzdv.mtocp.domain.model.order.OrderFactory;
+import com.adrzdv.mtocp.domain.model.order.TrainOrder;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
@@ -277,5 +278,13 @@ public class OrderViewModel extends ViewModel {
             return null;
         }
         return null;
+    }
+
+    public void removeDinnerCar() {
+        Order currOrder = order.getValue();
+
+        if (currOrder instanceof TrainOrder that) {
+            that.removeDinnerCoach();
+        }
     }
 }

@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
@@ -47,6 +48,7 @@ import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.RevisionObjectViewModel
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -62,6 +64,8 @@ fun AddCoachScreen(
     val coaches = coachViewModel.revObjects
     val train = orderViewModel.collector as? TrainDomain
     val trainScheme by orderViewModel.trainScheme.observeAsState("-")
+    var isHasDinnerCar by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         containerColor = AppColors.LIGHT_GRAY.color,
@@ -128,9 +132,15 @@ fun AddCoachScreen(
                     },
                     stringResource(R.string.clean_string)
                 )
+            }
+
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
 
                 MediumMenuButton(
-                    onClick = { showAddDinnerDialog = true },
+                    onClick = {
+                        isHasDinnerCar = true
+                        showAddDinnerDialog = true
+                    },
                     icon = {
                         Icon(
                             painter = painterResource(R.drawable.ic_add_itew_white),
@@ -138,6 +148,36 @@ fun AddCoachScreen(
                         )
                     },
                     stringResource(R.string.dinner_add)
+                )
+
+                MediumMenuButton(
+                    onClick = {
+                        if (isHasDinnerCar) {
+                            orderViewModel.removeDinnerCar()
+                            orderViewModel.toggleDinnerCar(false)
+                            orderViewModel.updateTrainScheme()
+                            isHasDinnerCar = false
+                            scope.launch {
+                                snackbarHostState.showSnackbar(
+                                    message = MessageCodes.DELETE_SUCCESS.errorTitle
+                                )
+                            }
+                        } else {
+                            scope.launch {
+                                snackbarHostState.showSnackbar(
+                                    message = MessageCodes.NOT_FOUND_ERROR.errorTitle
+                                )
+                            }
+                        }
+
+                    },
+                    icon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_delete_24_white),
+                            contentDescription = null
+                        )
+                    },
+                    stringResource(R.string.dinner_remove)
                 )
             }
 
@@ -192,8 +232,7 @@ fun AddCoachScreen(
         )
     }
 
-    if(showAddDinnerDialog) {
-        depotViewModel.filterDinner()
+    if (showAddDinnerDialog) {
         AddDinnerCarDialog(
             orderViewModel,
             depotViewModel,

@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.domain.model.revisionobject.collectors;
 
+import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType;
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes;
@@ -8,6 +9,7 @@ import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Domain class model for train
@@ -108,6 +110,16 @@ public class TrainDomain extends ObjectCollector {
                 .filter(car -> car.getCoachType() == type)
                 .count();
 
+    }
+
+    public void removeDinnerCar() {
+        if (isDinnerCar) {
+            getObjectsMap().values()
+                    .removeIf(revisionObject ->
+                            revisionObject.getNumber().contains("-6"));
+        } else {
+            throw new IllegalStateException(MessageCodes.PARAMETER_ERROR.getErrorTitle());
+        }
     }
 
 

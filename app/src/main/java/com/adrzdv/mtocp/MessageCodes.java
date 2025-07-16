@@ -23,7 +23,10 @@ public enum MessageCodes {
     CREW_ERROR("015#CREW_ERROR", "Отсутствует ЛНП/ПЭМ"),
     PATTERN_MATCHES_ERROR("016#PATTERN_ERROR", "Ошибка соответствия данных"),
     DUPLICATE_ERROR("017#DUPLICATE", "Объект уже добавлен"),
-    CAST_ERROR("018#CAST_ERROR", "Ошибка класса");
+    CAST_ERROR("018#CAST_ERROR", "Ошибка класса"),
+    PARAMETER_ERROR("019#PARAM_ERROR", "Отсутствуют параметры для удаления"),
+    DELETE_SUCCESS("020#DELETED","Удалено успешно"),
+    EMPTY_STRING("021#EMPTY_STR","Не может быть пустым");
 
     @NonNull
     private final String errorCode;

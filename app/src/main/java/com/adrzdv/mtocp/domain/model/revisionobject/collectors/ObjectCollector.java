@@ -2,6 +2,7 @@ package com.adrzdv.mtocp.domain.model.revisionobject.collectors;
 
 import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 

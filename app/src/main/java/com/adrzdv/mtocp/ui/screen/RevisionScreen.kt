@@ -1,6 +1,5 @@
 package com.adrzdv.mtocp.ui.screen
 
-import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api

@@ -59,6 +59,7 @@
     <string name="dinner_department">Дирекция питания</string>
     <string name="dinner_company">Арендатор</string>
     <string name="dinner_add">Добавить ВР</string>
+    <string name="dinner_remove">Удалить ВР</string>
     <string name="request_number">WEB-запросы</string>
     <string name="request_string">Запрос</string>
     <string name="web_request_string">WEB-запросы</string>

@@ -12,14 +12,17 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.material3.Icon
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -50,6 +53,8 @@ fun AddDinnerCarDialog(
 ) {
 
     var isHasDinner by remember { mutableStateOf(false) }
+    var isTypeError by remember { mutableStateOf(false) }
+    var isPatternError by remember { mutableStateOf(false) }
     var coachNumber by remember { mutableStateOf("") }
     var selectedDepot by remember { mutableStateOf("") }
     var selectedCompany by remember { mutableStateOf("") }
@@ -63,31 +68,34 @@ fun AddDinnerCarDialog(
         factory = ViewModelFactoryProvider.provideFactory()
     )
     companyViewModel.filterDinner()
-
-//    //тут надо решить проблему с асинхронной загрузкой данных
-//    //в данный момент передаются все
-//    LaunchedEffect(Unit) {
-//        companyViewModel.filterDinner()
-//    }
+    depotViewModel.filterDinner()
 
     fun addDinnerCar() {
-        val revObject = DinnerCar(coachNumber)
-        if (selectedDepot.isEmpty() && selectedCompany.isEmpty()) {
-            isDepotEmpty = true
-            isCompanyEmpty = true
+
+        isNumberError = coachNumber.isEmpty()
+        isTypeError = selectedType == null
+        isDepotEmpty = selectedDepot.isEmpty() && selectedCompany.isEmpty()
+
+        if (isNumberError || isTypeError || isDepotEmpty) {
             return
-        } else if (selectedDepot.isNotEmpty() && selectedCompany.isNotEmpty()) {
+        }
+
+        if (selectedDepot.isNotEmpty() && selectedCompany.isNotEmpty()) {
             isDepotWhenCompanySelected = true
             isCompanyWhenDepotSelected = true
             return
         }
 
+        val revObject = DinnerCar(coachNumber)
+
         try {
             revObject.type = selectedType
             if (selectedDepot.isNotEmpty()) {
                 revObject.depot = depotViewModel.getDepotDomain(selectedDepot)
-            } else {
+            } else if (selectedCompany.isNotEmpty()) {
                 revObject.companyDomain = companyViewModel.getCompanyDomain(selectedCompany)
+            } else {
+                throw IllegalArgumentException()
             }
             orderViewModel.addRevisionObject(revObject)
             isHasDinner = true
@@ -95,7 +103,7 @@ fun AddDinnerCarDialog(
             orderViewModel.updateTrainScheme()
             onDismiss()
         } catch (e: IllegalArgumentException) {
-            isNumberError = true
+            isPatternError = true
         }
     }
 
@@ -106,27 +114,39 @@ fun AddDinnerCarDialog(
         content = {
             CustomOutlinedTextField(
                 value = coachNumber,
+                modifier = Modifier.fillMaxWidth(),
                 onValueChange = {
                     coachNumber = it
+                    isNumberError = false
+                    isPatternError = false
                 },
-                isError = isNumberError,
-                errorText = stringResource(R.string.empty_string),
+                isError = isNumberError || isPatternError,
+                errorText = when {
+                    isNumberError -> stringResource(R.string.empty_string)
+                    isPatternError -> MessageCodes.PATTERN_MATCHES_ERROR.errorTitle
+                    else -> ""
+                },
                 label = stringResource(R.string.coach_number)
             )
             DropdownMenuField(
                 label = stringResource(R.string.coach_type),
+                isError = isTypeError,
+                errorMessage = stringResource(R.string.empty_string),
+                modifier = Modifier.fillMaxWidth(),
                 options = DinnerCarsType.values().map { it.description },
                 selectedOption = selectedType?.description ?: "",
                 onOptionSelected = { selected ->
                     selectedType = DinnerCarsType.values().firstOrNull() {
                         it.description == selected
                     }
+                    isTypeError = false
                 }
             )
 
             //Для дирекции
             DropdownMenuField(
                 label = stringResource(R.string.dinner_department),
+                modifier = Modifier.fillMaxWidth(),
                 isError = isDepotEmpty || isCompanyWhenDepotSelected,
                 errorMessage = when {
                     isDepotEmpty -> stringResource(R.string.empty_string)
@@ -135,21 +155,52 @@ fun AddDinnerCarDialog(
                 },
                 options = depotViewModel.filteredDepots.value?.map { it.name } ?: emptyList(),
                 selectedOption = selectedDepot,
-                onOptionSelected = { selectedDepot = it }
+                onOptionSelected = {
+                    selectedDepot = it
+                    isDepotWhenCompanySelected = false
+                    isCompanyWhenDepotSelected = false
+                    isDepotEmpty = false
+                }
             )
+
             //Для арендаторов
             DropdownMenuField(
                 label = stringResource(R.string.dinner_company),
-                isError = isCompanyEmpty || isDepotWhenCompanySelected,
+                modifier = Modifier.fillMaxWidth(),
+                isError = isDepotEmpty || isDepotWhenCompanySelected,
                 errorMessage = when {
-                    isCompanyEmpty -> stringResource(R.string.empty_string)
+                    isDepotEmpty -> stringResource(R.string.empty_string)
                     isDepotWhenCompanySelected -> stringResource(R.string.parallel_selection_string)
                     else -> ""
                 },
                 options = companyViewModel.filteredCompanies.value?.map { it.name } ?: emptyList(),
                 selectedOption = selectedCompany,
-                onOptionSelected = { selectedCompany = it }
+                onOptionSelected = {
+                    selectedCompany = it
+                    isDepotEmpty = false
+                    isDepotWhenCompanySelected = false
+                    isCompanyWhenDepotSelected = false
+                }
             )
+            IconButton(
+                onClick = {
+                    if (isCompanyWhenDepotSelected
+                        || isDepotWhenCompanySelected
+                        || selectedCompany.isNotEmpty()
+                        || selectedDepot.isNotEmpty()
+                    ) {
+                        selectedDepot = ""
+                        selectedCompany = ""
+                        isDepotWhenCompanySelected = false
+                        isCompanyWhenDepotSelected = false
+                    }
+                }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_clear_list),
+                    contentDescription = stringResource(R.string.clean_string)
+                )
+            }
         }
     )
 }
@@ -161,6 +212,9 @@ fun AddCoachDialog(
     onDismiss: () -> Unit,
     coachViewModel: RevisionObjectViewModel<PassengerCar>
 ) {
+
+    depotViewModel.resetDinnerFilter()
+
     var coachNumber by remember { mutableStateOf("") }
     var selectedDepot by remember { mutableStateOf("") }
     var checkedTrailingCar by remember { mutableStateOf(false) }
