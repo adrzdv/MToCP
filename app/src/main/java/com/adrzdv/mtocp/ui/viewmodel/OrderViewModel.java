@@ -49,6 +49,10 @@ public class OrderViewModel extends ViewModel {
         executor = Executors.newSingleThreadExecutor();
     }
 
+    public Order getCurrentOrder() {
+        return order.getValue();
+    }
+
     public String getOrderNumber() {
         return orderNumber;
     }
@@ -254,6 +258,14 @@ public class OrderViewModel extends ViewModel {
         order.setValue(currOrder);
     }
 
+    public void removeDinnerCar() {
+        Order currOrder = order.getValue();
+
+        if (currOrder instanceof TrainOrder that) {
+            that.removeDinnerCoach();
+        }
+    }
+
     private ObjectCollector createCollector(String objectNumber) {
 
         if (selectedType.equals(PASSENGER_TRAIN)) {
@@ -278,13 +290,5 @@ public class OrderViewModel extends ViewModel {
             return null;
         }
         return null;
-    }
-
-    public void removeDinnerCar() {
-        Order currOrder = order.getValue();
-
-        if (currOrder instanceof TrainOrder that) {
-            that.removeDinnerCoach();
-        }
     }
 }

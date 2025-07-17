@@ -41,6 +41,7 @@
     <string name="delete">Удалить</string>
     <string name="new_worker">Новый работник</string>
     <string name="new_coach">Новый вагон</string>
+    <string name="new_dinner">Новый вагон-ресторан</string>
     <string name="quality_passport">Паспорт качества</string>
     <string name="yes_string">Да</string>
     <string name="coach_number">Номер вагона</string>

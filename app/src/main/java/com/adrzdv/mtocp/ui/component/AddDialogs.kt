@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -20,8 +21,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.material3.Icon
+import androidx.compose.material3.TextButton
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -32,6 +35,7 @@ import com.adrzdv.mtocp.domain.model.departments.DepotDomain
 import com.adrzdv.mtocp.domain.model.enums.DinnerCarsType
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.Coach
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
@@ -49,10 +53,9 @@ import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
 fun AddDinnerCarDialog(
     orderViewModel: OrderViewModel,
     depotViewModel: DepotViewModel,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
 ) {
-
-    var isHasDinner by remember { mutableStateOf(false) }
     var isTypeError by remember { mutableStateOf(false) }
     var isPatternError by remember { mutableStateOf(false) }
     var coachNumber by remember { mutableStateOf("") }
@@ -61,7 +64,6 @@ fun AddDinnerCarDialog(
     var selectedType by remember { mutableStateOf<DinnerCarsType?>(null) }
     var isNumberError by remember { mutableStateOf(false) }
     var isDepotEmpty by remember { mutableStateOf(false) }
-    var isCompanyEmpty by remember { mutableStateOf(false) }
     var isDepotWhenCompanySelected by remember { mutableStateOf(false) }
     var isCompanyWhenDepotSelected by remember { mutableStateOf(false) }
     val companyViewModel: CompanyViewModel = viewModel(
@@ -98,17 +100,16 @@ fun AddDinnerCarDialog(
                 throw IllegalArgumentException()
             }
             orderViewModel.addRevisionObject(revObject)
-            isHasDinner = true
-            orderViewModel.toggleDinnerCar(isHasDinner)
+            orderViewModel.toggleDinnerCar(true)
             orderViewModel.updateTrainScheme()
-            onDismiss()
+            onConfirm()
         } catch (e: IllegalArgumentException) {
             isPatternError = true
         }
     }
 
     AppFullscreenDialog(
-        title = "",
+        title = stringResource(R.string.new_dinner),
         onConfirm = { addDinnerCar() },
         onDismiss = onDismiss,
         content = {
@@ -182,7 +183,7 @@ fun AddDinnerCarDialog(
                     isCompanyWhenDepotSelected = false
                 }
             )
-            IconButton(
+            TextButton(
                 onClick = {
                     if (isCompanyWhenDepotSelected
                         || isDepotWhenCompanySelected
@@ -198,7 +199,14 @@ fun AddDinnerCarDialog(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_clear_list),
-                    contentDescription = stringResource(R.string.clean_string)
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = stringResource(R.string.clean_string),
+                    style = AppTypography.labelLarge,
+                    color = Color.Black
                 )
             }
         }
@@ -334,6 +342,28 @@ fun AddCoachDialog(
                 label = stringResource(R.string.trailing_route),
                 modifier = Modifier.fillMaxWidth()
             )
+
+            TextButton(
+                onClick = {
+                    coachNumber = ""
+                    selectedDepot = ""
+                    trailingRoute = ""
+                    typeCoachSelected = null
+                    checkedTrailingCar = false
+                }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_clear_list),
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = stringResource(R.string.clean_string),
+                    style = AppTypography.labelLarge,
+                    color = Color.Black
+                )
+            }
         }
     )
 }
@@ -453,6 +483,27 @@ fun AddWorkerDialog(
                     selectedOption = selectedDepot,
                     onOptionSelected = { selectedDepot = it }
                 )
+
+                TextButton(
+                    onClick = {
+                        tabNumber = ""
+                        name = ""
+                        selectedDepot = ""
+                        selectedWorkerType = null
+                    }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_clear_list),
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = stringResource(R.string.clean_string),
+                        style = AppTypography.labelLarge,
+                        color = Color.Black
+                    )
+                }
             }
         }
     )
