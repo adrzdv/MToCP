@@ -266,6 +266,30 @@ public class OrderViewModel extends ViewModel {
         }
     }
 
+    public boolean isTrainHasCamera() {
+        Order currOrder = order.getValue();
+
+        if (currOrder instanceof TrainOrder that) {
+            if (that.getCollector() instanceof TrainDomain train) {
+                return train.getVideo();
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isTrainUsingProgressive() {
+        Order currOrder = order.getValue();
+
+        if (currOrder instanceof TrainOrder that) {
+            if (that.getCollector() instanceof TrainDomain train) {
+                return train.getProgressive();
+            }
+        }
+
+        return false;
+    }
+
     private ObjectCollector createCollector(String objectNumber) {
 
         if (selectedType.equals(PASSENGER_TRAIN)) {

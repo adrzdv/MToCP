@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorProducer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -198,7 +197,8 @@ fun AddCoachScreen(
                     contentDescription = null,
                     modifier = Modifier.alpha(1f),
                     tint = {
-                        AppColors.MATERIAL_RED.color
+                        if (orderViewModel.isTrainHasCamera) AppColors.MAIN_GREEN.color
+                        else AppColors.MATERIAL_RED.color
                     }
                 )
 
@@ -207,7 +207,8 @@ fun AddCoachScreen(
                     contentDescription = null,
                     modifier = Modifier.alpha(1f),
                     tint = {
-                        AppColors.MATERIAL_RED.color
+                        if (orderViewModel.isTrainUsingProgressive) AppColors.MAIN_GREEN.color
+                        else AppColors.MATERIAL_RED.color
                     }
                 )
 
