@@ -7,6 +7,7 @@ import androidx.room.TypeConverters;
 import com.adrzdv.mtocp.data.db.converter.DataConverter;
 import com.adrzdv.mtocp.data.db.dao.CompanyDao;
 import com.adrzdv.mtocp.data.db.dao.DepotDao;
+import com.adrzdv.mtocp.data.db.dao.TempParamsDao;
 import com.adrzdv.mtocp.data.db.dao.TrainDao;
 import com.adrzdv.mtocp.data.db.dao.ViolationDao;
 import com.adrzdv.mtocp.data.db.entity.BranchEntity;
@@ -34,4 +35,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract CompanyDao companyDao();
 
     public abstract TrainDao trainDao();
+    public abstract TempParamsDao tempParamsDao();
 }

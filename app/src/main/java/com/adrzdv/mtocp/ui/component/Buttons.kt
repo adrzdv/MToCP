@@ -69,6 +69,43 @@ fun MenuButton(
 }
 
 @Composable
+fun CompactMenuButton(
+    icon: Painter,
+    onClick: () -> Unit,
+    isEnabled: Boolean
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(2.dp)
+    ) {
+        ElevatedButton(
+            onClick = onClick,
+            elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
+            colors = ButtonDefaults
+                .buttonColors(containerColor = AppColors.MAIN_GREEN.color),
+            shape = RoundedCornerShape(4.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            enabled = isEnabled
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(
+                    painter = icon,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp),
+                    tint = Color.White
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun MediumMenuButton(
     onClick: () -> Unit,
     icon: @Composable () -> Unit,
@@ -86,7 +123,6 @@ fun MediumMenuButton(
             text = text,
             style = AppTypography.labelLarge
         )
-
     }
 }
 

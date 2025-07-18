@@ -61,12 +61,26 @@
     <string name="dinner_company">Арендатор</string>
     <string name="dinner_add">Добавить ВР</string>
     <string name="dinner_remove">Удалить ВР</string>
-    <string name="request_number">WEB-запросы</string>
     <string name="request_string">Запрос</string>
     <string name="web_request_string">WEB-запросы</string>
     <string name="ok_string">OK</string>
     <string name="doc_number_string">Номер акта</string>
     <string name="ask_exit_string">Вы уверены, что хотите выйти?</string>
+    <string name="ask_continue_string">Вы уверены, что хотите продолжить?</string>
     <string name="warning_unsaved_data">Несохраненные данные будут утеряны.</string>
+    <string name="warning_unchange_data">Дальнейшее изменение данных будет невозможно.</string>
     <string name="parallel_selection_string">Не могут быть выбраны одновременно</string>
+    <string name="completed">Выполнено</string>
+    <string name="not_completed">Не выполнено</string>
+    <string name="no_data">Нет данных</string>
+    <string name="checked">Проверен</string>
+    <string name="uncheked">Не проверен</string>
+    <string name="main_info_block_string">Основная информация</string>
+    <string name="static_block_string">Статистическая информация</string>
+    <string name="progress_using">Прогрессивные нормы</string>
+    <string name="cctv_using">Наличие видеорегистратора</string>
+    <string name="dinner_going">Проверка ВР/ВБ</string>
+    <string name="additional_params_checked">Проверка дополнительных параметров</string>
+    <string name="return_home_screen">Вы вернетесь на первоначальный экран.</string>
+    <string name="addition_params_string">Дополнительные параметры</string>
 </resources>
