@@ -1,5 +1,7 @@
 package com.adrzdv.mtocp.ui.screen
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,6 +33,7 @@ import com.adrzdv.mtocp.ui.viewmodel.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 
+@SuppressLint("ContextCastToActivity")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RevisionScreen(
@@ -44,7 +47,9 @@ fun RevisionScreen(
     val scope = rememberCoroutineScope()
     val navBackStackEntry by navRevisionController.currentBackStackEntryAsState()
     var showExitDialog by remember { mutableStateOf(false) }
+    var showResetDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val activity = LocalContext.current as? Activity
 
     val currentRoute =
         navRevisionController.currentBackStackEntryAsState().value?.destination?.route
@@ -52,6 +57,7 @@ fun RevisionScreen(
         "startRevision" -> stringResource(R.string.header_start_revision)
         "addCrew" -> stringResource(R.string.masters_object)
         "addCoaches" -> stringResource(R.string.train_scheme)
+        "monitoringProcess" -> stringResource(R.string.revision_string)
         else -> ""
     }
 
@@ -67,9 +73,13 @@ fun RevisionScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = {
-                        val popped = navRevisionController.popBackStack()
-                        if (!popped) {
-                            showExitDialog = true
+                        if (currentRoute == "monitoringProcess") {
+                            showResetDialog = true
+                        } else {
+                            val popped = navRevisionController.popBackStack()
+                            if (!popped) {
+                                showExitDialog = true
+                            }
                         }
                     }) {
                         Icon(
@@ -130,6 +140,12 @@ fun RevisionScreen(
                     navController = navRevisionController
                 )
             }
+            composable("monitoringProcess") {
+                MonitoringProcessScreen(
+                    orderViewModel = orderViewModel,
+                    navController = navRevisionController
+                )
+            }
         }
     }
 
@@ -144,5 +160,20 @@ fun RevisionScreen(
             },
             onDismiss = { showExitDialog = false }
         )
+    }
+
+    if (showResetDialog) {
+
+        ConfirmDialog(
+            title = stringResource(R.string.exit_text),
+            message = stringResource(R.string.ask_continue_string) + "\n" +
+                    stringResource(R.string.return_home_screen),
+            onConfirm = {
+                showResetDialog = false
+                activity?.finish()
+            },
+            onDismiss = { showResetDialog = false }
+        )
+
     }
 }

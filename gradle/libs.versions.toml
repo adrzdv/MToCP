@@ -17,6 +17,7 @@ navigationComposeJvmstubs = "2.9.0"
 runtimeLivedata = "1.8.2"
 roomRuntimeAndroid = "2.7.1"
 kotlin = "2.1.10"
+material3Jvmstubs = "1.4.0-alpha18"
 
 [libraries]
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltCompiler" }
@@ -37,6 +38,7 @@ androidx-material3-android = { group = "androidx.compose.material3", name = "mat
 androidx-navigation-compose-jvmstubs = { group = "androidx.navigation", name = "navigation-compose-jvmstubs", version.ref = "navigationComposeJvmstubs" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 androidx-room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "roomRuntimeAndroid" }
+androidx-material3-jvmstubs = { group = "androidx.compose.material3", name = "material3-jvmstubs", version.ref = "material3Jvmstubs" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

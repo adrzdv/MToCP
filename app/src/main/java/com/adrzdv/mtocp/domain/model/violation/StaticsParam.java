@@ -3,16 +3,18 @@ package com.adrzdv.mtocp.domain.model.violation;
 public class StaticsParam {
     private int id;
     private String name;
-    private boolean isCompleted;
+    private Boolean isCompleted;
+    private String note;
 
     public StaticsParam() {
 
     }
 
-    public StaticsParam(int id, String name, boolean isCompleted) {
+    public StaticsParam(int id, String name, Boolean isCompleted, String note) {
         this.id = id;
         this.name = name;
         this.isCompleted = isCompleted;
+        this.note = note;
     }
 
     public int getId() {
@@ -31,11 +33,19 @@ public class StaticsParam {
         this.name = name;
     }
 
-    public boolean isCompleted() {
+    public Boolean getCompleted() {
         return isCompleted;
     }
 
-    public void setCompleted(boolean completed) {
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public void setCompleted(Boolean completed) {
         isCompleted = completed;
     }
 }

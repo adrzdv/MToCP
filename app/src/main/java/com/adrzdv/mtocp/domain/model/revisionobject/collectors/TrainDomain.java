@@ -122,5 +122,10 @@ public class TrainDomain extends ObjectCollector {
         }
     }
 
+    @Override
+    public String toString() {
+        return getNumber() + " " + getRoute();
+    }
+
 
 }

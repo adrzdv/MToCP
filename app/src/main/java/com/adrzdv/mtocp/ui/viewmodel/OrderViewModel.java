@@ -17,6 +17,7 @@ import com.adrzdv.mtocp.domain.model.order.TrainOrder;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
+import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 import com.adrzdv.mtocp.domain.repository.TrainRepository;
@@ -24,6 +25,7 @@ import com.adrzdv.mtocp.domain.repository.TrainRepository;
 import org.jspecify.annotations.Nullable;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -288,6 +290,15 @@ public class OrderViewModel extends ViewModel {
         }
 
         return false;
+    }
+
+    public void addAdditionalParams(Map<String, StaticsParam> params) {
+
+        Order currOrder = order.getValue();
+
+        if (currOrder instanceof CollectableOrder collectable) {
+            collectable.getCollector().setAdditionalParams(params);
+        }
     }
 
     private ObjectCollector createCollector(String objectNumber) {

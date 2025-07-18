@@ -25,8 +25,10 @@ public enum MessageCodes {
     DUPLICATE_ERROR("017#DUPLICATE", "Объект уже добавлен"),
     CAST_ERROR("018#CAST_ERROR", "Ошибка класса"),
     PARAMETER_ERROR("019#PARAM_ERROR", "Отсутствуют параметры для удаления"),
-    DELETE_SUCCESS("020#DELETED","Удалено успешно"),
-    EMPTY_STRING("021#EMPTY_STR","Не может быть пустым");
+    DELETE_SUCCESS("020#DELETED", "Удалено успешно"),
+    EMPTY_STRING("021#EMPTY_STR", "Не может быть пустым"),
+    EMPTY_COUNT("022#EMPTY_REVISION", "Список объектов пуст"),
+    PARAMS_NOT_DONE("023#STAT_PARAMS_ERROR", "Не все дополнительные параметры заполнены");
 
     @NonNull
     private final String errorCode;
