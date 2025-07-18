@@ -118,7 +118,7 @@ fun StartMenuScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     MenuButton(
-                        text = stringResource(R.string.request_number),
+                        text = stringResource(R.string.web_request_string),
                         icon = painterResource(R.drawable.ic_help_24_white),
                         onClick = onRequestWebClick
                     )

@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.ui.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,9 +35,10 @@ import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
-import com.adrzdv.mtocp.ui.component.AddCoachDialog
-import com.adrzdv.mtocp.ui.component.AddDinnerCarDialog
+import com.adrzdv.mtocp.ui.component.dialogs.AddCoachDialog
+import com.adrzdv.mtocp.ui.component.dialogs.AddDinnerCarDialog
 import com.adrzdv.mtocp.ui.component.CoachItemCard
+import com.adrzdv.mtocp.ui.component.ConfirmDialog
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.InfoBlockWithLabel
 import com.adrzdv.mtocp.ui.component.MediumMenuButton
@@ -64,6 +66,11 @@ fun AddCoachScreen(
     val trainScheme by orderViewModel.trainScheme.observeAsState("-")
     var isHasDinnerCar by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    var showWarningDialog by remember { mutableStateOf(false) }
+
+    BackHandler {
+        navController.popBackStack()
+    }
 
     Scaffold(
         containerColor = AppColors.LIGHT_GRAY.color,
@@ -72,7 +79,7 @@ fun AddCoachScreen(
                 contentColor = Color.White,
                 containerColor = AppColors.MAIN_GREEN.color,
                 onClick = {
-                    //after save
+                    showWarningDialog = true
                 },
                 icon = {
                     Icon(
@@ -278,5 +285,30 @@ fun AddCoachScreen(
                 isHasDinnerCar = true
             }
         )
+    }
+
+    if (showWarningDialog) {
+
+        ConfirmDialog(
+            title = stringResource(R.string.save_string),
+            message = stringResource(R.string.ask_continue_string) + "\n" +
+                    stringResource(R.string.warning_unchange_data),
+            onConfirm = {
+                if (orderViewModel.collector?.objectsMap?.isEmpty() == true) {
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = MessageCodes.EMPTY_COUNT.errorTitle
+                        )
+                    }
+                    showWarningDialog = false
+                } else {
+                    showWarningDialog = false
+                    navController.navigate("monitoringProcess")
+                }
+
+            },
+            onDismiss = { showWarningDialog = false }
+        )
+
     }
 }

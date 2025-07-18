@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.ui.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,7 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.ui.component.AddWorkerDialog
+import com.adrzdv.mtocp.ui.component.dialogs.AddWorkerDialog
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.InnerWorkerItemCard
 import com.adrzdv.mtocp.ui.component.MediumMenuButton
@@ -50,6 +51,10 @@ fun AddCrewScreen(
     var showDialog by remember { mutableStateOf(false) }
     var checkedQualityPassport by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+
+    BackHandler {
+        navController.popBackStack()
+    }
 
     Scaffold(
         containerColor = AppColors.LIGHT_GRAY.color,

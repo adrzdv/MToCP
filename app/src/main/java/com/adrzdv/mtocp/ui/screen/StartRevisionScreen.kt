@@ -31,16 +31,19 @@ import com.adrzdv.mtocp.domain.model.enums.OrdersTypes
 import com.adrzdv.mtocp.ui.component.AutocompleteTextField
 import com.adrzdv.mtocp.ui.component.ConfirmDialog
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.navigation.NavController
 import com.adrzdv.mtocp.MessageCodes
+import com.adrzdv.mtocp.ui.component.CompactMenuButton
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.ReadOnlyDatePickerField
 import com.adrzdv.mtocp.ui.component.RevisionTypeDropdown
+import com.adrzdv.mtocp.ui.component.dialogs.AddTempTrainDialog
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.theme.CustomTypography
@@ -103,6 +106,7 @@ fun StartRevisionScreen(
 
     val isInputEnabled = selectedOrderType.isNotBlank()
     var showExitDialog by remember { mutableStateOf(false) }
+    var showAddTempTrainDialog by remember { mutableStateOf(false) }
 
     BackHandler(enabled = true) {
         showExitDialog = true
@@ -258,30 +262,45 @@ fun StartRevisionScreen(
                     onRevisionSelected = {
                         selectedOrderType = it
                         isTypeError = false
-                        orderViewModel.setSelectedType(OrdersTypes.getFromString(it))
+                        orderViewModel.selectedType = OrdersTypes.getFromString(it)
                         autocompleteViewModel.setOrderType(OrdersTypes.getFromString(it))
                     }
                 )
             }
 
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                AutocompleteTextField(
-                    query = query,
-                    suggestions = suggestions,
-                    onQueryChanged = { input ->
-                        autocompleteViewModel.onQueryChanged(input)
-                    },
-                    onSuggestionSelected = { selected ->
-                        selectedObjectNumber = selected
-                        orderViewModel.setObjectNumber(selected)
-                        isObjectNumberError = false
-                    },
-                    enabled = isInputEnabled,
-                    isError = isObjectNumberError,
-                    errorMessage = stringResource(R.string.empty_string)
-                )
+                Box(
+                    modifier = Modifier.weight(4f)
+                ) {
+                    AutocompleteTextField(
+                        query = query,
+                        suggestions = suggestions,
+                        onQueryChanged = { input ->
+                            autocompleteViewModel.onQueryChanged(input)
+                        },
+                        onSuggestionSelected = { selected ->
+                            selectedObjectNumber = selected
+                            orderViewModel.setObjectNumber(selected)
+                            isObjectNumberError = false
+                        },
+                        enabled = isInputEnabled,
+                        isError = isObjectNumberError,
+                        errorMessage = stringResource(R.string.empty_string)
+                    )
+                }
+                Box(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    CompactMenuButton(
+                        icon = painterResource(R.drawable.ic_add_itew_white),
+                        onClick = { showAddTempTrainDialog = true },
+                        isEnabled = false
+                    )
+                }
             }
 
             Column(
@@ -374,6 +393,18 @@ fun StartRevisionScreen(
                             onBackClick()
                         },
                         onDismiss = { showExitDialog = false }
+                    )
+                }
+
+                if (showAddTempTrainDialog) {
+                    AddTempTrainDialog(
+                        orderViewModel,
+                        onConfirm = {
+                            showAddTempTrainDialog = false
+                        },
+                        onDismiss = {
+                            showAddTempTrainDialog = false
+                        }
                     )
                 }
             }
