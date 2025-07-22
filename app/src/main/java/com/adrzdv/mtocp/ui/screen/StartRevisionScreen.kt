@@ -243,7 +243,8 @@ fun StartRevisionScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
+                .padding(top = 4.dp)
+                .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Column(

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
@@ -187,7 +188,12 @@ fun AddDinnerCarDialog(
                         isDepotWhenCompanySelected = false
                         isCompanyWhenDepotSelected = false
                     }
-                }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = AppColors.MAIN_GREEN.color,
+                    containerColor = Color.Transparent,
+                    disabledContentColor = AppColors.MAIN_GREEN.color.copy(alpha = 0.38f)
+                )
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_clear_list),
@@ -342,7 +348,12 @@ fun AddCoachDialog(
                     trailingRoute = ""
                     typeCoachSelected = null
                     checkedTrailingCar = false
-                }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = AppColors.MAIN_GREEN.color,
+                    containerColor = Color.Transparent,
+                    disabledContentColor = AppColors.MAIN_GREEN.color.copy(alpha = 0.38f)
+                )
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_clear_list),

@@ -2,7 +2,6 @@ package com.adrzdv.mtocp.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,14 +12,11 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 
@@ -123,5 +119,37 @@ fun ServiceInfoBlock(
                 .padding(horizontal = 4.dp)
                 .offset(y = (-4).dp)
         )
+    }
+}
+
+@Composable
+fun ServiceInfoBlockWithPaintedBackground(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Box(
+        modifier = modifier
+            .background(
+                color = AppColors.OUTLINE_GREEN.color,
+                shape = RoundedCornerShape(8.dp)
+            )
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = AppColors.OUTLINE_GREEN.color,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(top = 12.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                content()
+            }
+        }
     }
 }

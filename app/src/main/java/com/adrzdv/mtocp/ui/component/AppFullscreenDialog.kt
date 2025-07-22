@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -15,6 +16,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,11 +46,17 @@ fun AppFullscreenDialog(
             modifier = Modifier
                 .fillMaxSize()
                 .background(AppColors.LIGHT_GRAY.color),
+            contentColor = AppColors.LIGHT_GRAY.color,
             shape = RectangleShape
         ) {
             Scaffold(
+                containerColor = AppColors.LIGHT_GRAY.color,
+                contentColor = AppColors.LIGHT_GRAY.color,
                 topBar = {
                     TopAppBar(
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = AppColors.LIGHT_GRAY.color
+                        ),
                         title = {
                             Text(
                                 text = title,
@@ -67,11 +75,17 @@ fun AppFullscreenDialog(
                         },
                         actions = {
                             TextButton(
-                                onClick = onConfirm
+                                onClick = onConfirm,
+                                colors = ButtonDefaults.buttonColors(
+                                    contentColor = AppColors.MAIN_GREEN.color,
+                                    containerColor = Color.Transparent,
+                                    disabledContentColor = AppColors.MAIN_GREEN.color.copy(alpha = 0.38f)
+                                )
                             ) {
                                 Text(
                                     stringResource(R.string.save_string),
-                                    style = AppTypography.labelLarge
+                                    style = AppTypography.labelLarge,
+                                    color = AppColors.MAIN_GREEN.color
                                 )
                             }
                         }

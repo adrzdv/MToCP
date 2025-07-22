@@ -158,7 +158,12 @@ fun AddWorkerDialog(
                         name = ""
                         selectedDepot = ""
                         selectedWorkerType = null
-                    }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = AppColors.MAIN_GREEN.color,
+                        containerColor = Color.Transparent,
+                        disabledContentColor = AppColors.MAIN_GREEN.color.copy(alpha = 0.38f)
+                    )
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_clear_list),
