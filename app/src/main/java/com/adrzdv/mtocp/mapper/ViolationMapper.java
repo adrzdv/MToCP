@@ -17,12 +17,14 @@ public class ViolationMapper {
 
     public static ViolationDto fromDomainToDto(@NonNull ViolationDomain violation) {
         return new ViolationDto(violation.getCode(),
-                violation.getName());
+                violation.getName(),
+                violation.getShortName());
     }
 
     public static ViolationDto fromEntityToDto(@NonNull ViolationEntity violation) {
         return new ViolationDto(violation.getCode(),
-                violation.getName());
+                violation.getName(),
+                violation.getShortName());
     }
 
     public static ViolationEntity fromImportToEntity(@NonNull ViolationImport violation) {

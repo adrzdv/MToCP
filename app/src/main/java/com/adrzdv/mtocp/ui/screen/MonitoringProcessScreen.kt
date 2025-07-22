@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -28,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -45,6 +43,7 @@ import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.InfoBlockWithLabel
 import com.adrzdv.mtocp.ui.component.ParameterSelectionBottomSheet
 import com.adrzdv.mtocp.ui.component.ServiceInfoBlock
+import com.adrzdv.mtocp.ui.component.buttons.FloatingSaveButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.AdditionalParamViewModel
@@ -229,23 +228,9 @@ fun MonitoringProcessScreen(
     Scaffold(
         containerColor = AppColors.LIGHT_GRAY.color,
         floatingActionButton = {
-            ExtendedFloatingActionButton(
-                contentColor = Color.White,
-                containerColor = AppColors.MAIN_GREEN.color,
+            FloatingSaveButton(
                 onClick = {
-                    //after save go to result presentation
-                },
-                icon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_save_32_white),
-                        contentDescription = stringResource(R.string.save_string)
-                    )
-                },
-                text = {
-                    Text(
-                        text = stringResource(R.string.save_string),
-                        style = AppTypography.labelLarge
-                    )
+
                 }
             )
         },
@@ -314,10 +299,11 @@ fun MonitoringProcessScreen(
                     items(coaches) { coach ->
                         (coach as? PassengerCar)?.let { passengerCar ->
                             CoachItemCardReadOnly(
-                                coach = passengerCar
-                            ) {
-
-                            }
+                                coach = passengerCar,
+                                onItemClick = {
+                                    navController.navigate("monitoringCoach/${coach.number}")
+                                }
+                            )
                         }
                     }
                 }

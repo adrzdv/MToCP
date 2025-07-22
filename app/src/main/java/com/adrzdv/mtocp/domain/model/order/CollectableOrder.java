@@ -44,7 +44,7 @@ public interface CollectableOrder {
      * Removes a specific violation from the collector for the given object number.
      *
      * @param objNumber the identifier of the object
-     * @param violation the violation to remove
+     * @param code the violation code to remove
      */
-    void deleteViolationInCollector(String objNumber, ViolationDomain violation);
+    void deleteViolationInCollector(String objNumber, int code);
 }

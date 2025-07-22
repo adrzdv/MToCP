@@ -93,13 +93,13 @@ public abstract class ObjectCollector {
         objectsMap.get(objNumber).addViolation(violation);
     }
 
-    public void deleteViolationInObject(String objNumber, ViolationDomain violation) {
+    public void deleteViolationInObject(String objNumber, int code) {
 
         if (!objectsMap.containsKey(objNumber) && objectsMap.get(objNumber) == null) {
             throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getErrorTitle());
         }
 
-        objectsMap.get(objNumber).deleteViolation(violation);
+        objectsMap.get(objNumber).deleteViolation(code);
 
     }
 }

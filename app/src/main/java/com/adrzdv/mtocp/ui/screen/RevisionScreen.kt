@@ -21,15 +21,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.ConfirmDialog
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import com.adrzdv.mtocp.ui.viewmodel.AutocompleteViewModel
+import com.adrzdv.mtocp.ui.viewmodel.CoachViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 
@@ -58,6 +62,8 @@ fun RevisionScreen(
         "addCrew" -> stringResource(R.string.masters_object)
         "addCoaches" -> stringResource(R.string.train_scheme)
         "monitoringProcess" -> stringResource(R.string.revision_string)
+        "monitoringCoach/{coachNumber}" -> navBackStackEntry?.arguments?.getString("coachNumber")
+            ?: ""
         else -> ""
     }
 
@@ -143,6 +149,19 @@ fun RevisionScreen(
             composable("monitoringProcess") {
                 MonitoringProcessScreen(
                     orderViewModel = orderViewModel,
+                    navController = navRevisionController
+                )
+            }
+            composable(
+                route = "monitoringCoach/{coachNumber}",
+                arguments = listOf(navArgument("coachNumber") { type = NavType.StringType })
+            ) { navBackStackEntry ->
+                val coachNumber =
+                    navBackStackEntry.arguments?.getString("coachNumber") ?: return@composable
+                MonitoringCoachScreen(
+                    coachNumber = coachNumber,
+                    orderViewModel = orderViewModel,
+                    depotViewModel = depotViewModel,
                     navController = navRevisionController
                 )
             }

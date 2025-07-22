@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.adrzdv.mtocp.domain.model.enums.OrdersTypes;
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType;
+import com.adrzdv.mtocp.domain.model.enums.RevisionType;
 import com.adrzdv.mtocp.domain.model.order.BaggageOrder;
 import com.adrzdv.mtocp.domain.model.order.CollectableOrder;
 import com.adrzdv.mtocp.domain.model.order.Order;
@@ -26,6 +27,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -49,6 +51,11 @@ public class OrderViewModel extends ViewModel {
     public OrderViewModel(TrainRepository trainRepository) {
         this.trainRepository = trainRepository;
         executor = Executors.newSingleThreadExecutor();
+    }
+
+    public RevisionType getRevisionType() {
+        RevisionType revisionType = Objects.requireNonNull(order.getValue()).getRevisionType();
+        return revisionType == null ? RevisionType.IN_TRANSIT : revisionType;
     }
 
     public Order getCurrentOrder() {
@@ -248,13 +255,13 @@ public class OrderViewModel extends ViewModel {
         order.setValue(currOrder);
     }
 
-    public void deleteViolation(String objNumber, ViolationDomain violation) {
+    public void deleteViolation(String objNumber, int code) {
         Order currOrder = order.getValue();
 
         if (currOrder instanceof CollectableOrder that) {
-            that.deleteViolationInCollector(objNumber, violation);
+            that.deleteViolationInCollector(objNumber, code);
         } else if (currOrder instanceof BaggageOrder bOrder) {
-            bOrder.deleteViolation(objNumber, violation);
+            bOrder.deleteViolation(objNumber, code);
         }
 
         order.setValue(currOrder);

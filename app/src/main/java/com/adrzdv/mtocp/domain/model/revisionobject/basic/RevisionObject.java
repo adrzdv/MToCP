@@ -95,7 +95,7 @@ public abstract class RevisionObject {
 
     public void addViolation(ViolationDomain violation) {
 
-        if (!violationMap.containsKey(violation.getCode())) {
+        if (violationMap.containsKey(violation.getCode())) {
             throw new IllegalArgumentException(MessageCodes.DUPLICATE_ERROR.getErrorTitle()
                     + violation.getName());
         }
@@ -103,12 +103,11 @@ public abstract class RevisionObject {
         violationMap.put(violation.getCode(), violation);
     }
 
-    public void deleteViolation(ViolationDomain violation) {
-        if (!violationMap.containsKey(violation.getCode())) {
-            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getErrorTitle()
-                    + violation.getClass());
+    public void deleteViolation(int code) {
+        if (!violationMap.containsKey(code)) {
+            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getErrorTitle());
         }
 
-        violationMap.remove(violation.getCode());
+        violationMap.remove(code);
     }
 }

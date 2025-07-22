@@ -81,8 +81,8 @@ public class TrainOrder extends Order implements CollectableOrder {
     }
 
     @Override
-    public void deleteViolationInCollector(String objNumber, ViolationDomain violation) {
-        train.deleteViolationInObject(objNumber, violation);
+    public void deleteViolationInCollector(String objNumber, int code) {
+        train.deleteViolationInObject(objNumber, code);
     }
 
     @Override

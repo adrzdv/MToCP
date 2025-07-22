@@ -77,10 +77,10 @@ public class BaggageOrder extends Order {
         coachMap.get(objNumber).addViolation(violation);
     }
 
-    public void deleteViolation(String objNumber, ViolationDomain violation) {
+    public void deleteViolation(String objNumber, int code) {
         if (!coachMap.containsKey(objNumber) && coachMap.get(objNumber) == null) {
             throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getErrorTitle());
         }
-        coachMap.get(objNumber).deleteViolation(violation);
+        coachMap.get(objNumber).deleteViolation(code);
     }
 }

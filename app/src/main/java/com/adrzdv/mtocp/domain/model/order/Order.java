@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.domain.model.order;
 
+import com.adrzdv.mtocp.domain.model.enums.RevisionType;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 import com.adrzdv.mtocp.domain.validation.RegularValidator;
@@ -11,6 +12,7 @@ public abstract class Order extends RegularValidator {
     private LocalDateTime revisionDateStart;
     private LocalDateTime getRevisionDateEnd;
     private String route;
+    private RevisionType revisionType;
 
     public Order(String number,
                  LocalDateTime revisionDateStart,
@@ -20,6 +22,14 @@ public abstract class Order extends RegularValidator {
         this.revisionDateStart = revisionDateStart;
         this.getRevisionDateEnd = getRevisionDateEnd;
         this.route = route;
+    }
+
+    public void setRevisionType(RevisionType revisionType) {
+        this.revisionType = revisionType;
+    }
+
+    public RevisionType getRevisionType() {
+        return this.revisionType;
     }
 
     public String getNumber() {
@@ -55,8 +65,12 @@ public abstract class Order extends RegularValidator {
     }
 
     public abstract void clearCrewWorkers();
+
     public abstract void clearRevisionObjects();
+
     public abstract boolean checkCrew();
+
     public abstract void deleteCrewWorker(WorkerDomain worker);
+
     public abstract void deleteRevisionObject(RevisionObject o);
 }

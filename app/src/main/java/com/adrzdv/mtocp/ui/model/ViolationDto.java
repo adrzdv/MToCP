@@ -6,10 +6,12 @@ import java.util.Objects;
 public class ViolationDto {
     private Integer code;
     private String name;
+    private String shortName;
 
-    public ViolationDto(Integer code, String name) {
+    public ViolationDto(Integer code, String name, String shortName) {
         this.code = code;
         this.name = name;
+        this.shortName = shortName;
     }
 
     public Integer getCode() {
@@ -28,6 +30,14 @@ public class ViolationDto {
         this.name = name;
     }
 
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof ViolationDto that)) return false;
@@ -38,4 +48,6 @@ public class ViolationDto {
     public int hashCode() {
         return Objects.hashCode(code);
     }
+
+
 }

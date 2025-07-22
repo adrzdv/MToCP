@@ -1,13 +1,17 @@
 package com.adrzdv.mtocp.ui.component.dialogs
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -30,16 +34,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
+import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
 import com.adrzdv.mtocp.ui.component.AppFullscreenDialog
 import com.adrzdv.mtocp.ui.component.CustomOutlinedButton
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
 import com.adrzdv.mtocp.ui.component.DropdownMenuField
+import com.adrzdv.mtocp.ui.component.DropdownMenuParameterizedField
+import com.adrzdv.mtocp.ui.model.ViolationDto
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
+import com.adrzdv.mtocp.ui.theme.CustomTypography
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.RequestWebViewModel
 import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
+import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
 
 @Composable
 fun CustomAlertDialog(
@@ -193,6 +202,73 @@ fun AddTempTrainDialog(
                     style = AppTypography.labelLarge,
                     color = Color.Black
                 )
+            }
+        }
+    )
+}
+
+@Composable
+fun AddViolationToCoachDialog(
+    objectNumber: String,
+    orderVM: OrderViewModel,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+    onError: () -> Unit
+) {
+    var violationViewModel: ViolationViewModel =
+        viewModel(factory = ViewModelFactoryProvider.provideFactory())
+    violationViewModel.filterDataByRevisionType(orderVM.revisionType)
+
+    var options = violationViewModel.filteredViolations.value ?: emptyList()
+
+    AppFullscreenDialog( //убрать лишние кнопки???
+        title = stringResource(R.string.violation_catalog_string),
+        onConfirm = onConfirm,
+        onDismiss = onDismiss,
+        content = {
+            CustomOutlinedTextField(
+                label = "",
+                value = "",
+                onValueChange = {},
+                isError = false,
+                errorText = "",
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(options) { option ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                val violationDomain =
+                                    ViolationDomain(option.code, option.name, option.shortName)
+                                try {
+                                    orderVM.addViolation(objectNumber, violationDomain)
+                                } catch (e: Exception) {
+                                    onError()
+                                }
+                                onConfirm()
+                            }
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = option.code.toString(),
+                            style = CustomTypography.bodyLarge,
+                            modifier = Modifier.weight(1f),
+                            color = Color.Black
+                        )
+                        Text(
+                            text = option.name,
+                            style = CustomTypography.bodyLarge,
+                            modifier = Modifier.weight(5f),
+                            color = Color.Black
+                        )
+                    }
+                }
             }
         }
     )

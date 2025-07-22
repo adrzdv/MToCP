@@ -100,6 +100,83 @@ fun DropdownMenuField(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun <T> DropdownMenuParameterizedField(
+    label: String,
+    options: List<T>,
+    selectedOption: T?,
+    labelProvider: (T) -> String,
+    onOptionSelected: (T) -> Unit,
+    isError: Boolean = false,
+    errorMessage: String = "",
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = {
+            expanded = !expanded
+        }
+    ) {
+        OutlinedTextField(
+            value = selectedOption?.let(labelProvider) ?: "",
+            isError = isError,
+            supportingText = {
+                if (isError) {
+                    Text(
+                        text = errorMessage,
+                        style = AppTypography.labelMedium,
+                        color = AppColors.ERROR.color
+                    )
+                }
+            },
+            onValueChange = {},
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = if (isError) AppColors.ERROR.color else AppColors.OUTLINE_GREEN.color,
+                unfocusedBorderColor = if (isError) AppColors.ERROR.color else Color.Gray,
+                focusedContainerColor = AppColors.LIGHT_GRAY.color
+            ),
+            readOnly = true,
+            label = {
+                Text(
+                    text = label,
+                    style = AppTypography.labelMedium
+                )
+            },
+            trailingIcon = {
+                if (isError) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        tint = AppColors.ERROR.color,
+                        contentDescription = ""
+                    )
+                } else ExposedDropdownMenuDefaults.TrailingIcon(
+                    expanded = expanded
+                )
+            },
+            modifier = modifier.menuAnchor(MenuAnchorType.PrimaryEditable, enabled = true)
+        )
+        ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            options.forEach { option ->
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = labelProvider(option),
+                            style = AppTypography.bodyMedium
+                        )
+                    },
+                    onClick = {
+                        onOptionSelected(option)
+                        expanded = false
+                    }
+                )
+            }
+        }
+    }
+}
+
 @Composable
 fun CustomOutlinedTextField(
     value: String,
@@ -116,7 +193,7 @@ fun CustomOutlinedTextField(
         textStyle = AppTypography.bodyLarge,
         onValueChange = onValueChange,
         trailingIcon = {
-            if(isError && errorText.isNotBlank()) {
+            if (isError && errorText.isNotBlank()) {
                 Icon(
                     imageVector = Icons.Default.Info,
                     tint = AppColors.ERROR.color,

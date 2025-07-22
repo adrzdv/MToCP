@@ -72,8 +72,8 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
     }
 
     @Override
-    public void deleteViolationInCollector(String objNumber, ViolationDomain violation) {
-        ticketOffice.deleteViolationInObject(objNumber, violation);
+    public void deleteViolationInCollector(String objNumber, int code) {
+        ticketOffice.deleteViolationInObject(objNumber, code);
     }
 
     public ObjectCollector getTicketOffice() {
