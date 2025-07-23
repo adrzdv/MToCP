@@ -36,6 +36,87 @@ fun AppFullscreenDialog(
     title: String,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
+    isSaveEnabled: Boolean,
+    content: @Composable () -> Unit
+) {
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(AppColors.LIGHT_GRAY.color),
+            contentColor = AppColors.LIGHT_GRAY.color,
+            shape = RectangleShape
+        ) {
+            Scaffold(
+                containerColor = AppColors.LIGHT_GRAY.color,
+                contentColor = AppColors.LIGHT_GRAY.color,
+                topBar = {
+                    TopAppBar(
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = AppColors.LIGHT_GRAY.color
+                        ),
+                        title = {
+                            Text(
+                                text = title,
+                                style = AppTypography.titleLarge
+                            )
+                        },
+                        navigationIcon = {
+                            IconButton(
+                                onClick = onDismiss
+                            ) {
+                                Icon(
+                                    Icons.Default.Close,
+                                    contentDescription = stringResource(R.string.cancel)
+                                )
+                            }
+                        },
+                        actions = {
+                            if (isSaveEnabled) {
+                                TextButton(
+                                    onClick = onConfirm,
+                                    colors = ButtonDefaults.buttonColors(
+                                        contentColor = AppColors.MAIN_GREEN.color,
+                                        containerColor = Color.Transparent,
+                                        disabledContentColor = AppColors.MAIN_GREEN.color.copy(alpha = 0.38f)
+                                    )
+                                ) {
+                                    Text(
+                                        stringResource(R.string.save_string),
+                                        style = AppTypography.labelLarge,
+                                        color = AppColors.MAIN_GREEN.color
+                                    )
+                                }
+                            }
+
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Column(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .padding(horizontal = 12.dp)
+                        .background(AppColors.LIGHT_GRAY.color),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    content()
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppFullscreenDialogWithoutSave(
+    title: String,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
     content: @Composable () -> Unit
 ) {
     Dialog(

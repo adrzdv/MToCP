@@ -36,6 +36,27 @@ class CoachViewModel(
         }
     }
 
+    fun addTagToViolation(code: Int, tag: String) {
+        _violationMap[code]?.attributeMap?.put("tag", tag)
+    }
+
+    fun changeAmount(code: Int, amount: Int) {
+        _violationMap[code]?.amount = amount
+    }
+
+    fun cleanViolations() {
+        _violationMap.clear()
+    }
+
+    fun toggleViolationResolved(code: Int) {
+        if (_violationMap[code]?.isResolved == false) {
+            _violationMap[code]?.isResolved = true
+        } else {
+            _violationMap[code]?.isResolved = false
+        }
+
+    }
+
     fun deleteViolation(code: Int) {
         _violationMap.remove(code)
     }

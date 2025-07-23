@@ -28,7 +28,7 @@ class RenderWakeUpService {
 
             responseCode in 200..299 || responseCode == 404
         } catch (e: SocketTimeoutException) {
-            println("🔴 Render не ответил за 2 минуты: ${e.message}")
+            println("Render не ответил за 2 минуты: ${e.message}")
             false
         } catch (e: Exception) {
             e.printStackTrace()

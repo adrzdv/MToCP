@@ -15,12 +15,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -39,11 +40,10 @@ import com.adrzdv.mtocp.ui.component.AppFullscreenDialog
 import com.adrzdv.mtocp.ui.component.CustomOutlinedButton
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
 import com.adrzdv.mtocp.ui.component.DropdownMenuField
-import com.adrzdv.mtocp.ui.component.DropdownMenuParameterizedField
-import com.adrzdv.mtocp.ui.model.ViolationDto
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.theme.CustomTypography
+import com.adrzdv.mtocp.ui.viewmodel.CoachViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.RequestWebViewModel
@@ -138,6 +138,7 @@ fun AddTempTrainDialog(
         title = "",
         onConfirm = onConfirm,
         onDismiss = onDismiss,
+        isSaveEnabled = true,
         content = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -219,12 +220,13 @@ fun AddViolationToCoachDialog(
         viewModel(factory = ViewModelFactoryProvider.provideFactory())
     violationViewModel.filterDataByRevisionType(orderVM.revisionType)
 
-    var options = violationViewModel.filteredViolations.value ?: emptyList()
+    val options by violationViewModel.filteredViolations.observeAsState(emptyList())
 
-    AppFullscreenDialog( //убрать лишние кнопки???
+    AppFullscreenDialog(
         title = stringResource(R.string.violation_catalog_string),
         onConfirm = onConfirm,
         onDismiss = onDismiss,
+        isSaveEnabled = false,
         content = {
             CustomOutlinedTextField(
                 label = "",
@@ -269,6 +271,139 @@ fun AddViolationToCoachDialog(
                         )
                     }
                 }
+            }
+        }
+    )
+}
+
+@Composable
+fun ChangeAmountDialog(
+    onConfirm: (Int) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var isError by remember { mutableStateOf(false) }
+    var amount by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = stringResource(R.string.input_new_value),
+                style = AppTypography.titleMedium
+            )
+        },
+        containerColor = AppColors.LIGHT_GRAY.color,
+        confirmButton = {
+            Button(
+                onClick = {
+                    val number = amount.toIntOrNull()
+                    if (number != null) {
+                        onConfirm(number)
+                    } else {
+                        isError = true
+                    }
+                },
+                colors = ButtonDefaults
+                    .buttonColors(containerColor = AppColors.MAIN_GREEN.color),
+                border = null,
+                enabled = !isError
+            ) {
+                Text(
+                    stringResource(R.string.add_string),
+                    style = AppTypography.bodyMedium
+                )
+            }
+        },
+        dismissButton = {
+            CustomOutlinedButton(
+                onClick = {
+                    onDismiss()
+                },
+                stringResource(R.string.cancel)
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+
+                CustomOutlinedTextField(
+                    value = amount,
+                    onValueChange = {
+                        amount = it
+                        isError = it.toIntOrNull() == null
+                    },
+                    isError = isError,
+                    errorText = stringResource(R.string.incorrect_value),
+                    label = stringResource(R.string.new_value)
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun AddTagDialog(
+    onConfirm: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var isError by remember { mutableStateOf(false) }
+    var tag by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = stringResource(R.string.input_new_value),
+                style = AppTypography.titleMedium
+            )
+        },
+        containerColor = AppColors.LIGHT_GRAY.color,
+        confirmButton = {
+            Button(
+                onClick = {
+                    onConfirm(tag)
+                },
+                colors = ButtonDefaults
+                    .buttonColors(containerColor = AppColors.MAIN_GREEN.color),
+                border = null,
+                enabled = !isError
+            ) {
+                Text(
+                    stringResource(R.string.add_string),
+                    style = AppTypography.bodyMedium
+                )
+            }
+        },
+        dismissButton = {
+            CustomOutlinedButton(
+                onClick = {
+                    onDismiss()
+                },
+                stringResource(R.string.cancel)
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+
+                CustomOutlinedTextField(
+                    value = tag,
+                    onValueChange = {
+                        tag = it
+                        isError = tag.isNullOrBlank()
+                    },
+                    isError = isError,
+                    errorText = stringResource(R.string.incorrect_value),
+                    label = stringResource(R.string.new_value)
+                )
             }
         }
     )

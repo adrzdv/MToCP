@@ -1,6 +1,5 @@
 package com.adrzdv.mtocp.ui.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -31,22 +29,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.Coach
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
-import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
 import com.adrzdv.mtocp.ui.model.ViolationDto
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.google.gson.annotations.Until
-import kotlin.math.exp
-
 
 @Composable
 fun ViolationCard(
@@ -59,6 +52,7 @@ fun ViolationCard(
     onAddTagClick: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
+    var isResolved by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -87,23 +81,22 @@ fun ViolationCard(
                     .padding(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 Text(
                     style = AppTypography.bodyMedium,
                     text = violation.code.toString()
                 )
-
                 Spacer(
                     modifier = Modifier
                         .height(4.dp)
                         .width(8.dp)
                 )
-
                 Text(
                     style = AppTypography.bodyMedium,
-                    text = violation.name
+                    text = violation.name,
+                    maxLines = 3,
+                    softWrap = true,
+                    overflow = TextOverflow.Ellipsis
                 )
-
                 DropdownMenu(
                     expanded = expanded,
                     containerColor = AppColors.OFF_WHITE.color,
@@ -138,6 +131,7 @@ fun ViolationCard(
                         },
                         onClick = {
                             expanded = false
+                            isResolved = !isResolved
                             onResolveClick()
                         }
                     )
@@ -155,7 +149,8 @@ fun ViolationCard(
                         onClick = {
                             expanded = false
                             onAddTagClick()
-                        }
+                        },
+                        enabled = false
                     )
                     DropdownMenuItem(
                         text = {
@@ -184,11 +179,11 @@ fun ViolationCard(
                                 Text(text = stringResource(R.string.add_video))
                             }
                         },
-
                         onClick = {
                             expanded = false
                             onMakeVideoClick()
-                        }
+                        },
+                        enabled = false
                     )
                     DropdownMenuItem(
                         text = {
@@ -207,8 +202,16 @@ fun ViolationCard(
                         }
                     )
                 }
-
             }
+        }
+        Badge(
+            containerColor = if (isResolved) AppColors.DARK_GREEN.color else AppColors.MATERIAL_RED.color,
+            contentColor = AppColors.OFF_WHITE.color,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .offset(x = (-8).dp, y = 8.dp)
+        ) {
+            Text(if (isResolved) stringResource(R.string.resolved) else stringResource(R.string.unresolved))
         }
     }
 }

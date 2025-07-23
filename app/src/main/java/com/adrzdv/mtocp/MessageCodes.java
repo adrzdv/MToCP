@@ -28,7 +28,8 @@ public enum MessageCodes {
     DELETE_SUCCESS("020#DELETED", "Удалено успешно"),
     EMPTY_STRING("021#EMPTY_STR", "Не может быть пустым"),
     EMPTY_COUNT("022#EMPTY_REVISION", "Список объектов пуст"),
-    PARAMS_NOT_DONE("023#STAT_PARAMS_ERROR", "Не все дополнительные параметры заполнены");
+    PARAMS_NOT_DONE("023#STAT_PARAMS_ERROR", "Не все дополнительные параметры заполнены"),
+    DUPLICATE_VIOLATION_ERROR("024#DUP_VIOLATION", "Нарушение уже добавлено");
 
     @NonNull
     private final String errorCode;

@@ -105,6 +105,7 @@ fun AddDinnerCarDialog(
         title = stringResource(R.string.new_dinner),
         onConfirm = { addDinnerCar() },
         onDismiss = onDismiss,
+        isSaveEnabled = true,
         content = {
             CustomOutlinedTextField(
                 value = coachNumber,
@@ -267,6 +268,7 @@ fun AddCoachDialog(
         title = stringResource(R.string.new_coach),
         onConfirm = { addCoach() },
         onDismiss = onDismiss,
+        isSaveEnabled = true,
         content = {
             CustomOutlinedTextField(
                 value = coachNumber,
@@ -325,7 +327,8 @@ fun AddCoachDialog(
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
                     text = stringResource(R.string.trailing_string),
-                    style = AppTypography.labelLarge
+                    style = AppTypography.labelLarge,
+                    color = Color.Black
                 )
             }
             CustomOutlinedTextField(
@@ -348,6 +351,10 @@ fun AddCoachDialog(
                     trailingRoute = ""
                     typeCoachSelected = null
                     checkedTrailingCar = false
+                    isCoachTypeError = false
+                    isRouteError = false
+                    isDuplicateCoachError = false
+                    isCoachPatterError = false
                 },
                 colors = ButtonDefaults.buttonColors(
                     contentColor = AppColors.MAIN_GREEN.color,

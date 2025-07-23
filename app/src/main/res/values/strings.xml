@@ -82,10 +82,16 @@
     <string name="dinner_going">Проверка ВР/ВБ</string>
     <string name="additional_params_checked">Проверка дополнительных параметров</string>
     <string name="return_home_screen">Вы вернетесь на первоначальный экран.</string>
-    <string name="addition_params_string">Дополнительные параметры</string>
+    <string name="addition_params_string">Параметры</string>
     <string name="resolved">Устранено</string>
     <string name="add_photo">Добавить фото</string>
     <string name="add_video">Добавить видео</string>
     <string name="change_value">Изменить количество</string>
     <string name="add_tag">Добавить признак</string>
+    <string name="unresolved">Не устранено</string>
+    <string name="crew">Данные работника</string>
+    <string name="violations">Нарушения</string>
+    <string name="incorrect_value">Некорректное значение</string>
+    <string name="new_value">Новое значение</string>
+    <string name="input_new_value">Введите новое значение</string>
 </resources>
