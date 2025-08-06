@@ -110,4 +110,8 @@ public abstract class RevisionObject {
 
         violationMap.remove(code);
     }
+
+    public void clearViolationMap() {
+        violationMap.clear();
+    }
 }

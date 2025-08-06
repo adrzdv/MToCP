@@ -1,6 +1,7 @@
 package com.adrzdv.mtocp.domain.model.order;
 
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.BaggageCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
@@ -28,6 +29,13 @@ public class TrainOrder extends Order implements CollectableOrder {
 
     public void setRoute(String route) {
         this.route = route;
+    }
+
+    @Override
+    public void updateRevisionObject(RevisionObject o) {
+        if (o instanceof PassengerCar that) {
+            train.getObjectsMap().put(that.getNumber(), that);
+        }
     }
 
     @Override

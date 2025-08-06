@@ -64,6 +64,7 @@ fun RevisionScreen(
         "monitoringProcess" -> stringResource(R.string.revision_string)
         "monitoringCoach/{coachNumber}" -> navBackStackEntry?.arguments?.getString("coachNumber")
             ?: ""
+
         else -> ""
     }
 

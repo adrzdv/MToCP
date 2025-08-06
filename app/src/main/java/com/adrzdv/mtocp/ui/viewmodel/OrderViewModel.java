@@ -137,6 +137,14 @@ public class OrderViewModel extends ViewModel {
         }
     }
 
+    public void updateRevisionObject(RevisionObject object) {
+        Order currOrder = order.getValue();
+        if (currOrder != null) {
+            currOrder.updateRevisionObject(object);
+            order.setValue(currOrder);
+        }
+    }
+
     public void clearCrew() {
         Order currOrder = order.getValue();
         if (currOrder != null) {
@@ -172,7 +180,7 @@ public class OrderViewModel extends ViewModel {
     public void addCrewWorker(WorkerDomain workerDomain) {
         Order currOrder = order.getValue();
         if (currOrder != null) {
-            currOrder.addCreWorker(workerDomain);
+            currOrder.addCrewWorker(workerDomain);
             order.setValue(currOrder);
         }
     }

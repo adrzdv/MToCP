@@ -34,8 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain
+import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
+import com.adrzdv.mtocp.mapper.ViolationMapper
 import com.adrzdv.mtocp.ui.component.AppFullscreenDialog
 import com.adrzdv.mtocp.ui.component.CustomOutlinedButton
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
@@ -210,21 +212,20 @@ fun AddTempTrainDialog(
 
 @Composable
 fun AddViolationToCoachDialog(
-    objectNumber: String,
-    orderVM: OrderViewModel,
-    onConfirm: () -> Unit,
+    revisionType: RevisionType,
+    onConfirm: (ViolationDomain) -> Unit,
     onDismiss: () -> Unit,
     onError: () -> Unit
 ) {
     var violationViewModel: ViolationViewModel =
         viewModel(factory = ViewModelFactoryProvider.provideFactory())
-    violationViewModel.filterDataByRevisionType(orderVM.revisionType)
+    violationViewModel.filterDataByRevisionType(revisionType)
 
     val options by violationViewModel.filteredViolations.observeAsState(emptyList())
 
     AppFullscreenDialog(
         title = stringResource(R.string.violation_catalog_string),
-        onConfirm = onConfirm,
+        onConfirm = { },
         onDismiss = onDismiss,
         isSaveEnabled = false,
         content = {
@@ -248,11 +249,11 @@ fun AddViolationToCoachDialog(
                                 val violationDomain =
                                     ViolationDomain(option.code, option.name, option.shortName)
                                 try {
-                                    orderVM.addViolation(objectNumber, violationDomain)
+                                    onConfirm(violationDomain)
+                                    onDismiss()
                                 } catch (e: Exception) {
                                     onError()
                                 }
-                                onConfirm()
                             }
                             .padding(horizontal = 12.dp, vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically

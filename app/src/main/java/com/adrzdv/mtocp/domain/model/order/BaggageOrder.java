@@ -26,6 +26,13 @@ public class BaggageOrder extends Order {
     }
 
     @Override
+    public void updateRevisionObject(RevisionObject object) {
+        if (object instanceof BaggageCar that) {
+            coachMap.put(that.getNumber(), that);
+        }
+    }
+
+    @Override
     public void clearCrewWorkers() {
         workerMap.clear();
     }

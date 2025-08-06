@@ -9,7 +9,6 @@ import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -26,7 +25,7 @@ public abstract class RegularValidator {
         doAddRevisionObject(o);
     }
 
-    public final void addCreWorker(WorkerDomain worker) {
+    public final void addCrewWorker(WorkerDomain worker) {
         validateWorker(worker);
         doAddWorker(worker);
     }

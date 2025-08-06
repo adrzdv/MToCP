@@ -2,6 +2,7 @@ package com.adrzdv.mtocp.domain.model.order;
 
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.TicketTermial;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.BaggageCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TicketOfficeDomain;
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
@@ -19,6 +20,13 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
                              LocalDateTime getRevisionDateEnd,
                              String route) {
         super(numberOrder, revisionDateStart, getRevisionDateEnd, route);
+    }
+
+    @Override
+    public void updateRevisionObject(RevisionObject o) {
+        if (o instanceof TicketTermial that) {
+            ticketOffice.getObjectsMap().put(that.getNumber(), that);
+        }
     }
 
     @Override

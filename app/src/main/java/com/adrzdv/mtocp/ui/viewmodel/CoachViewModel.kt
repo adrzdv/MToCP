@@ -11,6 +11,7 @@ import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
 import com.adrzdv.mtocp.mapper.ViolationMapper
+import okhttp3.internal.toImmutableMap
 import java.time.LocalDateTime
 
 class CoachViewModel(
@@ -36,6 +37,10 @@ class CoachViewModel(
         }
     }
 
+    fun getWorker(): InnerWorkerDomain? {
+        return _coach?.worker as? InnerWorkerDomain
+    }
+
     fun addTagToViolation(code: Int, tag: String) {
         _violationMap[code]?.attributeMap?.put("tag", tag)
     }
@@ -45,15 +50,12 @@ class CoachViewModel(
     }
 
     fun cleanViolations() {
+        _coach?.clearViolationMap()
         _violationMap.clear()
     }
 
     fun toggleViolationResolved(code: Int) {
-        if (_violationMap[code]?.isResolved == false) {
-            _violationMap[code]?.isResolved = true
-        } else {
-            _violationMap[code]?.isResolved = false
-        }
+        _violationMap[code]?.isResolved = _violationMap[code]?.isResolved == false
 
     }
 
@@ -63,18 +65,25 @@ class CoachViewModel(
 
     fun saveCoachInOrder() {
         addViolationMap()
+        orderViewModel.deleteRevisionObject(_coach)
         orderViewModel.addRevisionObject(_coach)
     }
 
     fun addWorker(
         id: Int,
         name: String,
-        depotName: String
+        depotName: String,
+        workerType: WorkerTypes
     ) {
         val depot = depotViewModel.getDepotDomain(depotName)
-        val newWorker: InnerWorkerDomain = InnerWorkerDomain(id, name, depot, workerType)
+        val newWorker = InnerWorkerDomain(id, name, depot, workerType)
         _coach?.worker = newWorker
         _worker.value = newWorker
+    }
+
+    fun addWorker(worker: InnerWorkerDomain) {
+        _coach?.worker = worker
+        _worker.value = worker
     }
 
     fun addViolation(violation: ViolationDomain) {
@@ -87,21 +96,20 @@ class CoachViewModel(
         _violationMap[violation.code] = violation
     }
 
-    fun addWorker(worker: InnerWorkerDomain) {
-        _coach?.worker = worker
-        _worker.value = worker
-    }
-
     fun setStartRevisionTime(startTime: LocalDateTime) {
-        _coach?.revisionDateStart = startTime
+        if (_coach?.revisionDateStart == null) {
+            _coach?.revisionDateStart = startTime
+        }
     }
 
     fun setEndRevisionTime(endTime: LocalDateTime) {
-        _coach?.revisionDateEnd = endTime
+        if (_coach?.revisionDateEnd == null) {
+            _coach?.revisionDateEnd = endTime
+        }
     }
 
     private fun addViolationMap() {
-        _coach?.violationMap = _violationMap.toMap()
+        _coach?.violationMap = _violationMap.toMutableMap()
     }
 
     fun reloadViolationsFromOrder() {

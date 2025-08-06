@@ -1,5 +1,7 @@
 package com.adrzdv.mtocp.ui.screen
 
+import android.content.Intent
+import android.graphics.Camera
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,9 +22,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -30,16 +31,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.adrzdv.mtocp.App
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.Coach
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
+import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
 import com.adrzdv.mtocp.mapper.ViolationMapper
-import com.adrzdv.mtocp.ui.component.CompactMenuButton
+import com.adrzdv.mtocp.ui.activities.CameraActivity
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.DropdownMenuField
@@ -51,13 +58,10 @@ import com.adrzdv.mtocp.ui.component.dialogs.AddViolationToCoachDialog
 import com.adrzdv.mtocp.ui.component.dialogs.ChangeAmountDialog
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.CoachViewModel
-import com.adrzdv.mtocp.ui.viewmodel.CoachViewModelFactory
+import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
-import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
-import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
-import kotlinx.coroutines.coroutineScope
+import com.adrzdv.mtocp.ui.viewmodel.PassengerCoachViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
@@ -68,37 +72,37 @@ fun MonitoringCoachScreen(
     depotViewModel: DepotViewModel,
     navController: NavController
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
-    val coachViewModel: CoachViewModel =
-        viewModel(factory = remember(coachNumber, orderViewModel, depotViewModel) {
-            CoachViewModelFactory(coachNumber, orderViewModel, depotViewModel)
-        })
-    val violationViewModel: ViolationViewModel =
-        viewModel(factory = ViewModelFactoryProvider.provideFactory())
-
-    val coachViolations by remember {
-        derivedStateOf {
-            coachViewModel.violationMap.values.map {
-                ViolationMapper.fromDomainToDto(it)
-            }
+    val coach = orderViewModel.collector?.objectsMap?.get(coachNumber) as? PassengerCar
+    val passengerCoachViewModel: PassengerCoachViewModel = viewModel(
+        factory = AssistedViewModelFactory {
+            PassengerCoachViewModel(
+                initCoach = coach as PassengerCar,
+                onSaveCallback = { updated ->
+                    orderViewModel.updateRevisionObject(updated)
+                    navController.popBackStack()
+                },
+                getDepotByNameUseCase = GetDepotByNameUseCase(App.getDepotRepository())
+            )
         }
-    }
+    )
 
-    var isEmptyWorkerNumber by remember { mutableStateOf(false) }
-    var isEmptyWorkerName by remember { mutableStateOf(false) }
-    var isEmptyWorkerDepot by remember { mutableStateOf(false) }
-    var isPatterWorkerName by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+    val state by passengerCoachViewModel.state
 
-    var showSaveDialog by remember { mutableStateOf(false) }
+    var selectedViolationCode by remember { mutableStateOf<Int?>(null) }
+
     var showAddViolationDialog by remember { mutableStateOf(false) }
     var showAddAmountDialog by remember { mutableStateOf(false) }
-    var showAddTagDialog by remember { mutableStateOf(false) }
 
-    var selectedCode by remember { mutableIntStateOf(0) }
+    val emptyString = stringResource(R.string.empty_string)
 
-    val coroutineScope = rememberCoroutineScope()
-
-    coachViewModel.setStartRevisionTime(LocalDateTime.now())
+    LaunchedEffect(Unit) {
+        if (coach?.revisionDateStart == null) {
+            coach?.revisionDateStart = LocalDateTime.now()
+        }
+    }
 
     BackHandler(
         enabled = true
@@ -111,8 +115,9 @@ fun MonitoringCoachScreen(
         floatingActionButton = {
             FloatingSaveButton(
                 onClick = {
-                    showSaveDialog = true
-                })
+                    passengerCoachViewModel.onSave()
+                }
+            )
         },
         snackbarHost = {
             CustomSnackbarHost(
@@ -131,42 +136,50 @@ fun MonitoringCoachScreen(
                 label = stringResource(R.string.crew),
                 content = {
                     CustomOutlinedTextField(
-                        value = "",
-                        onValueChange = {},
+                        value = state.idWorker ?: "",
+                        onValueChange = {
+                            passengerCoachViewModel.onIdChange(it, emptyString)
+                        },
                         isEnabled = true,
-                        isError = true,
-                        errorText = "",
-                        label = stringResource(R.string.worker_name),
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-                    CustomOutlinedTextField(
-                        value = "",
-                        onValueChange = {},
-                        isEnabled = true,
-                        isError = true,
-                        errorText = "",
+                        isError = state.idError != null,
+                        errorText = state.idError ?: "",
                         label = stringResource(R.string.worker_id),
                         modifier = Modifier.fillMaxWidth()
                     )
-
+                    CustomOutlinedTextField(
+                        value = state.nameWorker ?: "",
+                        onValueChange = {
+                            passengerCoachViewModel.onNameChange(it, emptyString)
+                        },
+                        isEnabled = true,
+                        isError = state.nameError != null,
+                        errorText = state.nameError ?: "",
+                        label = stringResource(R.string.worker_name),
+                        modifier = Modifier.fillMaxWidth()
+                    )
                     DropdownMenuField(
                         label = stringResource(R.string.worker_type),
-                        options = listOfNotNull(),
-                        selectedOption = "",
-                        onOptionSelected = {},
-                        isError = true,
-                        errorMessage = "",
+                        options = WorkerTypes.values().map { it.description },
+                        selectedOption = WorkerTypes.entries
+                            .firstOrNull { it.description == state.typeWorker }?.description ?: "",
+                        onOptionSelected = {
+                            passengerCoachViewModel.onTypeChange(it, emptyString)
+                        },
+                        isError = state.typeError != null,
+                        errorMessage = state.typeError ?: "",
                         modifier = Modifier.fillMaxWidth()
                     )
 
                     DropdownMenuField(
                         label = stringResource(R.string.worker_depot),
-                        options = listOfNotNull(),
-                        selectedOption = "",
-                        onOptionSelected = {},
-                        isError = true,
-                        errorMessage = "",
+                        options = depotViewModel.filteredDepots.value?.map { it.name }
+                            ?: emptyList(),
+                        selectedOption = state.depotWorker ?: "",
+                        onOptionSelected = {
+                            passengerCoachViewModel.onDepotChange(it, emptyString)
+                        },
+                        isError = state.depotError != null,
+                        errorMessage = state.depotError ?: "",
                         modifier = Modifier.fillMaxWidth()
                     )
                     Box(
@@ -175,6 +188,7 @@ fun MonitoringCoachScreen(
                     ) {
                         TextButton(
                             onClick = {
+                                passengerCoachViewModel.setInputsEmpty()
                             },
                             colors = ButtonDefaults.buttonColors(
                                 contentColor = AppColors.MAIN_GREEN.color,
@@ -196,8 +210,6 @@ fun MonitoringCoachScreen(
                             )
                         }
                     }
-
-
                 },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -236,7 +248,7 @@ fun MonitoringCoachScreen(
                         }
                         TextButton(
                             onClick = {
-
+                                //add additional params
                             },
                             colors = ButtonDefaults.buttonColors(
                                 contentColor = AppColors.OFF_WHITE.color,
@@ -260,7 +272,7 @@ fun MonitoringCoachScreen(
                         }
                         TextButton(
                             onClick = {
-                                coachViewModel.cleanViolations()
+                                passengerCoachViewModel.cleanViolations()
                             },
                             colors = ButtonDefaults.buttonColors(
                                 contentColor = AppColors.OFF_WHITE.color,
@@ -290,44 +302,49 @@ fun MonitoringCoachScreen(
                 verticalArrangement = Arrangement.spacedBy(6.dp),
                 modifier = Modifier.fillMaxSize(),
             ) {
-                items(coachViolations) { item ->
+                items(passengerCoachViewModel.getDisplayViolations()) { item ->
                     ViolationCard(
-                        item,
+                        ViolationMapper.fromDomainToDto(item),
                         onChangeValueClick = {
-                            selectedCode = item.code
+                            selectedViolationCode = item.code
                             showAddAmountDialog = true
                         },
                         onResolveClick = {
-                            coachViewModel.toggleViolationResolved(item.code)
+                            passengerCoachViewModel.toggleResolvedViolation(item.code)
                         },
                         onDeleteClick = {
-                            coachViewModel.deleteViolation(item.code)
-                            orderViewModel.deleteViolation(coachNumber, item.code)
+                            passengerCoachViewModel.deleteViolation(item.code)
                         },
                         onAddTagClick = {
-                            showAddTagDialog = true
+                            //showAddTagDialog = true
                         },
                         onMakeVideoClick = {},
-                        onMakePhotoClick = {})
+                        onMakePhotoClick = {
+                            val intent = Intent(context, CameraActivity::class.java)
+                            intent.putExtra("order", orderViewModel.orderNumber)
+                            intent.putExtra("coach", coachNumber)
+                            intent.putExtra("violation", item.code)
+                            context.startActivity(intent)
+                        }
+                    )
                 }
             }
         }
 
         //temporary solution: in future fix it!!!
-        if (showAddTagDialog) {
-            AddTagDialog(
-                onConfirm = { tag ->
-                    coachViewModel.addTagToViolation(selectedCode, tag)
-                    showAddTagDialog = false
-                },
-                onDismiss = { showAddTagDialog = false }
-            )
-        }
-
+//        if (showAddTagDialog) {
+//            AddTagDialog(
+//                onConfirm = { tag ->
+//                    coachViewModel.addTagToViolation(selectedViolationCode, tag)
+//                    showAddTagDialog = false
+//                },
+//                onDismiss = { showAddTagDialog = false }
+//            )
+//        }
         if (showAddAmountDialog) {
             ChangeAmountDialog(
                 onConfirm = { amount ->
-                    coachViewModel.changeAmount(selectedCode, amount)
+                    passengerCoachViewModel.updateViolationValue(selectedViolationCode!!, amount)
                     showAddAmountDialog = false
                 },
                 onDismiss = {
@@ -335,18 +352,11 @@ fun MonitoringCoachScreen(
                 }
             )
         }
-
-        if (showSaveDialog) {
-            coachViewModel.setEndRevisionTime(LocalDateTime.now())
-        }
-
         if (showAddViolationDialog) {
             AddViolationToCoachDialog(
-                objectNumber = coachNumber,
-                orderVM = orderViewModel,
-                onConfirm = {
-                    showAddViolationDialog = false
-                    coachViewModel.reloadViolationsFromOrder()
+                revisionType = orderViewModel.revisionType,
+                onConfirm = { violation ->
+                    passengerCoachViewModel.addViolation(violation)
                 },
                 onDismiss = {
                     showAddViolationDialog = false
@@ -360,6 +370,59 @@ fun MonitoringCoachScreen(
             )
         }
     }
-
-
 }
+
+
+//    val coachViolations by remember {
+//        derivedStateOf {
+//            coachViewModel.violationMap.values.map {
+//                ViolationMapper.fromDomainToDto(it)
+//            }
+//        }
+//    }
+//    var isEmptyWorkerNumber by remember { mutableStateOf(false) }
+//    var isIncorrectWorkerNumber by remember { mutableStateOf(false) }
+//    var isEmptyWorkerName by remember { mutableStateOf(false) }
+//    var isEmptyWorkerDepot by remember { mutableStateOf(false) }
+//    var isPatterWorkerName by remember { mutableStateOf(false) }
+//    var isWorkerTypeEmpty by remember { mutableStateOf(false) }
+//
+//    var showAddViolationDialog by remember { mutableStateOf(false) }
+//    var showAddAmountDialog by remember { mutableStateOf(false) }
+//    var showAddTagDialog by remember { mutableStateOf(false) }
+//
+//    var selectedCode by remember { mutableIntStateOf(0) }
+//
+//    var workerNameState by remember { mutableStateOf(coachViewModel.getWorker()?.name ?: "") }
+//    var workerIdState by remember {
+//        mutableStateOf(
+//            coachViewModel.getWorker()?.id.toString()
+//        )
+//    }
+//    var workerDepotSelected by remember {
+//        mutableStateOf(
+//            coachViewModel.getWorker()?.depotDomain?.name ?: ""
+//        )
+//    }
+//    var workerTypeSelected by remember {
+//        mutableStateOf(
+//            coachViewModel.getWorker()?.workerType
+//        )
+//    }
+
+//    val coachViewModel: CoachViewModel =
+//        viewModel(factory = remember(coachNumber, orderViewModel, depotViewModel) {
+//            CoachViewModelFactory(coachNumber, orderViewModel, depotViewModel)
+//        })
+//    fun checkFields(): Boolean {
+//        isEmptyWorkerNumber = workerIdState.isBlank()
+//        isEmptyWorkerName = workerNameState.isBlank()
+//        isWorkerTypeEmpty = workerTypeSelected == null
+//        isEmptyWorkerDepot = workerDepotSelected.isBlank()
+//
+//        return !(isEmptyWorkerName || isEmptyWorkerNumber || isWorkerTypeEmpty || isEmptyWorkerDepot)
+//    }
+//    val violationViewModel: ViolationViewModel =
+//        viewModel(factory = ViewModelFactoryProvider.provideFactory())
+//
+//        coachViewModel.setStartRevisionTime(LocalDateTime.now())

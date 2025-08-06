@@ -38,9 +38,6 @@ public class StartRevisionActivity extends AppCompatActivity {
                     finish();
                     return Unit.INSTANCE;
                 });
-
         setContentView(composeView);
-
     }
-
 }

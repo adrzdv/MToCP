@@ -52,7 +52,7 @@ fun ViolationCard(
     onAddTagClick: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var isResolved by remember { mutableStateOf(false) }
+    var isResolved by remember { mutableStateOf(violation.isResolved) }
 
     Box(
         modifier = Modifier
@@ -278,7 +278,6 @@ fun CoachItemCardReadOnly(
     onItemClick: () -> Unit
 ) {
     val isChecked = coach.revisionDateEnd != null
-
     Box(
         modifier = Modifier
             .fillMaxWidth()

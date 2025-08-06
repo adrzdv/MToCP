@@ -64,6 +64,8 @@ public abstract class Order extends RegularValidator {
         this.route = route;
     }
 
+    public abstract void updateRevisionObject(RevisionObject object);
+
     public abstract void clearCrewWorkers();
 
     public abstract void clearRevisionObjects();

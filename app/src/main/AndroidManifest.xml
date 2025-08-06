@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="true" />
 
     <application
         android:name=".App"
@@ -15,6 +22,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MToCP"
         tools:targetApi="31">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+
         <activity
             android:name=".ui.activities.StartRevisionActivity"
             android:exported="false" />
@@ -29,6 +46,9 @@
             android:exported="false" />
         <activity
             android:name=".ui.activities.RequestWebActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.CameraActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.StartMenuActivity"
