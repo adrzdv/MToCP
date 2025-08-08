@@ -32,7 +32,6 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParameterSelectionBottomSheet(
-    //orderViewModel: OrderViewModel,
     paramsViewModel: AdditionalParamViewModel,
     onSave: () -> Unit,
     onDismiss: () -> Unit,
@@ -103,7 +102,6 @@ fun ParameterSelectionBottomSheet(
                         paramsViewModel.getMapOfParams()
                         val mapParams = paramsViewModel.mapParams
                         callback(mapParams)
-                        //orderViewModel.collector?.additionalParams = mapParams
                         sheetState.hide()
                         onSave()
                     }

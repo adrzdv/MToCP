@@ -324,7 +324,6 @@ fun MonitoringProcessScreen(
             }
         }
         ParameterSelectionBottomSheet(
-            //orderViewModel = orderViewModel,
             paramsViewModel = paramsViewModel,
             onSave = {
                 showBottomSheet = false

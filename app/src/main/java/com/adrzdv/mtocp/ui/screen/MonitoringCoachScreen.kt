@@ -275,7 +275,6 @@ fun MonitoringCoachScreen(
                         }
                         TextButton(
                             onClick = {
-                                //add additional params
                                 showBottomSheet = true
                             },
                             colors = ButtonDefaults.buttonColors(
@@ -365,7 +364,7 @@ fun MonitoringCoachScreen(
             }
         }
 
-        //temporary solution: in future fix it!!!
+        //temporary solution: in future fix it!!! need to chose existing strings from db (for exmpl)
         if (showAddTagDialog) {
             AddTagDialog(
                 onConfirm = { tag ->
