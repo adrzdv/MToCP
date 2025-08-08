@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.viewModelScope
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
+import com.adrzdv.mtocp.domain.model.violation.StaticsParam
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
 import com.adrzdv.mtocp.domain.usecase.DeleteViolationPhotoUseCase
 import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
@@ -97,6 +98,12 @@ class PassengerCoachViewModel(
         updatedMap?.set(violation.code, violation)
         updateState(
             violations = updatedMap
+        )
+    }
+
+    fun addAdditionalParams(statparams: Map<String, StaticsParam>) {
+        _state.value = _state.value.copy(
+            statParams = statparams
         )
     }
 
@@ -188,36 +195,35 @@ class PassengerCoachViewModel(
                 current.nameWorker?.let { name ->
                     current.typeWorker?.let { type ->
                         current.violations?.let { currViolations ->
-                            val workerType = WorkerTypes.entries.find { it.description == type }
-                            current.depotWorker?.let { depot ->
-                                val depotDomain = getDepotByNameUseCase(depot, false)
-                                val worker = InnerWorkerDomain(
-                                    id.toInt(),
-                                    name,
-                                    depotDomain,
-                                    workerType
-                                )
-                                val updatedCoach = PassengerCar(initCoach.number).apply {
-                                    this.coachRoute = initCoach.coachRoute
-                                    this.depotDomain = initCoach.depotDomain
-                                    this.coachType = initCoach.coachType
-                                    this.trailing = initCoach.trailing
-                                    this.revisionDateStart = initCoach.revisionDateStart
-                                    if (initCoach.revisionDateEnd == null) {
-                                        this.revisionDateEnd = LocalDateTime.now()
-                                    } else {
-                                        this.revisionDateEnd = initCoach.revisionDateEnd
+                            current.statParams?.let { currParams ->
+                                val workerType = WorkerTypes.entries.find { it.description == type }
+                                current.depotWorker?.let { depot ->
+                                    val depotDomain = getDepotByNameUseCase(depot, false)
+                                    val worker = InnerWorkerDomain(
+                                        id.toInt(),
+                                        name,
+                                        depotDomain,
+                                        workerType
+                                    )
+                                    val updatedCoach = PassengerCar(initCoach.number).apply {
+                                        this.coachRoute = initCoach.coachRoute
+                                        this.depotDomain = initCoach.depotDomain
+                                        this.coachType = initCoach.coachType
+                                        this.trailing = initCoach.trailing
+                                        this.revisionDateStart = initCoach.revisionDateStart
+                                        if (initCoach.revisionDateEnd == null) {
+                                            this.revisionDateEnd = LocalDateTime.now()
+                                        } else {
+                                            this.revisionDateEnd = initCoach.revisionDateEnd
+                                        }
+                                        this.additionalParams = currParams
+                                        this.depotDomain = initCoach.depotDomain
+                                        this.worker = worker
+                                        this.qualityPassport = initCoach.qualityPassport
+                                        this.violationMap = currViolations
                                     }
-                                    this.additionalParams =
-                                        initCoach.additionalParams                                      //in future need to change
-                                    this.depotDomain = initCoach.depotDomain
-                                    this.worker = worker
-                                    this.staticParamsMap = initCoach.staticParamsMap
-                                    this.additionalParams = initCoach.additionalParams
-                                    this.qualityPassport = initCoach.qualityPassport
-                                    this.violationMap = currViolations
+                                    onSaveCallback(updatedCoach)
                                 }
-                                onSaveCallback(updatedCoach)
                             }
                         }
                     }

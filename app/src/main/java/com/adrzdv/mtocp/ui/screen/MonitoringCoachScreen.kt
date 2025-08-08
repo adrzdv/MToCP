@@ -55,6 +55,7 @@ import com.adrzdv.mtocp.ui.activities.CameraActivity
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.DropdownMenuField
+import com.adrzdv.mtocp.ui.component.ParameterSelectionBottomSheet
 import com.adrzdv.mtocp.ui.component.ServiceInfoBlock
 import com.adrzdv.mtocp.ui.component.ViolationCard
 import com.adrzdv.mtocp.ui.component.buttons.FloatingSaveButton
@@ -63,10 +64,12 @@ import com.adrzdv.mtocp.ui.component.dialogs.AddViolationToCoachDialog
 import com.adrzdv.mtocp.ui.component.dialogs.ChangeAmountDialog
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
+import com.adrzdv.mtocp.ui.viewmodel.AdditionalParamViewModel
 import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.PassengerCoachViewModel
+import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
@@ -91,6 +94,8 @@ fun MonitoringCoachScreen(
             )
         }
     )
+    val paramsViewModel: AdditionalParamViewModel =
+        viewModel(factory = ViewModelFactoryProvider.provideFactory())
 
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -109,6 +114,7 @@ fun MonitoringCoachScreen(
     var showAddViolationDialog by remember { mutableStateOf(false) }
     var showAddAmountDialog by remember { mutableStateOf(false) }
     var showAddTagDialog by remember { mutableStateOf(false) }
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     val emptyString = stringResource(R.string.empty_string)
 
@@ -270,6 +276,7 @@ fun MonitoringCoachScreen(
                         TextButton(
                             onClick = {
                                 //add additional params
+                                showBottomSheet = true
                             },
                             colors = ButtonDefaults.buttonColors(
                                 contentColor = AppColors.OFF_WHITE.color,
@@ -393,6 +400,28 @@ fun MonitoringCoachScreen(
                     coroutineScope.launch {
                         snackbarHostState.showSnackbar(MessageCodes.DUPLICATE_ERROR.errorTitle)
                     }
+                }
+            )
+        }
+
+        if (showBottomSheet) {
+            val paramsForCoach = coach?.additionalParams?.values?.toList()
+            if (!paramsForCoach.isNullOrEmpty()) {
+                paramsViewModel.setParams(paramsForCoach)
+            } else {
+                LaunchedEffect(Unit) {
+                    paramsViewModel.loadCoachParams()
+                }
+            }
+            ParameterSelectionBottomSheet(
+                paramsViewModel = paramsViewModel,
+                onSave = {
+                    showBottomSheet = false
+                },
+                onDismiss = {
+                    showBottomSheet = false
+                }, callback = { params ->
+                    passengerCoachViewModel.addAdditionalParams(params)
                 }
             )
         }

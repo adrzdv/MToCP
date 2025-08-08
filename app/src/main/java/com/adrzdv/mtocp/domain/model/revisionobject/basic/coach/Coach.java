@@ -15,22 +15,12 @@ import java.util.Map;
  * or for collecting baggage car routes
  */
 public abstract class Coach extends RevisionObject {
-    private Map<String, StaticsParam> staticParamsMap;
     @Nullable
     private String coachRoute;
 
     public Coach(String name) {
         super(name);
-        staticParamsMap = new HashMap<>();
         coachRoute = "";
-    }
-
-    public Map<String, StaticsParam> getStaticParamsMap() {
-        return staticParamsMap;
-    }
-
-    public void setStaticParamsMap(Map<String, StaticsParam> staticParamsMap) {
-        this.staticParamsMap = staticParamsMap;
     }
 
     public @Nullable String getCoachRoute() {

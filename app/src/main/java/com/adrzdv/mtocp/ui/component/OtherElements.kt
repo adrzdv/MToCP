@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.domain.model.violation.StaticsParam
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.AdditionalParamViewModel
@@ -31,10 +32,11 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParameterSelectionBottomSheet(
-    orderViewModel: OrderViewModel,
+    //orderViewModel: OrderViewModel,
     paramsViewModel: AdditionalParamViewModel,
     onSave: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    callback: (Map<String, StaticsParam>) -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
@@ -100,7 +102,8 @@ fun ParameterSelectionBottomSheet(
                     scope.launch {
                         paramsViewModel.getMapOfParams()
                         val mapParams = paramsViewModel.mapParams
-                        orderViewModel.collector?.additionalParams = mapParams
+                        callback(mapParams)
+                        //orderViewModel.collector?.additionalParams = mapParams
                         sheetState.hide()
                         onSave()
                     }

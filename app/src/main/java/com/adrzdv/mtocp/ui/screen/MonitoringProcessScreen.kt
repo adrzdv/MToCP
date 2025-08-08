@@ -315,9 +315,7 @@ fun MonitoringProcessScreen(
     }
 
     if (showBottomSheet) {
-
         val paramsInOrder = orderViewModel.collector?.additionalParams?.values?.toList()
-
         if (!paramsInOrder.isNullOrEmpty()) {
             paramsViewModel.setParams(paramsInOrder)
         } else {
@@ -325,9 +323,8 @@ fun MonitoringProcessScreen(
                 paramsViewModel.loadTrainParams()
             }
         }
-
         ParameterSelectionBottomSheet(
-            orderViewModel = orderViewModel,
+            //orderViewModel = orderViewModel,
             paramsViewModel = paramsViewModel,
             onSave = {
                 showBottomSheet = false
@@ -335,6 +332,9 @@ fun MonitoringProcessScreen(
             },
             onDismiss = {
                 showBottomSheet = false
+            },
+            callback = { params ->
+                orderViewModel.collector?.additionalParams = params
             }
         )
     }
