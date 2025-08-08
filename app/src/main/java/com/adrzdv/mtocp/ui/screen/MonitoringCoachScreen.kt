@@ -48,6 +48,7 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.Coach
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
+import com.adrzdv.mtocp.domain.usecase.DeleteViolationPhotoUseCase
 import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
 import com.adrzdv.mtocp.mapper.ViolationMapper
 import com.adrzdv.mtocp.ui.activities.CameraActivity
@@ -85,7 +86,8 @@ fun MonitoringCoachScreen(
                     orderViewModel.updateRevisionObject(updated)
                     navController.popBackStack()
                 },
-                getDepotByNameUseCase = GetDepotByNameUseCase(App.getDepotRepository())
+                getDepotByNameUseCase = GetDepotByNameUseCase(App.getDepotRepository()),
+                deleteViolationPhotoUseCase = DeleteViolationPhotoUseCase()
             )
         }
     )
@@ -331,7 +333,11 @@ fun MonitoringCoachScreen(
                             passengerCoachViewModel.toggleResolvedViolation(item.code)
                         },
                         onDeleteClick = {
-                            passengerCoachViewModel.deleteViolation(item.code)
+                            passengerCoachViewModel.deleteViolation(
+                                item.code,
+                                orderViewModel.orderNumber
+                            )
+
                         },
                         onAddTagClick = {
                             //showAddTagDialog = true

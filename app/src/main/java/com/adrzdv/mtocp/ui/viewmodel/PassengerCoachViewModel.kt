@@ -14,6 +14,7 @@ import androidx.lifecycle.viewModelScope
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
+import com.adrzdv.mtocp.domain.usecase.DeleteViolationPhotoUseCase
 import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
 import com.adrzdv.mtocp.ui.activities.CameraActivity
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +26,8 @@ import java.time.LocalDateTime
 class PassengerCoachViewModel(
     private val initCoach: PassengerCar,
     private val onSaveCallback: (PassengerCar) -> Unit,
-    private val getDepotByNameUseCase: GetDepotByNameUseCase
+    private val getDepotByNameUseCase: GetDepotByNameUseCase,
+    private val deleteViolationPhotoUseCase: DeleteViolationPhotoUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(
         PassengerCoachState(
@@ -98,8 +100,9 @@ class PassengerCoachViewModel(
         )
     }
 
-    fun deleteViolation(code: Int) {
+    fun deleteViolation(code: Int, orderNumber: String) {
         val updatedMap = _state.value.violations?.toMutableMap()
+        deletePhotoViolation(code, initCoach.number, orderNumber)
         updatedMap?.remove(code)
         updateState(
             violations = updatedMap
@@ -241,5 +244,11 @@ class PassengerCoachViewModel(
             depotError = depotError,
             isSaveEnabled = isEnableToSave
         )
+    }
+
+    private fun deletePhotoViolation(code: Int, coachNumber: String, orderNumber: String) {
+        viewModelScope.launch {
+            deleteViolationPhotoUseCase.invoke(code, orderNumber, coachNumber)
+        }
     }
 }
