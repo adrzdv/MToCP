@@ -149,8 +149,7 @@ fun ViolationCard(
                         onClick = {
                             expanded = false
                             onAddTagClick()
-                        },
-                        enabled = false
+                        }
                     )
                     DropdownMenuItem(
                         text = {

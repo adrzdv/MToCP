@@ -108,6 +108,7 @@ fun MonitoringCoachScreen(
 
     var showAddViolationDialog by remember { mutableStateOf(false) }
     var showAddAmountDialog by remember { mutableStateOf(false) }
+    var showAddTagDialog by remember { mutableStateOf(false) }
 
     val emptyString = stringResource(R.string.empty_string)
 
@@ -340,7 +341,7 @@ fun MonitoringCoachScreen(
 
                         },
                         onAddTagClick = {
-                            //showAddTagDialog = true
+                            showAddTagDialog = true
                         },
                         onMakeVideoClick = {},
                         onMakePhotoClick = {
@@ -358,15 +359,15 @@ fun MonitoringCoachScreen(
         }
 
         //temporary solution: in future fix it!!!
-//        if (showAddTagDialog) {
-//            AddTagDialog(
-//                onConfirm = { tag ->
-//                    coachViewModel.addTagToViolation(selectedViolationCode, tag)
-//                    showAddTagDialog = false
-//                },
-//                onDismiss = { showAddTagDialog = false }
-//            )
-//        }
+        if (showAddTagDialog) {
+            AddTagDialog(
+                onConfirm = { tag ->
+                    passengerCoachViewModel.addTagToViolation(selectedViolationCode!!, tag)
+                    showAddTagDialog = false
+                },
+                onDismiss = { showAddTagDialog = false }
+            )
+        }
         if (showAddAmountDialog) {
             ChangeAmountDialog(
                 onConfirm = { amount ->

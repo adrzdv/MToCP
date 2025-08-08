@@ -100,6 +100,15 @@ class PassengerCoachViewModel(
         )
     }
 
+    fun addTagToViolation(code: Int, tag: String) {
+        _state.value = _state.value.copy(
+            violations = _state.value.violations?.toMutableMap()
+                .apply {
+                    this?.get(code)?.attributeMap?.set(tag, tag)
+                }
+        )
+    }
+
     fun deleteViolation(code: Int, orderNumber: String) {
         val updatedMap = _state.value.violations?.toMutableMap()
         deletePhotoViolation(code, initCoach.number, orderNumber)

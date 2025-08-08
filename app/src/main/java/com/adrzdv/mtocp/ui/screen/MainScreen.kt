@@ -126,7 +126,7 @@ fun StartMenuScreen(
                     MenuButton(
                         text = stringResource(R.string.help),
                         icon = painterResource(R.drawable.ic_help_24_white),
-                        onClick = onHelpClick
+                        onClick = {} //onHelpClick
                     )
                 }
 
