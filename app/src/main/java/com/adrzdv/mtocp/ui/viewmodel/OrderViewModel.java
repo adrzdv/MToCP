@@ -21,26 +21,34 @@ import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
+import com.adrzdv.mtocp.domain.repository.CompanyRepository;
 import com.adrzdv.mtocp.domain.repository.TrainRepository;
+import com.adrzdv.mtocp.domain.usecase.ArchivePhotoInZipUseCase;
+import com.adrzdv.mtocp.domain.usecase.GetGlobalViolationStringUseCase;
 
 import org.jspecify.annotations.Nullable;
 
+import java.io.File;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
 public class OrderViewModel extends ViewModel {
 
     private final MutableLiveData<Order> order = new MutableLiveData<>();
     private final MutableLiveData<String> trainScheme = new MutableLiveData<>();
+    private final ArchivePhotoInZipUseCase archivePhotoInZipUseCase;
+    private final GetGlobalViolationStringUseCase getGlobalViolationStringUseCase;
     private OrdersTypes selectedType;
     private final TrainRepository trainRepository;
     //private final TicketOfficeRepository ticketOfficeRepository;
-    //private final CompanyRepository companyRepository
+    //private final CompanyRepository companyRepository;
     private String orderNumber;
     private String objectNumber;
     private LocalDateTime dateStart;
@@ -50,16 +58,14 @@ public class OrderViewModel extends ViewModel {
 
     public OrderViewModel(TrainRepository trainRepository) {
         this.trainRepository = trainRepository;
+        this.archivePhotoInZipUseCase = new ArchivePhotoInZipUseCase();
+        this.getGlobalViolationStringUseCase = new GetGlobalViolationStringUseCase();
         executor = Executors.newSingleThreadExecutor();
     }
 
     public RevisionType getRevisionType() {
         RevisionType revisionType = Objects.requireNonNull(order.getValue()).getRevisionType();
         return revisionType == null ? RevisionType.IN_TRANSIT : revisionType;
-    }
-
-    public Order getCurrentOrder() {
-        return order.getValue();
     }
 
     public String getOrderNumber() {
@@ -213,7 +219,6 @@ public class OrderViewModel extends ViewModel {
     }
 
     public void toggleDinnerCar(boolean flag) {
-
         Order currOrder = order.getValue();
 
         if (currOrder instanceof CollectableOrder that) {
@@ -223,7 +228,6 @@ public class OrderViewModel extends ViewModel {
     }
 
     public void updateTrainScheme() {
-
         Order currOrder = order.getValue();
 
         if (currOrder instanceof CollectableOrder that) {
@@ -240,39 +244,13 @@ public class OrderViewModel extends ViewModel {
                     builder.append(type.getPassengerCoachTitle()).append("-").append(count).append(" ");
                 }
             }
-
             builder.append(")");
-
-            if (train.getDinnerCar()) {
+            if (train.getIsDinnerCar()) {
                 builder.append(" в т.ч. 1 ВР");
             }
 
             trainScheme.setValue(builder.toString().trim());
         }
-    }
-
-    public void addViolation(String objNumber, ViolationDomain violation) {
-
-        Order currOrder = order.getValue();
-
-        if (currOrder instanceof CollectableOrder that) {
-            that.addViolationInCollector(objNumber, violation);
-        } else if (currOrder instanceof BaggageOrder bOrder) {
-            bOrder.addViolation(objNumber, violation);
-        }
-        order.setValue(currOrder);
-    }
-
-    public void deleteViolation(String objNumber, int code) {
-        Order currOrder = order.getValue();
-
-        if (currOrder instanceof CollectableOrder that) {
-            that.deleteViolationInCollector(objNumber, code);
-        } else if (currOrder instanceof BaggageOrder bOrder) {
-            bOrder.deleteViolation(objNumber, code);
-        }
-
-        order.setValue(currOrder);
     }
 
     public void removeDinnerCar() {
@@ -291,33 +269,43 @@ public class OrderViewModel extends ViewModel {
                 return train.getVideo();
             }
         }
-
         return false;
     }
 
     public boolean isTrainUsingProgressive() {
         Order currOrder = order.getValue();
-
         if (currOrder instanceof TrainOrder that) {
             if (that.getCollector() instanceof TrainDomain train) {
                 return train.getProgressive();
             }
         }
-
         return false;
     }
 
     public void addAdditionalParams(Map<String, StaticsParam> params) {
-
         Order currOrder = order.getValue();
-
         if (currOrder instanceof CollectableOrder collectable) {
             collectable.getCollector().setAdditionalParams(params);
         }
     }
 
-    private ObjectCollector createCollector(String objectNumber) {
+    public void makeArchive(Consumer<File> callback) {
+        executor.execute(() -> {
+            File file = archivePhotoInZipUseCase.execute(orderNumber);
+            callback.accept(file);
+        });
+    }
 
+    public List<String> getGlobalViolationResult() {
+        Order currentOrder = order.getValue();
+        if (currentOrder instanceof CollectableOrder that) {
+            return getGlobalViolationStringUseCase.execute(that.getCollector().getObjectsMap());
+        } else {
+            return null;
+        }
+    }
+
+    private ObjectCollector createCollector(String objectNumber) {
         if (selectedType.equals(PASSENGER_TRAIN)) {
             Future<TrainDomain> future = executor.submit(
                     () -> {
@@ -327,7 +315,6 @@ public class OrderViewModel extends ViewModel {
                         return trainRepository.getTrain(number);
                     }
             );
-
             try {
                 TrainDomain train = future.get();
                 if (train != null) {

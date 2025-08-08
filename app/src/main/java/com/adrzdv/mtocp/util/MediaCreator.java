@@ -7,9 +7,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.util.Log;
 
@@ -63,10 +65,10 @@ public class MediaCreator {
         }
 
         try {
-            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
 
-            Canvas canvas = new Canvas(mutableBitmap);
+            Bitmap resizedBitmap = compressPhoto(imgFile);
+
+            Canvas canvas = new Canvas(resizedBitmap);
             Paint paint = new Paint();
             paint.setColor(Color.WHITE);
             paint.setTextSize(40);
@@ -77,16 +79,81 @@ public class MediaCreator {
                     Locale.getDefault()).format(new Date());
 
             int x = 20;
-            int y = mutableBitmap.getHeight() - 50;
+            int y = resizedBitmap.getHeight() - 50;
             canvas.drawText(timestamp, x, y, paint);
 
             FileOutputStream out = new FileOutputStream(imgFile);
-            mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
 
+            resizedBitmap.recycle();
+
         } catch (IOException e) {
             Log.e("MediaCreator", "ERROR some troubles overlaying photo", e);
+        }
+    }
+
+    public File overlayDataTimeVideo(File vidFile) {
+        return null;
+    }
+
+    private Bitmap compressPhoto(File imgFile) {
+        Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+        int maxWidth = 1920;
+        int maxHeight = 1080;
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        float ratio = Math.min((float) maxWidth / width, (float) maxHeight / height);
+        Bitmap resizedBitmap = bitmap;
+
+        if (ratio < 1.0f) {
+            int newWidth = Math.round(width * ratio);
+            int newHeight = Math.round(height * ratio);
+            resizedBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
+        }
+
+        int rotationDegrees = getRotationDegrees(imgFile);
+        if (rotationDegrees != 0) {
+            Matrix matrix = new Matrix();
+            matrix.postRotate(rotationDegrees);
+            resizedBitmap = Bitmap.createBitmap(resizedBitmap, 0, 0,
+                    resizedBitmap.getWidth(), resizedBitmap.getHeight(), matrix, true);
+        }
+
+        Bitmap result = resizedBitmap.copy(Bitmap.Config.ARGB_8888, true);
+
+        if (resizedBitmap != bitmap) {
+            resizedBitmap.recycle();
+        }
+        bitmap.recycle();
+
+        return result;
+    }
+
+
+    private int getRotationDegrees(File file) {
+        try {
+            ExifInterface exif = new ExifInterface(file.getAbsolutePath());
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    return 90;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    return 180;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    return 270;
+                default:
+                    return 0;
+            }
+        } catch (IOException e) {
+            Log.e("MediaCreator", "ERROR some troubles rotating photo", e);
+            return 0;
         }
     }
 

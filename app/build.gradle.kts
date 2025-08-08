@@ -94,4 +94,6 @@ dependencies {
 
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
+    implementation("net.lingala.zip4j:zip4j:2.11.5")
+
 }

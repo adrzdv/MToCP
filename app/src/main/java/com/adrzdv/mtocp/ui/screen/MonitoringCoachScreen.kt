@@ -3,6 +3,9 @@ package com.adrzdv.mtocp.ui.screen
 import android.content.Intent
 import android.graphics.Camera
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -86,6 +90,13 @@ fun MonitoringCoachScreen(
         }
     )
 
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        passengerCoachViewModel.onCameraResult(result)
+    }
+    val snackbarMessage by passengerCoachViewModel.snackbarMessage.collectAsState()
+
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
@@ -101,6 +112,13 @@ fun MonitoringCoachScreen(
     LaunchedEffect(Unit) {
         if (coach?.revisionDateStart == null) {
             coach?.revisionDateStart = LocalDateTime.now()
+        }
+    }
+
+    LaunchedEffect(snackbarMessage) {
+        snackbarMessage?.let { message ->
+            snackbarHostState.showSnackbar(message)
+            passengerCoachViewModel.snackbarShown()
         }
     }
 
@@ -320,11 +338,13 @@ fun MonitoringCoachScreen(
                         },
                         onMakeVideoClick = {},
                         onMakePhotoClick = {
-                            val intent = Intent(context, CameraActivity::class.java)
-                            intent.putExtra("order", orderViewModel.orderNumber)
-                            intent.putExtra("coach", coachNumber)
-                            intent.putExtra("violation", item.code)
-                            context.startActivity(intent)
+                            val intent = passengerCoachViewModel.buildCameraIntent(context).apply {
+                                putExtra("order", orderViewModel.orderNumber)
+                                putExtra("coach", coachNumber)
+                                putExtra("violation", item.code)
+                                putExtra("violationShort", item.shortName)
+                            }
+                            launcher.launch(intent)
                         }
                     )
                 }
@@ -371,58 +391,3 @@ fun MonitoringCoachScreen(
         }
     }
 }
-
-
-//    val coachViolations by remember {
-//        derivedStateOf {
-//            coachViewModel.violationMap.values.map {
-//                ViolationMapper.fromDomainToDto(it)
-//            }
-//        }
-//    }
-//    var isEmptyWorkerNumber by remember { mutableStateOf(false) }
-//    var isIncorrectWorkerNumber by remember { mutableStateOf(false) }
-//    var isEmptyWorkerName by remember { mutableStateOf(false) }
-//    var isEmptyWorkerDepot by remember { mutableStateOf(false) }
-//    var isPatterWorkerName by remember { mutableStateOf(false) }
-//    var isWorkerTypeEmpty by remember { mutableStateOf(false) }
-//
-//    var showAddViolationDialog by remember { mutableStateOf(false) }
-//    var showAddAmountDialog by remember { mutableStateOf(false) }
-//    var showAddTagDialog by remember { mutableStateOf(false) }
-//
-//    var selectedCode by remember { mutableIntStateOf(0) }
-//
-//    var workerNameState by remember { mutableStateOf(coachViewModel.getWorker()?.name ?: "") }
-//    var workerIdState by remember {
-//        mutableStateOf(
-//            coachViewModel.getWorker()?.id.toString()
-//        )
-//    }
-//    var workerDepotSelected by remember {
-//        mutableStateOf(
-//            coachViewModel.getWorker()?.depotDomain?.name ?: ""
-//        )
-//    }
-//    var workerTypeSelected by remember {
-//        mutableStateOf(
-//            coachViewModel.getWorker()?.workerType
-//        )
-//    }
-
-//    val coachViewModel: CoachViewModel =
-//        viewModel(factory = remember(coachNumber, orderViewModel, depotViewModel) {
-//            CoachViewModelFactory(coachNumber, orderViewModel, depotViewModel)
-//        })
-//    fun checkFields(): Boolean {
-//        isEmptyWorkerNumber = workerIdState.isBlank()
-//        isEmptyWorkerName = workerNameState.isBlank()
-//        isWorkerTypeEmpty = workerTypeSelected == null
-//        isEmptyWorkerDepot = workerDepotSelected.isBlank()
-//
-//        return !(isEmptyWorkerName || isEmptyWorkerNumber || isWorkerTypeEmpty || isEmptyWorkerDepot)
-//    }
-//    val violationViewModel: ViolationViewModel =
-//        viewModel(factory = ViewModelFactoryProvider.provideFactory())
-//
-//        coachViewModel.setStartRevisionTime(LocalDateTime.now())

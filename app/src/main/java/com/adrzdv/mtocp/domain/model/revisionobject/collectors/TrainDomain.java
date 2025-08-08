@@ -4,11 +4,15 @@ import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType;
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.Coach;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -78,7 +82,7 @@ public class TrainDomain extends ObjectCollector {
         this.depot = depot;
     }
 
-    public Boolean getDinnerCar() {
+    public Boolean getIsDinnerCar() {
         return isDinnerCar;
     }
 
@@ -110,6 +114,15 @@ public class TrainDomain extends ObjectCollector {
                 .filter(car -> car.getCoachType() == type)
                 .count();
 
+    }
+
+    public DinnerCar getDinnerCar() {
+
+        return getObjectsMap().values().stream()
+                .filter(DinnerCar.class::isInstance)
+                .map(DinnerCar.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     public void removeDinnerCar() {

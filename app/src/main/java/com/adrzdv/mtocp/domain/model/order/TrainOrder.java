@@ -114,7 +114,7 @@ public class TrainOrder extends Order implements CollectableOrder {
             if (train.getObjectsMap().containsKey(o.getNumber())) {
                 throw new IllegalStateException("Object already exists; Object: " + o.getNumber());
             }
-            if (train.getDinnerCar()) {
+            if (train.getIsDinnerCar()) {
                 train.removeDinnerCar();
                 train.addRevisionObject(dinnerCar);
             } else {

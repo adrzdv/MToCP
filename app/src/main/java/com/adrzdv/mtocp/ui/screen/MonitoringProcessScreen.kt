@@ -184,9 +184,10 @@ fun MonitoringProcessScreen(
     val isCCTVUsing = orderViewModel.isTrainHasCamera
     val isProgressiveUsing = orderViewModel.isTrainUsingProgressive
     val train = orderViewModel.collector as? TrainDomain
-    val isDinnerGoing = train!!.dinnerCar
+    val isDinnerGoing = train!!.isDinnerCar
     var showBottomSheet by remember { mutableStateOf(false) }
     var showExitDialog by remember { mutableStateOf(false) }
+    var showSaveDialog by remember { mutableStateOf(false) }
     val paramsViewModel: AdditionalParamViewModel =
         viewModel(factory = ViewModelFactoryProvider.provideFactory())
 
@@ -208,19 +209,21 @@ fun MonitoringProcessScreen(
         MenuElementData(
             MenuItem.CHECK_DINING_CAR,
             R.drawable.ic_dinner_24,
-            { /* проверка ВР */ },
+            {
+                /* dinner car revision */
+            },
             true
         ),
         MenuElementData(
             MenuItem.IMPORT_DATA,
             R.drawable.ic_import_24_white,
-            { /* импорт данных */ },
+            { /* import data */ },
             true
         ),
         MenuElementData(
             MenuItem.EXPORT_DATA,
             R.drawable.ic_export_24_white,
-            { /* экспорт данных */ },
+            { /* export data */ },
             true
         )
     )
@@ -230,7 +233,7 @@ fun MonitoringProcessScreen(
         floatingActionButton = {
             FloatingSaveButton(
                 onClick = {
-
+                    showSaveDialog = true
                 }
             )
         },
@@ -350,6 +353,22 @@ fun MonitoringProcessScreen(
             },
             onDismiss = {
                 showExitDialog = false
+            }
+        )
+    }
+
+    if (showSaveDialog) {
+        ConfirmDialog(
+            title = stringResource(R.string.save_string),
+            message = stringResource(R.string.ask_continue_string),
+            onConfirm = {
+                navController.navigate("resultScreen") {
+                    popUpTo("monitoringProcess") { inclusive = true }
+                }
+                showSaveDialog = false
+            },
+            onDismiss = {
+                showSaveDialog = false
             }
         )
     }

@@ -64,7 +64,7 @@ fun RevisionScreen(
         "monitoringProcess" -> stringResource(R.string.revision_string)
         "monitoringCoach/{coachNumber}" -> navBackStackEntry?.arguments?.getString("coachNumber")
             ?: ""
-
+        "resultScreen" -> stringResource(R.string.result_string)
         else -> ""
     }
 
@@ -163,6 +163,12 @@ fun RevisionScreen(
                     coachNumber = coachNumber,
                     orderViewModel = orderViewModel,
                     depotViewModel = depotViewModel,
+                    navController = navRevisionController
+                )
+            }
+            composable("resultScreen") {
+                ResultScreen(
+                    orderViewModel = orderViewModel,
                     navController = navRevisionController
                 )
             }

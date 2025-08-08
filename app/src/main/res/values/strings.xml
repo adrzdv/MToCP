@@ -94,4 +94,7 @@
     <string name="incorrect_value">Некорректное значение</string>
     <string name="new_value">Новое значение</string>
     <string name="input_new_value">Введите новое значение</string>
+    <string name="result_string">Результаты проверки</string>
+    <string name="main_res">Основное</string>
+    <string name="detail_res">Подробности</string>
 </resources>

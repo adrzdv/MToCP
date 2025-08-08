@@ -39,6 +39,6 @@ public class TrainMapper {
                 train.getDepot().getPhoneNumber(),
                 train.getVideo(),
                 train.getProgressive(),
-                train.getDinnerCar());
+                train.getIsDinnerCar());
     }
 }

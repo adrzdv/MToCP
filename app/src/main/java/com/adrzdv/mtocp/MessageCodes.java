@@ -29,7 +29,12 @@ public enum MessageCodes {
     EMPTY_STRING("021#EMPTY_STR", "Не может быть пустым"),
     EMPTY_COUNT("022#EMPTY_REVISION", "Список объектов пуст"),
     PARAMS_NOT_DONE("023#STAT_PARAMS_ERROR", "Не все дополнительные параметры заполнены"),
-    DUPLICATE_VIOLATION_ERROR("024#DUP_VIOLATION", "Нарушение уже добавлено");
+    DUPLICATE_VIOLATION_ERROR("024#DUP_VIOLATION", "Нарушение уже добавлено"),
+    PHOTO_SUCCESS("025#PH_SUCCESS", "Фото добавлено"),
+    PHOTO_ERROR("026#PH_ERROR", "Ошибка добавления фото"),
+    VIDEO_SUCCESS("025#VID_SUCCESS", "Видео добавлено"),
+    VIDEO_ERROR("026#VID_ERROR", "Ошибка добавления видео"),
+    PERMISSION_ERROR("027#PERMISSION_DENIED", "Отказано в доступе");
 
     @NonNull
     private final String errorCode;

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.adrzdv.mtocp.App;
+import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.util.MediaCreator;
 
 import java.io.File;
@@ -35,10 +36,10 @@ public class CameraActivity extends AppCompatActivity {
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         mediaCreator.overlayDataTime(mediaFile);
-                        App.showToast(this, "Фото добавлено");
+                        setResult(Activity.RESULT_OK);
                         finish();
                     } else {
-                        App.showToast(this, "Ошибка при создании фотографии");
+                        setResult(Activity.RESULT_CANCELED);
                         finish();
                     }
                 }
@@ -48,9 +49,11 @@ public class CameraActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        App.showToast(this, "Видео успешно добавлено");
+                        setResult(Activity.RESULT_OK);
+                        finish();
                     } else {
-                        App.showToast(this, "Ошибка при записи видео");
+                        setResult(Activity.RESULT_CANCELED);
+                        finish();
                     }
                 }
         );
@@ -62,7 +65,9 @@ public class CameraActivity extends AppCompatActivity {
                     if (allGranted) {
                         Log.d("MediaCreator", "PERMISSIONS: Accessed");
                     } else {
-                        App.showToast(this, "ERROR: Permission denied");
+                        Intent intent = new Intent();
+                        intent.putExtra("result", MessageCodes.PERMISSION_ERROR.getErrorTitle());
+                        setResult(Activity.RESULT_CANCELED, intent);
                         Log.e("MediaCreator", "ERROR: Permission denied");
                     }
                 }

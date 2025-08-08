@@ -1,5 +1,9 @@
 package com.adrzdv.mtocp.ui.viewmodel
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import androidx.activity.result.ActivityResult
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
@@ -11,6 +15,10 @@ import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
 import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
+import com.adrzdv.mtocp.ui.activities.CameraActivity
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
@@ -28,6 +36,8 @@ class PassengerCoachViewModel(
             violations = initCoach.violationMap
         )
     )
+    private val _snackbarMessage = MutableStateFlow<String?>(null)
+    val snackbarMessage: StateFlow<String?> = _snackbarMessage.asStateFlow()
     val state: State<PassengerCoachState> = _state
 
     fun getDisplayViolations(): List<ViolationDomain> {
@@ -121,6 +131,23 @@ class PassengerCoachViewModel(
             typeWorker = "",
             depotWorker = ""
         )
+    }
+
+    fun onCameraResult(result: ActivityResult) {
+        val message = if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.getStringExtra("result") ?: MessageCodes.PHOTO_SUCCESS.errorTitle
+        } else {
+            result.data?.getStringExtra("result") ?: MessageCodes.PHOTO_ERROR.errorTitle
+        }
+        _snackbarMessage.value = message
+    }
+
+    fun snackbarShown() {
+        _snackbarMessage.value = null
+    }
+
+    fun buildCameraIntent(context: Context): Intent {
+        return Intent(context, CameraActivity::class.java)
     }
 
     fun onSave() {
