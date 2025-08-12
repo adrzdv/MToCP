@@ -1,6 +1,5 @@
 package com.adrzdv.mtocp.ui.screen
 
-import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
@@ -35,14 +34,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
-import com.adrzdv.mtocp.ui.activities.NfcActivity
 import com.adrzdv.mtocp.ui.component.CoachItemCardReadOnly
 import com.adrzdv.mtocp.ui.component.CompactMenuButton
 import com.adrzdv.mtocp.ui.component.ConfirmDialog

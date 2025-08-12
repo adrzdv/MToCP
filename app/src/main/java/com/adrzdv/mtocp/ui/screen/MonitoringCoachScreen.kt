@@ -1,10 +1,7 @@
 package com.adrzdv.mtocp.ui.screen
 
-import android.content.Intent
-import android.graphics.Camera
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,19 +36,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.adrzdv.mtocp.App
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
-import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.Coach
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.usecase.DeleteViolationPhotoUseCase
 import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
 import com.adrzdv.mtocp.mapper.ViolationMapper
-import com.adrzdv.mtocp.ui.activities.CameraActivity
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.DropdownMenuField

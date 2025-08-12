@@ -21,7 +21,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -38,7 +37,6 @@ import com.adrzdv.mtocp.domain.model.departments.DepotDomain
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
-import com.adrzdv.mtocp.mapper.ViolationMapper
 import com.adrzdv.mtocp.ui.component.AppFullscreenDialog
 import com.adrzdv.mtocp.ui.component.CustomOutlinedButton
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
@@ -46,7 +44,6 @@ import com.adrzdv.mtocp.ui.component.DropdownMenuField
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.theme.CustomTypography
-import com.adrzdv.mtocp.ui.viewmodel.CoachViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.RequestWebViewModel
