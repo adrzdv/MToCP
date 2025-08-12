@@ -1,7 +1,7 @@
 package com.adrzdv.mtocp.domain.model.order;
 
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
-import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.BaggageCar;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.Coach;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
@@ -11,6 +11,8 @@ import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.Objects;
 
 public class TrainOrder extends Order implements CollectableOrder {
     private String route;
@@ -33,7 +35,7 @@ public class TrainOrder extends Order implements CollectableOrder {
 
     @Override
     public void updateRevisionObject(RevisionObject o) {
-        if (o instanceof PassengerCar that) {
+        if (o instanceof Coach that) {
             train.getObjectsMap().put(that.getNumber(), that);
         }
     }
@@ -61,6 +63,11 @@ public class TrainOrder extends Order implements CollectableOrder {
     @Override
     public void deleteRevisionObject(RevisionObject o) {
         train.deleteRevisionObject(o);
+    }
+
+    @Override
+    public int countViolations() {
+        return train.countViolation();
     }
 
     @Override
@@ -94,6 +101,11 @@ public class TrainOrder extends Order implements CollectableOrder {
     }
 
     @Override
+    public Map<String, WorkerDomain> getCrewMap() {
+        return train.getWorkerMap();
+    }
+
+    @Override
     protected void doAddWorker(WorkerDomain worker) {
         if (worker instanceof InnerWorkerDomain innerWorkerDomain) {
             train.addWorker(innerWorkerDomain);
@@ -124,6 +136,22 @@ public class TrainOrder extends Order implements CollectableOrder {
             throw new IllegalArgumentException("Expected Coach.class; Got: " +
                     o.getClass().getSimpleName());
         }
+    }
+
+    public int countViolationsMainCar() {
+        return train.getObjectsMap().values().stream()
+                .filter(Objects::nonNull)
+                .filter(coach -> coach instanceof PassengerCar car && !car.getTrailing())
+                .mapToInt(RevisionObject::countViolation)
+                .sum();
+    }
+
+    public int countViolationTrailingCar() {
+        return train.getObjectsMap().values().stream()
+                .filter(Objects::nonNull)
+                .filter(coach -> coach instanceof PassengerCar car && car.getTrailing())
+                .mapToInt(RevisionObject::countViolation)
+                .sum();
     }
 
     public void removeDinnerCoach() {

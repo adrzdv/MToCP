@@ -68,23 +68,6 @@ public class ViolationViewModel extends ViewModel {
         applyFilters();
     }
 
-    public LiveData<Event<String>> getToastMessage() {
-        return toastMessage;
-    }
-
-    public void updateViolation(ViolationEntity violation) {
-
-        executor.execute(() -> {
-            try {
-                repository.updateByCode(violation);
-                loadViolations();
-                toastMessage.postValue(new Event<>("UPDATED"));
-            } catch (SQLiteConstraintException e) {
-                toastMessage.postValue(new Event<>(UPDATE_ERROR.toString()));
-            }
-        });
-    }
-
     private void applyFilters() {
         List<ViolationEntity> result = new ArrayList<>(allViolations);
 

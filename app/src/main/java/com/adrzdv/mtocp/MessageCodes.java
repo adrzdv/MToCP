@@ -34,7 +34,9 @@ public enum MessageCodes {
     PHOTO_ERROR("026#PH_ERROR", "Ошибка добавления фото"),
     VIDEO_SUCCESS("025#VID_SUCCESS", "Видео добавлено"),
     VIDEO_ERROR("026#VID_ERROR", "Ошибка добавления видео"),
-    PERMISSION_ERROR("027#PERMISSION_DENIED", "Отказано в доступе");
+    PERMISSION_ERROR("027#PERMISSION_DENIED", "Отказано в доступе"),
+    NFC_UNAVAILABLE("028#NFC_UNAVAILABLE", "NFC модуль отсутствует"),
+    FILE_ERROR("029#FILE_ERROR", "Файл(ы) отсутствуют");
 
     @NonNull
     private final String errorCode;

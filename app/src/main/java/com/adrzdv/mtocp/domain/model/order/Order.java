@@ -75,4 +75,6 @@ public abstract class Order extends RegularValidator {
     public abstract void deleteCrewWorker(WorkerDomain worker);
 
     public abstract void deleteRevisionObject(RevisionObject o);
+
+    public abstract int countViolations();
 }

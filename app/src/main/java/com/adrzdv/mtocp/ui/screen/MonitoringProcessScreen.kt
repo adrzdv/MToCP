@@ -1,6 +1,8 @@
 package com.adrzdv.mtocp.ui.screen
 
+import android.content.Intent
 import androidx.activity.compose.BackHandler
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,18 +26,23 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
+import com.adrzdv.mtocp.ui.activities.NfcActivity
 import com.adrzdv.mtocp.ui.component.CoachItemCardReadOnly
 import com.adrzdv.mtocp.ui.component.CompactMenuButton
 import com.adrzdv.mtocp.ui.component.ConfirmDialog
@@ -44,11 +51,13 @@ import com.adrzdv.mtocp.ui.component.InfoBlockWithLabel
 import com.adrzdv.mtocp.ui.component.ParameterSelectionBottomSheet
 import com.adrzdv.mtocp.ui.component.ServiceInfoBlock
 import com.adrzdv.mtocp.ui.component.buttons.FloatingSaveButton
+import com.adrzdv.mtocp.ui.fragment.NfcBottomSheetFragment
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.AdditionalParamViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
 private enum class MenuItem {
@@ -178,6 +187,7 @@ fun MonitoringProcessScreen(
     navController: NavController
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
     val coaches = orderViewModel.collector!!.objectsMap.values.toList()
     var isAdditionalParamsChecked by remember { mutableStateOf(false) }
     val isDinnerChecked by remember { mutableStateOf(false) }
@@ -190,6 +200,9 @@ fun MonitoringProcessScreen(
     var showSaveDialog by remember { mutableStateOf(false) }
     val paramsViewModel: AdditionalParamViewModel =
         viewModel(factory = ViewModelFactoryProvider.provideFactory())
+    val scope = rememberCoroutineScope()
+    val error = stringResource(R.string.unchecked_coaches)
+    val uncheckedCoaches = stringResource(R.string.unchecked_coaches)
 
     BackHandler(
         enabled = true
@@ -210,20 +223,39 @@ fun MonitoringProcessScreen(
             MenuItem.CHECK_DINING_CAR,
             R.drawable.ic_dinner_24,
             {
-                /* dinner car revision */
+                navController.navigate("monitoringDinner/${(orderViewModel.collector as TrainDomain).dinnerCar.number}")
             },
             true
         ),
         MenuElementData(
             MenuItem.IMPORT_DATA,
             R.drawable.ic_import_24_white,
-            { /* import data */ },
-            true
+            {
+                /* import data */
+            },
+            false
         ),
         MenuElementData(
             MenuItem.EXPORT_DATA,
             R.drawable.ic_export_24_white,
-            { /* export data */ },
+            {
+                val gson = orderViewModel.makeJsonFromRevObjects()
+                if (gson.isNullOrEmpty() || gson == "{}") {
+                    scope.launch {
+                        snackbarHostState.showSnackbar(uncheckedCoaches)
+                    }
+                    return@MenuElementData
+                }
+                val bottomSheet = NfcBottomSheetFragment.newInstance(gson).apply {
+                    onJsonReceived = { receivedJson ->
+                        orderViewModel.updateRevObjectMapFromJson(receivedJson)
+                    }
+                }
+                bottomSheet.show(
+                    (context as AppCompatActivity).supportFragmentManager,
+                    "NFC_BOTTOM_SHEET"
+                )
+            },
             true
         )
     )
@@ -361,6 +393,13 @@ fun MonitoringProcessScreen(
             title = stringResource(R.string.save_string),
             message = stringResource(R.string.ask_continue_string),
             onConfirm = {
+                if (orderViewModel.checkUncheckedObjects()) {
+                    scope.launch {
+                        snackbarHostState.showSnackbar(message = error)
+                    }
+                    showSaveDialog = false
+                    return@ConfirmDialog
+                }
                 navController.navigate("resultScreen") {
                     popUpTo("monitoringProcess") { inclusive = true }
                 }

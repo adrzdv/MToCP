@@ -36,8 +36,8 @@ public class MediaCreator {
         this.context = context;
     }
 
-    public File getPhotoFile(String orderNumber, String coachNumber, int violationCode) {
-        mediaFile = createPhotoFile(orderNumber, coachNumber, IMG_PREFIX + violationCode, IMG_EXT);
+    public File getPhotoFile(String orderNumber, String coachNumber, String shortViolationName) {
+        mediaFile = createPhotoFile(orderNumber, coachNumber, IMG_PREFIX + shortViolationName, IMG_EXT);
         return mediaFile;
     }
 
@@ -54,8 +54,8 @@ public class MediaCreator {
             Log.e("MediaCreator", "Access denied. Cant create a folder");
             return null;
         }
-        String timestamp = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss", Locale.getDefault()).format(new Date());
-        return new File(mediaDir, prefix + "_" + timestamp + extension);
+        //String timestamp = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss", Locale.getDefault()).format(new Date());
+        return new File(mediaDir, prefix + "_" + extension);
     }
 
     public void overlayDataTime(File imgFile) {

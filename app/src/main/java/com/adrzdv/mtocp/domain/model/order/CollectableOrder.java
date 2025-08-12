@@ -2,6 +2,9 @@ package com.adrzdv.mtocp.domain.model.order;
 
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
+import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
+
+import java.util.Map;
 
 /**
  * Represents an order that supports collection and management of violations
@@ -44,7 +47,14 @@ public interface CollectableOrder {
      * Removes a specific violation from the collector for the given object number.
      *
      * @param objNumber the identifier of the object
-     * @param code the violation code to remove
+     * @param code      the violation code to remove
      */
     void deleteViolationInCollector(String objNumber, int code);
+
+    /**
+     * Get crew map
+     *
+     * @return map of worker domain
+     */
+    Map<String, WorkerDomain> getCrewMap();
 }

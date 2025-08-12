@@ -94,7 +94,33 @@
     <string name="incorrect_value">Некорректное значение</string>
     <string name="new_value">Новое значение</string>
     <string name="input_new_value">Введите новое значение</string>
-    <string name="result_string">Результаты проверки</string>
-    <string name="main_res">Основное</string>
-    <string name="detail_res">Подробности</string>
+    <string name="res_result_string">Результаты проверки</string>
+    <string name="res_main">Основное</string>
+    <string name="send">Отправить</string>
+    <string name="report">Отчет</string>
+    <string name="report_share">Отправить</string>
+    <string name="res_violations_count">Всего нарушений</string>
+    <string name="res_coach_checked">Проверено вагонов</string>
+    <string name="res_violations_list">Список нарушений</string>
+    <string name="res_main_car">Основной состав</string>
+    <string name="res_trailing_car">Прицепная группа</string>
+    <string name="res_stat_coaches">Вагоны</string>
+    <string name="additional">Дополнительно</string>
+    <string name="zip_data">ZIP</string>
+    <string name="full_violation_list">Полный список нарушений</string>
+    <string name="depot_string">Предприятие</string>
+    <string name="worker">Работник</string>
+    <string name="coach_data">Сведения о вагоне</string>
+    <string name="worker_data">Сведения о работнике</string>
+    <string name="revision_start">Начало</string>
+    <string name="revision_end">Окончание</string>
+    <string name="unchecked_coaches">Есть непроверенные вагоны</string>
+    <string name="params_coach">Вагоны</string>
+    <string name="params_train">Состав</string>
+
+    <string name="nfc_receiver">Получаю данные…</string>
+    <string name="nfc_sender">Отправляю данные…</string>
+    <string name="nfc_file_received">Данные получены</string>
+    <string name="nfc_help_info">Отправка данных по NFC. Приложите телефон к NFC-модулю другого телефона</string>
+
 </resources>

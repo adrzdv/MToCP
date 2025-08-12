@@ -3,9 +3,9 @@ package com.adrzdv.mtocp.domain.model.revisionobject.basic;
 /**
  * Domain class model for ticket terminal
  */
-public class TicketTermial extends RevisionObject {
+public class TicketTerminal extends RevisionObject {
 
-    public TicketTermial(String number) {
+    public TicketTerminal(String number) {
         super(number);
     }
 }

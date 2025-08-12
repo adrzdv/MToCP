@@ -19,9 +19,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain
@@ -221,7 +222,9 @@ fun AddViolationToCoachDialog(
         viewModel(factory = ViewModelFactoryProvider.provideFactory())
     violationViewModel.filterDataByRevisionType(revisionType)
 
-    val options by violationViewModel.filteredViolations.observeAsState(emptyList())
+    var searchText by remember { mutableStateOf("") }
+    val options by violationViewModel.filteredViolations.asFlow()
+        .collectAsState(initial = emptyList())
 
     AppFullscreenDialog(
         title = stringResource(R.string.violation_catalog_string),
@@ -230,14 +233,16 @@ fun AddViolationToCoachDialog(
         isSaveEnabled = false,
         content = {
             CustomOutlinedTextField(
-                label = "",
-                value = "",
-                onValueChange = {},
+                label = stringResource(R.string.input_text_hint),
+                value = searchText,
+                onValueChange = {
+                    searchText = it
+                    violationViewModel.filterDataByString(it)
+                },
                 isError = false,
                 errorText = "",
                 modifier = Modifier.fillMaxWidth()
             )
-
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {

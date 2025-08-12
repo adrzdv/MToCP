@@ -1,7 +1,9 @@
 package com.adrzdv.mtocp.ui.component
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -35,11 +37,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.Coach
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
+import com.adrzdv.mtocp.domain.model.workers.OuterWorkerDomain
 import com.adrzdv.mtocp.ui.model.ViolationDto
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun ViolationCard(
@@ -380,6 +386,145 @@ fun InnerWorkerItemCard(worker: InnerWorkerDomain, onDeleteClick: () -> Unit) {
                 Icon(
                     painter = painterResource(R.drawable.ic_delete_32_white),
                     contentDescription = stringResource(R.string.delete)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun CoachDropDownItemCard(
+    coach: Coach
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    val depot = when (coach) {
+        is PassengerCar -> coach.depotDomain.shortName
+        is DinnerCar -> if (coach.companyDomain != null) {
+            coach.companyDomain.name
+        } else {
+            coach.depot.shortName
+        }
+
+        else -> null
+    }
+
+    val workerDepot = when (coach) {
+        is PassengerCar -> (coach.worker as? InnerWorkerDomain)?.depotDomain?.shortName
+        is DinnerCar -> if (coach.companyDomain != null) {
+            (coach.worker as? OuterWorkerDomain)?.company?.name
+        } else {
+            (coach.worker as? InnerWorkerDomain)?.depotDomain?.shortName
+        }
+
+        else -> null
+    }
+
+    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(24.dp)
+            .clickable { expanded = !expanded },
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = AppColors.OFF_WHITE.color
+        )
+    ) {
+        Text(
+            text = coach.number,
+            style = AppTypography.titleMedium,
+            modifier = Modifier.padding(16.dp)
+        )
+        AnimatedVisibility(visible = expanded) {
+            Column(
+                modifier = Modifier.padding(top = 16.dp)
+            ) {
+                ServiceInfoBlock(
+                    label = stringResource(R.string.coach_data),
+                    content = {
+                        Text(
+                            text = "${stringResource(R.string.depot_string)}: $depot",
+                            style = AppTypography.bodyMedium
+                        )
+                        Text(
+                            text = "${stringResource(R.string.revision_start)}: ${
+                                coach.revisionDateStart.format(
+                                    formatter
+                                )
+                            }",
+                            style = AppTypography.bodyMedium
+                        )
+                        Text(
+                            text = "${stringResource(R.string.revision_end)}: ${
+                                coach.revisionDateEnd.format(
+                                    formatter
+                                )
+                            }",
+                            style = AppTypography.bodyMedium
+                        )
+                        ServiceInfoBlock(
+                            label = stringResource(R.string.worker_data),
+                            content = {
+                                Column(
+                                    modifier = Modifier.padding(8.dp)
+                                ) {
+                                    Text(
+                                        text = "${stringResource(R.string.worker)}: ${coach.worker.name}",
+                                        style = AppTypography.bodyMedium
+                                    )
+                                    Text(
+                                        text = "${stringResource(R.string.worker_type)}: ${coach.worker.workerType.description}",
+                                        style = AppTypography.bodyMedium
+                                    )
+                                    Text(
+                                        text = "${stringResource(R.string.worker_id)}: ${coach.worker.id}",
+                                        style = AppTypography.bodySmall
+                                    )
+                                    Text(
+                                        text = "${stringResource(R.string.worker_depot)}: $workerDepot",
+                                        style = AppTypography.bodyMedium
+                                    )
+                                }
+                            }
+                        )
+                        ServiceInfoBlock(
+                            label = stringResource(R.string.violations),
+                            content = {
+                                for (violation in coach.violationMap.values) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            text = violation.code.toString(),
+                                            style = AppTypography.bodyMedium
+                                        )
+                                        Text(
+                                            text = buildString {
+                                                append(violation.name)
+                                                if (violation.isResolved) {
+                                                    append(" (${stringResource(R.string.resolved)})")
+                                                }
+                                                if (violation.attributeMap.isNotEmpty()) {
+                                                    append(" [")
+                                                    append(
+                                                        violation.attributeMap.values.joinToString(
+                                                            ", "
+                                                        )
+                                                    )
+                                                    append(" ]")
+                                                }
+                                            },
+                                            style = AppTypography.bodyMedium
+                                        )
+                                    }
+                                }
+                            }
+                        )
+                    }
                 )
             }
         }

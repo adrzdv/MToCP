@@ -1,8 +1,7 @@
 package com.adrzdv.mtocp.domain.model.order;
 
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
-import com.adrzdv.mtocp.domain.model.revisionobject.basic.TicketTermial;
-import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.BaggageCar;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.TicketTerminal;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TicketOfficeDomain;
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
@@ -10,6 +9,8 @@ import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TicketOfficeOrder extends Order implements CollectableOrder {
 
@@ -24,7 +25,7 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
 
     @Override
     public void updateRevisionObject(RevisionObject o) {
-        if (o instanceof TicketTermial that) {
+        if (o instanceof TicketTerminal that) {
             ticketOffice.getObjectsMap().put(that.getNumber(), that);
         }
     }
@@ -52,6 +53,11 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
     @Override
     public void deleteRevisionObject(RevisionObject o) {
         ticketOffice.getObjectsMap().remove(o.getNumber());
+    }
+
+    @Override
+    public int countViolations() {
+        return ticketOffice.countViolation();
     }
 
     @Override
@@ -84,6 +90,13 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
         ticketOffice.deleteViolationInObject(objNumber, code);
     }
 
+    @Override
+    public Map<String, WorkerDomain> getCrewMap() {
+        Map<String, WorkerDomain> result = new HashMap<>();
+        result.put(ticketOffice.getHeadOfOffice().getWorkerType().getDescription(), ticketOffice.getHeadOfOffice());
+        return result;
+    }
+
     public ObjectCollector getTicketOffice() {
         return ticketOffice;
     }
@@ -101,7 +114,7 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
     //ADD FOR THROWING ILLEGALSTATE WHEN DUPLICATE
     @Override
     protected void doAddRevisionObject(RevisionObject o) {
-        if (o instanceof TicketTermial termial) {
+        if (o instanceof TicketTerminal termial) {
             ticketOffice.getObjectsMap().put(o.getNumber(), termial);
         } else {
             throw new IllegalArgumentException("Expected TicketTerminal.class; Got: "

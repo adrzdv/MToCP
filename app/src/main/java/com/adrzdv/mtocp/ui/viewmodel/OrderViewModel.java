@@ -3,6 +3,8 @@ package com.adrzdv.mtocp.ui.viewmodel;
 import static com.adrzdv.mtocp.domain.model.enums.OrdersTypes.PASSENGER_TRAIN;
 import static com.adrzdv.mtocp.domain.model.enums.OrdersTypes.TICKET_OFFICE;
 
+import android.util.Pair;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -16,23 +18,37 @@ import com.adrzdv.mtocp.domain.model.order.Order;
 import com.adrzdv.mtocp.domain.model.order.OrderFactory;
 import com.adrzdv.mtocp.domain.model.order.TrainOrder;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.TicketTerminal;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.BaggageCar;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
-import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
-import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
-import com.adrzdv.mtocp.domain.repository.CompanyRepository;
 import com.adrzdv.mtocp.domain.repository.TrainRepository;
 import com.adrzdv.mtocp.domain.usecase.ArchivePhotoInZipUseCase;
+import com.adrzdv.mtocp.domain.usecase.CheckUncheckedObjectsUseCase;
 import com.adrzdv.mtocp.domain.usecase.GetGlobalViolationStringUseCase;
+import com.adrzdv.mtocp.domain.usecase.GetObjectMapSortedWithViolationsUseCase;
+import com.adrzdv.mtocp.domain.usecase.MakeAdditionalParamsUseCase;
+import com.adrzdv.mtocp.domain.usecase.stats.CountMainCarsUseCase;
+import com.adrzdv.mtocp.domain.usecase.stats.CountTrailingCarsUseCase;
+import com.adrzdv.mtocp.domain.usecase.stats.GenerateSmsReportUseCase;
+import com.adrzdv.mtocp.util.gson.LocalDateTimeAdapter;
+import com.adrzdv.mtocp.util.gson.RuntimeTypeAdapterFactory;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.jspecify.annotations.Nullable;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,8 +59,15 @@ public class OrderViewModel extends ViewModel {
 
     private final MutableLiveData<Order> order = new MutableLiveData<>();
     private final MutableLiveData<String> trainScheme = new MutableLiveData<>();
+    private final MutableLiveData<String> textReportSms = new MutableLiveData<>();
     private final ArchivePhotoInZipUseCase archivePhotoInZipUseCase;
     private final GetGlobalViolationStringUseCase getGlobalViolationStringUseCase;
+    private final CountMainCarsUseCase countMainCarsUseCase;
+    private final CountTrailingCarsUseCase countTrailingCarsUseCase;
+    private final GenerateSmsReportUseCase generateSmsReportUseCase;
+    private final GetObjectMapSortedWithViolationsUseCase getObjectMapSortedWithViolationsUseCase;
+    private final CheckUncheckedObjectsUseCase checkUncheckedObjectsUseCase;
+    private final MakeAdditionalParamsUseCase makeAdditionalParamsUseCase;
     private OrdersTypes selectedType;
     private final TrainRepository trainRepository;
     //private final TicketOfficeRepository ticketOfficeRepository;
@@ -60,6 +83,12 @@ public class OrderViewModel extends ViewModel {
         this.trainRepository = trainRepository;
         this.archivePhotoInZipUseCase = new ArchivePhotoInZipUseCase();
         this.getGlobalViolationStringUseCase = new GetGlobalViolationStringUseCase();
+        this.countMainCarsUseCase = new CountMainCarsUseCase();
+        this.countTrailingCarsUseCase = new CountTrailingCarsUseCase();
+        this.generateSmsReportUseCase = new GenerateSmsReportUseCase();
+        this.getObjectMapSortedWithViolationsUseCase = new GetObjectMapSortedWithViolationsUseCase();
+        this.checkUncheckedObjectsUseCase = new CheckUncheckedObjectsUseCase();
+        this.makeAdditionalParamsUseCase = new MakeAdditionalParamsUseCase();
         executor = Executors.newSingleThreadExecutor();
     }
 
@@ -117,7 +146,6 @@ public class OrderViewModel extends ViewModel {
     }
 
     public void createOrder() {
-
         if (selectedType != null && !objectNumber.isBlank()) {
             Order newOrder = OrderFactory.createOrder(selectedType,
                     orderNumber,
@@ -282,17 +310,14 @@ public class OrderViewModel extends ViewModel {
         return false;
     }
 
-    public void addAdditionalParams(Map<String, StaticsParam> params) {
-        Order currOrder = order.getValue();
-        if (currOrder instanceof CollectableOrder collectable) {
-            collectable.getCollector().setAdditionalParams(params);
-        }
-    }
-
     public void makeArchive(Consumer<File> callback) {
         executor.execute(() -> {
             File file = archivePhotoInZipUseCase.execute(orderNumber);
-            callback.accept(file);
+            if (file != null) {
+                callback.accept(file);
+            } else {
+                callback.accept(null);
+            }
         });
     }
 
@@ -303,6 +328,191 @@ public class OrderViewModel extends ViewModel {
         } else {
             return null;
         }
+    }
+
+    public int getMainCars() {
+        Order currOrder = order.getValue();
+        if (currOrder instanceof TrainOrder that) {
+            return countMainCarsUseCase.execute(that.getCollector().getObjectsMap());
+        }
+        return 0;
+    }
+
+    public int getTrailingCars() {
+        Order currOrder = order.getValue();
+        if (currOrder instanceof TrainOrder that) {
+            return countTrailingCarsUseCase.execute(that.getCollector().getObjectsMap());
+        }
+        return 0;
+    }
+
+    public int getTotalViolation() {
+        Order currOrder = order.getValue();
+        if (currOrder != null) {
+            return currOrder.countViolations();
+        }
+        return 0;
+    }
+
+    public int getMainViolationCount() {
+        Order currOrder = order.getValue();
+        if (currOrder != null) {
+            if (currOrder instanceof TrainOrder that) {
+                return that.countViolationsMainCar();
+            }
+        } else {
+            return 0;
+        }
+
+        return getTotalViolation();
+    }
+
+    public int getTrailingViolationCount() {
+        Order currOrder = order.getValue();
+        if (currOrder != null) {
+            if (currOrder instanceof TrainOrder that) {
+                return that.countViolationTrailingCar();
+            }
+        }
+        return 0;
+    }
+
+    public String getObjectNumber() {
+        Order currOrder = order.getValue();
+        if (currOrder == null) {
+            return null;
+        }
+
+        if (currOrder instanceof CollectableOrder that) {
+            return that.getCollector().toString();
+        }
+
+        return null;
+    }
+
+    public String makeJsonFromRevObjects() {
+        RuntimeTypeAdapterFactory<RevisionObject> adapterFactory = RuntimeTypeAdapterFactory
+                .of(RevisionObject.class, "objectType")
+                .registerSubtype(PassengerCar.class, "PassengerCar")
+                .registerSubtype(DinnerCar.class, "DinnerCar")
+                .registerSubtype(BaggageCar.class, "BaggageCar")
+                .registerSubtype(TicketTerminal.class, "TicketTerminal");
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapterFactory(adapterFactory)
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
+
+        if (order.getValue() instanceof CollectableOrder that) {
+            try {
+                return gson.toJson(that.getCollector().getObjectsMap());
+            } catch (NullPointerException e) {
+                return "{}";
+            }
+
+        } else if (order.getValue() instanceof BaggageOrder that) {
+            try {
+                return gson.toJson(that.getCoachMap());
+            } catch (NullPointerException e) {
+                return "{}";
+            }
+        }
+
+        return "{}";
+    }
+
+    public void updateRevObjectMapFromJson(String json) {
+        RuntimeTypeAdapterFactory<RevisionObject> adapterFactory = RuntimeTypeAdapterFactory
+                .of(RevisionObject.class, "objectType")
+                .registerSubtype(PassengerCar.class, "PassengerCar")
+                .registerSubtype(DinnerCar.class, "DinnerCar")
+                .registerSubtype(BaggageCar.class, "BaggageCar")
+                .registerSubtype(TicketTerminal.class, "TicketTerminal");
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapterFactory(adapterFactory)
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
+
+        Type mapType = new TypeToken<Map<String, RevisionObject>>() {
+        }.getType();
+        Map<String, RevisionObject> deserializedMap = gson.fromJson(json, mapType);
+
+        Order cuurOrder = order.getValue();
+        if (cuurOrder == null) {
+            return;
+        }
+
+        for (RevisionObject obj : deserializedMap.values()) {
+            cuurOrder.updateRevisionObject(obj);
+        }
+
+        order.setValue(cuurOrder);
+    }
+
+    public void generateReport() throws ExecutionException, InterruptedException {
+        Order currOrder = order.getValue();
+        if (currOrder == null) {
+            return;
+        }
+        if (currOrder instanceof CollectableOrder that) {
+            Map<String, RevisionObject> objMap = that.getCollector().getObjectsMap();
+            textReportSms.postValue(generateSmsReportUseCase.execute(objMap));
+        }
+    }
+
+    public LiveData<String> getSmsReport() {
+        return textReportSms;
+    }
+
+    public Map<String, WorkerDomain> getCrewMap() {
+        Order currOrder = order.getValue();
+        if (currOrder == null) {
+            return null;
+        }
+
+        if (currOrder instanceof CollectableOrder that) {
+            return that.getCrewMap();
+        } else {
+            return null;
+        }
+    }
+
+    public Set<RevisionObject> getObjMapWithViolations() {
+        Order currOrder = order.getValue();
+        if (currOrder == null) {
+            return null;
+        }
+        if (currOrder instanceof CollectableOrder that) {
+            return getObjectMapSortedWithViolationsUseCase.execute(that.getCollector().getObjectsMap());
+        } else {
+            return null;
+        }
+    }
+
+    public boolean checkUncheckedObjects() {
+        Order currOrder = order.getValue();
+        if (currOrder == null) {
+            return false;
+        }
+
+        if (currOrder instanceof CollectableOrder that) {
+            return checkUncheckedObjectsUseCase.execute(that.getCollector().getObjectsMap());
+        }
+
+        return false;
+    }
+
+    public Map<String, Map<String, Pair<String, String>>> getStatsParams() {
+        Order currOrder = order.getValue();
+        if (currOrder == null) {
+            return null;
+        }
+        if (currOrder instanceof CollectableOrder that) {
+            return makeAdditionalParamsUseCase.execute(that.getCollector().getObjectsMap());
+        }
+
+        return null;
     }
 
     private ObjectCollector createCollector(String objectNumber) {

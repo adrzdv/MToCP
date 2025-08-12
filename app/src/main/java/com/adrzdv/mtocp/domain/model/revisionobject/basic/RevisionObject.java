@@ -8,6 +8,7 @@ import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Domain class model for abstract revision object. Stores data about number of revision object,
@@ -113,5 +114,16 @@ public abstract class RevisionObject {
 
     public void clearViolationMap() {
         violationMap.clear();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof RevisionObject that)) return false;
+        return Objects.equals(number, that.number);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(number);
     }
 }

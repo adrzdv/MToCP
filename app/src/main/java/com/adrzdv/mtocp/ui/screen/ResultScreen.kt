@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -32,10 +34,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.ui.component.CustomOutlinedButton
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.buttons.FloatingSaveButton
-import com.adrzdv.mtocp.ui.intent.ShareIntentBuilder
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 
@@ -70,31 +70,36 @@ fun ResultScreen(
                     selected = currentDestination == "mainRes",
                     onClick = { innerNavigation.navigate("mainRes") },
                     icon = { Icon(Icons.Default.Info, contentDescription = null) },
-                    label = { Text(stringResource(R.string.main_res)) },
+                    label = { Text(stringResource(R.string.res_main)) },
+                    colors = navColors
+                )
+                NavigationBarItem(
+                    selected = currentDestination == "fullViolationReport",
+                    onClick = { innerNavigation.navigate("fullViolationReport") },
+                    icon = { Icon(Icons.Default.CheckCircle, contentDescription = null) },
+                    label = { Text(stringResource(R.string.violations)) },
                     colors = navColors
                 )
                 NavigationBarItem(
                     selected = currentDestination == "coachRes",
                     onClick = { innerNavigation.navigate("coachRes") },
-                    icon = { Icon(Icons.Default.CheckCircle, contentDescription = null) },
-                    label = { Text(stringResource(R.string.detail_res)) },
+                    icon = {
+                        Icon(
+                            Icons.Default.Star,
+                            contentDescription = null
+                        )
+                    },
+                    label = { Text(stringResource(R.string.res_stat_coaches)) },
                     colors = navColors
                 )
                 NavigationBarItem(
-                    selected = currentDestination == "coachRes",
-                    onClick = { },
+                    selected = currentDestination == "additionalRes",
+                    onClick = { innerNavigation.navigate("additionalRes") },
                     icon = { Icon(Icons.Default.Build, contentDescription = null) },
-                    label = { Text(stringResource(R.string.detail_res)) },
+                    label = { Text(stringResource(R.string.additional)) },
                     colors = navColors
                 )
             }
-        },
-        floatingActionButton = {
-            FloatingSaveButton(
-                onClick = {
-                    (context as? Activity)?.finish()
-                }
-            )
         },
         snackbarHost = {
             CustomSnackbarHost(
@@ -109,33 +114,27 @@ fun ResultScreen(
         ) {
             composable("mainRes") {
                 ResultScreenMain(
+                    orderViewModel = orderViewModel,
+                    snackbarHostState = snackbarHostState
+                )
+            }
+            composable("fullViolationReport") {
+                ResultScreenFullViolationList(
                     orderViewModel = orderViewModel
                 )
             }
-            composable("coachRes") {}
-            //composable(""){}
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 12.dp)
-        ) {
 
-        }
-
-    }
-
-
-    CustomOutlinedButton(
-        onClick = {
-            orderViewModel.makeArchive { file ->
-                val intent = ShareIntentBuilder.shareZip(context, file)
-                context.startActivity(Intent.createChooser(intent, "Share zip"))
+            composable("coachRes") {
+                ResultScreenCoachData(
+                    orderViewModel = orderViewModel
+                )
             }
-        },
-        text = "text"
-    )
 
-
+            composable("additionalRes") {
+                ResultScreenStatsParam(
+                    orderViewModel = orderViewModel
+                )
+            }
+        }
+    }
 }

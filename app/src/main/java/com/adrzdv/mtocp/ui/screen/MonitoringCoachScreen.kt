@@ -122,6 +122,7 @@ fun MonitoringCoachScreen(
         if (coach?.revisionDateStart == null) {
             coach?.revisionDateStart = LocalDateTime.now()
         }
+        depotViewModel.resetDinnerFilter()
     }
 
     LaunchedEffect(snackbarMessage) {
@@ -299,7 +300,7 @@ fun MonitoringCoachScreen(
                         }
                         TextButton(
                             onClick = {
-                                passengerCoachViewModel.cleanViolations()
+                                passengerCoachViewModel.cleanViolations(orderViewModel.orderNumber)
                             },
                             colors = ButtonDefaults.buttonColors(
                                 contentColor = AppColors.OFF_WHITE.color,
@@ -347,6 +348,7 @@ fun MonitoringCoachScreen(
 
                         },
                         onAddTagClick = {
+                            selectedViolationCode = item.code
                             showAddTagDialog = true
                         },
                         onMakeVideoClick = {},

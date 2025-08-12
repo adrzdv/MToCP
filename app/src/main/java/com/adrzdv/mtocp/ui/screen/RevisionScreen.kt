@@ -64,7 +64,11 @@ fun RevisionScreen(
         "monitoringProcess" -> stringResource(R.string.revision_string)
         "monitoringCoach/{coachNumber}" -> navBackStackEntry?.arguments?.getString("coachNumber")
             ?: ""
-        "resultScreen" -> stringResource(R.string.result_string)
+
+        "monitoringDinner/{coachNumber}" -> navBackStackEntry?.arguments?.getString("coachNumber")
+            ?: ""
+
+        "resultScreen" -> stringResource(R.string.res_result_string)
         else -> ""
     }
 
@@ -165,6 +169,17 @@ fun RevisionScreen(
                     depotViewModel = depotViewModel,
                     navController = navRevisionController
                 )
+            }
+            composable(
+                route = "monitoringDinner/{coachNumber}",
+                arguments = listOf(navArgument("coachNumber") { type = NavType.StringType })
+            ) { navBackStackEntry ->
+                MonitoringDinnerScreen(
+                    orderViewModel = orderViewModel,
+                    depotViewModel = depotViewModel,
+                    navController = navRevisionController
+                )
+
             }
             composable("resultScreen") {
                 ResultScreen(

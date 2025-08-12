@@ -14,7 +14,7 @@ android {
         minSdk = 30                                                 //Android 11+
         targetSdk = 35
         versionCode = 1
-        versionName = "0.6.1-beta"
+        versionName = "0.9.1-beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -60,7 +60,14 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.9.0")
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.room.runtime.android)
-    val composeBom = platform("androidx.compose:compose-bom:2024.05.00")
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.ui.graphics)
+    implementation("androidx.fragment:fragment-ktx:1.6.0")
+    implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.androidx.room.ktx)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    val composeBom = platform("androidx.compose:compose-bom:2024.09.00")
     implementation(composeBom)
 
     implementation("androidx.activity:activity-compose")

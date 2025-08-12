@@ -1,69 +1,50 @@
 package com.adrzdv.mtocp.ui.viewmodel
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.room.util.copy
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar
+import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
+import com.adrzdv.mtocp.domain.usecase.DeleteViolationPhotoUseCase
+import com.adrzdv.mtocp.ui.state.DinnerCoachState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.ActivityResult
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
-import com.adrzdv.mtocp.ui.state.PassengerCoachState
-import androidx.compose.runtime.*
 import androidx.lifecycle.viewModelScope
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam
-import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
-import com.adrzdv.mtocp.domain.usecase.DeleteViolationPhotoUseCase
-import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
+import com.adrzdv.mtocp.domain.model.workers.OuterWorkerDomain
 import com.adrzdv.mtocp.ui.activities.CameraActivity
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
-class PassengerCoachViewModel(
-    private val initCoach: PassengerCar,
-    private val onSaveCallback: (PassengerCar) -> Unit,
-    private val getDepotByNameUseCase: GetDepotByNameUseCase,
+class DinnerCoachViewModel(
+    private val initDinner: DinnerCar,
+    private val onSave: (DinnerCar) -> Unit,
     private val deleteViolationPhotoUseCase: DeleteViolationPhotoUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(
-        PassengerCoachState(
-            idWorker = initCoach.worker?.id?.toString() ?: "",
-            nameWorker = initCoach.worker?.name,
-            typeWorker = initCoach.worker?.workerType?.description,
-            depotWorker = (initCoach.worker as? InnerWorkerDomain)?.depotDomain?.name,
-            violations = initCoach.violationMap
+        DinnerCoachState(
+            idWorker = initDinner.worker?.id?.toString() ?: "",
+            nameWorker = initDinner.worker?.name,
+            typeWorker = initDinner.worker?.workerType?.description,
+            violations = initDinner.violationMap
         )
     )
+
     private val _snackbarMessage = MutableStateFlow<String?>(null)
     val snackbarMessage: StateFlow<String?> = _snackbarMessage.asStateFlow()
-    val state: State<PassengerCoachState> = _state
+    val state: State<DinnerCoachState> = _state
 
     fun getDisplayViolations(): List<ViolationDomain> {
         return _state.value.violations?.values?.toList() ?: mutableListOf()
-    }
-
-    fun cleanViolations(orderNumber: String) {
-        val updatedMap = _state.value.violations?.toMutableMap()
-        for (violation in updatedMap?.values!!) {
-            deletePhotoViolation(violation.code, initCoach.number, orderNumber)
-        }
-        updatedMap.clear()
-        updateState(violations = updatedMap)
-    }
-
-    fun onNameChange(newName: String, errorMessage: String) {
-        _state.value = _state.value.copy(
-            nameWorker = newName,
-            nameError = when {
-                newName.isEmpty() -> errorMessage
-                else -> null
-            }
-        )
     }
 
     fun onIdChange(newId: String, errorMessage: String) {
@@ -86,11 +67,11 @@ class PassengerCoachViewModel(
         )
     }
 
-    fun onDepotChange(newDepot: String, errorMessage: String) {
+    fun onNameChange(newName: String, errorMessage: String) {
         _state.value = _state.value.copy(
-            depotWorker = newDepot,
-            depotError = when {
-                newDepot.isEmpty() -> errorMessage
+            nameWorker = newName,
+            nameError = when {
+                newName.isEmpty() -> errorMessage
                 else -> null
             }
         )
@@ -119,9 +100,18 @@ class PassengerCoachViewModel(
         )
     }
 
+    fun cleanViolations(orderNumber: String) {
+        val updatedMap = _state.value.violations?.toMutableMap()
+        for (violation in updatedMap?.values!!) {
+            deletePhotoViolation(violation.code, initDinner.number, orderNumber)
+        }
+        updatedMap.clear()
+        updateState(violations = updatedMap)
+    }
+
     fun deleteViolation(code: Int, orderNumber: String) {
         val updatedMap = _state.value.violations?.toMutableMap()
-        deletePhotoViolation(code, initCoach.number, orderNumber)
+        deletePhotoViolation(code, initDinner.number, orderNumber)
         updatedMap?.remove(code)
         updateState(
             violations = updatedMap
@@ -151,7 +141,6 @@ class PassengerCoachViewModel(
             idWorker = "",
             nameWorker = "",
             typeWorker = "",
-            depotWorker = ""
         )
     }
 
@@ -177,21 +166,20 @@ class PassengerCoachViewModel(
         val idValid = current.idWorker != null && current.idWorker.toIntOrNull() != null
         val nameValid = !current.nameWorker.isNullOrBlank()
         val typeValid = !current.typeWorker.isNullOrBlank()
-        val depotValid = !current.depotWorker.isNullOrBlank()
 
         if (!idValid ||
             !nameValid ||
-            !typeValid ||
-            !depotValid
+            !typeValid
         ) {
             updateState(
-                idError = if (!idValid) MessageCodes.EMPTY_STRING.errorTitle else null,                 //строки бы нужно было получить как string resource!
+                idError = if (!idValid) MessageCodes.EMPTY_STRING.errorTitle else null,
                 nameError = if (!nameValid) MessageCodes.EMPTY_STRING.errorTitle else null,
-                typeError = if (!typeValid) MessageCodes.EMPTY_STRING.errorTitle else null,
-                depotError = if (!depotValid) MessageCodes.EMPTY_STRING.errorTitle else null
+                typeError = if (!typeValid) MessageCodes.EMPTY_STRING.errorTitle else null
             )
             return
         }
+
+
 
         viewModelScope.launch {
             current.idWorker?.let { id ->
@@ -200,33 +188,38 @@ class PassengerCoachViewModel(
                         current.violations?.let { currViolations ->
                             current.statParams?.let { currParams ->
                                 val workerType = WorkerTypes.entries.find { it.description == type }
-                                current.depotWorker?.let { depot ->
-                                    val depotDomain = getDepotByNameUseCase(depot, false)
-                                    val worker = InnerWorkerDomain(
+                                val worker = when {
+                                    (initDinner.companyDomain != null) -> OuterWorkerDomain(
                                         id.toInt(),
                                         name,
-                                        depotDomain,
+                                        initDinner.companyDomain,
                                         workerType
                                     )
-                                    val updatedCoach = PassengerCar(initCoach.number).apply {
-                                        this.coachRoute = initCoach.coachRoute
-                                        this.depotDomain = initCoach.depotDomain
-                                        this.coachType = initCoach.coachType
-                                        this.trailing = initCoach.trailing
-                                        this.revisionDateStart = initCoach.revisionDateStart
-                                        if (initCoach.revisionDateEnd == null) {
-                                            this.revisionDateEnd = LocalDateTime.now()
-                                        } else {
-                                            this.revisionDateEnd = initCoach.revisionDateEnd
-                                        }
-                                        this.additionalParams = currParams
-                                        this.depotDomain = initCoach.depotDomain
-                                        this.worker = worker
-                                        this.qualityPassport = initCoach.qualityPassport
-                                        this.violationMap = currViolations
-                                    }
-                                    onSaveCallback(updatedCoach)
+
+                                    else -> InnerWorkerDomain(
+                                        id.toInt(),
+                                        name,
+                                        initDinner.depot,
+                                        workerType
+                                    )
                                 }
+
+                                val updatedCoach = DinnerCar(initDinner.number).apply {
+                                    this.worker = worker
+                                    this.type = initDinner.type
+                                    this.revisionDateStart = initDinner.revisionDateStart
+                                    if (initDinner.revisionDateEnd == null) {
+                                        this.revisionDateEnd = LocalDateTime.now()
+                                    } else {
+                                        this.revisionDateEnd = initDinner.revisionDateEnd
+                                    }
+                                    this.companyDomain = initDinner.companyDomain
+                                    this.depot = initDinner.depot
+                                    this.coachRoute = initDinner.coachRoute
+                                    this.additionalParams = currParams
+                                    this.violationMap = currViolations
+                                }
+                                onSave(updatedCoach)
                             }
                         }
                     }
@@ -239,27 +232,22 @@ class PassengerCoachViewModel(
         id: String? = _state.value.idWorker,
         name: String? = _state.value.nameWorker,
         type: String? = _state.value.typeWorker,
-        depot: String? = _state.value.depotWorker,
         violations: Map<Int, ViolationDomain>? = _state.value.violations,
         idError: String? = _state.value.idError,
         nameError: String? = _state.value.nameError,
-        typeError: String? = _state.value.typeError,
-        depotError: String? = _state.value.depotError
+        typeError: String? = _state.value.typeError
     ) {
         val isEnableToSave = idError == null &&
                 nameError == null &&
-                typeError == null &&
-                depotError == null
-        _state.value = PassengerCoachState(
+                typeError == null
+        _state.value = DinnerCoachState(
             idWorker = id,
             nameWorker = name,
             typeWorker = type,
-            depotWorker = depot,
             violations = violations,
             idError = idError,
             nameError = nameError,
             typeError = typeError,
-            depotError = depotError,
             isSaveEnabled = isEnableToSave
         )
     }

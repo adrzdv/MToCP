@@ -294,7 +294,8 @@ fun AddCoachScreen(
             message = stringResource(R.string.ask_continue_string) + "\n" +
                     stringResource(R.string.warning_unchange_data),
             onConfirm = {
-                if (orderViewModel.collector?.objectsMap?.isEmpty() == true) {
+                if (orderViewModel.collector?.objectsMap?.isEmpty() == true
+                ) {
                     scope.launch {
                         snackbarHostState.showSnackbar(
                             message = MessageCodes.EMPTY_COUNT.errorTitle

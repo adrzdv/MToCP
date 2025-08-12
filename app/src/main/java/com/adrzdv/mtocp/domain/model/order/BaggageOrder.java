@@ -58,6 +58,13 @@ public class BaggageOrder extends Order {
     }
 
     @Override
+    public int countViolations() {
+        return coachMap.values().stream()
+                .mapToInt(RevisionObject::countViolation)
+                .sum();
+    }
+
+    @Override
     protected void doAddWorker(WorkerDomain worker) {
         if (worker instanceof OuterWorkerDomain that) {
             workerMap.put(that.getId(), that);
@@ -89,5 +96,9 @@ public class BaggageOrder extends Order {
             throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getErrorTitle());
         }
         coachMap.get(objNumber).deleteViolation(code);
+    }
+
+    public Map<String, BaggageCar> getCoachMap() {
+        return coachMap;
     }
 }

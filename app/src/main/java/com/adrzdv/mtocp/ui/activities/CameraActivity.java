@@ -14,7 +14,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.adrzdv.mtocp.App;
 import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.util.MediaCreator;
 
@@ -77,15 +76,16 @@ public class CameraActivity extends AppCompatActivity {
             String order = getIntent().getStringExtra("order");
             String coach = getIntent().getStringExtra("coach");
             int violation = getIntent().getIntExtra("violation", 0);
-            captureImage(order, coach, violation);
+            String shortViolationName = getIntent().getStringExtra("violationShort");
+            captureImage(order, coach, shortViolationName);
         }
 
     }
 
-    public void captureImage(String orderNumber, String coachNumber, int violationCode) {
+    public void captureImage(String orderNumber, String coachNumber, String shortViolationName) {
         if (checkPermissions()) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            mediaFile = mediaCreator.getPhotoFile(orderNumber, coachNumber, violationCode);
+            mediaFile = mediaCreator.getPhotoFile(orderNumber, coachNumber, shortViolationName);
             if (mediaFile != null) {
                 Uri fileUri = mediaCreator.gerUri();
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);

@@ -16,8 +16,12 @@ public class GetGlobalViolationStringUseCase {
 
         for (RevisionObject obj : objectMap.values()) {
             for (ViolationDomain violation : obj.getViolationMap().values()) {
+                ViolationDomain newVl = new ViolationDomain(violation.getCode(),
+                        violation.getName(),
+                        violation.getShortName());
+                newVl.setAmount(violation.getAmount());
                 tempViolationMap.merge(violation.getCode(),
-                        violation,
+                        newVl,
                         (existing, incoming) -> {
                             existing.setAmount(existing.getAmount() + incoming.getAmount());
                             return existing;
@@ -25,7 +29,7 @@ public class GetGlobalViolationStringUseCase {
             }
         }
         for (ViolationDomain violationDomain : tempViolationMap.values()) {
-            result.add(violationDomain.getCode() + ". " + violationDomain.getShortName() +
+            result.add(violationDomain.getCode() + ". " + violationDomain.getName() +
                     ": " + violationDomain.getAmount());
         }
 
