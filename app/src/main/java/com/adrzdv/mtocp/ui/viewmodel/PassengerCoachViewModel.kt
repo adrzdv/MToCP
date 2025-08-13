@@ -36,7 +36,8 @@ class PassengerCoachViewModel(
             nameWorker = initCoach.worker?.name,
             typeWorker = initCoach.worker?.workerType?.description,
             depotWorker = (initCoach.worker as? InnerWorkerDomain)?.depotDomain?.name,
-            violations = initCoach.violationMap
+            violations = initCoach.violationMap,
+            statParams = initCoach.additionalParams
         )
     )
     private val _snackbarMessage = MutableStateFlow<String?>(null)
@@ -105,6 +106,7 @@ class PassengerCoachViewModel(
     }
 
     fun addAdditionalParams(statparams: Map<String, StaticsParam>) {
+        initCoach.additionalParams = statparams
         _state.value = _state.value.copy(
             statParams = statparams
         )

@@ -62,10 +62,6 @@ class AdditionalParamViewModel(
         _tempParams.addAll(params)
     }
 
-    private suspend fun loadAllParams() {
-        loadData()
-    }
-
     private suspend fun loadData() {
         val params = withContext(Dispatchers.IO) {
             tempParamsRepo.all
