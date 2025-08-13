@@ -54,12 +54,12 @@ fun ResultScreenStatsParam(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "",
+                            text = stringResource(R.string.res_main_car),
                             style = AppTypography.bodyMedium,
                             modifier = Modifier.weight(1f)
                         )
                         Text(
-                            text = "",
+                            text = orderViewModel.countMainAutodoors().toString(),
                             style = AppTypography.bodyMedium,
                             modifier = Modifier.weight(1f)
                         )
@@ -72,12 +72,12 @@ fun ResultScreenStatsParam(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "",
+                            text = stringResource(R.string.res_trailing_car),
                             style = AppTypography.bodyMedium,
                             modifier = Modifier.weight(1f)
                         )
                         Text(
-                            text = "",
+                            text = orderViewModel.countTrailingAutodoors().toString(),
                             style = AppTypography.bodyMedium,
                             modifier = Modifier.weight(1f)
                         )

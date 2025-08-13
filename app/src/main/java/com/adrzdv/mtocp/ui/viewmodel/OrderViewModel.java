@@ -31,7 +31,9 @@ import com.adrzdv.mtocp.domain.usecase.CheckUncheckedObjectsUseCase;
 import com.adrzdv.mtocp.domain.usecase.GetGlobalViolationStringUseCase;
 import com.adrzdv.mtocp.domain.usecase.GetObjectMapSortedWithViolationsUseCase;
 import com.adrzdv.mtocp.domain.usecase.MakeAdditionalParamsUseCase;
+import com.adrzdv.mtocp.domain.usecase.stats.CountMainAutodoorsUseCase;
 import com.adrzdv.mtocp.domain.usecase.stats.CountMainCarsUseCase;
+import com.adrzdv.mtocp.domain.usecase.stats.CountTrailingAutodoorsUseCase;
 import com.adrzdv.mtocp.domain.usecase.stats.CountTrailingCarsUseCase;
 import com.adrzdv.mtocp.domain.usecase.stats.GenerateSmsReportUseCase;
 import com.adrzdv.mtocp.util.gson.LocalDateTimeAdapter;
@@ -68,6 +70,8 @@ public class OrderViewModel extends ViewModel {
     private final GetObjectMapSortedWithViolationsUseCase getObjectMapSortedWithViolationsUseCase;
     private final CheckUncheckedObjectsUseCase checkUncheckedObjectsUseCase;
     private final MakeAdditionalParamsUseCase makeAdditionalParamsUseCase;
+    private final CountMainAutodoorsUseCase countMainAutodoorsUseCase;
+    private final CountTrailingAutodoorsUseCase countTrailingAutodoorsUseCase;
     private OrdersTypes selectedType;
     private final TrainRepository trainRepository;
     //private final TicketOfficeRepository ticketOfficeRepository;
@@ -89,6 +93,8 @@ public class OrderViewModel extends ViewModel {
         this.getObjectMapSortedWithViolationsUseCase = new GetObjectMapSortedWithViolationsUseCase();
         this.checkUncheckedObjectsUseCase = new CheckUncheckedObjectsUseCase();
         this.makeAdditionalParamsUseCase = new MakeAdditionalParamsUseCase();
+        this.countMainAutodoorsUseCase = new CountMainAutodoorsUseCase();
+        this.countTrailingAutodoorsUseCase = new CountTrailingAutodoorsUseCase();
         executor = Executors.newSingleThreadExecutor();
     }
 
@@ -513,6 +519,24 @@ public class OrderViewModel extends ViewModel {
         }
 
         return null;
+    }
+
+    public int countTrailingAutodoors() {
+        Order currOrder = order.getValue();
+        if (currOrder instanceof CollectableOrder that) {
+            return countTrailingAutodoorsUseCase.execute(that.getCollector().getObjectsMap());
+        }
+
+        return 0;
+    }
+
+    public int countMainAutodoors() {
+        Order currOrder = order.getValue();
+        if (currOrder instanceof CollectableOrder that) {
+            return countMainAutodoorsUseCase.execute(that.getCollector().getObjectsMap());
+        }
+
+        return 0;
     }
 
     private ObjectCollector createCollector(String objectNumber) {
