@@ -39,7 +39,7 @@ fun ResultScreenStatsParam(
     ) {
         // Заголовок для блока main doors
         ServiceInfoBlock(
-            label = "",
+            label = "Automatic doors",
             content = {
                 Column(
                     modifier = Modifier
