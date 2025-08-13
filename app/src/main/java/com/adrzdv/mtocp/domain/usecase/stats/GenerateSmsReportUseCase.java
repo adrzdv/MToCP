@@ -56,7 +56,7 @@ public class GenerateSmsReportUseCase {
         });
 
         Future<?> dinnerViolationFuture = executor.submit(() -> {
-            dinnnerRes.append("__________________\n").append("ВР");
+            dinnnerRes.append("__________________\n").append("Вагон-ресторан\n");
             for (ViolationDomain violation : violationDinnerMap.values()) {
                 dinnnerRes.append(violation.getCode())
                         .append("-")

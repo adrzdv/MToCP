@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,161 +29,94 @@ fun ResultScreenStatsParam(
     val coachParams = orderViewModel.statsParams
     val trainParams = orderViewModel.collector?.additionalParams
 
-    Scaffold(
-        containerColor = AppColors.LIGHT_GRAY.color
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 12.dp, vertical = 16.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            // Заголовок для блока main doors
-            ServiceInfoBlock(
-                label = "",
-                content = {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppColors.LIGHT_GRAY.color)
+            .padding(horizontal = 8.dp, vertical = 8.dp)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        // Заголовок для блока main doors
+        ServiceInfoBlock(
+            label = "",
+            content = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    // main auto doors
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // main auto doors
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "",
-                                style = AppTypography.bodyMedium,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Text(
-                                text = "",
-                                style = AppTypography.bodyMedium,
-                                modifier = Modifier.weight(1f)
-                            )
-                        }
-                        HorizontalDivider(thickness = 1.dp, color = AppColors.LIGHT_GRAY.color)
-                        // trailing auto doors
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "",
-                                style = AppTypography.bodyMedium,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Text(
-                                text = "",
-                                style = AppTypography.bodyMedium,
-                                modifier = Modifier.weight(1f)
-                            )
-                        }
+                        Text(
+                            text = "",
+                            style = AppTypography.bodyMedium,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = "",
+                            style = AppTypography.bodyMedium,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    HorizontalDivider(thickness = 1.dp, color = AppColors.LIGHT_GRAY.color)
+                    // trailing auto doors
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "",
+                            style = AppTypography.bodyMedium,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = "",
+                            style = AppTypography.bodyMedium,
+                            modifier = Modifier.weight(1f)
+                        )
                     }
                 }
-            )
-
-            // train additional parameters
-            trainParams?.values?.filter { !it.completed }?.let { filteredTrainParams ->
-                ServiceInfoBlock(
-                    label = stringResource(R.string.params_train),
-                    content = {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            filteredTrainParams.forEachIndexed { index, value ->
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(
-                                        text = value.name,
-                                        style = AppTypography.bodyMedium,
-                                        modifier = Modifier.weight(1f)
-                                    )
-                                    Text(
-                                        text = value.note,
-                                        style = AppTypography.bodyMedium,
-                                        modifier = Modifier.weight(1f)
-                                    )
-                                }
-                                if (index < filteredTrainParams.size - 1) {
-                                    HorizontalDivider(
-                                        thickness = 0.5.dp,
-                                        color = AppColors.LIGHT_GRAY.color
-                                    )
-                                }
-                            }
-                        }
-                    }
-                )
             }
-            // coaches additional parameters
+        )
+
+        // train additional parameters
+        trainParams?.values?.filter { !it.completed }?.let { filteredTrainParams ->
             ServiceInfoBlock(
-                label = stringResource(R.string.params_coach),
+                label = stringResource(R.string.params_train),
                 content = {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        val keysList = coachParams.keys.toList()
-
-                        for ((index, key) in keysList.withIndex()) {
-                            ServiceInfoBlock(
-                                label = key,
-                                content = {
-                                    val innerMap = coachParams.getValue(key)
-                                    val innerKeysList = innerMap.keys.toList()
-
-                                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                                        for ((i, innerKey) in innerKeysList.withIndex()) {
-                                            val pair = innerMap.getValue(innerKey)
-                                            Row(
-                                                modifier = Modifier.fillMaxWidth(),
-                                                verticalAlignment = Alignment.CenterVertically
-                                            ) {
-                                                Text(
-                                                    text = innerKey,
-                                                    style = AppTypography.bodyMedium,
-                                                    modifier = Modifier.weight(1f)
-                                                )
-                                                Text(
-                                                    text = pair.first,
-                                                    style = AppTypography.bodyMedium,
-                                                    modifier = Modifier.weight(1f)
-                                                )
-                                                Text(
-                                                    text = pair.second,
-                                                    style = AppTypography.bodyMedium,
-                                                    modifier = Modifier.weight(1f)
-                                                )
-                                            }
-                                            if (i < innerKeysList.lastIndex) {
-                                                HorizontalDivider(
-                                                    thickness = 0.5.dp,
-                                                    color = AppColors.LIGHT_GRAY.color
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-                            )
-                            if (index < keysList.lastIndex) {
+                        filteredTrainParams.forEachIndexed { index, value ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = value.name,
+                                    style = AppTypography.bodyMedium,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                Text(
+                                    text = value.note,
+                                    style = AppTypography.bodyMedium,
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                            if (index < filteredTrainParams.size - 1) {
                                 HorizontalDivider(
-                                    modifier = Modifier.padding(vertical = 12.dp),
-                                    thickness = 1.dp,
+                                    thickness = 0.5.dp,
                                     color = AppColors.LIGHT_GRAY.color
                                 )
                             }
@@ -192,5 +125,69 @@ fun ResultScreenStatsParam(
                 }
             )
         }
+        // coaches additional parameters
+        ServiceInfoBlock(
+            label = stringResource(R.string.params_coach),
+            content = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    val keysList = coachParams.keys.toList()
+
+                    for ((index, key) in keysList.withIndex()) {
+                        ServiceInfoBlock(
+                            label = key,
+                            content = {
+                                val innerMap = coachParams.getValue(key)
+                                val innerKeysList = innerMap.keys.toList()
+
+                                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                                    for ((i, innerKey) in innerKeysList.withIndex()) {
+                                        val pair = innerMap.getValue(innerKey)
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                text = innerKey,
+                                                style = AppTypography.bodyMedium,
+                                                modifier = Modifier.weight(1f)
+                                            )
+                                            Text(
+                                                text = pair.first,
+                                                style = AppTypography.bodyMedium,
+                                                modifier = Modifier.weight(1f)
+                                            )
+                                            Text(
+                                                text = pair.second,
+                                                style = AppTypography.bodyMedium,
+                                                modifier = Modifier.weight(1f)
+                                            )
+                                        }
+                                        if (i < innerKeysList.lastIndex) {
+                                            HorizontalDivider(
+                                                thickness = 0.5.dp,
+                                                color = AppColors.LIGHT_GRAY.color
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        )
+                        if (index < keysList.lastIndex) {
+                            HorizontalDivider(
+                                modifier = Modifier.padding(vertical = 12.dp),
+                                thickness = 1.dp,
+                                color = AppColors.LIGHT_GRAY.color
+                            )
+                        }
+                    }
+                }
+            }
+        )
     }
+
 }
