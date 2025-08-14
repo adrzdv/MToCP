@@ -3,9 +3,11 @@ package com.adrzdv.mtocp.ui.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -33,7 +35,7 @@ fun ResultScreenStatsParam(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColors.LIGHT_GRAY.color)
-            .padding(horizontal = 8.dp, vertical = 8.dp)
+            .padding(horizontal = 12.dp, vertical = 12.dp)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
@@ -45,18 +47,19 @@ fun ResultScreenStatsParam(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     // main auto doors
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(IntrinsicSize.Min),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             text = stringResource(R.string.res_main_car),
                             style = AppTypography.bodyMedium,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
                         )
                         Text(
                             text = orderViewModel.countMainAutodoors().toString(),
@@ -67,9 +70,9 @@ fun ResultScreenStatsParam(
                     HorizontalDivider(thickness = 1.dp, color = AppColors.LIGHT_GRAY.color)
                     // trailing auto doors
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(IntrinsicSize.Min),
                     ) {
                         Text(
                             text = stringResource(R.string.res_trailing_car),
@@ -87,7 +90,7 @@ fun ResultScreenStatsParam(
         )
 
         // train additional parameters
-        trainParams?.values?.filter { !it.completed }?.let { filteredTrainParams ->
+        trainParams?.values?.let { params ->
             ServiceInfoBlock(
                 label = stringResource(R.string.params_train),
                 content = {
@@ -95,13 +98,15 @@ fun ResultScreenStatsParam(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        filteredTrainParams.forEachIndexed { index, value ->
+                        params.forEachIndexed { index, value ->
+                            val statusSuffix =
+                                if (value.completed) " [ВЫПОЛНЕНО]" else " [НЕ ВЫПОЛНЕНО]"
                             Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(IntrinsicSize.Min),
                             ) {
                                 Text(
                                     text = value.name,
@@ -109,12 +114,12 @@ fun ResultScreenStatsParam(
                                     modifier = Modifier.weight(1f)
                                 )
                                 Text(
-                                    text = value.note,
+                                    text = value.note + statusSuffix,
                                     style = AppTypography.bodyMedium,
                                     modifier = Modifier.weight(1f)
                                 )
                             }
-                            if (index < filteredTrainParams.size - 1) {
+                            if (index < params.size - 1) {
                                 HorizontalDivider(
                                     thickness = 0.5.dp,
                                     color = AppColors.LIGHT_GRAY.color
@@ -133,7 +138,7 @@ fun ResultScreenStatsParam(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     val keysList = coachParams.keys.toList()
 
@@ -144,12 +149,16 @@ fun ResultScreenStatsParam(
                                 val innerMap = coachParams.getValue(key)
                                 val innerKeysList = innerMap.keys.toList()
 
-                                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                                Column(
+                                    modifier = Modifier.padding(8.dp),
+                                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
                                     for ((i, innerKey) in innerKeysList.withIndex()) {
                                         val pair = innerMap.getValue(innerKey)
                                         Row(
-                                            modifier = Modifier.fillMaxWidth(),
-                                            verticalAlignment = Alignment.CenterVertically
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(IntrinsicSize.Min),
                                         ) {
                                             Text(
                                                 text = innerKey,

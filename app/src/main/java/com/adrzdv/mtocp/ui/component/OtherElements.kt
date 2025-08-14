@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.ui.component
 
+import android.app.AlertDialog
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -7,10 +8,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,8 +48,9 @@ fun ParameterSelectionBottomSheet(
 ) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-
+    var showDialog by remember { mutableStateOf(false) }
     val params = paramsViewModel.tempParams
+    var editingParam by remember { mutableStateOf<StaticsParam?>(null) }
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -73,6 +82,13 @@ fun ParameterSelectionBottomSheet(
                         style = AppTypography.bodyLarge
                     )
 
+                    IconButton(onClick = {
+                        editingParam = param
+                        showDialog = true
+                    }) {
+                        Icon(Icons.Default.Edit, contentDescription = "Edit note")
+                    }
+
                     Checkbox(
                         checked = completed,
                         onCheckedChange = { checked ->
@@ -82,17 +98,40 @@ fun ParameterSelectionBottomSheet(
                         modifier = Modifier.weight(1f)
                     )
                 }
+            }
 
-                CustomOutlinedTextField(
-                    value = note,
-                    onValueChange = { newNote ->
-                        note = newNote
-                        paramsViewModel.updateNote(param.id, newNote)
+            if (showDialog) {
+                var note by remember { mutableStateOf(editingParam?.note ?: "") }
+                AlertDialog(
+                    onDismissRequest = { showDialog = false },
+                    containerColor = AppColors.LIGHT_GRAY.color,
+                    title = { Text(stringResource(R.string.add_tag)) },
+                    text = {
+                        TextField(
+                            value = note,
+                            onValueChange = { newNote ->
+                                //paramsViewModel.updateNote(param.id, newNote)
+                                note = newNote
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     },
-                    label = "note",
-                    isError = false,
-                    errorText = "",
-                    modifier = Modifier.fillMaxWidth()
+                    confirmButton = {
+                        TextButton(onClick = {
+                            paramsViewModel.updateNote(editingParam!!.id, note)
+                            showDialog = false
+                        }) {
+                            Text(stringResource(R.string.save_string))
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = {
+                            editingParam = null
+                            showDialog = false
+                        }) {
+                            Text(stringResource(R.string.cancel))
+                        }
+                    }
                 )
             }
 

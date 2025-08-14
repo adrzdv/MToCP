@@ -65,6 +65,8 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.6.0")
     implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     val composeBom = platform("androidx.compose:compose-bom:2024.09.00")

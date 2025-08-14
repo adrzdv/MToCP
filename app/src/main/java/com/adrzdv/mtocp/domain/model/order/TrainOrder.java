@@ -36,7 +36,9 @@ public class TrainOrder extends Order implements CollectableOrder {
     @Override
     public void updateRevisionObject(RevisionObject o) {
         if (o instanceof Coach that) {
-            train.getObjectsMap().put(that.getNumber(), that);
+            Map<String, RevisionObject> currMap = train.getObjectsMap();
+            currMap.put(o.getNumber(), o);
+            train.setObjectsMap(currMap);
         }
     }
 

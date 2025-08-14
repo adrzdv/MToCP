@@ -29,16 +29,16 @@ public class MakeAdditionalParamsUseCase {
                 } else {
                     first = obj.getWorker().getName();
                 }
+
                 for (StaticsParam staticsParam : obj.getAdditionalParams().values()) {
-                    if (!staticsParam.getCompleted()) {
-                        Map<String, Pair<String, String>> innerMap = res.computeIfAbsent(
-                                staticsParam.getName(), v -> new HashMap<>()
-                        );
-                        innerMap.put(
-                                obj.getNumber(),
-                                new Pair<>(first, staticsParam.getNote())
-                        );
-                    }
+                    String firstItem = first + (staticsParam.getCompleted() ? " [ВЫПОЛНЕНО] " : " [НЕ ВЫПОЛНЕНО] ");
+                    Map<String, Pair<String, String>> innerMap = res.computeIfAbsent(
+                            staticsParam.getName(), v -> new HashMap<>()
+                    );
+                    innerMap.put(
+                            obj.getNumber(),
+                            new Pair<>(firstItem, staticsParam.getNote())
+                    );
                 }
             }
         }

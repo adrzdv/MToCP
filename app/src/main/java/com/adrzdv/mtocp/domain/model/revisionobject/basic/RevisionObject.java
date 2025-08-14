@@ -23,6 +23,7 @@ public abstract class RevisionObject {
     private Boolean isQualityPassport;
     private Map<Integer, ViolationDomain> violationMap;
     private Map<String, StaticsParam> additionalParams;
+    private String objClass;
 
     public RevisionObject(String number) {
         this.number = number;
@@ -30,6 +31,7 @@ public abstract class RevisionObject {
         this.isQualityPassport = false;
         this.violationMap = new HashMap<>();
         this.additionalParams = new HashMap<>();
+        this.objClass = getClass().getSimpleName();
     }
 
     public int countViolation() {

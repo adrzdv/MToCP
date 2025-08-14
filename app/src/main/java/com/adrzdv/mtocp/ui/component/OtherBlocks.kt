@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
@@ -113,6 +114,8 @@ fun ServiceInfoBlock(
             text = label,
             style = AppTypography.labelSmall,
             color = AppColors.OUTLINE_GREEN.color,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .padding(start = 12.dp)
                 .background(AppColors.LIGHT_GRAY.color)

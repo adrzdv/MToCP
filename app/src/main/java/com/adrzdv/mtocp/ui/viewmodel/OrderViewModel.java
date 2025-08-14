@@ -24,6 +24,8 @@ import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
+import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain;
+import com.adrzdv.mtocp.domain.model.workers.OuterWorkerDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 import com.adrzdv.mtocp.domain.repository.TrainRepository;
 import com.adrzdv.mtocp.domain.usecase.ArchivePhotoInZipUseCase;
@@ -36,8 +38,12 @@ import com.adrzdv.mtocp.domain.usecase.stats.CountMainCarsUseCase;
 import com.adrzdv.mtocp.domain.usecase.stats.CountTrailingAutodoorsUseCase;
 import com.adrzdv.mtocp.domain.usecase.stats.CountTrailingCarsUseCase;
 import com.adrzdv.mtocp.domain.usecase.stats.GenerateSmsReportUseCase;
+import com.adrzdv.mtocp.util.gson.CustomGson;
+import com.adrzdv.mtocp.util.gson.LocalDateAdapter;
 import com.adrzdv.mtocp.util.gson.LocalDateTimeAdapter;
+import com.adrzdv.mtocp.util.gson.RevisionObjectTypeAdapterFactory;
 import com.adrzdv.mtocp.util.gson.RuntimeTypeAdapterFactory;
+import com.adrzdv.mtocp.util.gson.WorkerDomainTypeAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -46,6 +52,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.io.File;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -397,17 +404,7 @@ public class OrderViewModel extends ViewModel {
     }
 
     public String makeJsonFromRevObjects() {
-        RuntimeTypeAdapterFactory<RevisionObject> adapterFactory = RuntimeTypeAdapterFactory
-                .of(RevisionObject.class, "objectType")
-                .registerSubtype(PassengerCar.class, "PassengerCar")
-                .registerSubtype(DinnerCar.class, "DinnerCar")
-                .registerSubtype(BaggageCar.class, "BaggageCar")
-                .registerSubtype(TicketTerminal.class, "TicketTerminal");
-
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapterFactory(adapterFactory)
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .create();
+        Gson gson = CustomGson.create();
 
         if (order.getValue() instanceof CollectableOrder that) {
             try {
@@ -428,17 +425,7 @@ public class OrderViewModel extends ViewModel {
     }
 
     public void updateRevObjectMapFromJson(String json) {
-        RuntimeTypeAdapterFactory<RevisionObject> adapterFactory = RuntimeTypeAdapterFactory
-                .of(RevisionObject.class, "objectType")
-                .registerSubtype(PassengerCar.class, "PassengerCar")
-                .registerSubtype(DinnerCar.class, "DinnerCar")
-                .registerSubtype(BaggageCar.class, "BaggageCar")
-                .registerSubtype(TicketTerminal.class, "TicketTerminal");
-
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapterFactory(adapterFactory)
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .create();
+        Gson gson = CustomGson.create();
 
         Type mapType = new TypeToken<Map<String, RevisionObject>>() {
         }.getType();
