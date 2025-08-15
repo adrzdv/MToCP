@@ -10,6 +10,7 @@ import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -141,4 +142,11 @@ public class TrainDomain extends ObjectCollector {
     }
 
 
+    @Override
+    public Map<String, RevisionObject> getCheckedObjects() {
+        return this.getObjectsMap().entrySet()
+                .stream().filter(o -> o.getValue().getRevisionDateEnd() != null)
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        Map.Entry::getValue));
+    }
 }

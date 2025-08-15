@@ -5,6 +5,7 @@ import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 
 import java.util.Map;
+import java.util.Objects;
 
 //Автоматические двери
 public class CountTrailingAutodoorsUseCase {
@@ -14,8 +15,8 @@ public class CountTrailingAutodoorsUseCase {
                 .filter(object ->
                         object instanceof PassengerCar that
                                 && that.getTrailing()
-                                && that.getAdditionalParams()
-                                .get("Автоматические двери")
+                                && Objects.requireNonNull(that.getAdditionalParams()
+                                        .get("Автоматические двери"))
                                 .getCompleted()
                 )
                 .count();

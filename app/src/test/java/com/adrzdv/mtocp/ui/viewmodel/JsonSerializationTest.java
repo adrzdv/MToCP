@@ -7,16 +7,12 @@ import com.adrzdv.mtocp.domain.model.departments.CompanyDomain;
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
 import com.adrzdv.mtocp.domain.model.enums.DinnerCarsType;
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType;
-import com.adrzdv.mtocp.domain.model.enums.RevisionObjectType;
-import com.adrzdv.mtocp.domain.model.enums.RevisionType;
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes;
 import com.adrzdv.mtocp.domain.model.order.BaggageOrder;
 import com.adrzdv.mtocp.domain.model.order.CollectableOrder;
 import com.adrzdv.mtocp.domain.model.order.Order;
 import com.adrzdv.mtocp.domain.model.order.TrainOrder;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
-import com.adrzdv.mtocp.domain.model.revisionobject.basic.TicketTerminal;
-import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.BaggageCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
@@ -26,17 +22,11 @@ import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain;
 import com.adrzdv.mtocp.domain.model.workers.OuterWorkerDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
-import com.adrzdv.mtocp.domain.repository.TrainRepository;
 import com.adrzdv.mtocp.util.gson.CustomGson;
-import com.adrzdv.mtocp.util.gson.LocalDateAdapter;
-import com.adrzdv.mtocp.util.gson.LocalDateTimeAdapter;
-import com.adrzdv.mtocp.util.gson.RuntimeTypeAdapterFactory;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 
 import java.lang.reflect.Type;
 import java.time.LocalDate;
@@ -45,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class OrderViewModelTest {
+public class JsonSerializationTest {
 
     private static PassengerCar car;
     private static PassengerCar newcar;
@@ -118,6 +108,7 @@ public class OrderViewModelTest {
 
         Map<String, RevisionObject> revMap1 = new HashMap<>();
         revMap1.put(car.getNumber(), car);
+        revMap1.put(dinnerCar.getNumber(), dinnerCar);
         train.setObjectsMap(revMap1);
         train.setAdditionalParams(statMap1);
 
@@ -133,11 +124,6 @@ public class OrderViewModelTest {
         updateRevObjectMapFromJson(json, order);
 
         assertTrue(order.getCollector().getObjectsMap().containsValue(newcar));
-    }
-
-    @Test
-    public void shouldUpdateRevisionMap() {
-
     }
 
     private String makeJsonFromRevObjects(Order order) {

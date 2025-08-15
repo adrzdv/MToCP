@@ -54,8 +54,8 @@ public class MediaCreator {
             Log.e("MediaCreator", "Access denied. Cant create a folder");
             return null;
         }
-        //String timestamp = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss", Locale.getDefault()).format(new Date());
-        return new File(mediaDir, prefix + "_" + extension);
+        String timestamp = new SimpleDateFormat("HH-mm-ss", Locale.getDefault()).format(new Date());
+        return new File(mediaDir, prefix + "_" + timestamp + "_" + extension);
     }
 
     public void overlayDataTime(File imgFile) {

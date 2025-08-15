@@ -6,7 +6,6 @@ import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
-import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
@@ -35,10 +34,8 @@ public class TrainOrder extends Order implements CollectableOrder {
 
     @Override
     public void updateRevisionObject(RevisionObject o) {
-        if (o instanceof Coach that) {
-            Map<String, RevisionObject> currMap = train.getObjectsMap();
-            currMap.put(o.getNumber(), o);
-            train.setObjectsMap(currMap);
+        if (o instanceof Coach) {
+            train.getObjectsMap().put(o.getNumber(), o);
         }
     }
 
@@ -90,16 +87,6 @@ public class TrainOrder extends Order implements CollectableOrder {
     @Override
     public void setIsQualityPassport(Boolean isQualityPassport) {
         train.setQualityPassport(isQualityPassport);
-    }
-
-    @Override
-    public void addViolationInCollector(String objNumber, ViolationDomain violation) {
-        train.addViolationToObject(objNumber, violation);
-    }
-
-    @Override
-    public void deleteViolationInCollector(String objNumber, int code) {
-        train.deleteViolationInObject(objNumber, code);
     }
 
     @Override

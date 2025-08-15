@@ -102,7 +102,7 @@ fun ResultScreenStatsParam(
                     ) {
                         params.forEachIndexed { index, value ->
                             val statusSuffix =
-                                if (value.completed) " [ВЫПОЛНЕНО]" else " [НЕ ВЫПОЛНЕНО]"
+                                if (value.completed) " \n[ВЫПОЛНЕНО]" else " \n[НЕ ВЫПОЛНЕНО]"
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()

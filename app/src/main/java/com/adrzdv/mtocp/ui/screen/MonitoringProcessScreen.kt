@@ -236,12 +236,12 @@ fun MonitoringProcessScreen(
             R.drawable.ic_export_24_white,
             {
                 val gson = orderViewModel.makeJsonFromRevObjects()
-                if (gson.isNullOrEmpty() || gson == "{}") {
-                    scope.launch {
-                        snackbarHostState.showSnackbar(uncheckedCoaches)
-                    }
-                    return@MenuElementData
-                }
+//                if (gson.isNullOrEmpty() || gson == "{}") {
+//                    scope.launch {
+//                        snackbarHostState.showSnackbar(uncheckedCoaches)
+//                    }
+//                    return@MenuElementData
+//                }
                 val bottomSheet = NfcBottomSheetFragment.newInstance(gson).apply {
                     onJsonReceived = { receivedJson ->
                         orderViewModel.updateRevObjectMapFromJson(receivedJson)

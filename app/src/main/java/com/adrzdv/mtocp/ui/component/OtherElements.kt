@@ -110,7 +110,6 @@ fun ParameterSelectionBottomSheet(
                         TextField(
                             value = note,
                             onValueChange = { newNote ->
-                                //paramsViewModel.updateNote(param.id, newNote)
                                 note = newNote
                             },
                             modifier = Modifier.fillMaxWidth()

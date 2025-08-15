@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.domain.usecase.stats;
+package com.adrzdv.mtocp.domain.usecase;
 
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;

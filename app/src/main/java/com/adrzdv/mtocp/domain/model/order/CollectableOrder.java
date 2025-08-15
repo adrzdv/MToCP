@@ -36,22 +36,6 @@ public interface CollectableOrder {
     void setIsQualityPassport(Boolean isQualityPassport);
 
     /**
-     * Adds a violation to the collector associated with the given object number.
-     *
-     * @param objNumber the identifier of the object
-     * @param violation the violation to add
-     */
-    void addViolationInCollector(String objNumber, ViolationDomain violation);
-
-    /**
-     * Removes a specific violation from the collector for the given object number.
-     *
-     * @param objNumber the identifier of the object
-     * @param code      the violation code to remove
-     */
-    void deleteViolationInCollector(String objNumber, int code);
-
-    /**
      * Get crew map
      *
      * @return map of worker domain

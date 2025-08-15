@@ -81,16 +81,6 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
     }
 
     @Override
-    public void addViolationInCollector(String objNumber, ViolationDomain violation) {
-        ticketOffice.addViolationToObject(objNumber, violation);
-    }
-
-    @Override
-    public void deleteViolationInCollector(String objNumber, int code) {
-        ticketOffice.deleteViolationInObject(objNumber, code);
-    }
-
-    @Override
     public Map<String, WorkerDomain> getCrewMap() {
         Map<String, WorkerDomain> result = new HashMap<>();
         result.put(ticketOffice.getHeadOfOffice().getWorkerType().getDescription(), ticketOffice.getHeadOfOffice());

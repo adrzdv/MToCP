@@ -102,4 +102,5 @@ public abstract class ObjectCollector {
         objectsMap.get(objNumber).deleteViolation(code);
 
     }
+    public abstract Map<String, RevisionObject> getCheckedObjects();
 }

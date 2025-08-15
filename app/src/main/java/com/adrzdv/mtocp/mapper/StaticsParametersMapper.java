@@ -18,7 +18,7 @@ public class StaticsParametersMapper {
     public static StaticsParam fromDomainToShort(TempParametersDomain tempParam) {
         return new StaticsParam(tempParam.getId(),
                 tempParam.getName(),
-                null,
+                true,
                 tempParam.getNote());
     }
 }
