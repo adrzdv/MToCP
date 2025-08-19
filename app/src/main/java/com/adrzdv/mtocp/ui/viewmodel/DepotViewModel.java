@@ -21,6 +21,7 @@ public class DepotViewModel extends ViewModel {
     private final MutableLiveData<List<DepotDto>> filteredDepotList;
     private String currentSearchString;
     private final ExecutorService executor;
+    private boolean isDinner;
 
     public DepotViewModel(DepotRepository repository) {
         this.repository = repository;
@@ -28,6 +29,7 @@ public class DepotViewModel extends ViewModel {
         this.allDepotList = new ArrayList<>();
         this.filteredDepotList = new MutableLiveData<>(new ArrayList<>());
         this.currentSearchString = "";
+        this.isDinner = false;
         loadData();
     }
 
@@ -40,9 +42,37 @@ public class DepotViewModel extends ViewModel {
         applyFilter();
     }
 
+    public void filterDinner() {
+
+        isDinner = true;
+        applyFilter();
+    }
+
+    public void resetDinnerFilter() {
+        isDinner = false;
+        applyFilter();
+    }
+
+    public DepotDomain getDepotDomain(String depotName) {
+
+        return allDepotList.stream()
+                .filter(depot -> depot.getName().equals(depotName))
+                .findFirst().orElse(null);
+    }
+
     private void applyFilter() {
         String str = currentSearchString.toLowerCase();
         List<DepotDomain> res = new ArrayList<>(allDepotList);
+
+        if (isDinner) {
+            res = res.stream()
+                    .filter(depot -> Boolean.TRUE.equals(depot.getDinnerDepot()))
+                    .toList();
+        } else {
+            res = res.stream()
+                    .filter(depot -> Boolean.TRUE.equals(depot.getDinnerDepot() == null))
+                    .toList();
+        }
 
         if (!str.isEmpty()) {
             res = res.stream()
@@ -65,5 +95,4 @@ public class DepotViewModel extends ViewModel {
             applyFilter();
         });
     }
-
 }

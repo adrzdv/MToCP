@@ -10,6 +10,7 @@ public class ViolationDomain {
     private String shortName;
     private int amount;
     private Map<String, String> attributeMap;
+    private boolean isResolved;
 
     public ViolationDomain(Integer code, String name, String shortName) {
         this.code = code;
@@ -17,6 +18,7 @@ public class ViolationDomain {
         this.shortName = shortName;
         this.amount = 1;
         this.attributeMap = new HashMap<>();
+        this.isResolved = false;
     }
 
     public Integer getCode() {
@@ -57,6 +59,14 @@ public class ViolationDomain {
 
     public void setAttributeMap(Map<String, String> attributeMap) {
         this.attributeMap = attributeMap;
+    }
+
+    public boolean isResolved() {
+        return isResolved;
+    }
+
+    public void setResolved(boolean resolved) {
+        isResolved = resolved;
     }
 
     @Override

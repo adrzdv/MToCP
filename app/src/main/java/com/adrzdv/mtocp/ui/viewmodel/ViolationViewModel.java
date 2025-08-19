@@ -1,23 +1,17 @@
 package com.adrzdv.mtocp.ui.viewmodel;
 
-import static com.adrzdv.mtocp.MessageCodes.SUCCESS;
-import static com.adrzdv.mtocp.MessageCodes.UPDATE_ERROR;
 import static com.adrzdv.mtocp.domain.model.enums.RevisionType.ALL;
-
-import android.database.sqlite.SQLiteConstraintException;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.adrzdv.mtocp.data.db.entity.ViolationEntity;
-import com.adrzdv.mtocp.data.importmodel.ViolationImport;
 import com.adrzdv.mtocp.domain.model.enums.RevisionType;
 import com.adrzdv.mtocp.domain.repository.ViolationRepository;
 import com.adrzdv.mtocp.mapper.ViolationMapper;
 import com.adrzdv.mtocp.ui.model.ViolationDto;
 import com.adrzdv.mtocp.util.Event;
-import com.adrzdv.mtocp.util.importmanager.ImportManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,23 +60,6 @@ public class ViolationViewModel extends ViewModel {
     public void filterDataByRevisionType(RevisionType revType) {
         currentRevisionType = revType != null ? revType : ALL;
         applyFilters();
-    }
-
-    public LiveData<Event<String>> getToastMessage() {
-        return toastMessage;
-    }
-
-    public void updateViolation(ViolationEntity violation) {
-
-        executor.execute(() -> {
-            try {
-                repository.updateByCode(violation);
-                loadViolations();
-                toastMessage.postValue(new Event<>("UPDATED"));
-            } catch (SQLiteConstraintException e) {
-                toastMessage.postValue(new Event<>(UPDATE_ERROR.toString()));
-            }
-        });
     }
 
     private void applyFilters() {

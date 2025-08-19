@@ -16,7 +16,7 @@ public enum PassengerCoachType {
         this.passengerCoachTypeTitle = passengerCoachTypeTitle;
     }
 
-    public String getRevisionObjectTitle() {
+    public String getPassengerCoachTitle() {
         return passengerCoachTypeTitle;
     }
 

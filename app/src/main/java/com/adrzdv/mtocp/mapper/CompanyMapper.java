@@ -15,7 +15,8 @@ public class CompanyMapper {
                 company.company.getActive(),
                 company.company.getContractNumber(),
                 company.company.getExpirationDate(),
-                BranchMapper.fromEntityToDomain(company.branch));
+                BranchMapper.fromEntityToDomain(company.branch),
+                company.company.getDinnerDepartment());
     }
 
     public static CompanyDto fromDomainToDto(CompanyDomain company) {
@@ -33,6 +34,7 @@ public class CompanyMapper {
                 company.getActive(),
                 company.getContract(),
                 company.getExpirationDate(),
-                company.getBranchId());
+                company.getBranchId(),
+                company.getDinnerDepartment());
     }
 }

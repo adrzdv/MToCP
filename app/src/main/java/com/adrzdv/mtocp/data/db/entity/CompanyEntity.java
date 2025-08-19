@@ -1,6 +1,7 @@
 package com.adrzdv.mtocp.data.db.entity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -34,19 +35,24 @@ public class CompanyEntity {
     @NonNull
     @ColumnInfo(name = "id_branch")
     private Integer branchId;
+    @Nullable
+    @ColumnInfo(name = "is_dinner_department")
+    private Boolean isDinnerDepartment;
 
     public CompanyEntity(@NonNull Long els,
                          @NonNull String name,
                          @NonNull Boolean isActive,
                          @NonNull String contractNumber,
                          @NonNull LocalDate expirationDate,
-                         @NonNull Integer branchId) {
+                         @NonNull Integer branchId,
+                         @Nullable Boolean isDinnerDepartment) {
         this.els = els;
         this.name = name;
         this.isActive = isActive;
         this.contractNumber = contractNumber;
         this.expirationDate = expirationDate;
         this.branchId = branchId;
+        this.isDinnerDepartment = isDinnerDepartment;
     }
 
     public CompanyEntity() {
@@ -56,6 +62,7 @@ public class CompanyEntity {
         this.isActive = true;
         this.expirationDate = LocalDate.of(1900, 1, 1);
         this.branchId = 0;
+        this.isDinnerDepartment = false;
     }
 
     @NonNull
@@ -110,5 +117,14 @@ public class CompanyEntity {
 
     public void setBranchId(@NonNull Integer branchId) {
         this.branchId = branchId;
+    }
+
+    @Nullable
+    public Boolean getDinnerDepartment() {
+        return isDinnerDepartment;
+    }
+
+    public void setDinnerDepartment(@Nullable Boolean dinnerDepartment) {
+        isDinnerDepartment = dinnerDepartment;
     }
 }

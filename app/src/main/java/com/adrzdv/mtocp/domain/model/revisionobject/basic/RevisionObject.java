@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.domain.model.revisionobject.basic;
 
+import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
@@ -7,6 +8,7 @@ import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Domain class model for abstract revision object. Stores data about number of revision object,
@@ -19,8 +21,9 @@ public abstract class RevisionObject {
     private LocalDateTime revisionDateStart;
     private LocalDateTime revisionDateEnd;
     private Boolean isQualityPassport;
-    private Map<String, ViolationDomain> violationMap;
+    private Map<Integer, ViolationDomain> violationMap;
     private Map<String, StaticsParam> additionalParams;
+    private String objClass;
 
     public RevisionObject(String number) {
         this.number = number;
@@ -28,6 +31,7 @@ public abstract class RevisionObject {
         this.isQualityPassport = false;
         this.violationMap = new HashMap<>();
         this.additionalParams = new HashMap<>();
+        this.objClass = getClass().getSimpleName();
     }
 
     public int countViolation() {
@@ -76,11 +80,11 @@ public abstract class RevisionObject {
         this.workerDomain = workerDomain;
     }
 
-    public Map<String, ViolationDomain> getViolationMap() {
+    public Map<Integer, ViolationDomain> getViolationMap() {
         return violationMap;
     }
 
-    public void setViolationMap(Map<String, ViolationDomain> violationMap) {
+    public void setViolationMap(Map<Integer, ViolationDomain> violationMap) {
         this.violationMap = violationMap;
     }
 
@@ -90,5 +94,38 @@ public abstract class RevisionObject {
 
     public void setAdditionalParams(Map<String, StaticsParam> additionalParams) {
         this.additionalParams = additionalParams;
+    }
+
+    public void addViolation(ViolationDomain violation) {
+
+        if (violationMap.containsKey(violation.getCode())) {
+            throw new IllegalArgumentException(MessageCodes.DUPLICATE_ERROR.getErrorTitle()
+                    + violation.getName());
+        }
+
+        violationMap.put(violation.getCode(), violation);
+    }
+
+    public void deleteViolation(int code) {
+        if (!violationMap.containsKey(code)) {
+            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getErrorTitle());
+        }
+
+        violationMap.remove(code);
+    }
+
+    public void clearViolationMap() {
+        violationMap.clear();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof RevisionObject that)) return false;
+        return Objects.equals(number, that.number);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(number);
     }
 }

@@ -2,18 +2,19 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.kapt")
     id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
     namespace = "com.adrzdv.mtocp"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.adrzdv.mtocp"
-        minSdk = 34
+        minSdk = 30                                                 //Android 11+
         targetSdk = 35
         versionCode = 1
-        versionName = "0.3.7-beta"
+        versionName = "0.9.1-beta-hf-19082025"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -31,7 +32,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
+        kotlinCompilerExtensionVersion = "1.5.13"
     }
 
     buildTypes {
@@ -58,7 +59,17 @@ dependencies {
     //implementation(libs.androidx.navigation.compose.jvmstubs)
     implementation("androidx.navigation:navigation-compose:2.9.0")
     implementation(libs.androidx.runtime.livedata)
-    val composeBom = platform("androidx.compose:compose-bom:2024.05.00")
+    implementation(libs.androidx.room.runtime.android)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.ui.graphics)
+    implementation("androidx.fragment:fragment-ktx:1.6.0")
+    implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel)
+    testImplementation(libs.junit.jupiter)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    val composeBom = platform("androidx.compose:compose-bom:2024.09.00")
     implementation(composeBom)
 
     implementation("androidx.activity:activity-compose")
@@ -89,5 +100,9 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
 
     implementation("com.google.code.gson:gson:2.10.1")
+
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    implementation("net.lingala.zip4j:zip4j:2.11.5")
 
 }

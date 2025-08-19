@@ -67,15 +67,15 @@ public class ServiceMenuActivity extends AppCompatActivity {
         try {
             filePickerLauncher.launch(Intent.createChooser(intent, "Выберите файл"));
         } catch (android.content.ActivityNotFoundException ex) {
-            App.showToast(this, "Установите файловый менеджер.");
+            App.showToast(this, MessageCodes.FILE_MANAGER_ERROR.getErrorTitle());
         }
     }
 
     private void cleanDirs() {
         if (DirectoryHandler.cleanDirectories()) {
-            App.showToast(this, "Директории очищены");
+            App.showToast(this, MessageCodes.DIRECTORY_SUCCESS.getErrorTitle());
         } else {
-            App.showToast(this, "Ошибка очистки директорий");
+            App.showToast(this, MessageCodes.DIRECTORY_FAIL.getErrorTitle());
         }
     }
 }

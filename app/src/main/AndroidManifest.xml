@@ -2,6 +2,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -14,8 +32,23 @@
         android:theme="@style/Theme.MToCP"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activities.StartRevisionActivity"
+            android:name=".ui.activities.NfcActivity"
             android:exported="false" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+
+        <activity
+            android:name=".ui.activities.StartRevisionActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.activities.ServiceMenuActivity"
             android:exported="false" />
@@ -26,6 +59,12 @@
             android:name=".ui.activities.InfoCatalogActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.activities.RequestWebActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.CameraActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.StartMenuActivity"
             android:exported="true">
             <intent-filter>
@@ -34,6 +73,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".nfc.JsonCardService"
+            android:exported="true"
+            android:permission="android.permission.BIND_NFC_SERVICE">
+            <intent-filter>
+                <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.nfc.cardemulation.host_apdu_service"
+                android:resource="@xml/apduservice" />
+        </service>
     </application>
 
 </manifest>

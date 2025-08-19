@@ -11,17 +11,19 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.asFlow
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.ui.component.RevisionTypeDropdown
+import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
 
 @Composable
 fun ViolationCatalogScreen(
-    onBackClick: () -> Unit,
     viewModel: ViolationViewModel,
     revisionTypes: List<String>
 ) {
@@ -34,35 +36,32 @@ fun ViolationCatalogScreen(
 
     Column(
         modifier = Modifier
+            .background(AppColors.LIGHT_GRAY.color)
             .fillMaxSize()
             .padding(16.dp)
     ) {
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBackClick) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_back_32),
-                    contentDescription = stringResource(R.string.back_text)
-                )
-            }
-            Text(
-                text = stringResource(R.string.header_catalog),
-                style = CustomTypography.displayLarge,
-                modifier = Modifier
-                    .padding(start = 8.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
         OutlinedTextField(
             value = searchText,
+            trailingIcon = {
+                if (searchText.isNotEmpty()) {
+                    IconButton(onClick = {
+                        searchText = ""
+                        viewModel.filterDataByString(searchText)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(R.string.clear_text),
+                            tint = Color.Gray
+                        )
+                    }
+                }
+            },
             onValueChange = {
                 searchText = it
                 viewModel.filterDataByString(it)
             },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color(0xFFCCCCCC),
+                focusedBorderColor = AppColors.OUTLINE_GREEN.color,
                 unfocusedBorderColor = Color(0xFFCCCCCC),
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
@@ -74,7 +73,7 @@ fun ViolationCatalogScreen(
             label = {
                 Text(
                     stringResource(R.string.search_text_hint),
-                    style = CustomTypography.labelLarge
+                    style = CustomTypography.labelMedium
                 )
             },
             modifier = Modifier
@@ -88,6 +87,8 @@ fun ViolationCatalogScreen(
         RevisionTypeDropdown(
             revisionTypes = revisionTypes,
             selectedRevision = selectedRevision,
+            isError = false,
+            errorMessage = "",
             onRevisionSelected = {
                 selectedRevision = it
                 viewModel.filterDataByRevisionType(RevisionType.fromString(it))
@@ -107,12 +108,14 @@ fun ViolationCatalogScreen(
                     Text(
                         text = violation.code.toString(),
                         style = CustomTypography.bodyLarge,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        color = Color.Black
                     )
                     Text(
                         text = violation.name,
                         style = CustomTypography.bodyLarge,
-                        modifier = Modifier.weight(5f)
+                        modifier = Modifier.weight(5f),
+                        color = Color.Black
                     )
                 }
             }

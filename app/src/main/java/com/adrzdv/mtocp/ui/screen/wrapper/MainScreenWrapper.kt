@@ -9,6 +9,7 @@ fun ComposeView.showStartMenuScreen(
     onServiceMenuClick: () -> Unit,
     onExitClick: () -> Unit,
     onHelpClick: () -> Unit,
+    onRequestWebClick: () -> Unit,
     appVersion: String
 ) {
     setContent {
@@ -18,6 +19,7 @@ fun ComposeView.showStartMenuScreen(
             onServiceMenuClick = onServiceMenuClick,
             onExitClick = onExitClick,
             onHelpClick = onHelpClick,
+            onRequestWebClick = onRequestWebClick,
             appVersion = appVersion
         )
     }

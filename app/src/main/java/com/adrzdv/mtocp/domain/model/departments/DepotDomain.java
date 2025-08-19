@@ -9,19 +9,22 @@ public class DepotDomain {
     private String phoneNumber;
     private BranchDomain branchDomain;
     private Boolean isActive;
+    private Boolean isDinnerDepot;
 
     public DepotDomain(int id,
                        String name,
                        String shortName,
                        String phoneNumber,
                        BranchDomain branchDomain,
-                       Boolean isActive) {
+                       Boolean isActive,
+                       Boolean isDinnerDepot) {
         this.id = id;
         this.name = name;
         this.shortName = shortName;
         this.phoneNumber = phoneNumber;
         this.branchDomain = branchDomain;
         this.isActive = isActive;
+        this.isDinnerDepot = isDinnerDepot;
     }
 
     public int getId() {
@@ -72,6 +75,14 @@ public class DepotDomain {
         isActive = active;
     }
 
+    public Boolean getDinnerDepot() {
+        return isDinnerDepot;
+    }
+
+    public void setDinnerDepot(Boolean dinnerDepot) {
+        isDinnerDepot = dinnerDepot;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof DepotDomain that)) return false;
@@ -82,4 +93,6 @@ public class DepotDomain {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+
 }

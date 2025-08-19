@@ -10,6 +10,7 @@ public class TrainDto {
     private String phone;
     private Boolean isVideo;
     private Boolean isProgressive;
+    private Boolean isDinnerCar;
 
 
     public TrainDto(String number,
@@ -20,7 +21,8 @@ public class TrainDto {
                     String branchShortName,
                     String phone,
                     Boolean isVideo,
-                    Boolean isProgressive) {
+                    Boolean isProgressive,
+                    Boolean isDinnerCar) {
         this.number = number;
         this.route = route;
         this.depotName = depotName;
@@ -30,6 +32,7 @@ public class TrainDto {
         this.phone = phone;
         this.isVideo = isVideo;
         this.isProgressive = isProgressive;
+        this.isDinnerCar = isDinnerCar;
     }
 
     public String getNumber() {
@@ -102,5 +105,13 @@ public class TrainDto {
 
     public void setProgressive(Boolean progressive) {
         isProgressive = progressive;
+    }
+
+    public Boolean getDinnerCar() {
+        return isDinnerCar;
+    }
+
+    public void setDinnerCar(Boolean dinnerCar) {
+        isDinnerCar = dinnerCar;
     }
 }

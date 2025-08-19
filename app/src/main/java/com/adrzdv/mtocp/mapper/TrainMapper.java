@@ -14,7 +14,8 @@ public class TrainMapper {
                 trainEntity.getRoute(),
                 depotDomain,
                 trainEntity.getVideo(),
-                trainEntity.getProgressive());
+                trainEntity.getProgressive(),
+                false);
     }
 
     public static TrainEntity fromImportToEntity(TrainImport train) {
@@ -37,6 +38,7 @@ public class TrainMapper {
                 train.getDepot().getBranchDomain().getShortName(),
                 train.getDepot().getPhoneNumber(),
                 train.getVideo(),
-                train.getProgressive());
+                train.getProgressive(),
+                train.getIsDinnerCar());
     }
 }

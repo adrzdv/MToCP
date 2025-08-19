@@ -9,18 +9,22 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.room.Room;
 
 import com.adrzdv.mtocp.data.db.AppDatabase;
+import com.adrzdv.mtocp.data.importmodel.AdditionalParamImport;
 import com.adrzdv.mtocp.data.importmodel.CompanyImport;
 import com.adrzdv.mtocp.data.importmodel.DepotImport;
 import com.adrzdv.mtocp.data.importmodel.TrainImport;
 import com.adrzdv.mtocp.data.importmodel.ViolationImport;
 import com.adrzdv.mtocp.data.repository.CompanyRepositoryImpl;
 import com.adrzdv.mtocp.data.repository.DepotRepositoryImpl;
+import com.adrzdv.mtocp.data.repository.TempParamRepositoryImpl;
 import com.adrzdv.mtocp.data.repository.TrainRepositoryImpl;
 import com.adrzdv.mtocp.data.repository.ViolationRepositoryImpl;
 import com.adrzdv.mtocp.domain.repository.CompanyRepository;
 import com.adrzdv.mtocp.domain.repository.DepotRepository;
+import com.adrzdv.mtocp.domain.repository.TempParamRepository;
 import com.adrzdv.mtocp.domain.repository.TrainRepository;
 import com.adrzdv.mtocp.domain.repository.ViolationRepository;
+import com.adrzdv.mtocp.util.importmanager.handlers.AdditionalParamHandler;
 import com.adrzdv.mtocp.util.importmanager.handlers.CompanyImportHandler;
 import com.adrzdv.mtocp.util.importmanager.handlers.DepotImportHandler;
 import com.adrzdv.mtocp.util.importmanager.ImportHandlerRegistry;
@@ -34,12 +38,12 @@ import java.util.concurrent.Executors;
 public class App extends Application {
     private static App instance;
     private static Toast currentToast;
-
     private AppDatabase database;
     private static ViolationRepository violationRepository;
     private static DepotRepository depotRepository;
     private static CompanyRepository companyRepository;
     private static TrainRepository trainRepository;
+    private static TempParamRepository tempParamRepository;
     private static ExecutorService executor;
     private static ImportHandlerRegistry registry;
     private static ImportManager importManager;
@@ -69,7 +73,6 @@ public class App extends Application {
         return database;
     }
 
-
     public static ImportManager getImportManager() {
         return importManager;
     }
@@ -90,6 +93,10 @@ public class App extends Application {
         return trainRepository;
     }
 
+    public static TempParamRepository getTempParamRepository() {
+        return tempParamRepository;
+    }
+
     public static void showToast(Context context, String message) {
         if (currentToast != null) {
             currentToast.cancel();
@@ -103,6 +110,7 @@ public class App extends Application {
         depotRepository = new DepotRepositoryImpl(database.depotDao());
         companyRepository = new CompanyRepositoryImpl(database.companyDao());
         trainRepository = new TrainRepositoryImpl(database.trainDao(), database.depotDao());
+        tempParamRepository = new TempParamRepositoryImpl(database.tempParamsDao());
     }
 
     private void regHandlers() {
@@ -118,6 +126,9 @@ public class App extends Application {
                         msg -> Log.d("IMPORT", msg)));
         registry.register(TrainImport.class,
                 new TrainImportHandler(trainRepository,
+                        msg -> Log.d("IMPORT", msg)));
+        registry.register(AdditionalParamImport.class,
+                new AdditionalParamHandler(tempParamRepository,
                         msg -> Log.d("IMPORT", msg)));
     }
 }
