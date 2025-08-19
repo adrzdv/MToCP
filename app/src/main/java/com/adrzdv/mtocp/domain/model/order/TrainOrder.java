@@ -6,10 +6,12 @@ import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
+import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -35,7 +37,15 @@ public class TrainOrder extends Order implements CollectableOrder {
     @Override
     public void updateRevisionObject(RevisionObject o) {
         if (o instanceof Coach) {
-            train.getObjectsMap().put(o.getNumber(), o);
+            RevisionObject existing = train.getObjectsMap().computeIfAbsent(o.getNumber(), k -> o);
+
+            Map<Integer, ViolationDomain> incomingMap = o.getViolationMap();
+
+            if (!incomingMap.isEmpty()) {
+                for (Map.Entry<Integer, ViolationDomain> entry : incomingMap.entrySet()) {
+                    existing.getViolationMap().putIfAbsent(entry.getKey(), entry.getValue());
+                }
+            }
         }
     }
 
