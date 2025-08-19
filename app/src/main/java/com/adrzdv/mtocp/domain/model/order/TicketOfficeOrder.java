@@ -31,6 +31,11 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
     }
 
     @Override
+    public void updateRevisionObjectFromJson(RevisionObject object) {
+
+    }
+
+    @Override
     public void clearCrewWorkers() {
         ticketOffice.removeOfficeHeader();
     }

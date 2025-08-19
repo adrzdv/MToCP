@@ -66,6 +66,8 @@ public abstract class Order extends RegularValidator {
 
     public abstract void updateRevisionObject(RevisionObject object);
 
+    public abstract void updateRevisionObjectFromJson(RevisionObject object);
+
     public abstract void clearCrewWorkers();
 
     public abstract void clearRevisionObjects();

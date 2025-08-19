@@ -33,6 +33,11 @@ public class BaggageOrder extends Order {
     }
 
     @Override
+    public void updateRevisionObjectFromJson(RevisionObject object) {
+
+    }
+
+    @Override
     public void clearCrewWorkers() {
         workerMap.clear();
     }

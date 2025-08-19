@@ -424,7 +424,7 @@ public class OrderViewModel extends ViewModel {
         }
 
         for (RevisionObject obj : deserializedMap.values()) {
-            cuurOrder.updateRevisionObject(obj);
+            cuurOrder.updateRevisionObjectFromJson(obj);
         }
 
         order.setValue(cuurOrder);
