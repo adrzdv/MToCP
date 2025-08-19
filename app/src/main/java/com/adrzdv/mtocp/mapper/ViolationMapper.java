@@ -30,7 +30,6 @@ public class ViolationMapper {
     }
 
     public static ViolationEntity fromImportToEntity(@NonNull ViolationImport violation) {
-
         ViolationEntity violationEntity = new ViolationEntity(violation.getCode(),
                 violation.getName(),
                 violation.getShortName(),
@@ -41,7 +40,6 @@ public class ViolationMapper {
                 violation.getAtTicketOffice());
 
         violationEntity.setId(violation.getId());
-
         return violationEntity;
     }
 }

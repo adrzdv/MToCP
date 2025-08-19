@@ -2,8 +2,10 @@ package com.adrzdv.mtocp.util.importmanager;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.adrzdv.mtocp.MessageCodes;
+import com.adrzdv.mtocp.data.importmodel.AdditionalParamImport;
 import com.adrzdv.mtocp.data.importmodel.CompanyImport;
 import com.adrzdv.mtocp.data.importmodel.DepotImport;
 import com.adrzdv.mtocp.data.importmodel.TrainImport;
@@ -39,10 +41,12 @@ public class ImportManager {
                 applyHandler(data.getDepotsList(), DepotImport.class);
                 applyHandler(data.getCompanyList(), CompanyImport.class);
                 applyHandler(data.getTrainList(), TrainImport.class);
+                applyHandler(data.getAdditionalParamList(), AdditionalParamImport.class);
             });
             onResult.accept(MessageCodes.SUCCESS.getErrorTitle());
 
         } catch (Exception e) {
+            Log.d("IMPORT_MANAGER", e.getMessage());
             onResult.accept(MessageCodes.LOAD_ERROR.toString());
         }
     }

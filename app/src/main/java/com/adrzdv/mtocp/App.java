@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.room.Room;
 
 import com.adrzdv.mtocp.data.db.AppDatabase;
+import com.adrzdv.mtocp.data.importmodel.AdditionalParamImport;
 import com.adrzdv.mtocp.data.importmodel.CompanyImport;
 import com.adrzdv.mtocp.data.importmodel.DepotImport;
 import com.adrzdv.mtocp.data.importmodel.TrainImport;
@@ -23,6 +24,7 @@ import com.adrzdv.mtocp.domain.repository.DepotRepository;
 import com.adrzdv.mtocp.domain.repository.TempParamRepository;
 import com.adrzdv.mtocp.domain.repository.TrainRepository;
 import com.adrzdv.mtocp.domain.repository.ViolationRepository;
+import com.adrzdv.mtocp.util.importmanager.handlers.AdditionalParamHandler;
 import com.adrzdv.mtocp.util.importmanager.handlers.CompanyImportHandler;
 import com.adrzdv.mtocp.util.importmanager.handlers.DepotImportHandler;
 import com.adrzdv.mtocp.util.importmanager.ImportHandlerRegistry;
@@ -125,7 +127,8 @@ public class App extends Application {
         registry.register(TrainImport.class,
                 new TrainImportHandler(trainRepository,
                         msg -> Log.d("IMPORT", msg)));
-
-        //add the same for temp parameters!!!
+        registry.register(AdditionalParamImport.class,
+                new AdditionalParamHandler(tempParamRepository,
+                        msg -> Log.d("IMPORT", msg)));
     }
 }

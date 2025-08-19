@@ -1,6 +1,7 @@
 package com.adrzdv.mtocp.mapper;
 
 import com.adrzdv.mtocp.data.db.entity.TempParametersEntity;
+import com.adrzdv.mtocp.data.importmodel.AdditionalParamImport;
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
 import com.adrzdv.mtocp.domain.model.violation.TempParametersDomain;
 
@@ -20,5 +21,12 @@ public class StaticsParametersMapper {
                 tempParam.getName(),
                 true,
                 tempParam.getNote());
+    }
+
+    public static TempParametersEntity fromImportToEntity(AdditionalParamImport impDate) {
+        TempParametersEntity entity = new TempParametersEntity(impDate.getName(),
+                impDate.getActive(), impDate.getDateStart(), impDate.getDateEnd(), impDate.getTrain());
+        entity.setId(impDate.getId());
+        return entity;
     }
 }

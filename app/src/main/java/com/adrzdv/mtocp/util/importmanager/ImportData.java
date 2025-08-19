@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.util.importmanager;
 
+import com.adrzdv.mtocp.data.importmodel.AdditionalParamImport;
 import com.adrzdv.mtocp.data.importmodel.CompanyImport;
 import com.adrzdv.mtocp.data.importmodel.DepotImport;
 import com.adrzdv.mtocp.data.importmodel.TrainImport;
@@ -12,6 +13,7 @@ public class ImportData {
     private List<DepotImport> depotsList;
     private List<CompanyImport> companyList;
     private List<TrainImport> trainList;
+    private List<AdditionalParamImport> additionalParamList;
 
     public List<ViolationImport> getViolationList() {
         return this.violationList;
@@ -27,5 +29,9 @@ public class ImportData {
 
     public List<TrainImport> getTrainList() {
         return trainList;
+    }
+
+    public List<AdditionalParamImport> getAdditionalParamList() {
+        return additionalParamList;
     }
 }
