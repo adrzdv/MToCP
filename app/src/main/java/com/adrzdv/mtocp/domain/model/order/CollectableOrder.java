@@ -1,7 +1,6 @@
 package com.adrzdv.mtocp.domain.model.order;
 
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
-import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
 import java.util.Map;
@@ -41,4 +40,8 @@ public interface CollectableOrder {
      * @return map of worker domain
      */
     Map<String, WorkerDomain> getCrewMap();
+
+    default String getObjectName() {
+        return getCollector().getNumber();
+    }
 }

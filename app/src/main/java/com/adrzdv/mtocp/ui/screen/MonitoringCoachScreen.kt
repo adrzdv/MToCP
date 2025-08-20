@@ -181,7 +181,7 @@ fun MonitoringCoachScreen(
                     )
                     DropdownMenuField(
                         label = stringResource(R.string.worker_type),
-                        options = WorkerTypes.values().map { it.description },
+                        options = WorkerTypes.entries.map { it.description },
                         selectedOption = WorkerTypes.entries
                             .firstOrNull { it.description == state.typeWorker }?.description ?: "",
                         onOptionSelected = {
@@ -370,6 +370,7 @@ fun MonitoringCoachScreen(
                 onDismiss = { showAddTagDialog = false }
             )
         }
+
         if (showAddAmountDialog) {
             ChangeAmountDialog(
                 onConfirm = { amount ->
@@ -381,6 +382,7 @@ fun MonitoringCoachScreen(
                 }
             )
         }
+
         if (showAddViolationDialog) {
             AddViolationToCoachDialog(
                 revisionType = orderViewModel.revisionType,
@@ -415,7 +417,8 @@ fun MonitoringCoachScreen(
                 },
                 onDismiss = {
                     showBottomSheet = false
-                }, callback = { params ->
+                },
+                callback = { params ->
                     passengerCoachViewModel.addAdditionalParams(params)
                 }
             )
