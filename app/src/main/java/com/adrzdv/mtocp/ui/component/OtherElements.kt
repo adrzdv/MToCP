@@ -66,7 +66,6 @@ fun ParameterSelectionBottomSheet(
             Spacer(Modifier.height(16.dp))
 
             params.forEach { param ->
-                var note by remember { mutableStateOf(param.note ?: "") }
                 var completed by remember { mutableStateOf(param.completed ?: true) }
                 Row(
                     modifier = Modifier
@@ -145,7 +144,6 @@ fun ParameterSelectionBottomSheet(
                     }
                 },
                 text = stringResource(R.string.save_string),
-
                 )
         }
     }

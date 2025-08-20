@@ -41,6 +41,7 @@ import org.jspecify.annotations.Nullable;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -432,12 +433,17 @@ public class OrderViewModel extends ViewModel {
 
     public void generateReport() throws ExecutionException, InterruptedException {
         Order currOrder = order.getValue();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         if (currOrder == null) {
             return;
         }
         if (currOrder instanceof CollectableOrder that) {
             Map<String, RevisionObject> objMap = that.getCollector().getObjectsMap();
-            textReportSms.postValue(generateSmsReportUseCase.execute(objMap));
+            String smsReport = currOrder.getRevisionDateStart().format(formatter) + "\n" +
+                    that.getObjectName() + "\n" +
+                    generateSmsReportUseCase.execute(objMap);
+
+            textReportSms.postValue(smsReport);
         }
     }
 

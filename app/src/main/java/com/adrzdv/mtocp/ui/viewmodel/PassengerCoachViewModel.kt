@@ -180,6 +180,7 @@ class PassengerCoachViewModel(
         val nameValid = !current.nameWorker.isNullOrBlank()
         val typeValid = !current.typeWorker.isNullOrBlank()
         val depotValid = !current.depotWorker.isNullOrBlank()
+        val paramsValid = current.statParams != null && current.statParams!!.isNotEmpty()
 
         if (!idValid ||
             !nameValid ||
@@ -192,6 +193,10 @@ class PassengerCoachViewModel(
                 typeError = if (!typeValid) MessageCodes.EMPTY_STRING.errorTitle else null,
                 depotError = if (!depotValid) MessageCodes.EMPTY_STRING.errorTitle else null
             )
+            return
+        }
+        if (!paramsValid) {
+            _snackbarMessage.value = MessageCodes.PARAMS_NOT_DONE.errorTitle
             return
         }
 

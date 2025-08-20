@@ -10,11 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -197,8 +197,8 @@ fun MonitoringProcessScreen(
     val paramsViewModel: AdditionalParamViewModel =
         viewModel(factory = ViewModelFactoryProvider.provideFactory())
     val scope = rememberCoroutineScope()
-    val error = stringResource(R.string.unchecked_coaches)
     val uncheckedCoaches = stringResource(R.string.unchecked_coaches)
+    val uncheckedParams = stringResource(R.string.unchecked_params)
 
     BackHandler(
         enabled = true
@@ -236,12 +236,6 @@ fun MonitoringProcessScreen(
             R.drawable.ic_export_24_white,
             {
                 val gson = orderViewModel.makeJsonFromRevObjects()
-//                if (gson.isNullOrEmpty() || gson == "{}") {
-//                    scope.launch {
-//                        snackbarHostState.showSnackbar(uncheckedCoaches)
-//                    }
-//                    return@MenuElementData
-//                }
                 val bottomSheet = NfcBottomSheetFragment.newInstance(gson).apply {
                     onJsonReceived = { receivedJson ->
                         orderViewModel.updateRevObjectMapFromJson(receivedJson)
@@ -391,7 +385,14 @@ fun MonitoringProcessScreen(
             onConfirm = {
                 if (orderViewModel.checkUncheckedObjects()) {
                     scope.launch {
-                        snackbarHostState.showSnackbar(message = error)
+                        snackbarHostState.showSnackbar(message = uncheckedCoaches)
+                    }
+                    showSaveDialog = false
+                    return@ConfirmDialog
+                }
+                if (!isAdditionalParamsChecked) {
+                    scope.launch {
+                        snackbarHostState.showSnackbar(message = uncheckedParams)
                     }
                     showSaveDialog = false
                     return@ConfirmDialog

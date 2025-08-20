@@ -115,6 +115,7 @@
     <string name="revision_start">Начало</string>
     <string name="revision_end">Окончание</string>
     <string name="unchecked_coaches">Есть непроверенные вагоны</string>
+    <string name="unchecked_params">Не проверены дополнительные параметры</string>
     <string name="params_coach">Вагоны</string>
     <string name="params_train">Состав</string>
 
