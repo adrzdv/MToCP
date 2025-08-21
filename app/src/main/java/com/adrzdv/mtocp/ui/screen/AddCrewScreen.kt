@@ -31,7 +31,7 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.dialogs.AddWorkerDialog
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.InnerWorkerItemCard
-import com.adrzdv.mtocp.ui.component.MediumMenuButton
+import com.adrzdv.mtocp.ui.component.buttons.MediumMenuButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel

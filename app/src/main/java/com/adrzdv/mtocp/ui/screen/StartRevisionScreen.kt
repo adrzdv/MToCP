@@ -38,7 +38,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.navigation.NavController
 import com.adrzdv.mtocp.MessageCodes
-import com.adrzdv.mtocp.ui.component.CompactMenuButton
+import com.adrzdv.mtocp.ui.component.buttons.CompactMenuButton
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.ReadOnlyDatePickerField

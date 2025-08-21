@@ -41,7 +41,7 @@ import com.adrzdv.mtocp.ui.component.CoachItemCardReadOnly
 import com.adrzdv.mtocp.ui.component.ConfirmDialog
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.InfoBlockWithLabel
-import com.adrzdv.mtocp.ui.component.MediumMenuButton
+import com.adrzdv.mtocp.ui.component.buttons.MediumMenuButton
 import com.adrzdv.mtocp.ui.component.MenuElementData
 import com.adrzdv.mtocp.ui.component.MonitoringMenuItem
 import com.adrzdv.mtocp.ui.component.ParameterSelectionBottomSheet

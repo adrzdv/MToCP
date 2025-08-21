@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.ConfirmDialog
-import com.adrzdv.mtocp.ui.component.MenuButton
+import com.adrzdv.mtocp.ui.component.buttons.MenuButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 

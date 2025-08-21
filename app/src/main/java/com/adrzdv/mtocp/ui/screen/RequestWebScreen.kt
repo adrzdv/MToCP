@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.dialogs.CustomAlertDialog
-import com.adrzdv.mtocp.ui.component.MenuButton
+import com.adrzdv.mtocp.ui.component.buttons.MenuButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import com.adrzdv.mtocp.ui.viewmodel.RequestWebViewModel

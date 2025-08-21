@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.component
+package com.adrzdv.mtocp.ui.component.buttons
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
