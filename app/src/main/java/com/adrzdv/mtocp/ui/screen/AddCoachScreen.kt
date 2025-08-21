@@ -35,7 +35,7 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
 import com.adrzdv.mtocp.ui.component.CoachItemCard
-import com.adrzdv.mtocp.ui.component.ConfirmDialog
+import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.InfoBlockWithLabel
 import com.adrzdv.mtocp.ui.component.buttons.SplitButton

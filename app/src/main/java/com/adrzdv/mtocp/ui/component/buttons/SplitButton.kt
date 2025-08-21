@@ -28,7 +28,6 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 
-
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SplitButton(

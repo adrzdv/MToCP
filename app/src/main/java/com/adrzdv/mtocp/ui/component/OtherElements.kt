@@ -11,6 +11,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -93,7 +95,12 @@ fun ParameterSelectionBottomSheet(
                             completed = checked
                             paramsViewModel.updateCompleted(param.id, checked)
                         },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = AppColors.MAIN_GREEN.color,
+                            uncheckedColor = AppColors.OFF_WHITE.color,
+                            checkmarkColor = AppColors.OFF_WHITE.color
+                        )
                     )
                 }
             }

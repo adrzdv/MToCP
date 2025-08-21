@@ -361,7 +361,7 @@ fun AddTagDialog(
         title = {
             Text(
                 text = stringResource(R.string.input_new_value),
-                style = AppTypography.titleMedium
+                style = AppTypography.titleMedium,
             )
         },
         containerColor = AppColors.LIGHT_GRAY.color,

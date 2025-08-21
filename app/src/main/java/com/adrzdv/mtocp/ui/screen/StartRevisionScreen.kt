@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.OrdersTypes
 import com.adrzdv.mtocp.ui.component.AutocompleteTextField
-import com.adrzdv.mtocp.ui.component.ConfirmDialog
+import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.ExtendedFloatingActionButton
