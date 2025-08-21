@@ -1,6 +1,8 @@
 package com.adrzdv.mtocp.ui.component
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -109,20 +111,27 @@ fun CompactMenuButton(
 fun MediumMenuButton(
     onClick: () -> Unit,
     icon: @Composable () -> Unit,
-    text: String
+    text: String,
+    isEnable: Boolean
 ) {
     OutlinedButton(
         onClick = onClick,
         colors = ButtonDefaults
             .buttonColors(containerColor = AppColors.MAIN_GREEN.color),
-        border = null
+        border = null,
+        enabled = isEnable,
+        modifier = Modifier.padding(4.dp)
     ) {
-        icon()
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = text,
-            style = AppTypography.labelLarge
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            icon()
+            Text(
+                text = text,
+                style = AppTypography.labelLarge
+            )
+        }
     }
 }
 

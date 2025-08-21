@@ -113,13 +113,14 @@ fun AddCoachScreen(
 
                 MediumMenuButton(
                     onClick = { showDialog = true },
+                    isEnable = true,
                     icon = {
                         Icon(
                             painter = painterResource(R.drawable.ic_add_itew_white),
                             contentDescription = null
                         )
                     },
-                    stringResource(R.string.add_string)
+                    text = stringResource(R.string.add_string)
                 )
 
                 MediumMenuButton(
@@ -129,13 +130,14 @@ fun AddCoachScreen(
                         orderViewModel.updateTrainScheme()
 
                     },
+                    isEnable = true,
                     icon = {
                         Icon(
                             painter = painterResource(R.drawable.ic_clear_list),
                             contentDescription = null
                         )
                     },
-                    stringResource(R.string.clean_string)
+                    text = stringResource(R.string.clean_string)
                 )
             }
 
@@ -145,13 +147,14 @@ fun AddCoachScreen(
                     onClick = {
                         showAddDinnerDialog = true
                     },
+                    isEnable = true,
                     icon = {
                         Icon(
                             painter = painterResource(R.drawable.ic_add_itew_white),
                             contentDescription = null
                         )
                     },
-                    stringResource(R.string.dinner_add)
+                    text = stringResource(R.string.dinner_add)
                 )
 
                 MediumMenuButton(
@@ -175,13 +178,14 @@ fun AddCoachScreen(
                         }
 
                     },
+                    isEnable =  true,
                     icon = {
                         Icon(
                             painter = painterResource(R.drawable.ic_delete_24_white),
                             contentDescription = null
                         )
                     },
-                    stringResource(R.string.dinner_remove)
+                    text = stringResource(R.string.dinner_remove)
                 )
             }
 

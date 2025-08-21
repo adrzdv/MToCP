@@ -106,13 +106,14 @@ fun AddCrewScreen(
 
                 MediumMenuButton(
                     onClick = { showDialog = true },
+                    isEnable =  true,
                     icon = {
                         Icon(
                             painter = painterResource(R.drawable.ic_add_person),
                             contentDescription = null
                         )
                     },
-                    stringResource(R.string.add_string)
+                    text = stringResource(R.string.add_string)
                 )
 
                 MediumMenuButton(
@@ -120,13 +121,14 @@ fun AddCrewScreen(
                         workerViewModel.cleanWorkers()
                         orderViewModel.clearCrew()
                     },
+                    isEnable = true,
                     icon = {
                         Icon(
                             painter = painterResource(R.drawable.ic_clear_list),
                             contentDescription = null
                         )
                     },
-                    stringResource(R.string.clean_string)
+                    text = stringResource(R.string.clean_string)
                 )
             }
 

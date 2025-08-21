@@ -10,12 +10,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.ui.theme.AppColors
@@ -126,33 +129,28 @@ fun ServiceInfoBlock(
 }
 
 @Composable
-fun ServiceInfoBlockWithPaintedBackground(
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+fun ServiceRowBlock(
+    painter: Painter,
+    title: String,
+    isState: Boolean
 ) {
-    Box(
-        modifier = modifier
-            .background(
-                color = AppColors.OUTLINE_GREEN.color,
-                shape = RoundedCornerShape(8.dp)
-            )
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(
-                    width = 1.dp,
-                    color = AppColors.OUTLINE_GREEN.color,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .padding(top = 12.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
-        ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(6.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                content()
-            }
+        Column {
+            Icon(
+                painter = painter,
+                contentDescription = null,
+                tint = if (isState) AppColors.DARK_GREEN.color else AppColors.MATERIAL_RED.color,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+        Column {
+            Text(
+                text = title,
+                style = AppTypography.bodyMedium
+            )
         }
     }
 }

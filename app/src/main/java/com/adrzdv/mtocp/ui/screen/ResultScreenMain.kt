@@ -227,6 +227,7 @@ fun ResultScreenMain(
                             )
                         }
                     },
+                    isEnable = true,
                     text = stringResource(R.string.zip_data),
                     icon = {
                         painterResource(R.drawable.ic_zip_24_white)
@@ -245,6 +246,7 @@ fun ResultScreenMain(
                             )
                         )
                     },
+                    isEnable = true,
                     icon = { painterResource(R.drawable.ic_report_24_white) },
                     text = stringResource(R.string.report)
                 )
