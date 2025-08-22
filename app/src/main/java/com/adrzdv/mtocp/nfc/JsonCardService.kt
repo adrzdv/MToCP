@@ -12,6 +12,9 @@ class JsonCardService : HostApduService() {
     companion object {
         @Volatile
         var jsonToSend: String = "{}"
+
+        @Volatile
+        var onTransferComplete: (() -> Unit)? = null
     }
 
     private val SELECT_AID_COMMAND = byteArrayOf(
@@ -60,10 +63,14 @@ class JsonCardService : HostApduService() {
                     val part = bytes.copyOfRange(offset, end)
                     return part + STATUS_OK
                 }
+
                 0xB1 -> {
                     lastSentBytes = null
+                    onTransferComplete?.invoke()
+                    onTransferComplete = null
                     return STATUS_OK
                 }
+
                 else -> return STATUS_FAIL
             }
         }
