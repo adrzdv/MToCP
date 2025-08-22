@@ -366,6 +366,11 @@ fun InnerWorkerItemCard(worker: InnerWorkerDomain, onDeleteClick: () -> Unit) {
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_rounded_person_raised_hand_24),
+                contentDescription = null
+            )
+            Spacer(Modifier.padding(8.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     worker.name,
@@ -379,6 +384,10 @@ fun InnerWorkerItemCard(worker: InnerWorkerDomain, onDeleteClick: () -> Unit) {
                     Text(
                         info,
                         style = AppTypography.bodyMedium
+                    )
+                    Text(
+                        text = worker.id.toString(),
+                        style = AppTypography.bodySmall
                     )
                 }
             }

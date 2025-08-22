@@ -110,22 +110,29 @@ fun AddCoachScreen(
         ) {
 
             SplitButton(
-                onAddCoachClick = { showDialog = true },
-                onAddDinnerClick = { showAddDinnerDialog = true },
-                onClearListClick = {
-                    if (isHasDinnerCar) {
-                        orderViewModel.removeDinnerCar()
-                        orderViewModel.toggleDinnerCar(false)
-                        isHasDinnerCar = false
-                    }
-                    orderViewModel.clearRevisionObjects()
-                    coachViewModel.cleanMap()
-                    orderViewModel.updateTrainScheme()
-                },
-                addCoachIcon = painterResource(R.drawable.ic_add_itew_white),
-                addDinnerIcon = painterResource(R.drawable.ic_dinner_24),
-                clearIcon = painterResource(R.drawable.ic_clear_list)
-                    .apply { android.R.color.white }
+                actions = mapOf(
+                    stringResource(R.string.add_string) to
+                            Pair(
+                                painterResource(R.drawable.ic_add_itew_white),
+                                { showDialog = true }),
+                    stringResource(R.string.dinner_add) to
+                            Pair(
+                                painterResource(R.drawable.ic_dinner_24),
+                                { showAddDinnerDialog = true }),
+                    stringResource(R.string.clear_text) to
+                            Pair(
+                                painterResource(R.drawable.ic_clear_list),
+                                {
+                                    if (isHasDinnerCar) {
+                                        orderViewModel.removeDinnerCar()
+                                        orderViewModel.toggleDinnerCar(false)
+                                        isHasDinnerCar = false
+                                    }
+                                    orderViewModel.clearRevisionObjects()
+                                    coachViewModel.cleanMap()
+                                    orderViewModel.updateTrainScheme()
+                                })
+                ),
             )
 
             if (train != null) {

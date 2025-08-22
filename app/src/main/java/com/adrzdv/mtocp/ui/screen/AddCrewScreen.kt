@@ -1,12 +1,15 @@
 package com.adrzdv.mtocp.ui.screen
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
@@ -32,6 +35,7 @@ import com.adrzdv.mtocp.ui.component.dialogs.AddWorkerDialog
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.InnerWorkerItemCard
 import com.adrzdv.mtocp.ui.component.buttons.MediumMenuButton
+import com.adrzdv.mtocp.ui.component.buttons.SplitButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
@@ -102,57 +106,58 @@ fun AddCrewScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-
-                MediumMenuButton(
-                    onClick = { showDialog = true },
-                    isEnable =  true,
-                    icon = {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_add_person),
-                            contentDescription = null
-                        )
-                    },
-                    text = stringResource(R.string.add_string)
-                )
-
-                MediumMenuButton(
-                    onClick = {
-                        workerViewModel.cleanWorkers()
-                        orderViewModel.clearCrew()
-                    },
-                    isEnable = true,
-                    icon = {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_clear_list),
-                            contentDescription = null
-                        )
-                    },
-                    text = stringResource(R.string.clean_string)
-                )
-            }
-
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Checkbox(
-                    checked = checkedQualityPassport,
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = AppColors.MAIN_GREEN.color,
-                        checkmarkColor = AppColors.OFF_WHITE.color
-                    ),
-                    onCheckedChange = { checkedQualityPassport = it }
+                Icon(
+                    painter = painterResource(R.drawable.ic_outline_person_edit_24),
+                    tint = AppColors.MAIN_GREEN.color,
+                    modifier = Modifier.size(72.dp),
+                    contentDescription = null
                 )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = stringResource(R.string.quality_passport),
-                    style = AppTypography.labelLarge
-                )
+                Spacer(modifier = Modifier.weight(1f))
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalAlignment = Alignment.End
+                ) {
+                    SplitButton(
+                        actions = mapOf(
+                            stringResource(R.string.add_string) to
+                                    Pair(
+                                        painterResource(R.drawable.ic_add_person),
+                                        { showDialog = true }),
+                            stringResource(R.string.clean_string) to
+                                    Pair(
+                                        painterResource(R.drawable.ic_clear_list),
+                                        {
+                                            workerViewModel.cleanWorkers()
+                                            orderViewModel.clearCrew()
+                                        })
+                        )
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Checkbox(
+                            checked = checkedQualityPassport,
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = AppColors.MAIN_GREEN.color,
+                                checkmarkColor = AppColors.OFF_WHITE.color
+                            ),
+                            onCheckedChange = { checkedQualityPassport = it }
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = stringResource(R.string.quality_passport),
+                            style = AppTypography.labelLarge
+                        )
+                    }
+                }
             }
-
             HorizontalDivider()
-
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(6.dp),
                 modifier = Modifier.fillMaxSize()

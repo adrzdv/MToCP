@@ -31,23 +31,24 @@ import com.adrzdv.mtocp.ui.theme.AppTypography
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SplitButton(
-    onAddCoachClick: () -> Unit,
-    onAddDinnerClick: () -> Unit,
-    onClearListClick: () -> Unit,
-    addCoachIcon: Painter,
-    addDinnerIcon: Painter,
-    clearIcon: Painter
+    actions: Map<String, Pair<Painter, () -> Unit>>,
+//    onAddCoachClick: () -> Unit,
+//    onAddDinnerClick: () -> Unit,
+//    onClearListClick: () -> Unit,
+//    addCoachIcon: Painter,
+//    addDinnerIcon: Painter,
+//    clearIcon: Painter
 ) {
     var expanded by remember { mutableStateOf(false) }
     val addCoach = stringResource(R.string.add_string)
     val addDinner = stringResource(R.string.dinner_add)
     val clearList = stringResource(R.string.clear_text)
-    var selectedAction by remember { mutableStateOf(addCoach) }
-    val actions: Map<String, Pair<Painter, () -> Unit>> = mapOf(
-        addCoach to Pair(addCoachIcon, onAddCoachClick),
-        addDinner to Pair(addDinnerIcon, onAddDinnerClick),
-        clearList to Pair(clearIcon, onClearListClick)
-    )
+    var selectedAction by remember { mutableStateOf(actions.keys.first()) }
+//    val actions: Map<String, Pair<Painter, () -> Unit>> = mapOf(
+//        addCoach to Pair(addCoachIcon, onAddCoachClick),
+//        addDinner to Pair(addDinnerIcon, onAddDinnerClick),
+//        clearList to Pair(clearIcon, onClearListClick)
+//    )
     Box {
         SplitButtonLayout(
             leadingButton = {
