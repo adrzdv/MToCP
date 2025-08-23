@@ -123,9 +123,27 @@ fun AddCrewScreen(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
                     horizontalAlignment = Alignment.End
                 ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Text(
+                            text = stringResource(R.string.quality_passport),
+                            style = AppTypography.labelLarge
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Checkbox(
+                            checked = checkedQualityPassport,
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = AppColors.MAIN_GREEN.color,
+                                checkmarkColor = AppColors.OFF_WHITE.color
+                            ),
+                            onCheckedChange = { checkedQualityPassport = it }
+                        )
+                    }
                     SplitButton(
                         actions = mapOf(
                             stringResource(R.string.add_string) to
@@ -141,24 +159,6 @@ fun AddCrewScreen(
                                         })
                         )
                     )
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Checkbox(
-                            checked = checkedQualityPassport,
-                            colors = CheckboxDefaults.colors(
-                                checkedColor = AppColors.MAIN_GREEN.color,
-                                checkmarkColor = AppColors.OFF_WHITE.color
-                            ),
-                            onCheckedChange = { checkedQualityPassport = it }
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = stringResource(R.string.quality_passport),
-                            style = AppTypography.labelLarge
-                        )
-                    }
                 }
             }
             HorizontalDivider()

@@ -58,6 +58,7 @@
     <string name="clear_text">Очистить</string>
     <string name="empty_string">Не может быть пустым</string>
     <string name="dinner_department">Дирекция питания</string>
+    <string name="dinner_departments">Дирекции питания</string>
     <string name="dinner_company">Арендатор</string>
     <string name="dinner_add">Добавить ВР</string>
     <string name="dinner_remove">Удалить ВР</string>

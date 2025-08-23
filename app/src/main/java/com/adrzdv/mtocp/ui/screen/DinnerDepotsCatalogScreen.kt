@@ -66,7 +66,7 @@ fun DinnerDepotCatalogScreen(
         OutlinedTextField(
             value = searchText,
             trailingIcon = {
-                if(searchText.isNotEmpty()) {
+                if (searchText.isNotEmpty()) {
                     IconButton(onClick = {
                         searchText = ""
                         viewModel.filterByString(searchText)
@@ -133,12 +133,14 @@ fun DinnerDepotCatalogScreen(
                         )
 
                         Text(
-                            text = depot.phoneNumber,
+                            text = depot.phoneNumber.takeIf { it != "0" } ?: "",
                             style = AppTypography.bodyMedium,
                             color = Color.Black,
                             modifier = Modifier.clickable {
-                                val clip = ClipData.newPlainText("phone", depot.phoneNumber)
-                                clipboard.setPrimaryClip(clip)
+                                if (depot.phoneNumber != "0") {
+                                    val clip = ClipData.newPlainText("phone", depot.phoneNumber)
+                                    clipboard.setPrimaryClip(clip)
+                                }
                             }
                         )
                     }

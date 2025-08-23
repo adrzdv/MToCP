@@ -3,8 +3,12 @@ package com.adrzdv.mtocp.ui.screen
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,12 +39,12 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
 import com.adrzdv.mtocp.ui.component.CoachItemCard
-import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.InfoBlockWithLabel
 import com.adrzdv.mtocp.ui.component.buttons.SplitButton
 import com.adrzdv.mtocp.ui.component.dialogs.AddCoachDialog
 import com.adrzdv.mtocp.ui.component.dialogs.AddDinnerCarDialog
+import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
@@ -108,32 +112,45 @@ fun AddCoachScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.End
         ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_outline_train_24),
+                    tint = AppColors.MAIN_GREEN.color,
+                    modifier = Modifier.size(72.dp),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                SplitButton(
+                    actions = mapOf(
+                        stringResource(R.string.add_string) to
+                                Pair(
+                                    painterResource(R.drawable.ic_add_itew_white),
+                                    { showDialog = true }),
+                        stringResource(R.string.dinner_add) to
+                                Pair(
+                                    painterResource(R.drawable.ic_dinner_24),
+                                    { showAddDinnerDialog = true }),
+                        stringResource(R.string.clear_text) to
+                                Pair(
+                                    painterResource(R.drawable.ic_clear_list),
+                                    {
+                                        if (isHasDinnerCar) {
+                                            orderViewModel.removeDinnerCar()
+                                            orderViewModel.toggleDinnerCar(false)
+                                            isHasDinnerCar = false
+                                        }
+                                        orderViewModel.clearRevisionObjects()
+                                        coachViewModel.cleanMap()
+                                        orderViewModel.updateTrainScheme()
+                                    })
+                    ),
+                )
+            }
 
-            SplitButton(
-                actions = mapOf(
-                    stringResource(R.string.add_string) to
-                            Pair(
-                                painterResource(R.drawable.ic_add_itew_white),
-                                { showDialog = true }),
-                    stringResource(R.string.dinner_add) to
-                            Pair(
-                                painterResource(R.drawable.ic_dinner_24),
-                                { showAddDinnerDialog = true }),
-                    stringResource(R.string.clear_text) to
-                            Pair(
-                                painterResource(R.drawable.ic_clear_list),
-                                {
-                                    if (isHasDinnerCar) {
-                                        orderViewModel.removeDinnerCar()
-                                        orderViewModel.toggleDinnerCar(false)
-                                        isHasDinnerCar = false
-                                    }
-                                    orderViewModel.clearRevisionObjects()
-                                    coachViewModel.cleanMap()
-                                    orderViewModel.updateTrainScheme()
-                                })
-                ),
-            )
+
 
             if (train != null) {
                 val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
