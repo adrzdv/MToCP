@@ -98,7 +98,7 @@ fun ParameterSelectionBottomSheet(
                         modifier = Modifier.weight(1f),
                         colors = CheckboxDefaults.colors(
                             checkedColor = AppColors.MAIN_GREEN.color,
-                            uncheckedColor = AppColors.OFF_WHITE.color,
+                            uncheckedColor = AppColors.LIGHT_GRAY.color,
                             checkmarkColor = AppColors.OFF_WHITE.color
                         )
                     )
