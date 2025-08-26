@@ -14,7 +14,7 @@ android {
         minSdk = 30                                                 //Android 11+
         targetSdk = 35
         versionCode = 1
-        versionName = "0.9.1-beta-hf-20082025"
+        versionName = "0.9.1-beta-hf-21082025"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -75,6 +75,10 @@ dependencies {
     implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.material3:material3")
+
+    implementation("androidx.compose.material3:material3:1.4.0-alpha14")
+    implementation("androidx.compose.material:material-icons-extended:1.6.0")
+
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.activity:activity-compose:1.10.1")
 

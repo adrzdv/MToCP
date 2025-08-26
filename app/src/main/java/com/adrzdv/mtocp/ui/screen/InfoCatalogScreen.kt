@@ -62,14 +62,26 @@ fun InfoCatalogScreen(
 
     //Main elements of menu
     val menuItems = listOf(
-        MenuElementItem("violations", "Классификатор", painterResource(R.drawable.ic_catalog)),
+        MenuElementItem(
+            "violations",
+            stringResource(R.string.header_catalog),
+            painterResource(R.drawable.ic_outline_book_2_24)
+        ),
         MenuElementItem(
             "depot",
-            "Структурные подразделения",
-            painterResource(R.drawable.ic_contract)
+            stringResource(R.string.header_depot),
+            painterResource(R.drawable.ic_outline_home_work_24)
         ),
-        MenuElementItem("dinner", "Дирекции", painterResource(R.drawable.ic_train)),
-        MenuElementItem("company", "Перевозчики", painterResource(R.drawable.ic_train))
+        MenuElementItem(
+            "dinner",
+            stringResource(R.string.dinner_departments),
+            painterResource(R.drawable.ic_outline_train_24)
+        ),
+        MenuElementItem(
+            "company",
+            stringResource(R.string.header_company),
+            painterResource(R.drawable.ic_outline_train_24)
+        )
     )
 
     val currentTitle = menuItems.find { it.route == currentRoute }?.title ?: ""
@@ -81,7 +93,7 @@ fun InfoCatalogScreen(
                 modifier = Modifier.width(240.dp)
             ) {
                 Spacer(Modifier.height(16.dp))
-                menuItems.forEach() { menuItem ->
+                menuItems.forEach { menuItem ->
                     NavigationDrawerItem(
                         label = {
                             Text(
@@ -150,9 +162,10 @@ fun InfoCatalogScreen(
                     colors = TopAppBarColors(
                         containerColor = AppColors.MAIN_GREEN.color,
                         scrolledContainerColor = AppColors.MAIN_GREEN.color,
-                        titleContentColor = AppColors.OFF_WHITE.color,
                         navigationIconContentColor = AppColors.OFF_WHITE.color,
-                        actionIconContentColor = AppColors.OFF_WHITE.color
+                        titleContentColor = AppColors.OFF_WHITE.color,
+                        actionIconContentColor = AppColors.OFF_WHITE.color,
+                        subtitleContentColor = AppColors.OFF_WHITE.color
                     )
                 )
             }
@@ -173,13 +186,11 @@ fun InfoCatalogScreen(
                         viewModel = depotViewModel
                     )
                 }
-
                 composable("company") {
                     CompanyCatalogScreen(
                         viewModel = companyViewMode
                     )
                 }
-
                 composable("dinner") {
                     DinnerDepotCatalogScreen(
                         viewModel = depotViewModel

@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.component
+package com.adrzdv.mtocp.ui.component.dialogs
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
@@ -53,16 +53,5 @@ fun ConfirmDialog(
                 )
             }
         }
-    )
-}
-
-@Preview
-@Composable
-fun PreviewDialog() {
-    ConfirmDialog(
-        "Example title",
-        "Some message",
-        onConfirm = {},
-        onDismiss = {}
     )
 }
