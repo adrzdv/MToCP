@@ -112,12 +112,13 @@ fun MediumMenuButton(
     onClick: () -> Unit,
     icon: @Composable () -> Unit,
     text: String,
-    isEnable: Boolean
+    isEnable: Boolean,
+    color: Color?
 ) {
     OutlinedButton(
         onClick = onClick,
         colors = ButtonDefaults
-            .buttonColors(containerColor = AppColors.MAIN_GREEN.color),
+            .buttonColors(containerColor = color ?: AppColors.MAIN_GREEN.color),
         border = null,
         enabled = isEnable,
         modifier = Modifier.padding(4.dp)

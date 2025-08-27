@@ -109,4 +109,7 @@ dependencies {
 
     implementation("net.lingala.zip4j:zip4j:2.11.5")
 
+    implementation("com.squareup.okhttp3:okhttp:5.1.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
 }

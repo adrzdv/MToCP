@@ -133,7 +133,8 @@ private fun InfoBlock(
                                 contentDescription = null
                             )
                         },
-                        text = bttn.description
+                        text = bttn.description,
+                        color = null
                     )
                 }
             }
