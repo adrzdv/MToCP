@@ -21,6 +21,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.adrzdv.mtocp.R
@@ -246,7 +248,8 @@ fun CustomOutlinedTextField(
     errorText: String,
     label: String,
     modifier: Modifier = Modifier,
-    trailingIcon: Painter?
+    trailingIcon: Painter?,
+    secretInput: Boolean?
 ) {
     OutlinedTextField(
         value = value,
@@ -292,7 +295,11 @@ fun CustomOutlinedTextField(
             unfocusedLabelColor = Color.Gray,
             focusedTextColor = Color.Black,
             unfocusedTextColor = Color.Black
-        )
+        ),
+        visualTransformation = when (secretInput) {
+            true -> PasswordVisualTransformation()
+            else -> VisualTransformation.None
+        }
     )
 }
 

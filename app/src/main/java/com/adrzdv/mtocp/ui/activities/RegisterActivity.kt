@@ -4,22 +4,32 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.adrzdv.mtocp.ui.activities.ui.theme.MToCPTheme
+import androidx.lifecycle.ViewModelProvider
+import com.adrzdv.mtocp.data.api.RetrofitClient
+import com.adrzdv.mtocp.data.repository.AuthRepositoryImpl
+import com.adrzdv.mtocp.data.repository.TokenStorage
 import com.adrzdv.mtocp.ui.screen.RegisterScreen
+import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
+import com.adrzdv.mtocp.ui.viewmodel.AuthViewModel
 
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
+        val tokenStorage = TokenStorage(prefs)
+
+        val authRepo = AuthRepositoryImpl(RetrofitClient.authApi, tokenStorage)
+
+        val viewModel = ViewModelProvider(
+            this,
+            AssistedViewModelFactory { AuthViewModel(authRepo) }
+        ).get(AuthViewModel::class.java)
+
+
         enableEdgeToEdge()
         setContent {
-            RegisterScreen()
+            RegisterScreen(viewModel = viewModel)
         }
     }
 }
