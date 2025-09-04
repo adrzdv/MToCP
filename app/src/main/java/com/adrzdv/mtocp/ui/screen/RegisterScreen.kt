@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -37,9 +39,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.activities.StartMenuActivity
-import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.buttons.MediumMenuButton
+import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.AuthViewModel
@@ -118,6 +120,12 @@ fun RegisterScreen(
                             style = AppTypography.titleLarge,
                             color = AppColors.SURFACE_COLOR.color
                         )
+                        Text(
+                            text = stringResource(R.string.app_title),
+                            style = AppTypography.titleLarge,
+                            color = AppColors.SURFACE_COLOR.color,
+                            textAlign = TextAlign.Center
+                        )
                     }
 
                 }
@@ -136,13 +144,12 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.weight(0.05f))
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
                         .weight(0.4f)
                         .padding(32.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    CustomOutlinedTextField(
+                    InputTextField(
                         value = state.login,
                         onValueChange = {
                             viewModel.onLoginChange(it)
@@ -153,11 +160,11 @@ fun RegisterScreen(
                             stringResource(id = loginError)
                         } ?: "",
                         label = stringResource(R.string.login),
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.fillMaxWidth(),
                         trailingIcon = painterResource(R.drawable.ic_outline_person_edit_24),
                         secretInput = false
                     )
-                    CustomOutlinedTextField(
+                    InputTextField(
                         value = state.password,
                         onValueChange = {
                             viewModel.onPasswordChange(it)
@@ -168,7 +175,7 @@ fun RegisterScreen(
                             stringResource(id = passwordError)
                         } ?: "",
                         label = stringResource(R.string.password),
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.fillMaxWidth(),
                         trailingIcon = painterResource(R.drawable.ic_outline_lock_24),
                         secretInput = when (passwordVisibility) {
                             true -> true
@@ -178,7 +185,12 @@ fun RegisterScreen(
                     TextButton(
                         onClick = {
                             passwordVisibility = !passwordVisibility
-                        }
+                        },
+                        colors = ButtonDefaults.textButtonColors(
+                            containerColor = Color.Transparent,
+                            contentColor = AppColors.MAIN_COLOR.color
+                        ),
+                        interactionSource = remember { MutableInteractionSource() }
                     ) {
                         Text(
                             text = stringResource(R.string.show_password),
