@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam
+import com.adrzdv.mtocp.ui.component.buttons.CustomOutlinedButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.AdditionalParamViewModel
@@ -66,7 +68,6 @@ fun ParameterSelectionBottomSheet(
             Spacer(Modifier.height(16.dp))
 
             params.forEach { param ->
-                var note by remember { mutableStateOf(param.note ?: "") }
                 var completed by remember { mutableStateOf(param.completed ?: true) }
                 Row(
                     modifier = Modifier
@@ -93,7 +94,12 @@ fun ParameterSelectionBottomSheet(
                             completed = checked
                             paramsViewModel.updateCompleted(param.id, checked)
                         },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = AppColors.MAIN_GREEN.color,
+                            uncheckedColor = AppColors.LIGHT_GRAY.color,
+                            checkmarkColor = AppColors.OFF_WHITE.color
+                        )
                     )
                 }
             }
@@ -145,8 +151,7 @@ fun ParameterSelectionBottomSheet(
                     }
                 },
                 text = stringResource(R.string.save_string),
-
-                )
+            )
         }
     }
 }

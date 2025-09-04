@@ -14,7 +14,7 @@ android {
         minSdk = 30                                                 //Android 11+
         targetSdk = 35
         versionCode = 1
-        versionName = "0.9.1-beta-hf-19082025"
+        versionName = "0.9.2-beta-hf-04092025"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -57,12 +57,12 @@ android {
 dependencies {
 
     //implementation(libs.androidx.navigation.compose.jvmstubs)
-    implementation("androidx.navigation:navigation-compose:2.9.0")
+    implementation("androidx.navigation:navigation-compose:2.9.3")
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.room.runtime.android)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.ui.graphics)
-    implementation("androidx.fragment:fragment-ktx:1.6.0")
+    implementation("androidx.fragment:fragment-ktx:1.8.9")
     implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.lifecycle.viewmodel)
@@ -75,6 +75,10 @@ dependencies {
     implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.material3:material3")
+
+    implementation("androidx.compose.material3:material3:1.4.0-alpha14")
+    implementation("androidx.compose.material:material-icons-extended:1.6.0")
+
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.activity:activity-compose:1.10.1")
 
@@ -84,7 +88,7 @@ dependencies {
     implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3.android)
-    val roomVersion = "2.5.1"
+    val roomVersion = "2.7.2"
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -99,10 +103,12 @@ dependencies {
 
     kapt("androidx.room:room-compiler:$roomVersion")
 
-    implementation("com.google.code.gson:gson:2.10.1")
-
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.google.code.gson:gson:2.13.1")
 
     implementation("net.lingala.zip4j:zip4j:2.11.5")
+
+    implementation("com.squareup.okhttp3:okhttp:5.1.0")
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
 
 }

@@ -7,18 +7,14 @@ import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class GenerateSmsReportUseCase {
 
     public String execute(Map<String, RevisionObject> revMap) throws ExecutionException, InterruptedException {
         StringBuilder result = new StringBuilder();
-        StringBuilder dinnnerRes = new StringBuilder();
+        StringBuilder dinnerRes = new StringBuilder();
         Map<Integer, ViolationDomain> violationMap = new TreeMap<>();
         Map<Integer, ViolationDomain> violationDinnerMap = new TreeMap<>();
-        ExecutorService executor = Executors.newFixedThreadPool(2);
 
         for (RevisionObject obj : revMap.values()) {
             for (ViolationDomain violation : obj.getViolationMap().values()) {
@@ -26,7 +22,7 @@ public class GenerateSmsReportUseCase {
                         violation.getName(),
                         violation.getShortName());
                 vl.setAmount(violation.getAmount());
-                if (obj instanceof DinnerCar that) {
+                if (obj instanceof DinnerCar) {
                     violationDinnerMap.merge(violation.getCode(),
                             vl,
                             (oldViolation, newViolation) -> {
@@ -44,35 +40,27 @@ public class GenerateSmsReportUseCase {
             }
         }
 
-        Future<?> mainViolationFuture = executor.submit(() -> {
-            for (ViolationDomain violation : violationMap.values()) {
-                result.append(violation.getCode())
-                        .append("-")
-                        .append(violation.getShortName())
-                        .append("-")
-                        .append(violation.getAmount())
-                        .append("\n");
-            }
-        });
+        result.append(appendViolations(violationMap));
 
-        Future<?> dinnerViolationFuture = executor.submit(() -> {
-            dinnnerRes.append("__________________\n").append("Вагон-ресторан\n");
-            for (ViolationDomain violation : violationDinnerMap.values()) {
-                dinnnerRes.append(violation.getCode())
-                        .append("-")
-                        .append(violation.getShortName())
-                        .append("-")
-                        .append(violation.getAmount())
-                        .append("\n");
-            }
-        });
+        if (revMap.values().stream().anyMatch(dc -> dc instanceof DinnerCar)) {
+            dinnerRes.append("__________________\n").append("Вагон-ресторан\n")
+                    .append(appendViolations(violationDinnerMap));
+            result.append("\n").append(dinnerRes);
+        }
 
-        mainViolationFuture.get();
-        dinnerViolationFuture.get();
+        return result.toString();
+    }
 
-        executor.shutdown();
-        result.append("\n").append(dinnnerRes);
-
+    private String appendViolations(Map<Integer, ViolationDomain> violationMap) {
+        StringBuilder result = new StringBuilder();
+        for (ViolationDomain violation : violationMap.values()) {
+            result.append(violation.getCode())
+                    .append(". ")
+                    .append(violation.getShortName())
+                    .append("-")
+                    .append(violation.getAmount())
+                    .append("\n");
+        }
         return result.toString();
     }
 }

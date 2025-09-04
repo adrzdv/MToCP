@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.ui.component.MediumMenuButton
+import com.adrzdv.mtocp.ui.component.buttons.MediumMenuButton
 import com.adrzdv.mtocp.ui.component.ServiceInfoBlock
 import com.adrzdv.mtocp.ui.intent.ShareIntentBuilder
 import com.adrzdv.mtocp.ui.theme.AppColors
@@ -227,10 +227,12 @@ fun ResultScreenMain(
                             )
                         }
                     },
+                    isEnable = true,
                     text = stringResource(R.string.zip_data),
                     icon = {
                         painterResource(R.drawable.ic_zip_24_white)
-                    }
+                    },
+                    color = null
                 )
                 MediumMenuButton(
                     onClick = {
@@ -245,8 +247,10 @@ fun ResultScreenMain(
                             )
                         )
                     },
+                    isEnable = true,
                     icon = { painterResource(R.drawable.ic_report_24_white) },
-                    text = stringResource(R.string.report)
+                    text = stringResource(R.string.report),
+                    color = null
                 )
             }
         }
