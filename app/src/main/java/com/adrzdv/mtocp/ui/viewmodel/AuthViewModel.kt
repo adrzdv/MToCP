@@ -56,6 +56,15 @@ class AuthViewModel(
                     authResult.token?.let { token ->
                         repository.saveToken(token)
                     }
+                    authResult.name?.let { name ->
+                        repository.saveUsername(name)
+                    }
+                    authResult.id?.let { id ->
+                        repository.saveUserId(id)
+                    }
+                    authResult.secId?.let { secId ->
+                        repository.saveUserSecId(secId)
+                    }
                     _regState.update { it.copy(isLoading = false, isSuccess = true) }
                 } else {
                     _regState.update {
