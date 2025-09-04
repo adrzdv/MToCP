@@ -116,6 +116,7 @@ fun StartMenuScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(0.2f),
+                    elevation = CardDefaults.cardElevation(8.dp),
                     shape = RoundedCornerShape(
                         topStart = 0.dp,
                         topEnd = 0.dp,

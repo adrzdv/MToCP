@@ -42,6 +42,7 @@ import com.adrzdv.mtocp.ui.activities.StartMenuActivity
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.buttons.MediumMenuButton
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
+import com.adrzdv.mtocp.ui.component.newelements.RoundedButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.AuthViewModel
@@ -95,6 +96,7 @@ fun RegisterScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(0.5f),
+                    elevation = CardDefaults.cardElevation(8.dp),
                     shape = RoundedCornerShape(
                         topStart = 0.dp,
                         topEnd = 0.dp,
@@ -198,12 +200,10 @@ fun RegisterScreen(
                             color = AppColors.MAIN_COLOR.color
                         )
                     }
-
-                    MediumMenuButton(
+                    RoundedButton(
                         onClick = {
                             viewModel.login()
                         },
-                        icon = {},
                         text = stringResource(R.string.login_button),
                         isEnable = state.isFormValid && !state.isLoading,
                         color = AppColors.SECONDARY_COLOR.color
