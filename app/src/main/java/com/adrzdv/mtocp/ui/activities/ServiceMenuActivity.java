@@ -9,13 +9,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.compose.ui.platform.ComposeView;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.adrzdv.mtocp.App;
 import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.ui.screen.wrapper.ServiceScreenWrapperKt;
-import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider;
-import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel;
 import com.adrzdv.mtocp.util.DirectoryHandler;
 
 import kotlin.Unit;

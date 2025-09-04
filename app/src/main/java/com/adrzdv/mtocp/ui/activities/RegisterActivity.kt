@@ -16,7 +16,7 @@ import com.adrzdv.mtocp.ui.viewmodel.AuthViewModel
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED;
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
 
         val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
         val userDataStorage = UserDataStorage(prefs)
