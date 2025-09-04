@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 
 class AuthRepositoryImpl(
     private val api: AuthApi,
-    private val tokenStorage: TokenStorage
+    private val userDataStorage: UserDataStorage
 ) : AuthRepository {
 
     override suspend fun login(
@@ -20,7 +20,13 @@ class AuthRepositoryImpl(
                 val response = api.login(LoginRequest(login, password))
 
                 if (response.token != null) {
-                    AuthResult(isSuccess = true, token = response.token)
+                    AuthResult(
+                        isSuccess = true,
+                        token = response.token,
+                        name = response.name ?: "",
+                        id = response.id ?: 0,
+                        secId = response.secId ?: ""
+                    )
                 } else {
                     AuthResult(isSuccess = false, errorMessage = response.error ?: "Unknown error")
                 }
@@ -30,8 +36,26 @@ class AuthRepositoryImpl(
         }
 
     override fun saveToken(token: String) {
-        tokenStorage.saveToken(token)
+        userDataStorage.saveToken(token)
     }
 
-    override fun getToken(): String? = tokenStorage.getToken()
+    override fun getToken(): String? = userDataStorage.getToken()
+
+    override fun saveUsername(username: String) {
+        userDataStorage.saveUsername(username)
+    }
+
+    override fun saveUserId(id: Int) {
+        userDataStorage.saveUserId(id)
+    }
+
+    override fun saveUserSecId(id: String) {
+        userDataStorage.saveUserSecId(id)
+    }
+
+    override fun getUsername(): String? = userDataStorage.getUsername()
+
+    override fun getUserId(): Int? = userDataStorage.getUserId()
+
+    override fun getUserSecId(): String? = userDataStorage.getUserSecId()
 }

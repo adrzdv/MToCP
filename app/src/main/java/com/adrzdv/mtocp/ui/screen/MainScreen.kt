@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.ui.screen
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,6 +59,10 @@ fun StartMenuScreen(
     appVersion: String
 ) {
     var showExitDialog by remember { mutableStateOf(false) }
+    val prefs = LocalContext.current.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+    val username = prefs.getString("username", "null")
+    val id = prefs.getInt("user_id", 0)
+    val secId = prefs.getString("user_sec_id", "null")
 
     Scaffold(
         containerColor = AppColors.BACKGROUND_COLOR.color,
@@ -142,17 +148,17 @@ fun StartMenuScreen(
                                 verticalArrangement = Arrangement.Center
                             ) {
                                 Text(
-                                    text = "Surname Name Secondname",
+                                    text = "$username",
                                     style = AppTypography.titleLarge,
                                     color = AppColors.SURFACE_COLOR.color
                                 )
                                 Text(
-                                    text = "ID: 70000000",
+                                    text = "Таб: $id",
                                     style = AppTypography.titleMedium,
                                     color = AppColors.SURFACE_COLOR.color
                                 )
                                 Text(
-                                    text = "ID: 000038",
+                                    text = "О/л: $secId",
                                     style = AppTypography.titleMedium,
                                     color = AppColors.SURFACE_COLOR.color
                                 )
