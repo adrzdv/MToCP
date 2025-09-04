@@ -126,7 +126,7 @@
     <string name="nfc_sender">Отправляю данные…</string>
     <string name="nfc_file_received">Данные получены</string>
     <string name="nfc_help_info">Отправка данных по NFC. Приложите телефон к NFC-модулю другого телефона</string>
-    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_register">MToCP</string>
 
     <string name="login_button">ВОЙТИ</string>
     <string name="login">Имя пользователя</string>
