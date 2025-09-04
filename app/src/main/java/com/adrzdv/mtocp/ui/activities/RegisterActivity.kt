@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.ui.activities
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,6 +16,7 @@ import com.adrzdv.mtocp.ui.viewmodel.AuthViewModel
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED;
 
         val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
         val userDataStorage = UserDataStorage(prefs)
