@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
 import com.adrzdv.mtocp.data.api.RetrofitClient
 import com.adrzdv.mtocp.data.repository.AuthRepositoryImpl
-import com.adrzdv.mtocp.data.repository.TokenStorage
+import com.adrzdv.mtocp.data.repository.UserDataStorage
 import com.adrzdv.mtocp.ui.screen.RegisterScreen
 import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
 import com.adrzdv.mtocp.ui.viewmodel.AuthViewModel
@@ -17,9 +17,9 @@ class RegisterActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
-        val tokenStorage = TokenStorage(prefs)
+        val userDataStorage = UserDataStorage(prefs)
 
-        val authRepo = AuthRepositoryImpl(RetrofitClient.authApi, tokenStorage)
+        val authRepo = AuthRepositoryImpl(RetrofitClient.authApi, userDataStorage)
 
         val viewModel = ViewModelProvider(
             this,
