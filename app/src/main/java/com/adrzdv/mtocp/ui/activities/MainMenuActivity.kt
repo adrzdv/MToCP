@@ -28,7 +28,7 @@ class MainMenuActivity : ComponentActivity() {
                 onOpenViolationCatalogClick = {
                     startActivity(
                         Intent(
-                            this, InfoCatalogActivity::class.java
+                            this, CatalogActivity::class.java
                         )
                     )
                 },
@@ -53,6 +53,5 @@ class MainMenuActivity : ComponentActivity() {
                 appVersion = version
             )
         }
-
     }
 }
