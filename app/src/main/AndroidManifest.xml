@@ -67,7 +67,7 @@
             android:name=".ui.activities.HelpActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.InfoCatalogActivity"
+            android:name=".ui.activities.CatalogActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.RequestWebActivity"
