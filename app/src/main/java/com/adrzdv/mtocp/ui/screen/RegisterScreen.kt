@@ -38,9 +38,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.ui.activities.StartMenuActivity
+import com.adrzdv.mtocp.ui.activities.MainMenuActivity
 import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
-import com.adrzdv.mtocp.ui.component.buttons.MediumMenuButton
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.newelements.RoundedButton
 import com.adrzdv.mtocp.ui.theme.AppColors
@@ -60,7 +59,7 @@ fun RegisterScreen(
         state.isSuccess
     ) {
         if (state.isSuccess) {
-            val intent = Intent(context, StartMenuActivity::class.java)
+            val intent = Intent(context, MainMenuActivity::class.java)
             context.startActivity(intent)
             (context as? Activity)?.finish()
         }

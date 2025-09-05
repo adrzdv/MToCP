@@ -38,12 +38,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.ui.component.newelements.SquaredBigButton
 import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
+import com.adrzdv.mtocp.ui.component.newelements.SquaredBigButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 
@@ -54,7 +53,6 @@ fun StartMenuScreen(
     onOpenViolationCatalogClick: () -> Unit,
     onServiceMenuClick: () -> Unit,
     onExitClick: () -> Unit,
-    onHelpClick: () -> Unit,
     onRequestWebClick: () -> Unit,
     appVersion: String
 ) {
@@ -198,9 +196,9 @@ fun StartMenuScreen(
                         )
 
                         SquaredBigButton(
-                            text = stringResource(R.string.help),
-                            icon = painterResource(R.drawable.ic_help_24_white),
-                            onClick = {}
+                            text = stringResource(R.string.exit_text),
+                            icon = painterResource(R.drawable.ic_exit_24_white),
+                            onClick = { showExitDialog = true }
                         )
                     }
                 }
@@ -230,22 +228,5 @@ fun StartMenuScreen(
                 )
             }
         }
-
-
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewMainScreen() {
-    StartMenuScreen(
-        onStartRevisionClick = {},
-        onOpenViolationCatalogClick = {},
-        onServiceMenuClick = {},
-        onExitClick = {},
-        onHelpClick = {},
-        onRequestWebClick = {},
-        appVersion = "v1.0.0"
-    )
 }

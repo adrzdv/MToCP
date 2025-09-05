@@ -360,7 +360,7 @@ fun MonitoringCoachScreen(
             }
         }
 
-        //temporary solution: in future fix it!!! need to chose existing strings from db (for exmpl)
+        //FIXME: need to chose existing strings from db (for exmpl)
         if (showAddTagDialog) {
             AddTagDialog(
                 onConfirm = { tag ->
