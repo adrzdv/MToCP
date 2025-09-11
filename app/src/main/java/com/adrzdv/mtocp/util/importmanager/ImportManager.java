@@ -12,9 +12,13 @@ import com.adrzdv.mtocp.data.importmodel.TrainImport;
 import com.adrzdv.mtocp.data.importmodel.ViolationImport;
 import com.adrzdv.mtocp.util.importmanager.handlers.ImportHandler;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
@@ -33,7 +37,11 @@ public class ImportManager {
         try (InputStream input = context.getContentResolver().openInputStream(uri);
              InputStreamReader reader = new InputStreamReader(input)) {
 
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, (JsonDeserializer<LocalDate>) (json, type, ctx) ->
+                            LocalDate.parse(json.getAsString(), DateTimeFormatter.ISO_LOCAL_DATE)
+                    )
+                    .create();
             ImportData data = gson.fromJson(reader, ImportData.class);
 
             executor.execute(() -> {
