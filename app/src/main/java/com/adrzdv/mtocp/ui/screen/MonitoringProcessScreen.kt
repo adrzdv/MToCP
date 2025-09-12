@@ -39,7 +39,7 @@ import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
 import com.adrzdv.mtocp.ui.component.CoachItemCardReadOnly
 import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
-import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
+import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.InfoBlockWithLabel
 import com.adrzdv.mtocp.ui.component.buttons.MediumMenuButton
 import com.adrzdv.mtocp.ui.component.MenuElementData
@@ -48,6 +48,7 @@ import com.adrzdv.mtocp.ui.component.ParameterSelectionBottomSheet
 import com.adrzdv.mtocp.ui.component.ServiceInfoBlock
 import com.adrzdv.mtocp.ui.component.ServiceRowBlock
 import com.adrzdv.mtocp.ui.component.buttons.FloatingSaveButton
+import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.fragment.NfcBottomSheetFragment
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.viewmodel.AdditionalParamViewModel
@@ -133,7 +134,8 @@ private fun InfoBlock(
                                 contentDescription = null
                             )
                         },
-                        text = bttn.description
+                        text = bttn.description,
+                        color = null
                     )
                 }
             }
@@ -344,14 +346,16 @@ fun MonitoringProcessScreen(
             onConfirm = {
                 if (orderViewModel.checkUncheckedObjects()) {
                     scope.launch {
-                        snackbarHostState.showSnackbar(message = uncheckedCoaches)
+                        snackbarHostState.showSnackbar(
+                            visuals = ErrorSnackbar(uncheckedCoaches)
+                        )
                     }
                     showSaveDialog = false
                     return@ConfirmDialog
                 }
                 if (!isAdditionalParamsChecked) {
                     scope.launch {
-                        snackbarHostState.showSnackbar(message = uncheckedParams)
+                        snackbarHostState.showSnackbar(visuals = ErrorSnackbar(uncheckedParams))
                     }
                     showSaveDialog = false
                     return@ConfirmDialog

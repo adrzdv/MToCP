@@ -65,7 +65,7 @@ public class CameraActivity extends AppCompatActivity {
                         Log.d("MediaCreator", "PERMISSIONS: Accessed");
                     } else {
                         Intent intent = new Intent();
-                        intent.putExtra("result", MessageCodes.PERMISSION_ERROR.getErrorTitle());
+                        intent.putExtra("result", MessageCodes.PERMISSION_ERROR.getMessageTitle());
                         setResult(Activity.RESULT_CANCELED, intent);
                         Log.e("MediaCreator", "ERROR: Permission denied");
                     }

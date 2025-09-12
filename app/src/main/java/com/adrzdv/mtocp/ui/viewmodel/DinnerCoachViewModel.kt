@@ -145,9 +145,9 @@ class DinnerCoachViewModel(
 
     fun onCameraResult(result: ActivityResult) {
         val message = if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.getStringExtra("result") ?: MessageCodes.PHOTO_SUCCESS.errorTitle
+            result.data?.getStringExtra("result") ?: MessageCodes.PHOTO_SUCCESS.messageTitle
         } else {
-            result.data?.getStringExtra("result") ?: MessageCodes.PHOTO_ERROR.errorTitle
+            result.data?.getStringExtra("result") ?: MessageCodes.PHOTO_ERROR.messageTitle
         }
         _snackbarMessage.value = message
     }
@@ -171,9 +171,9 @@ class DinnerCoachViewModel(
             !typeValid
         ) {
             updateState(
-                idError = if (!idValid) MessageCodes.EMPTY_STRING.errorTitle else null,
-                nameError = if (!nameValid) MessageCodes.EMPTY_STRING.errorTitle else null,
-                typeError = if (!typeValid) MessageCodes.EMPTY_STRING.errorTitle else null
+                idError = if (!idValid) MessageCodes.EMPTY_STRING.messageTitle else null,
+                nameError = if (!nameValid) MessageCodes.EMPTY_STRING.messageTitle else null,
+                typeError = if (!typeValid) MessageCodes.EMPTY_STRING.messageTitle else null
             )
             return
         }

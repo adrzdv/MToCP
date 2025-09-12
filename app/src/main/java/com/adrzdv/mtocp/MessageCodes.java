@@ -49,7 +49,7 @@ public enum MessageCodes {
     }
 
     @NonNull
-    public String getErrorTitle() {
+    public String getMessageTitle() {
         return this.errorText;
     }
 

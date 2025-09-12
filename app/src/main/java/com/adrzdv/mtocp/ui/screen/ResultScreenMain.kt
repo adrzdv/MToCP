@@ -214,7 +214,7 @@ fun ResultScreenMain(
                         orderViewModel.makeArchive { file ->
                             if (file == null || !file.exists()) {
                                 scope.launch {
-                                    snackbarHostState.showSnackbar(MessageCodes.FILE_ERROR.errorTitle)
+                                    snackbarHostState.showSnackbar(MessageCodes.FILE_ERROR.messageTitle)
                                 }
                                 return@makeArchive
                             }
@@ -231,7 +231,8 @@ fun ResultScreenMain(
                     text = stringResource(R.string.zip_data),
                     icon = {
                         painterResource(R.drawable.ic_zip_24_white)
-                    }
+                    },
+                    color = null
                 )
                 MediumMenuButton(
                     onClick = {
@@ -248,7 +249,8 @@ fun ResultScreenMain(
                     },
                     isEnable = true,
                     icon = { painterResource(R.drawable.ic_report_24_white) },
-                    text = stringResource(R.string.report)
+                    text = stringResource(R.string.report),
+                    color = null
                 )
             }
         }

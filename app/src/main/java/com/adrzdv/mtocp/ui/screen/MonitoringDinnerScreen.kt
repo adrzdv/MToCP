@@ -46,7 +46,7 @@ import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
 import com.adrzdv.mtocp.domain.usecase.DeleteViolationPhotoUseCase
 import com.adrzdv.mtocp.mapper.ViolationMapper
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
-import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
+import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.DropdownMenuField
 import com.adrzdv.mtocp.ui.component.ServiceInfoBlock
 import com.adrzdv.mtocp.ui.component.ViolationCard
@@ -54,6 +54,7 @@ import com.adrzdv.mtocp.ui.component.buttons.FloatingSaveButton
 import com.adrzdv.mtocp.ui.component.dialogs.AddTagDialog
 import com.adrzdv.mtocp.ui.component.dialogs.AddViolationToCoachDialog
 import com.adrzdv.mtocp.ui.component.dialogs.ChangeAmountDialog
+import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
@@ -366,7 +367,9 @@ fun MonitoringDinnerScreen(
                 onError = {
                     showAddViolationDialog = false
                     coroutineScope.launch {
-                        snackbarHostState.showSnackbar(MessageCodes.DUPLICATE_ERROR.errorTitle)
+                        snackbarHostState.showSnackbar(
+                            visuals = ErrorSnackbar(MessageCodes.DUPLICATE_ERROR.messageTitle)
+                        )
                     }
                 }
             )
