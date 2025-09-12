@@ -39,13 +39,12 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
 import com.adrzdv.mtocp.ui.component.CoachItemCard
-import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
+import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.InfoBlockWithLabel
 import com.adrzdv.mtocp.ui.component.buttons.SplitButton
 import com.adrzdv.mtocp.ui.component.dialogs.AddCoachDialog
 import com.adrzdv.mtocp.ui.component.dialogs.AddDinnerCarDialog
 import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
-import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
@@ -228,7 +227,7 @@ fun AddCoachScreen(
                 ) {
                     scope.launch {
                         snackbarHostState.showSnackbar(
-                            visuals = ErrorSnackbar(MessageCodes.EMPTY_COUNT.messageTitle)
+                            message = MessageCodes.EMPTY_COUNT.errorTitle
                         )
                     }
                     showWarningDialog = false

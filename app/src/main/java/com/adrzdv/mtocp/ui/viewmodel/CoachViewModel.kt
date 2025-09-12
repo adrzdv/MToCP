@@ -1,12 +1,17 @@
 package com.adrzdv.mtocp.ui.viewmodel
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.Coach
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
+import com.adrzdv.mtocp.mapper.ViolationMapper
+import okhttp3.internal.toImmutableMap
 import java.time.LocalDateTime
 
 class CoachViewModel(

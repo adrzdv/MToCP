@@ -51,6 +51,7 @@ fun InfoCatalogScreen(
     depotViewModel: DepotViewModel,
     companyViewMode: CompanyViewModel
 ) {
+
     //Navigation controller, drawer state (opened/closed), and val for coroutine
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)

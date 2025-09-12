@@ -80,7 +80,7 @@ public class BaggageOrder extends Order {
     protected void doAddRevisionObject(RevisionObject o) {
         if (o instanceof BaggageCar baggageCar) {
             if (coachMap.containsKey(o.getNumber())) {
-                throw new IllegalArgumentException(MessageCodes.DUPLICATE_ERROR.getMessageTitle());
+                throw new IllegalArgumentException(MessageCodes.DUPLICATE_ERROR.getErrorTitle());
             }
             coachMap.put(baggageCar.getNumber(), baggageCar);
         } else {
@@ -91,14 +91,14 @@ public class BaggageOrder extends Order {
 
     public void addViolation(String objNumber, ViolationDomain violation) {
         if (!coachMap.containsKey(objNumber) && coachMap.get(objNumber) == null) {
-            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getMessageTitle());
+            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getErrorTitle());
         }
         coachMap.get(objNumber).addViolation(violation);
     }
 
     public void deleteViolation(String objNumber, int code) {
         if (!coachMap.containsKey(objNumber) && coachMap.get(objNumber) == null) {
-            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getMessageTitle());
+            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getErrorTitle());
         }
         coachMap.get(objNumber).deleteViolation(code);
     }

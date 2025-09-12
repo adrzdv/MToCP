@@ -1,7 +1,6 @@
 package com.adrzdv.mtocp.ui.activities;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,10 +8,13 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.compose.ui.platform.ComposeView;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.adrzdv.mtocp.App;
 import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.ui.screen.wrapper.ServiceScreenWrapperKt;
+import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider;
+import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel;
 import com.adrzdv.mtocp.util.DirectoryHandler;
 
 import kotlin.Unit;
@@ -24,7 +26,6 @@ public class ServiceMenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
 
         filePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -66,15 +67,15 @@ public class ServiceMenuActivity extends AppCompatActivity {
         try {
             filePickerLauncher.launch(Intent.createChooser(intent, "Выберите файл"));
         } catch (android.content.ActivityNotFoundException ex) {
-            App.showToast(this, MessageCodes.FILE_MANAGER_ERROR.getMessageTitle());
+            App.showToast(this, MessageCodes.FILE_MANAGER_ERROR.getErrorTitle());
         }
     }
 
     private void cleanDirs() {
         if (DirectoryHandler.cleanDirectories()) {
-            App.showToast(this, MessageCodes.DIRECTORY_SUCCESS.getMessageTitle());
+            App.showToast(this, MessageCodes.DIRECTORY_SUCCESS.getErrorTitle());
         } else {
-            App.showToast(this, MessageCodes.DIRECTORY_FAIL.getMessageTitle());
+            App.showToast(this, MessageCodes.DIRECTORY_FAIL.getErrorTitle());
         }
     }
 }

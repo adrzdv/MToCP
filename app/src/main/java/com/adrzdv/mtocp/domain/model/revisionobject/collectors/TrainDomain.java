@@ -5,12 +5,15 @@ import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType;
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.Coach;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -129,7 +132,7 @@ public class TrainDomain extends ObjectCollector {
                     .removeIf(revisionObject ->
                             revisionObject.getNumber().contains("-6"));
         } else {
-            throw new IllegalStateException(MessageCodes.PARAMETER_ERROR.getMessageTitle());
+            throw new IllegalStateException(MessageCodes.PARAMETER_ERROR.getErrorTitle());
         }
     }
 
