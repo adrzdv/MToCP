@@ -118,7 +118,7 @@ fun AddDinnerCarDialog(
                 isError = isNumberError || isPatternError,
                 errorText = when {
                     isNumberError -> stringResource(R.string.empty_string)
-                    isPatternError -> MessageCodes.PATTERN_MATCHES_ERROR.messageTitle
+                    isPatternError -> MessageCodes.PATTERN_MATCHES_ERROR.errorTitle
                     else -> ""
                 },
                 label = stringResource(R.string.coach_number)
@@ -279,8 +279,8 @@ fun AddCoachDialog(
                 },
                 isError = isCoachPatterError || isDuplicateCoachError,
                 errorText = when {
-                    isCoachPatterError -> MessageCodes.PATTERN_MATCHES_ERROR.messageTitle
-                    isDuplicateCoachError -> MessageCodes.DUPLICATE_ERROR.messageTitle
+                    isCoachPatterError -> MessageCodes.PATTERN_MATCHES_ERROR.errorTitle
+                    isDuplicateCoachError -> MessageCodes.DUPLICATE_ERROR.errorTitle
                     else -> ""
                 },
                 label = stringResource(R.string.coach_number),

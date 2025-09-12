@@ -2,6 +2,7 @@ package com.adrzdv.mtocp.domain.model.revisionobject.collectors;
 
 import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 
@@ -86,7 +87,7 @@ public abstract class ObjectCollector {
     public void addViolationToObject(String objNumber, ViolationDomain violation) {
 
         if (!objectsMap.containsKey(objNumber) && objectsMap.get(objNumber) == null) {
-            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getMessageTitle());
+            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getErrorTitle());
         }
 
         objectsMap.get(objNumber).addViolation(violation);
@@ -95,7 +96,7 @@ public abstract class ObjectCollector {
     public void deleteViolationInObject(String objNumber, int code) {
 
         if (!objectsMap.containsKey(objNumber) && objectsMap.get(objNumber) == null) {
-            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getMessageTitle());
+            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getErrorTitle());
         }
 
         objectsMap.get(objNumber).deleteViolation(code);
