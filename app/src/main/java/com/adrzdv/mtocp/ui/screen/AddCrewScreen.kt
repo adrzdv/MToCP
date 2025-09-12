@@ -36,10 +36,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
+import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.InnerWorkerItemCard
 import com.adrzdv.mtocp.ui.component.buttons.SplitButton
 import com.adrzdv.mtocp.ui.component.dialogs.AddWorkerDialog
+import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
@@ -77,7 +78,7 @@ fun AddCrewScreen(
                     } else {
                         scope.launch {
                             snackbarHostState.showSnackbar(
-                                message = MessageCodes.CREW_ERROR.errorTitle
+                                visuals = ErrorSnackbar(MessageCodes.CREW_ERROR.messageTitle)
                             )
                         }
                     }

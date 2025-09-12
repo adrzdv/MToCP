@@ -214,7 +214,7 @@ fun ResultScreenMain(
                         orderViewModel.makeArchive { file ->
                             if (file == null || !file.exists()) {
                                 scope.launch {
-                                    snackbarHostState.showSnackbar(MessageCodes.FILE_ERROR.errorTitle)
+                                    snackbarHostState.showSnackbar(MessageCodes.FILE_ERROR.messageTitle)
                                 }
                                 return@makeArchive
                             }

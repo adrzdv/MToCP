@@ -40,10 +40,11 @@ import androidx.navigation.NavController
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.ui.component.buttons.CompactMenuButton
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
-import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
+import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.ReadOnlyDatePickerField
 import com.adrzdv.mtocp.ui.component.RevisionTypeDropdown
 import com.adrzdv.mtocp.ui.component.dialogs.AddTempTrainDialog
+import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.theme.CustomTypography
@@ -177,7 +178,7 @@ fun StartRevisionScreen(
             e.printStackTrace()
             scope.launch {
                 snackbarHostState.showSnackbar(
-                    message = MessageCodes.ORDER_CREATE_ERROR.errorTitle,
+                    visuals = ErrorSnackbar(MessageCodes.ORDER_CREATE_ERROR.messageTitle)
                 )
             }
             return false
@@ -336,7 +337,7 @@ fun StartRevisionScreen(
                 ReadOnlyDatePickerField(
                     value = dateStart,
                     errorBlankMessage = stringResource(R.string.empty_string),
-                    errorTimeMessage = MessageCodes.DATE_ERROR.errorTitle,
+                    errorTimeMessage = MessageCodes.DATE_ERROR.messageTitle,
                     labelText = stringResource(R.string.order_start_date_hint),
                     isBlankError = isDateStartError,
                     isFormatError = isDateStartTimeError,
@@ -361,7 +362,7 @@ fun StartRevisionScreen(
                 ReadOnlyDatePickerField(
                     value = dateEnd,
                     errorBlankMessage = stringResource(R.string.empty_string),
-                    errorTimeMessage = MessageCodes.DATE_ERROR.errorTitle,
+                    errorTimeMessage = MessageCodes.DATE_ERROR.messageTitle,
                     labelText = stringResource(R.string.order_end_date_hint),
                     isBlankError = isDateEndError,
                     isFormatError = isDateEndTimeError,

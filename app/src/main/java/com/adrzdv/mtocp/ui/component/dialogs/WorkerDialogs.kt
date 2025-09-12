@@ -130,7 +130,7 @@ fun AddWorkerDialog(
                         isWorkerFormatError = false
                     },
                     isError = isWorkerFormatError,
-                    errorText = MessageCodes.PATTERN_MATCHES_ERROR.errorTitle,
+                    errorText = MessageCodes.PATTERN_MATCHES_ERROR.messageTitle,
                     label = stringResource(R.string.worker_name)
                 )
 

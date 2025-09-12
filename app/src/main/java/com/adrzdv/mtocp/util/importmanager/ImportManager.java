@@ -51,7 +51,7 @@ public class ImportManager {
                 applyHandler(data.getTrainList(), TrainImport.class);
                 applyHandler(data.getAdditionalParamList(), AdditionalParamImport.class);
             });
-            onResult.accept(MessageCodes.SUCCESS.getErrorTitle());
+            onResult.accept(MessageCodes.SUCCESS.getMessageTitle());
 
         } catch (Exception e) {
             Log.d("IMPORT_MANAGER", e.getMessage());
