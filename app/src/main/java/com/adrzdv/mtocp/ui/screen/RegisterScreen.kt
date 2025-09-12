@@ -39,9 +39,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.activities.MainMenuActivity
-import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
+import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.newelements.RoundedButton
+import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.AuthViewModel
@@ -68,7 +69,7 @@ fun RegisterScreen(
     LaunchedEffect(state.errorMessage) {
         val error = state.errorMessage
         error?.let {
-            snackBarHostState.showSnackbar(message = it)
+            snackBarHostState.showSnackbar(visuals = ErrorSnackbar(it))
         }
     }
 

@@ -66,15 +66,15 @@ public class ServiceMenuActivity extends AppCompatActivity {
         try {
             filePickerLauncher.launch(Intent.createChooser(intent, "Выберите файл"));
         } catch (android.content.ActivityNotFoundException ex) {
-            App.showToast(this, MessageCodes.FILE_MANAGER_ERROR.getErrorTitle());
+            App.showToast(this, MessageCodes.FILE_MANAGER_ERROR.getMessageTitle());
         }
     }
 
     private void cleanDirs() {
         if (DirectoryHandler.cleanDirectories()) {
-            App.showToast(this, MessageCodes.DIRECTORY_SUCCESS.getErrorTitle());
+            App.showToast(this, MessageCodes.DIRECTORY_SUCCESS.getMessageTitle());
         } else {
-            App.showToast(this, MessageCodes.DIRECTORY_FAIL.getErrorTitle());
+            App.showToast(this, MessageCodes.DIRECTORY_FAIL.getMessageTitle());
         }
     }
 }
