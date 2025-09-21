@@ -32,13 +32,12 @@
         android:theme="@style/Theme.MToCP"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activities.RegisterActivity"
+            android:name=".ui.activities.SplashActivity"
             android:exported="true"
             android:label="@string/title_activity_register"
             android:theme="@style/Theme.MToCP">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -61,7 +60,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.activities.ServiceMenuActivity"
+            android:name=".ui.activities.ServiceActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.HelpActivity"
@@ -74,6 +73,9 @@
             android:exported="false" />
         <activity
             android:name=".ui.activities.CameraActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.MainMenuActivity"
