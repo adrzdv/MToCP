@@ -35,7 +35,7 @@ class MainMenuActivity : ComponentActivity() {
                 onServiceMenuClick = {
                     startActivity(
                         Intent(
-                            this, ServiceMenuActivity::class.java
+                            this, ServiceActivity::class.java
                         )
                     )
                 },

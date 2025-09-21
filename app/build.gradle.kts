@@ -14,7 +14,7 @@ android {
         minSdk = 30                                                 //Android 11+
         targetSdk = 35
         versionCode = 1
-        versionName = "0.9.2-beta-hf-05092025"
+        versionName = "0.9.3-beta-rb-21092025"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.androidx.compose.material3)
     testImplementation(libs.junit.jupiter)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)

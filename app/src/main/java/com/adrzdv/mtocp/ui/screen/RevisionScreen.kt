@@ -46,11 +46,9 @@ fun RevisionScreen(
     onBackClick: () -> Unit
 ) {
     val navRevisionController = rememberNavController()
-    val scope = rememberCoroutineScope()
     val navBackStackEntry by navRevisionController.currentBackStackEntryAsState()
     var showExitDialog by remember { mutableStateOf(false) }
     var showResetDialog by remember { mutableStateOf(false) }
-    val context = LocalContext.current
     val activity = LocalContext.current as? Activity
 
     val currentRoute =

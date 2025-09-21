@@ -57,92 +57,6 @@ import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
-
-@Composable
-private fun InfoBlock(
-    isCCTVUsing: Boolean,
-    isProgressiveUsing: Boolean,
-    isAdditionalParamsChecked: Boolean,
-    isDinnerChecked: Boolean,
-    items: List<MenuElementData>
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .weight(1f),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(6.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                ServiceRowBlock(
-                    painter = painterResource(R.drawable.ic_person_14),
-                    title = stringResource(R.string.progress_using),
-                    isState = isProgressiveUsing
-                )
-
-                ServiceRowBlock(
-                    painter = painterResource(R.drawable.ic_camera_14),
-                    title = stringResource(R.string.cctv_using),
-                    isState = isCCTVUsing
-                )
-
-                HorizontalDivider()
-
-                ServiceRowBlock(
-                    painter = painterResource(R.drawable.ic_dinner_24),
-                    title = stringResource(R.string.dinner_going),
-                    isState = isDinnerChecked
-                )
-
-                ServiceRowBlock(
-                    painter = painterResource(R.drawable.ic_list_24_white),
-                    title = stringResource(R.string.additional_params_checked),
-                    isState = isAdditionalParamsChecked
-                )
-            }
-        }
-
-        Box(
-            modifier = Modifier
-                .weight(1f),
-            contentAlignment = Alignment.CenterEnd
-        ) {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(1),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(2.dp),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-                horizontalArrangement = Arrangement.spacedBy(2.dp),
-                userScrollEnabled = false
-            ) {
-                items(items) { bttn ->
-                    MediumMenuButton(
-                        onClick = bttn.onClick,
-                        isEnable = bttn.isEnable,
-                        icon = {
-                            Icon(
-                                painter = painterResource(id = bttn.iconRes),
-                                contentDescription = null
-                            )
-                        },
-                        text = bttn.description,
-                        color = null
-                    )
-                }
-            }
-        }
-    }
-}
-
 @Composable
 fun MonitoringProcessScreen(
     orderViewModel: OrderViewModel,
@@ -153,10 +67,7 @@ fun MonitoringProcessScreen(
     val coaches = orderViewModel.collector!!.objectsMap.values.toList()
     var isAdditionalParamsChecked by remember { mutableStateOf(false) }
     val isDinnerChecked by remember { mutableStateOf(false) }
-    val isCCTVUsing = orderViewModel.isTrainHasCamera
-    val isProgressiveUsing = orderViewModel.isTrainUsingProgressive
     val train = orderViewModel.collector as? TrainDomain
-    val isDinnerGoing = train!!.isDinnerCar
     var showBottomSheet by remember { mutableStateOf(false) }
     var showExitDialog by remember { mutableStateOf(false) }
     var showSaveDialog by remember { mutableStateOf(false) }
@@ -189,7 +100,7 @@ fun MonitoringProcessScreen(
             {
                 navController.navigate("monitoringDinner/${(orderViewModel.collector as TrainDomain).dinnerCar.number}")
             },
-            isDinnerGoing,
+            isEnable = train!!.isDinnerCar,
             description = stringResource(R.string.dinner_going)
         ),
         MenuElementData(
@@ -265,8 +176,8 @@ fun MonitoringProcessScreen(
                     stringResource(R.string.static_block_string),
                     content = {
                         InfoBlock(
-                            isCCTVUsing = isCCTVUsing,
-                            isProgressiveUsing = isProgressiveUsing,
+                            isCCTVUsing = orderViewModel.isTrainHasCamera,
+                            isProgressiveUsing = orderViewModel.isTrainUsingProgressive,
                             isDinnerChecked = isDinnerChecked,
                             isAdditionalParamsChecked = isAdditionalParamsChecked,
                             items = buttons
@@ -369,5 +280,90 @@ fun MonitoringProcessScreen(
                 showSaveDialog = false
             }
         )
+    }
+}
+
+@Composable
+private fun InfoBlock(
+    isCCTVUsing: Boolean,
+    isProgressiveUsing: Boolean,
+    isAdditionalParamsChecked: Boolean,
+    isDinnerChecked: Boolean,
+    items: List<MenuElementData>
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .weight(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(6.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                ServiceRowBlock(
+                    painter = painterResource(R.drawable.ic_person_14),
+                    title = stringResource(R.string.progress_using),
+                    isState = isProgressiveUsing
+                )
+
+                ServiceRowBlock(
+                    painter = painterResource(R.drawable.ic_camera_14),
+                    title = stringResource(R.string.cctv_using),
+                    isState = isCCTVUsing
+                )
+
+                HorizontalDivider()
+
+                ServiceRowBlock(
+                    painter = painterResource(R.drawable.ic_dinner_24),
+                    title = stringResource(R.string.dinner_going),
+                    isState = isDinnerChecked
+                )
+
+                ServiceRowBlock(
+                    painter = painterResource(R.drawable.ic_list_24_white),
+                    title = stringResource(R.string.additional_params_checked),
+                    isState = isAdditionalParamsChecked
+                )
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .weight(1f),
+            contentAlignment = Alignment.CenterEnd
+        ) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(1),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(2.dp),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                userScrollEnabled = false
+            ) {
+                items(items) { bttn ->
+                    MediumMenuButton(
+                        onClick = bttn.onClick,
+                        isEnable = bttn.isEnable,
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = bttn.iconRes),
+                                contentDescription = null
+                            )
+                        },
+                        text = bttn.description,
+                        color = null
+                    )
+                }
+            }
+        }
     }
 }

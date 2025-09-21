@@ -21,7 +21,6 @@ public class DirectoryHandler {
             "/mtocp/export";
 
     public static boolean cleanDirectories() {
-
         boolean res;
         File dir = new File(WORK_DIRECTORY);
 
@@ -36,7 +35,6 @@ public class DirectoryHandler {
 
         new File(WORK_DIRECTORY).mkdir();
         return res;
-
     }
 
     private static boolean delRecursFile(File file) {
