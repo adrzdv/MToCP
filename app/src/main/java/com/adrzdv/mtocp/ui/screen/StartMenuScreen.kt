@@ -194,7 +194,6 @@ fun StartMenuScreen(
                             icon = painterResource(R.drawable.ic_outline_globe_24),
                             onClick = onRequestWebClick
                         )
-
                         SquaredBigButton(
                             text = stringResource(R.string.exit_text),
                             icon = painterResource(R.drawable.ic_exit_24_white),

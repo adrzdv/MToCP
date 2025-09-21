@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -46,11 +45,9 @@ fun RevisionScreen(
     onBackClick: () -> Unit
 ) {
     val navRevisionController = rememberNavController()
-    val scope = rememberCoroutineScope()
     val navBackStackEntry by navRevisionController.currentBackStackEntryAsState()
     var showExitDialog by remember { mutableStateOf(false) }
     var showResetDialog by remember { mutableStateOf(false) }
-    val context = LocalContext.current
     val activity = LocalContext.current as? Activity
 
     val currentRoute =

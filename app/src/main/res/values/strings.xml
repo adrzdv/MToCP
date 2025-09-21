@@ -12,7 +12,7 @@
     <string name="search_depot_hint">Поиск предприятия</string>
     <string name="back_text">Назад</string>
     <string name="header_catalog">Классификатор</string>
-    <string name="header_service">Настройки</string>
+    <string name="settings">Настройки</string>
     <string name="clean_dir_string">Очистить директории</string>
     <string name="load_catalog_string">Загрузить справочники</string>
     <string name="header_depot">Структурные подразделения</string>
@@ -138,5 +138,18 @@
     <string name="login_length">Логин содержит мало символов</string>
     <string name="password_length">Пароль содержит мало символов</string>
     <string name="unknown_error">Неизвестная ошибка</string>
+
+    <string name="settings_main">Основные</string>
+    <string name="settings_personal">Пользовательские</string>
+    <string name="change_password">Изменить пароль</string>
+    <string name="settings_share">Общие</string>
+    <string name="about_app">О приложении</string>
+    <string name="username">Пользователь</string>
+    <string name="user_id">Табельный номер</string>
+    <string name="user_sec_id">Открытый лист</string>
+    <string name="clear_dirs_sub">Очистка программных директорий</string>
+    <string name="update_catalog_sub">Обновить программные справочники из файла</string>
+    <string name="notifications">Уведомления</string>
+    <string name="notifications_sub">Управление настройкамми уведомления</string>
 
 </resources>
