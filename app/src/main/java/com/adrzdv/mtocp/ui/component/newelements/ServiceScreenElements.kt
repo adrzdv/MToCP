@@ -120,6 +120,9 @@ fun SwitchRow(
             },
             colors = SwitchDefaults.colors(
                 checkedTrackColor = AppColors.SECONDARY_COLOR.color,
+                uncheckedThumbColor = AppColors.SECONDARY_COLOR.color,
+                uncheckedBorderColor = AppColors.SECONDARY_COLOR.color,
+                uncheckedTrackColor = AppColors.SURFACE_COLOR.color
             )
         )
     }
