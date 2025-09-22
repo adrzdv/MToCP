@@ -40,7 +40,7 @@ fun CustomSnackbarHost(
                         width = 2.dp,
                         color = when {
                             isError -> AppColors.ERROR_COLOR.color
-                            isInfo -> AppColors.SECONDARY_COLOR.color
+                            isInfo -> AppColors.MAIN_COLOR.color
                             else -> AppColors.SURFACE_COLOR.color
                         },
                         shape = RoundedCornerShape(4.dp)
@@ -78,7 +78,7 @@ fun CustomSnackbarHost(
                             style = AppTypography.labelLarge,
                             color = when {
                                 isError -> AppColors.ERROR_COLOR.color
-                                isInfo -> AppColors.SECONDARY_COLOR.color
+                                isInfo -> AppColors.MAIN_COLOR.color
                                 else -> AppColors.SURFACE_COLOR.color
                             },
                             textAlign = TextAlign.Center,

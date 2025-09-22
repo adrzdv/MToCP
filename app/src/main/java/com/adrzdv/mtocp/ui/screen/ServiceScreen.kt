@@ -40,6 +40,7 @@ import kotlinx.coroutines.launch
 fun ServiceScreen(
     onCleanRepositoryClick: ((Boolean) -> Unit) -> Unit,
     onLoadCatalog: () -> Unit,
+    onDeleteProfile: () -> Unit,
     onBackClick: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -51,7 +52,7 @@ fun ServiceScreen(
     val username = prefs.getString("username", "null")
 
     Scaffold(
-        containerColor = AppColors.BACKGROUND_COLOR.color,
+        containerColor = AppColors.SURFACE_COLOR.color,
         topBar = {
             TopAppBar(
                 title = {
@@ -92,7 +93,6 @@ fun ServiceScreen(
                 Text(
                     text = stringResource(R.string.settings_personal),
                     style = AppTypography.titleSmall,
-                    color = AppColors.SURFACE_COLOR.color,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 )
             }
@@ -114,13 +114,23 @@ fun ServiceScreen(
                 )
             }
             item {
+                SettingsRow(
+                    icon = painterResource(R.drawable.ic_exit_24_white),
+                    title = stringResource(R.string.del_profile),
+                    subtitle = stringResource(R.string.del_profile_sub),
+                    isClickable = true,
+                    onClick = {
+                        onDeleteProfile()
+                    }
+                )
+            }
+            item {
                 Divider()
             }
             item {
                 Text(
                     text = stringResource(R.string.settings_main),
                     style = AppTypography.titleSmall,
-                    color = AppColors.SURFACE_COLOR.color,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 )
             }
@@ -163,7 +173,6 @@ fun ServiceScreen(
                 Text(
                     text = stringResource(R.string.settings_share),
                     style = AppTypography.titleSmall,
-                    color = AppColors.SURFACE_COLOR.color,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 )
             }
@@ -197,6 +206,7 @@ fun PreviewServiceScreen() {
     ServiceScreen(
         onBackClick = {},
         onLoadCatalog = {},
-        onCleanRepositoryClick = {}
+        onCleanRepositoryClick = {},
+        onDeleteProfile = {}
     )
 }

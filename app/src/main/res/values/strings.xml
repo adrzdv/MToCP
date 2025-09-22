@@ -151,5 +151,7 @@
     <string name="update_catalog_sub">Обновить программные справочники из файла</string>
     <string name="notifications">Уведомления</string>
     <string name="notifications_sub">Управление настройкамми уведомления</string>
+    <string name="del_profile">Выход</string>
+    <string name="del_profile_sub">Выйти из профиля</string>
 
 </resources>

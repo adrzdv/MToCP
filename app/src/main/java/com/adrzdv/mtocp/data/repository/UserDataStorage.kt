@@ -36,4 +36,13 @@ class UserDataStorage(
     }
 
     fun getUserSecId(): String? = sharedPreferences.getString(KEY_USERSECID, null)
+
+    fun deleteToken() {
+        sharedPreferences.edit{
+            remove(KEY_TOKEN)
+            remove(KEY_USERNAME)
+            remove(KEY_USERID)
+            remove(KEY_USERSECID)
+        }
+    }
 }
