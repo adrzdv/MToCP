@@ -50,18 +50,16 @@ fun SettingsRow(
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(painter = icon, contentDescription = null, tint = AppColors.SURFACE_COLOR.color)
+        Icon(painter = icon, contentDescription = null)
         Spacer(modifier = Modifier.width(16.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                color = AppColors.SURFACE_COLOR.color,
                 style = AppTypography.bodyLarge
             )
             subtitle?.let {
                 Text(
                     text = it,
-                    color = AppColors.SURFACE_COLOR.color,
                     style = AppTypography.bodySmall
                 )
             }
@@ -69,8 +67,7 @@ fun SettingsRow(
         if (isClickable == true) {
             Icon(
                 imageVector = Icons.Default.ChevronRight,
-                contentDescription = null,
-                tint = AppColors.SURFACE_COLOR.color
+                contentDescription = null
             )
         }
     }
@@ -94,21 +91,18 @@ fun SwitchRow(
     ) {
         Icon(
             painter = icon,
-            tint = AppColors.SURFACE_COLOR.color,
             contentDescription = null
         )
         Spacer(modifier = Modifier.width(16.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                style = AppTypography.bodyLarge,
-                color = AppColors.SURFACE_COLOR.color
+                style = AppTypography.bodyLarge
             )
             subtitle?.let {
                 Text(
                     text = it,
-                    style = AppTypography.bodySmall,
-                    color = AppColors.SURFACE_COLOR.color
+                    style = AppTypography.bodySmall
                 )
             }
         }
@@ -119,9 +113,9 @@ fun SwitchRow(
                 onStateChange(it)
             },
             colors = SwitchDefaults.colors(
-                checkedTrackColor = AppColors.SECONDARY_COLOR.color,
-                uncheckedThumbColor = AppColors.SECONDARY_COLOR.color,
-                uncheckedBorderColor = AppColors.SECONDARY_COLOR.color,
+                checkedTrackColor = AppColors.MAIN_COLOR.color,
+                uncheckedThumbColor = AppColors.MAIN_COLOR.color,
+                uncheckedBorderColor = AppColors.MAIN_COLOR.color,
                 uncheckedTrackColor = AppColors.SURFACE_COLOR.color
             )
         )

@@ -83,7 +83,7 @@ fun RegisterScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(AppColors.BACKGROUND_COLOR.color)
+                .background(AppColors.SURFACE_COLOR.color)
         ) {
             Column(
                 modifier = Modifier
@@ -135,12 +135,12 @@ fun RegisterScreen(
                 Text(
                     text = stringResource(R.string.welcome),
                     style = AppTypography.titleMedium,
-                    color = AppColors.SURFACE_COLOR.color
+                    color = AppColors.MAIN_COLOR.color
                 )
                 Text(
                     text = stringResource(R.string.greeting_message),
                     style = AppTypography.titleMedium,
-                    color = AppColors.SURFACE_COLOR.color,
+                    color = AppColors.MAIN_COLOR.color,
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.weight(0.05f))
@@ -206,7 +206,7 @@ fun RegisterScreen(
                         },
                         text = stringResource(R.string.login_button),
                         isEnable = state.isFormValid && !state.isLoading,
-                        color = AppColors.SECONDARY_COLOR.color
+                        color = AppColors.MAIN_COLOR.color
                     )
                 }
             }
@@ -218,7 +218,7 @@ fun RegisterScreen(
                         .background(Color.Black.copy(alpha = 0.4f)),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator(color = AppColors.SURFACE.color)
+                    CircularProgressIndicator(color = AppColors.MAIN_COLOR.color)
                 }
             }
         }

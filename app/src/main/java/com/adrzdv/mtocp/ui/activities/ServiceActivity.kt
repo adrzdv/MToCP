@@ -14,6 +14,8 @@ import com.adrzdv.mtocp.App
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.ui.screen.ServiceScreen
 import com.adrzdv.mtocp.util.DirectoryHandler
+import androidx.core.content.edit
+import com.adrzdv.mtocp.data.repository.UserDataStorage
 
 class ServiceActivity : AppCompatActivity() {
     private lateinit var filePickerLauncher: ActivityResultLauncher<Intent>
@@ -45,6 +47,11 @@ class ServiceActivity : AppCompatActivity() {
                 onCleanRepositoryClick = { onResult ->
                     cleanDirs(onResult)
                 },
+                onDeleteProfile = {
+                    deleteProfile()
+                    startActivity(Intent(this, RegisterActivity::class.java))
+                    finish()
+                },
                 onLoadCatalog = ::loadDataFromFile,
                 onBackClick = { finish() }
             )
@@ -57,7 +64,6 @@ class ServiceActivity : AppCompatActivity() {
             putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("application/json", "text/json"))
             addCategory(Intent.CATEGORY_OPENABLE)
         }
-
         try {
             filePickerLauncher.launch(Intent.createChooser(intent, "Выберете файл:"))
         } catch (ex: ActivityNotFoundException) {
@@ -68,5 +74,11 @@ class ServiceActivity : AppCompatActivity() {
     private fun cleanDirs(onResult: (Boolean) -> Unit) {
         val success = DirectoryHandler.cleanDirectories()
         onResult(success)
+    }
+
+    private fun deleteProfile() {
+        val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
+        val userDataStorage = UserDataStorage(prefs)
+        userDataStorage.deleteToken()
     }
 }

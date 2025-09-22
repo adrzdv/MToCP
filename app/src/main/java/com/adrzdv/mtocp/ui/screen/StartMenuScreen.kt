@@ -38,6 +38,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.adrzdv.mtocp.R
@@ -86,7 +87,7 @@ fun StartMenuScreen(
                 },
                 colors = TopAppBarColors(
                     containerColor = AppColors.MAIN_COLOR.color,
-                    scrolledContainerColor = AppColors.SECONDARY_COLOR.color,
+                    scrolledContainerColor = AppColors.MAIN_COLOR.color,
                     navigationIconContentColor = AppColors.SURFACE_COLOR.color,
                     titleContentColor = AppColors.SURFACE_COLOR.color,
                     actionIconContentColor = AppColors.SURFACE_COLOR.color,
@@ -228,4 +229,17 @@ fun StartMenuScreen(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Preview() {
+    StartMenuScreen(
+        onServiceMenuClick = {},
+        onStartRevisionClick = {},
+        onOpenViolationCatalogClick = {},
+        onRequestWebClick = {},
+        onExitClick = {},
+        appVersion = ""
+    )
 }

@@ -34,7 +34,7 @@ fun InputTextField(
                 Icon(
                     painter = trailingIcon,
                     tint = if (isError && errorText.isNotBlank()) AppColors.ERROR_COLOR.color
-                    else AppColors.SECONDARY_COLOR.color,
+                    else AppColors.MAIN_COLOR.color,
                     contentDescription = null
                 )
             }
@@ -59,15 +59,15 @@ fun InputTextField(
         modifier = modifier,
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = if (isError) AppColors.ERROR_COLOR.color
-            else AppColors.SURFACE_COLOR.color,
+            else AppColors.MAIN_COLOR.color,
             unfocusedBorderColor = if (isError) AppColors.ERROR_COLOR.color
-            else AppColors.SURFACE_COLOR.color,
-            focusedContainerColor = AppColors.BACKGROUND_COLOR.color,
-            unfocusedContainerColor = AppColors.BACKGROUND_COLOR.color,
-            focusedLabelColor = AppColors.SURFACE_COLOR.color,
-            unfocusedLabelColor = AppColors.SURFACE_COLOR.color,
-            focusedTextColor = AppColors.SURFACE_COLOR.color,
-            unfocusedTextColor = AppColors.SURFACE_COLOR.color,
+            else AppColors.MAIN_COLOR.color,
+            focusedContainerColor = AppColors.SURFACE_COLOR.color,
+            unfocusedContainerColor = AppColors.SURFACE_COLOR.color,
+            focusedLabelColor = AppColors.MAIN_COLOR.color,
+            unfocusedLabelColor = AppColors.MAIN_COLOR.color,
+            focusedTextColor = AppColors.MAIN_COLOR.color,
+            unfocusedTextColor = AppColors.MAIN_COLOR.color,
             errorTextColor = AppColors.ERROR_COLOR.color
         ),
         visualTransformation = when (secretInput) {
