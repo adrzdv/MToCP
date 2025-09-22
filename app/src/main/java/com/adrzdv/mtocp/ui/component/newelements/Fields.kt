@@ -14,13 +14,13 @@ import com.adrzdv.mtocp.ui.theme.AppTypography
 
 @Composable
 fun InputTextField(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     isEnabled: Boolean = true,
     isError: Boolean,
     errorText: String,
     label: String,
-    modifier: Modifier = Modifier,
     trailingIcon: Painter?,
     secretInput: Boolean?
 ) {

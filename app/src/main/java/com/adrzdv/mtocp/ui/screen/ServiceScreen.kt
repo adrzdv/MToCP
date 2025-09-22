@@ -1,7 +1,6 @@
 package com.adrzdv.mtocp.ui.screen
 
 import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -26,7 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.ui.activities.RegisterActivity
 import com.adrzdv.mtocp.ui.component.newelements.Divider
 import com.adrzdv.mtocp.ui.component.newelements.SettingsRow
 import com.adrzdv.mtocp.ui.component.newelements.SwitchRow

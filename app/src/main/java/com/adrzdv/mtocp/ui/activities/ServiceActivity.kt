@@ -12,10 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.adrzdv.mtocp.App
 import com.adrzdv.mtocp.MessageCodes
+import com.adrzdv.mtocp.data.repository.UserDataStorage
 import com.adrzdv.mtocp.ui.screen.ServiceScreen
 import com.adrzdv.mtocp.util.DirectoryHandler
-import androidx.core.content.edit
-import com.adrzdv.mtocp.data.repository.UserDataStorage
 
 class ServiceActivity : AppCompatActivity() {
     private lateinit var filePickerLauncher: ActivityResultLauncher<Intent>
