@@ -76,7 +76,7 @@ fun MonitoringProcessScreen(
     val scope = rememberCoroutineScope()
     val uncheckedCoaches = stringResource(R.string.unchecked_coaches)
     val uncheckedParams = stringResource(R.string.unchecked_params)
-    val hasNfc = context.packageManager.hasSystemFeature(PackageManager.FEATURE_NFC)
+    val nfcAvailable = context.packageManager.hasSystemFeature(PackageManager.FEATURE_NFC)
 
     BackHandler(
         enabled = true
@@ -118,7 +118,7 @@ fun MonitoringProcessScreen(
                     "NFC_BOTTOM_SHEET"
                 )
             },
-            hasNfc,
+            nfcAvailable,
             description = stringResource(R.string.export_data)
         )
     )

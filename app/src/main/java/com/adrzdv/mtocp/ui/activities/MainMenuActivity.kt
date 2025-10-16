@@ -46,7 +46,7 @@ class MainMenuActivity : ComponentActivity() {
                     startActivity(
                         Intent(
                             this,
-                            RequestWebActivity::class.java
+                            RequestActivity::class.java
                         )
                     )
                 },
