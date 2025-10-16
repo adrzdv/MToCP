@@ -31,6 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.buttons.MenuButton
 import com.adrzdv.mtocp.ui.component.dialogs.CustomAlertDialog
+import com.adrzdv.mtocp.ui.component.newelements.SquaredBigButton
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
@@ -52,14 +53,15 @@ fun RequestWebScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
-        containerColor = AppColors.LIGHT_GRAY.color,
+        containerColor = AppColors.BACKGROUND_COLOR.color,
         snackbarHost = { CustomSnackbarHost(hostState = snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {
                     Text(
                         text = stringResource(R.string.web_request_string),
-                        style = CustomTypography.titleLarge
+                        style = CustomTypography.titleLarge,
+                        color = AppColors.SURFACE_COLOR.color
                     )
                 },
                 actions = {
@@ -71,11 +73,12 @@ fun RequestWebScreen(
                     }
                 },
                 colors = TopAppBarColors(
-                    containerColor = AppColors.MAIN_GREEN.color,
-                    scrolledContainerColor = AppColors.MAIN_GREEN.color,
-                    titleContentColor = AppColors.OFF_WHITE.color,
-                    navigationIconContentColor = AppColors.OFF_WHITE.color,
-                    actionIconContentColor = AppColors.OFF_WHITE.color
+                    containerColor = AppColors.MAIN_COLOR.color,
+                    scrolledContainerColor = AppColors.MAIN_COLOR.color,
+                    navigationIconContentColor = AppColors.SURFACE_COLOR.color,
+                    titleContentColor = AppColors.SURFACE_COLOR.color,
+                    actionIconContentColor = AppColors.SURFACE_COLOR.color,
+                    subtitleContentColor = AppColors.BACKGROUND_COLOR.color
                 )
             )
         }
@@ -96,7 +99,7 @@ fun RequestWebScreen(
             ) {
                 Spacer(modifier = Modifier.height(32.dp))
 
-                MenuButton(
+                SquaredBigButton(
                     text = stringResource(R.string.request_string),
                     icon = painterResource(R.drawable.ic_webhook_pic_32_white),
                     onClick = {
@@ -115,7 +118,7 @@ fun RequestWebScreen(
                         .background(Color.Black.copy(alpha = 0.3f)),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator(color = AppColors.MAIN_GREEN.color)
+                    CircularProgressIndicator(color = AppColors.MAIN_COLOR.color)
                 }
             }
 
