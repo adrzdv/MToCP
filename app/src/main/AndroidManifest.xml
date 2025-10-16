@@ -7,18 +7,14 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-feature
         android:name="android.hardware.camera.autofocus"
-        android:required="true" />
-
+        android:required="false" />
     <uses-permission android:name="android.permission.NFC" />
-
     <uses-feature
         android:name="android.hardware.nfc"
-        android:required="true" />
+        android:required="false" />
 
     <application
         android:name=".App"
@@ -69,7 +65,7 @@
             android:name=".ui.activities.CatalogActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.RequestWebActivity"
+            android:name=".ui.activities.RequestActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.CameraActivity"

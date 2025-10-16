@@ -27,6 +27,10 @@ class RequestWebViewModel : ViewModel() {
 
     private val wakeUpService = RenderWakeUpService()
 
+    fun setWorkerIfTokenExist(username: String) {
+        workerName = username
+    }
+
     fun onWorkerNameChanged(newName: String) {
         workerName = newName
     }
@@ -37,7 +41,11 @@ class RequestWebViewModel : ViewModel() {
             val success = wakeUpService.wakeUpRender()
             isLoading = false
             if (success) {
-                showNameDialog = true
+                if (workerName.isNullOrEmpty()) {
+                    showNameDialog = true
+                } else {
+                    getNumberByAuthUser()
+                }
             } else {
                 resultDialogText = "Ошибка подключения к Render"
             }
@@ -47,6 +55,15 @@ class RequestWebViewModel : ViewModel() {
     fun getNumber() {
         viewModelScope.launch {
             showNameDialog = false
+            isGettingNumber = true
+            val number = wakeUpService.getNumber(workerName)
+            isGettingNumber = false
+            resultDialogText = number ?: "Ошибка получения номера"
+        }
+    }
+
+    fun getNumberByAuthUser() {
+        viewModelScope.launch {
             isGettingNumber = true
             val number = wakeUpService.getNumber(workerName)
             isGettingNumber = false
