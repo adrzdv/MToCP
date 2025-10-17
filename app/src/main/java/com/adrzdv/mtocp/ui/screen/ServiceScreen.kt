@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.ui.screen
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -38,6 +42,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ServiceScreen(
+    snackMessage: State<String?>,
     onCleanRepositoryClick: ((Boolean) -> Unit) -> Unit,
     onLoadCatalog: () -> Unit,
     onDeleteProfile: () -> Unit,
@@ -50,6 +55,12 @@ fun ServiceScreen(
         context.packageManager.getPackageInfo(context.packageName, 0)?.versionName ?: "unknown"
     val prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
     val username = prefs.getString("username", "null")
+
+    LaunchedEffect(snackMessage.value) {
+        snackMessage.value?.let {
+            snackbarHostState.showSnackbar(visuals = InfoSnackbar(it))
+        }
+    }
 
     Scaffold(
         containerColor = AppColors.SURFACE_COLOR.color,
@@ -200,10 +211,12 @@ fun ServiceScreen(
     }
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Preview(showBackground = true)
 @Composable
 fun PreviewServiceScreen() {
     ServiceScreen(
+        snackMessage = mutableStateOf<String?>(null),
         onBackClick = {},
         onLoadCatalog = {},
         onCleanRepositoryClick = {},
