@@ -37,7 +37,7 @@ import androidx.navigation.NavController
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
-import com.adrzdv.mtocp.ui.component.InnerWorkerItemCard
+import com.adrzdv.mtocp.ui.component.newelements.cards.InnerWorkerItemCard
 import com.adrzdv.mtocp.ui.component.buttons.SplitButton
 import com.adrzdv.mtocp.ui.component.dialogs.AddWorkerDialog
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar

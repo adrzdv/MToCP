@@ -26,7 +26,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -35,10 +34,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.ui.model.MenuElementItem
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
+import com.adrzdv.mtocp.ui.viewmodel.TrainInfoViewModel
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
 import kotlinx.coroutines.launch
 
@@ -49,9 +50,9 @@ fun InfoCatalogScreen(
     violationViewModel: ViolationViewModel,
     revisionTypes: List<String>,
     depotViewModel: DepotViewModel,
-    companyViewMode: CompanyViewModel
+    companyViewMode: CompanyViewModel,
+    trainInfoViewModel: TrainInfoViewModel
 ) {
-    //Navigation controller, drawer state (opened/closed), and val for coroutine
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -59,7 +60,6 @@ fun InfoCatalogScreen(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    //Main elements of menu
     val menuItems = listOf(
         MenuElementItem(
             "violations",
@@ -74,12 +74,22 @@ fun InfoCatalogScreen(
         MenuElementItem(
             "dinner",
             stringResource(R.string.dinner_departments),
-            painterResource(R.drawable.ic_outline_train_24)
+            painterResource(R.drawable.ic_food_waiter)
         ),
         MenuElementItem(
             "company",
             stringResource(R.string.header_company),
+            painterResource(R.drawable.ic_carrier)
+        ),
+        MenuElementItem(
+            "train",
+            title = stringResource(R.string.trains),
             painterResource(R.drawable.ic_outline_train_24)
+        ),
+        MenuElementItem(
+            route = "kri",
+            title = stringResource(R.string.kri),
+            icon = painterResource(R.drawable.ic_wagon)
         )
     )
 
@@ -89,7 +99,8 @@ fun InfoCatalogScreen(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet(
-                modifier = Modifier.width(240.dp)
+                modifier = Modifier.width(240.dp),
+                drawerContainerColor = AppColors.BACKGROUND_COLOR.color
             ) {
                 Spacer(Modifier.height(16.dp))
                 menuItems.forEach { menuItem ->
@@ -112,12 +123,12 @@ fun InfoCatalogScreen(
                             }
                         },
                         colors = NavigationDrawerItemDefaults.colors(
-                            selectedContainerColor = AppColors.MAIN_GREEN.color,
-                            selectedIconColor = Color.White,
-                            selectedTextColor = Color.White,
+                            selectedContainerColor = AppColors.MAIN_COLOR.color,
+                            selectedIconColor = AppColors.SURFACE_COLOR.color,
+                            selectedTextColor = AppColors.SURFACE_COLOR.color,
                             unselectedContainerColor = Color.Transparent,
-                            unselectedIconColor = Color.Gray,
-                            unselectedTextColor = Color.Gray
+                            unselectedIconColor = AppColors.MAIN_COLOR.color,
+                            unselectedTextColor = AppColors.MAIN_COLOR.color
                         ),
                         shape = RoundedCornerShape(0.dp)
                     )
@@ -126,7 +137,7 @@ fun InfoCatalogScreen(
         }
     ) {
         Scaffold(
-            contentColor = AppColors.LIGHT_GRAY.color,
+            contentColor = AppColors.BACKGROUND_COLOR.color,
             topBar = {
                 TopAppBar(
                     title = {
@@ -159,12 +170,12 @@ fun InfoCatalogScreen(
                         }
                     },
                     colors = TopAppBarColors(
-                        containerColor = AppColors.MAIN_GREEN.color,
-                        scrolledContainerColor = AppColors.MAIN_GREEN.color,
-                        navigationIconContentColor = AppColors.OFF_WHITE.color,
-                        titleContentColor = AppColors.OFF_WHITE.color,
-                        actionIconContentColor = AppColors.OFF_WHITE.color,
-                        subtitleContentColor = AppColors.OFF_WHITE.color
+                        containerColor = AppColors.MAIN_COLOR.color,
+                        scrolledContainerColor = AppColors.MAIN_COLOR.color,
+                        navigationIconContentColor = AppColors.SURFACE_COLOR.color,
+                        titleContentColor = AppColors.SURFACE_COLOR.color,
+                        actionIconContentColor = AppColors.SURFACE_COLOR.color,
+                        subtitleContentColor = AppColors.BACKGROUND_COLOR.color
                     )
                 )
             }
@@ -195,14 +206,12 @@ fun InfoCatalogScreen(
                         viewModel = depotViewModel
                     )
                 }
+                composable(route = "train") {
+                    TrainInfoScreen(
+                        viewModel = trainInfoViewModel
+                    )
+                }
             }
         }
     }
 }
-
-
-data class MenuElementItem(
-    val route: String,
-    val title: String,
-    val icon: Painter
-)

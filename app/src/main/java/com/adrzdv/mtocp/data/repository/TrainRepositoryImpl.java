@@ -2,8 +2,9 @@ package com.adrzdv.mtocp.data.repository;
 
 import com.adrzdv.mtocp.data.db.dao.DepotDao;
 import com.adrzdv.mtocp.data.db.dao.TrainDao;
-import com.adrzdv.mtocp.data.db.entity.DepotWithBranch;
+import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch;
 import com.adrzdv.mtocp.data.db.entity.TrainEntity;
+import com.adrzdv.mtocp.data.db.pojo.TrainWithDepotAndBranch;
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
 import com.adrzdv.mtocp.domain.repository.TrainRepository;
@@ -40,5 +41,10 @@ public class TrainRepositoryImpl implements TrainRepository {
     @Override
     public void saveAll(List<TrainEntity> entities) {
         dao.insertAll(entities);
+    }
+
+    @Override
+    public List<TrainWithDepotAndBranch> getTrainsWithFullData() {
+        return dao.getTrainWithFullData();
     }
 }

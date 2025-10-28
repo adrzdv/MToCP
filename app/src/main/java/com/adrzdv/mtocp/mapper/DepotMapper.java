@@ -1,7 +1,7 @@
 package com.adrzdv.mtocp.mapper;
 
 import com.adrzdv.mtocp.data.db.entity.DepotEntity;
-import com.adrzdv.mtocp.data.db.entity.DepotWithBranch;
+import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch;
 import com.adrzdv.mtocp.data.importmodel.DepotImport;
 import com.adrzdv.mtocp.domain.model.departments.BranchDomain;
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain;

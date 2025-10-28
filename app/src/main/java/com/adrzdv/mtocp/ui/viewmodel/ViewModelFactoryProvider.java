@@ -26,6 +26,8 @@ public class ViewModelFactoryProvider {
                 () -> new AutocompleteViewModel(App.getTrainRepository()));
         creators.put(AdditionalParamViewModel.class,
                 () -> new AdditionalParamViewModel(App.getTempParamRepository()));
+        creators.put(TrainInfoViewModel.class,
+                () -> new TrainInfoViewModel(App.getTrainRepository()));
 
         return new CustomViewModelProvider(creators);
     }

@@ -22,7 +22,6 @@ public class ViolationViewModel extends ViewModel {
 
     private final ViolationRepository repository;
     private final MutableLiveData<List<ViolationDto>> filteredViolations;
-    private final MutableLiveData<Event<String>> toastMessage;
     private List<ViolationEntity> allViolations;
     private String currentSearchString;
     private RevisionType currentRevisionType;
@@ -32,7 +31,6 @@ public class ViolationViewModel extends ViewModel {
     public ViolationViewModel(ViolationRepository repository) {
         this.repository = repository;
         this.filteredViolations = new MutableLiveData<>(new ArrayList<>());
-        this.toastMessage = new MutableLiveData<>();
         this.allViolations = new ArrayList<>();
         this.currentSearchString = "";
         this.currentRevisionType = ALL;

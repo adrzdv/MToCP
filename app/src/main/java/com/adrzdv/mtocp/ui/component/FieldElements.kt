@@ -49,14 +49,14 @@ fun DropdownMenuField(
                     Text(
                         text = errorMessage,
                         style = AppTypography.labelMedium,
-                        color = AppColors.ERROR.color
+                        color = AppColors.ERROR_COLOR.color
                     )
                 }
             },
             onValueChange = {},
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = if (isError) AppColors.ERROR.color else AppColors.OUTLINE_GREEN.color,
-                unfocusedBorderColor = if (isError) AppColors.ERROR.color else Color.Gray,
+                focusedBorderColor = if (isError) AppColors.ERROR_COLOR.color else AppColors.OUTLINE_GREEN.color,
+                unfocusedBorderColor = if (isError) AppColors.ERROR_COLOR.color else Color.Gray,
                 focusedContainerColor = AppColors.LIGHT_GRAY.color
             ),
             readOnly = true,
@@ -70,7 +70,7 @@ fun DropdownMenuField(
                 if (isError) {
                     Icon(
                         imageVector = Icons.Default.Info,
-                        tint = AppColors.ERROR.color,
+                        tint = AppColors.ERROR_COLOR.color,
                         contentDescription = ""
                     )
                 } else ExposedDropdownMenuDefaults.TrailingIcon(
@@ -126,13 +126,13 @@ fun <T> DropdownMenuParameterizedField(
                     Text(
                         text = errorMessage,
                         style = AppTypography.labelMedium,
-                        color = AppColors.ERROR.color
+                        color = AppColors.ERROR_COLOR.color
                     )
                 }
             },
             onValueChange = {},
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = if (isError) AppColors.ERROR.color else AppColors.OUTLINE_GREEN.color,
+                focusedBorderColor = if (isError) AppColors.ERROR_COLOR.color else AppColors.OUTLINE_GREEN.color,
                 unfocusedBorderColor = if (isError) AppColors.ERROR.color else Color.Gray,
                 focusedContainerColor = AppColors.LIGHT_GRAY.color
             ),
@@ -147,7 +147,7 @@ fun <T> DropdownMenuParameterizedField(
                 if (isError) {
                     Icon(
                         imageVector = Icons.Default.Info,
-                        tint = AppColors.ERROR.color,
+                        tint = AppColors.ERROR_COLOR.color,
                         contentDescription = ""
                     )
                 } else ExposedDropdownMenuDefaults.TrailingIcon(
@@ -194,7 +194,7 @@ fun CustomOutlinedTextField(
             if (isError && errorText.isNotBlank()) {
                 Icon(
                     imageVector = Icons.Default.Info,
-                    tint = AppColors.ERROR.color,
+                    tint = AppColors.ERROR_COLOR.color,
                     contentDescription = ""
                 )
             }
@@ -204,7 +204,7 @@ fun CustomOutlinedTextField(
             if (isError && errorText.isNotBlank()) {
                 Text(
                     text = errorText,
-                    color = AppColors.ERROR.color,
+                    color = AppColors.ERROR_COLOR.color,
                     style = AppTypography.labelSmall
                 )
             }
@@ -218,9 +218,9 @@ fun CustomOutlinedTextField(
         singleLine = true,
         modifier = modifier,
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = if (isError) AppColors.ERROR.color
+            focusedBorderColor = if (isError) AppColors.ERROR_COLOR.color
             else AppColors.OUTLINE_GREEN.color,
-            unfocusedBorderColor = if (isError) AppColors.ERROR.color
+            unfocusedBorderColor = if (isError) AppColors.ERROR_COLOR.color
             else Color(0xFFCCCCCC),
             focusedContainerColor = Color.White,
             unfocusedContainerColor = Color.White,
@@ -259,7 +259,7 @@ fun RevisionTypeDropdown(
                 if (isError) {
                     Text(
                         text = errorMessage,
-                        color = AppColors.ERROR.color,
+                        color = AppColors.ERROR_COLOR.color,
                         style = AppTypography.labelSmall
                     )
                 }
@@ -273,8 +273,8 @@ fun RevisionTypeDropdown(
                 .fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = if (isError) AppColors.ERROR.color else AppColors.OUTLINE_GREEN.color,
-                unfocusedBorderColor = if (isError) AppColors.ERROR.color else Color(0xFFCCCCCC),
+                focusedBorderColor = if (isError) AppColors.ERROR_COLOR.color else AppColors.MAIN_COLOR.color,
+                unfocusedBorderColor = if (isError) AppColors.ERROR_COLOR.color else Color(0xFFCCCCCC),
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
                 focusedLabelColor = Color.Gray,
@@ -345,7 +345,7 @@ fun AutocompleteTextField(
                 if (isError && errorMessage.isNotBlank()) {
                     Text(
                         text = errorMessage,
-                        color = AppColors.ERROR.color,
+                        color = AppColors.ERROR_COLOR.color,
                         style = AppTypography.labelSmall
                     )
                 }
@@ -354,7 +354,7 @@ fun AutocompleteTextField(
                 if (isError && errorMessage.isNotBlank()) {
                     Icon(
                         imageVector = Icons.Default.Info,
-                        tint = AppColors.ERROR.color,
+                        tint = AppColors.ERROR_COLOR.color,
                         contentDescription = ""
                     )
                 }
@@ -374,8 +374,8 @@ fun AutocompleteTextField(
             enabled = enabled,
             readOnly = false,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = if (isError) AppColors.ERROR.color else AppColors.OUTLINE_GREEN.color,
-                unfocusedBorderColor = if (isError) AppColors.ERROR.color else Color(0xFFCCCCCC),
+                focusedBorderColor = if (isError) AppColors.ERROR_COLOR.color else AppColors.MAIN_COLOR.color,
+                unfocusedBorderColor = if (isError) AppColors.ERROR_COLOR.color else Color(0xFFCCCCCC),
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
                 focusedLabelColor = Color.Gray,

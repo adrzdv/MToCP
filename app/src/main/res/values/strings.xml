@@ -10,6 +10,7 @@
     <string name="main_menu_text">Главное меню</string>
     <string name="search_text_hint">Поиск нарушения</string>
     <string name="search_depot_hint">Поиск предприятия</string>
+    <string name="search_train">Поиск поезда</string>
     <string name="back_text">Назад</string>
     <string name="header_catalog">Классификатор</string>
     <string name="settings">Настройки</string>
@@ -121,6 +122,8 @@
     <string name="params_train">Состав</string>
     <string name="export_data">Передача данных</string>
     <string name="additional_params">Прочие параметры</string>
+    <string name="trains">Поезда</string>
+    <string name="kri">КРИ</string>
 
     <string name="nfc_receiver">Получаю данные…</string>
     <string name="nfc_sender">Отправляю данные…</string>

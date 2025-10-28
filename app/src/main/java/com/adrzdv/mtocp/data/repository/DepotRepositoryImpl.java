@@ -1,10 +1,9 @@
 package com.adrzdv.mtocp.data.repository;
 
 import com.adrzdv.mtocp.data.db.dao.DepotDao;
-import com.adrzdv.mtocp.data.db.entity.DepotWithBranch;
+import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch;
 import com.adrzdv.mtocp.domain.repository.DepotRepository;
 
-import java.util.Collections;
 import java.util.List;
 
 public class DepotRepositoryImpl implements DepotRepository {

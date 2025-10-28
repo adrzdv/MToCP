@@ -50,12 +50,13 @@ fun DepotCatalogScreen(
 
     Column(
         modifier = Modifier
-            .background(AppColors.LIGHT_GRAY.color)
+            .background(AppColors.BACKGROUND_COLOR.color)
             .fillMaxSize()
             .padding(16.dp)
     ) {
         OutlinedTextField(
             value = searchText,
+            maxLines = 1,
             trailingIcon = {
                 if(searchText.isNotEmpty()) {
                     IconButton(onClick = {
@@ -75,7 +76,7 @@ fun DepotCatalogScreen(
                 viewModel.filterByString(it)
             },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = AppColors.OUTLINE_GREEN.color,
+                focusedBorderColor = AppColors.MAIN_COLOR.color,
                 unfocusedBorderColor = Color(0xFFCCCCCC),
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,

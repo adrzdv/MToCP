@@ -1,6 +1,7 @@
+package com.adrzdv.mtocp.ui.screen
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,36 +18,33 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.asFlow
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.domain.model.enums.RevisionType
-import com.adrzdv.mtocp.ui.component.RevisionTypeDropdown
+import com.adrzdv.mtocp.ui.component.newelements.cards.TrainInfoCard
 import com.adrzdv.mtocp.ui.theme.AppColors
-import com.adrzdv.mtocp.ui.theme.CustomTypography
-import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
+import com.adrzdv.mtocp.ui.theme.AppTypography
+import com.adrzdv.mtocp.ui.viewmodel.TrainInfoViewModel
 
 @Composable
-fun ViolationCatalogScreen(
-    viewModel: ViolationViewModel,
-    revisionTypes: List<String>
+fun TrainInfoScreen(
+    viewModel: TrainInfoViewModel
 ) {
-    var searchText by remember { mutableStateOf("") }
-    var selectedRevision by remember { mutableStateOf(revisionTypes.first()) }
+    var searchString by remember { mutableStateOf("") }
+    val trains by viewModel.filteredTrains
 
-    val violations by viewModel.filteredViolations
-        .asFlow()
-        .collectAsState(initial = emptyList())
+    LaunchedEffect(Unit) {
+
+        viewModel.loadTrains()
+    }
 
     Column(
         modifier = Modifier
@@ -55,13 +53,13 @@ fun ViolationCatalogScreen(
             .padding(16.dp)
     ) {
         OutlinedTextField(
-            value = searchText,
+            value = searchString,
             maxLines = 1,
             trailingIcon = {
-                if (searchText.isNotEmpty()) {
+                if (searchString.isNotEmpty()) {
                     IconButton(onClick = {
-                        searchText = ""
-                        viewModel.filterDataByString(searchText)
+                        searchString = ""
+                        viewModel.filterTrainListByString(searchString)
                     }) {
                         Icon(
                             imageVector = Icons.Default.Close,
@@ -72,8 +70,8 @@ fun ViolationCatalogScreen(
                 }
             },
             onValueChange = {
-                searchText = it
-                viewModel.filterDataByString(it)
+                searchString = it
+                viewModel.filterTrainListByString(it)
             },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AppColors.MAIN_COLOR.color,
@@ -87,8 +85,8 @@ fun ViolationCatalogScreen(
             ),
             label = {
                 Text(
-                    stringResource(R.string.search_text_hint),
-                    style = CustomTypography.labelMedium
+                    stringResource(R.string.search_train),
+                    style = AppTypography.labelMedium
                 )
             },
             modifier = Modifier
@@ -99,40 +97,11 @@ fun ViolationCatalogScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        RevisionTypeDropdown(
-            revisionTypes = revisionTypes,
-            selectedRevision = selectedRevision,
-            isError = false,
-            errorMessage = "",
-            onRevisionSelected = {
-                selectedRevision = it
-                viewModel.filterDataByRevisionType(RevisionType.fromString(it))
-            }
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(violations) { violation ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 12.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = violation.code.toString(),
-                        style = CustomTypography.bodyLarge,
-                        modifier = Modifier.weight(1f),
-                        color = Color.Black
-                    )
-                    Text(
-                        text = violation.name,
-                        style = CustomTypography.bodyLarge,
-                        modifier = Modifier.weight(5f),
-                        color = Color.Black
-                    )
-                }
+            items(trains) { item ->
+
+                TrainInfoCard(item)
+
             }
         }
     }
