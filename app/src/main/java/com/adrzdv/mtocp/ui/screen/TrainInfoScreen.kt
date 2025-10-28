@@ -1,7 +1,9 @@
 package com.adrzdv.mtocp.ui.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,10 +25,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.newelements.NothingToShowPlug
@@ -43,7 +48,6 @@ fun TrainInfoScreen(
     val trains by viewModel.filteredTrains
 
     LaunchedEffect(Unit) {
-
         viewModel.loadTrains()
     }
 
@@ -95,6 +99,26 @@ fun TrainInfoScreen(
                 .fillMaxWidth(),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_information_24_white),
+                tint = AppColors.ERROR_COLOR.color,
+                contentDescription = null
+            )
+            Text(
+                text = stringResource(R.string.depot_warning),
+                textAlign = TextAlign.Center,
+                color = AppColors.ERROR_COLOR.color,
+                style = AppTypography.bodyMedium
+            )
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -52,7 +53,7 @@ fun TrainInfoCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
-                modifier = Modifier.weight(0.75f)
+                modifier = Modifier.weight(0.7f)
             ) {
                 Text(
                     text = train.number,
@@ -73,7 +74,7 @@ fun TrainInfoCard(
                 )
             }
             Column(
-                modifier = Modifier.weight(0.25f)
+                modifier = Modifier.weight(0.3f)
             ) {
                 Row(
                     modifier = Modifier
@@ -94,6 +95,7 @@ fun TrainInfoCard(
                         state = rememberTooltipState()
                     ) {
                         Icon(
+                            modifier = Modifier.size(36.dp),
                             painter = painterResource(R.drawable.ic_cctv),
                             contentDescription = null,
                             tint = if (isCCTV) AppColors.MAIN_COLOR.color else Color.Gray.copy(alpha = 0.5f)
@@ -110,6 +112,7 @@ fun TrainInfoCard(
                         state = rememberTooltipState()
                     ) {
                         Icon(
+                            modifier = Modifier.size(36.dp),
                             painter = painterResource(R.drawable.ic_progressive_service),
                             contentDescription = null,
                             tint = if (isProgressNorm) AppColors.MAIN_COLOR.color else Color.Gray.copy(

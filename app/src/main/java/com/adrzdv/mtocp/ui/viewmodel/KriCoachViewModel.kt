@@ -22,14 +22,12 @@ class KriCoachViewModel(
 
     var searchString: String = ""
 
-    init {
-        loadKriCoaches()
-    }
-
     fun loadKriCoaches() {
         viewModelScope.launch(Dispatchers.IO) {
-            val doms = kriRepo.getAllKriCoaches().map { it.toDomain() }
-            val dtos = doms.map { it.toDto() }
+            val dtos = kriRepo.getAllKriCoaches()
+                .map { it.toDomain() }
+                .map { it.toDto() }
+
             withContext(Dispatchers.Main) {
                 _kriCoaches.value = dtos
                 _filteredCoaches.value = dtos
@@ -39,14 +37,12 @@ class KriCoachViewModel(
 
     fun filterKriCoaches(str: String?) {
         searchString = str?.trim()?.lowercase() ?: ""
-
-        _filteredCoaches.value = if (searchString.isNullOrEmpty()) {
-            _kriCoaches.value
+        val all = _kriCoaches.value ?: emptyList()
+        val filtered = if (searchString.isEmpty()) {
+            all
         } else {
-            _kriCoaches.value?.filter { it ->
-                it.number.contains(searchString)
-            }
+            all.filter { it.number.contains(searchString, ignoreCase = true) }
         }
-
+        _filteredCoaches.value = filtered
     }
 }

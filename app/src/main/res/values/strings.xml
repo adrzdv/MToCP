@@ -160,4 +160,6 @@
     <string name="del_profile">Выход</string>
     <string name="del_profile_sub">Выйти из профиля</string>
 
+    <string name="depot_warning">Обязательно обращайте внимание на пункт формирования поезда!</string>
+
 </resources>

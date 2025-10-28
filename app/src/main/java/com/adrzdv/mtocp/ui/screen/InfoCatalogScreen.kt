@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -41,6 +42,7 @@ import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.KriCoachViewModel
 import com.adrzdv.mtocp.ui.viewmodel.TrainInfoViewModel
+import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
 import kotlinx.coroutines.launch
 
@@ -48,12 +50,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun InfoCatalogScreen(
     onBackClick: () -> Unit,
-    violationViewModel: ViolationViewModel,
-    revisionTypes: List<String>,
-    depotViewModel: DepotViewModel,
-    companyViewMode: CompanyViewModel,
-    trainInfoViewModel: TrainInfoViewModel,
-    kriCoachViewModel: KriCoachViewModel
+    revisionTypes: List<String>
 ) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -96,6 +93,12 @@ fun InfoCatalogScreen(
     )
 
     val currentTitle = menuItems.find { it.route == currentRoute }?.title ?: ""
+    val depotViewModel: DepotViewModel = viewModel(
+        factory = ViewModelFactoryProvider.provideFactory()
+    )
+    val companyViewModel: CompanyViewModel = viewModel(
+        factory = ViewModelFactoryProvider.provideFactory()
+    )
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -162,7 +165,7 @@ fun InfoCatalogScreen(
                     actions = {
                         IconButton(onClick = {
                             depotViewModel.resetDinnerFilter()
-                            companyViewMode.resetDinnerFilter()
+                            companyViewModel.resetDinnerFilter()
                             onBackClick()
                         }) {
                             Icon(
@@ -188,6 +191,9 @@ fun InfoCatalogScreen(
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable("violations") {
+                    val violationViewModel: ViolationViewModel = viewModel(
+                        factory = ViewModelFactoryProvider.provideFactory()
+                    )
                     ViolationCatalogScreen(
                         viewModel = violationViewModel,
                         revisionTypes = revisionTypes
@@ -200,7 +206,7 @@ fun InfoCatalogScreen(
                 }
                 composable("company") {
                     CompanyCatalogScreen(
-                        viewModel = companyViewMode
+                        viewModel = companyViewModel
                     )
                 }
                 composable("dinner") {
@@ -209,12 +215,18 @@ fun InfoCatalogScreen(
                     )
                 }
                 composable(route = "train") {
+                    val trainInfoViewModel: TrainInfoViewModel = viewModel(
+                        factory = ViewModelFactoryProvider.provideFactory()
+                    )
                     TrainInfoScreen(
                         viewModel = trainInfoViewModel
                     )
                 }
                 composable(route = "kri") {
-                    KriCoachScreen(kriCoachViewModel)
+                    val kriCoachViewModel: KriCoachViewModel = viewModel(
+                        factory = ViewModelFactoryProvider.provideFactory()
+                    )
+                    KriCoachScreen(viewModel = kriCoachViewModel)
                 }
             }
         }

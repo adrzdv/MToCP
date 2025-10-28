@@ -10,5 +10,6 @@ class KriCoachRepoImpl(kriCoachDao: KriCoachDao) : KriCoachRepo {
 
     override suspend fun getAllKriCoaches(): List<KriCoachEntity> {
         return kriDao.getAllKriCoaches()
+            .map { it.copy(number = it.number.trim()) }
     }
 }
