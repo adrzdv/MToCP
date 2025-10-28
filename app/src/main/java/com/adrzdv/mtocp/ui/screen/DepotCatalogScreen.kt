@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.asFlow
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.ui.component.newelements.NothingToShowPlug
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
@@ -58,7 +59,7 @@ fun DepotCatalogScreen(
             value = searchText,
             maxLines = 1,
             trailingIcon = {
-                if(searchText.isNotEmpty()) {
+                if (searchText.isNotEmpty()) {
                     IconButton(onClick = {
                         searchText = ""
                         viewModel.filterByString(searchText)
@@ -99,49 +100,53 @@ fun DepotCatalogScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(depots) { depot ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
-                ) {
-                    Text(
-                        text = depot.name,
-                        style = AppTypography.bodyLarge,
-                        color = Color.Black
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+        if (depots.isEmpty()) {
+            NothingToShowPlug()
+        } else {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(depots) { depot ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 12.dp)
                     ) {
                         Text(
-                            text = depot.shortName,
-                            style = AppTypography.bodyMedium,
-                            color = Color.Gray
+                            text = depot.name,
+                            style = AppTypography.bodyLarge,
+                            color = Color.Black
                         )
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = depot.shortName,
+                                style = AppTypography.bodyMedium,
+                                color = Color.Gray
+                            )
+
+                            Text(
+                                text = depot.phoneNumber,
+                                style = AppTypography.bodyMedium,
+                                color = Color.Black,
+                                modifier = Modifier.clickable {
+                                    val clip = ClipData.newPlainText("phone", depot.phoneNumber)
+                                    clipboard.setPrimaryClip(clip)
+                                }
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(4.dp))
 
                         Text(
-                            text = depot.phoneNumber,
+                            text = "${depot.branchName}, ${depot.branchShortName}",
                             style = AppTypography.bodyMedium,
-                            color = Color.Black,
-                            modifier = Modifier.clickable {
-                                val clip = ClipData.newPlainText("phone", depot.phoneNumber)
-                                clipboard.setPrimaryClip(clip)
-                            }
+                            color = Color.DarkGray
                         )
                     }
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Text(
-                        text = "${depot.branchName}, ${depot.branchShortName}",
-                        style = AppTypography.bodyMedium,
-                        color = Color.DarkGray
-                    )
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.adrzdv.mtocp.ui.viewmodel;
 import androidx.lifecycle.ViewModel;
 
 import com.adrzdv.mtocp.App;
+import com.adrzdv.mtocp.domain.repository.KriCoachRepo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +29,8 @@ public class ViewModelFactoryProvider {
                 () -> new AdditionalParamViewModel(App.getTempParamRepository()));
         creators.put(TrainInfoViewModel.class,
                 () -> new TrainInfoViewModel(App.getTrainRepository()));
+        creators.put(KriCoachViewModel.class,
+                () -> new KriCoachViewModel(App.getKriCoachRepo()));
 
         return new CustomViewModelProvider(creators);
     }

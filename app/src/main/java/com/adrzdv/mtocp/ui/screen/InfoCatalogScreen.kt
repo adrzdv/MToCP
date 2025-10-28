@@ -39,6 +39,7 @@ import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
+import com.adrzdv.mtocp.ui.viewmodel.KriCoachViewModel
 import com.adrzdv.mtocp.ui.viewmodel.TrainInfoViewModel
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
 import kotlinx.coroutines.launch
@@ -51,7 +52,8 @@ fun InfoCatalogScreen(
     revisionTypes: List<String>,
     depotViewModel: DepotViewModel,
     companyViewMode: CompanyViewModel,
-    trainInfoViewModel: TrainInfoViewModel
+    trainInfoViewModel: TrainInfoViewModel,
+    kriCoachViewModel: KriCoachViewModel
 ) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -210,6 +212,9 @@ fun InfoCatalogScreen(
                     TrainInfoScreen(
                         viewModel = trainInfoViewModel
                     )
+                }
+                composable(route = "kri") {
+                    KriCoachScreen(kriCoachViewModel)
                 }
             }
         }

@@ -16,7 +16,6 @@ class TrainInfoViewModel(
 ) : ViewModel() {
 
     private val _trains = mutableStateOf<List<TrainDto>>(emptyList())
-    val trains: State<List<TrainDto>> get() = _trains
 
     private val _filteredTrains = mutableStateOf<List<TrainDto>>(emptyList())
     val filteredTrains: State<List<TrainDto>> get() = _filteredTrains

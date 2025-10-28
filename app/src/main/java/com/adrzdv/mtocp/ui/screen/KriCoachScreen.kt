@@ -18,8 +18,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,22 +30,16 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.newelements.NothingToShowPlug
-import com.adrzdv.mtocp.ui.component.newelements.cards.TrainInfoCard
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.TrainInfoViewModel
+import com.adrzdv.mtocp.ui.viewmodel.KriCoachViewModel
 
 @Composable
-fun TrainInfoScreen(
-    viewModel: TrainInfoViewModel
+fun KriCoachScreen(
+    viewModel: KriCoachViewModel
 ) {
     var searchString by remember { mutableStateOf("") }
-    val trains by viewModel.filteredTrains
-
-    LaunchedEffect(Unit) {
-
-        viewModel.loadTrains()
-    }
+    val kriCoaches by viewModel.filteredCoaches.observeAsState(emptyList())
 
     Column(
         modifier = Modifier
@@ -60,7 +54,7 @@ fun TrainInfoScreen(
                 if (searchString.isNotEmpty()) {
                     IconButton(onClick = {
                         searchString = ""
-                        viewModel.filterTrainListByString(searchString)
+                        viewModel.filterKriCoaches(searchString)
                     }) {
                         Icon(
                             imageVector = Icons.Default.Close,
@@ -72,7 +66,7 @@ fun TrainInfoScreen(
             },
             onValueChange = {
                 searchString = it
-                viewModel.filterTrainListByString(it)
+                viewModel.filterKriCoaches(it)
             },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AppColors.MAIN_COLOR.color,
@@ -86,7 +80,7 @@ fun TrainInfoScreen(
             ),
             label = {
                 Text(
-                    stringResource(R.string.search_train),
+                    stringResource(R.string.search_kri),
                     style = AppTypography.labelMedium
                 )
             },
@@ -98,12 +92,15 @@ fun TrainInfoScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        if (trains.isEmpty()) {
+        if (kriCoaches.isEmpty()) {
             NothingToShowPlug()
         } else {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(trains) { item ->
-                    TrainInfoCard(item)
+                items(kriCoaches) { item ->
+                    Text(
+                        text = item.number,
+                        style = AppTypography.bodyMedium
+                    )
                 }
             }
         }

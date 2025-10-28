@@ -10,6 +10,7 @@ import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.ui.screen.InfoCatalogScreen
 import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
+import com.adrzdv.mtocp.ui.viewmodel.KriCoachViewModel
 import com.adrzdv.mtocp.ui.viewmodel.TrainInfoViewModel
 import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
@@ -47,6 +48,12 @@ class CatalogActivity : AppCompatActivity() {
                     ViewModelFactoryProvider.provideFactory()
                 ).get(
                     TrainInfoViewModel::class.java
+                ),
+                kriCoachViewModel = ViewModelProvider(
+                    this,
+                    ViewModelFactoryProvider.provideFactory()
+                ).get(
+                    KriCoachViewModel::class.java
                 )
             )
         }

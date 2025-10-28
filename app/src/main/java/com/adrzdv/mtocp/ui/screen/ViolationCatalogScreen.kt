@@ -32,6 +32,7 @@ import androidx.lifecycle.asFlow
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.ui.component.RevisionTypeDropdown
+import com.adrzdv.mtocp.ui.component.newelements.NothingToShowPlug
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
@@ -112,26 +113,30 @@ fun ViolationCatalogScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(violations) { violation ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 12.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = violation.code.toString(),
-                        style = CustomTypography.bodyLarge,
-                        modifier = Modifier.weight(1f),
-                        color = Color.Black
-                    )
-                    Text(
-                        text = violation.name,
-                        style = CustomTypography.bodyLarge,
-                        modifier = Modifier.weight(5f),
-                        color = Color.Black
-                    )
+        if (violations.isEmpty()) {
+            NothingToShowPlug()
+        } else {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(violations) { violation ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = violation.code.toString(),
+                            style = CustomTypography.bodyLarge,
+                            modifier = Modifier.weight(1f),
+                            color = Color.Black
+                        )
+                        Text(
+                            text = violation.name,
+                            style = CustomTypography.bodyLarge,
+                            modifier = Modifier.weight(5f),
+                            color = Color.Black
+                        )
+                    }
                 }
             }
         }
