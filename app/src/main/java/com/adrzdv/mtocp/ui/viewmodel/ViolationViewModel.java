@@ -11,7 +11,6 @@ import com.adrzdv.mtocp.domain.model.enums.RevisionType;
 import com.adrzdv.mtocp.domain.repository.ViolationRepository;
 import com.adrzdv.mtocp.mapper.ViolationMapper;
 import com.adrzdv.mtocp.ui.model.ViolationDto;
-import com.adrzdv.mtocp.util.Event;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,7 +2,6 @@ package com.adrzdv.mtocp.ui.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adrzdv.mtocp.domain.repository.TrainRepository
@@ -11,7 +10,6 @@ import com.adrzdv.mtocp.ui.model.TrainDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 
 class TrainInfoViewModel(
     private val trainRepo: TrainRepository
