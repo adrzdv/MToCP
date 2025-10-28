@@ -11,7 +11,6 @@ import com.adrzdv.mtocp.domain.model.enums.RevisionType;
 import com.adrzdv.mtocp.domain.repository.ViolationRepository;
 import com.adrzdv.mtocp.mapper.ViolationMapper;
 import com.adrzdv.mtocp.ui.model.ViolationDto;
-import com.adrzdv.mtocp.util.Event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,6 @@ public class ViolationViewModel extends ViewModel {
 
     private final ViolationRepository repository;
     private final MutableLiveData<List<ViolationDto>> filteredViolations;
-    private final MutableLiveData<Event<String>> toastMessage;
     private List<ViolationEntity> allViolations;
     private String currentSearchString;
     private RevisionType currentRevisionType;
@@ -32,7 +30,6 @@ public class ViolationViewModel extends ViewModel {
     public ViolationViewModel(ViolationRepository repository) {
         this.repository = repository;
         this.filteredViolations = new MutableLiveData<>(new ArrayList<>());
-        this.toastMessage = new MutableLiveData<>();
         this.allViolations = new ArrayList<>();
         this.currentSearchString = "";
         this.currentRevisionType = ALL;

@@ -10,6 +10,9 @@
     <string name="main_menu_text">Главное меню</string>
     <string name="search_text_hint">Поиск нарушения</string>
     <string name="search_depot_hint">Поиск предприятия</string>
+    <string name="search_train">Поиск поезда</string>
+    <string name="search_kri">Поиск вагона</string>
+    <string name="ooops">Упс…</string>
     <string name="back_text">Назад</string>
     <string name="header_catalog">Классификатор</string>
     <string name="settings">Настройки</string>
@@ -78,7 +81,7 @@
     <string name="uncheked">Не проверен</string>
     <string name="main_info_block_string">Основная информация</string>
     <string name="static_block_string">Статистическая информация</string>
-    <string name="progress_using">Прогрессивные нормы</string>
+    <string name="progress_using">Применение прогрессивных нормы</string>
     <string name="cctv_using">Наличие видеорегистратора</string>
     <string name="dinner_going">Проверка ВР/ВБ</string>
     <string name="additional_params_checked">Проверка дополнительных параметров</string>
@@ -121,6 +124,9 @@
     <string name="params_train">Состав</string>
     <string name="export_data">Передача данных</string>
     <string name="additional_params">Прочие параметры</string>
+    <string name="trains">Поезда</string>
+    <string name="kri">КРИ</string>
+
 
     <string name="nfc_receiver">Получаю данные…</string>
     <string name="nfc_sender">Отправляю данные…</string>
@@ -153,5 +159,7 @@
     <string name="notifications_sub">Управление настройкамми уведомления</string>
     <string name="del_profile">Выход</string>
     <string name="del_profile_sub">Выйти из профиля</string>
+
+    <string name="depot_warning">Обязательно обращайте внимание на пункт формирования поезда!</string>
 
 </resources>

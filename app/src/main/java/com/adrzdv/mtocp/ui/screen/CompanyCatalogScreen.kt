@@ -18,7 +18,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +30,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.asFlow
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.ui.component.newelements.NothingToShowPlug
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
@@ -48,12 +48,13 @@ fun CompanyCatalogScreen(
 
     Column(
         modifier = Modifier
-            .background(AppColors.LIGHT_GRAY.color)
+            .background(AppColors.BACKGROUND_COLOR.color)
             .fillMaxSize()
             .padding(16.dp)
     ) {
         OutlinedTextField(
             value = searchText,
+            maxLines = 1,
             trailingIcon = {
                 if (searchText.isNotEmpty()) {
                     IconButton(onClick = {
@@ -73,7 +74,7 @@ fun CompanyCatalogScreen(
                 viewModel.filterByString(it)
             },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = AppColors.MAIN_GREEN.color,
+                focusedBorderColor = AppColors.MAIN_COLOR.color,
                 unfocusedBorderColor = Color(0xFFCCCCCC),
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
@@ -96,59 +97,62 @@ fun CompanyCatalogScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(companies) { company ->
-                val displayText = if (company.expirationDate == LocalDate
-                        .of(9999, 1, 1)
-                ) {
-                    "БЕССРОЧНЫЙ"
-                } else {
-                    "до ${
-                        company.expirationDate.format(
-                            DateTimeFormatter
-                                .ofPattern("dd.MM.yyyy")
+        if (companies.isEmpty()) {
+            NothingToShowPlug()
+        } else {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(companies) { company ->
+                    val displayText = if (company.expirationDate == LocalDate
+                            .of(9999, 1, 1)
+                    ) {
+                        "БЕССРОЧНЫЙ"
+                    } else {
+                        "до ${
+                            company.expirationDate.format(
+                                DateTimeFormatter
+                                    .ofPattern("dd.MM.yyyy")
+                            )
+                        }"
+                    }
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 12.dp)
+                    ) {
+                        Text(
+                            text = company.name,
+                            style = AppTypography.bodyLarge,
+                            color = Color.Black
                         )
-                    }"
-                }
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
-                ) {
-                    Text(
-                        text = company.name,
-                        style = AppTypography.bodyLarge,
-                        color = Color.Black
-                    )
+                        Spacer(modifier = Modifier.height(4.dp))
 
-                    Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = company.contractNumber,
+                            style = AppTypography.bodyMedium,
+                            color = Color.Gray
+                        )
 
-                    Text(
-                        text = company.contractNumber,
-                        style = AppTypography.bodyMedium,
-                        color = Color.Gray
-                    )
+                        Spacer(modifier = Modifier.height(4.dp))
 
-                    Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = displayText,
+                            style = AppTypography.bodyMedium,
+                            color = Color.Gray
+                        )
 
-                    Text(
-                        text = displayText,
-                        style = AppTypography.bodyMedium,
-                        color = Color.Gray
-                    )
+                        Spacer(modifier = Modifier.height(4.dp))
 
-                    Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = company.branch,
+                            style = AppTypography.bodyMedium,
+                            color = Color.Gray,
+                        )
 
-                    Text(
-                        text = company.branch,
-                        style = AppTypography.bodyMedium,
-                        color = Color.Gray,
-                    )
-
+                    }
                 }
             }
         }
-
     }
 }

@@ -32,6 +32,7 @@ import androidx.lifecycle.asFlow
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.ui.component.RevisionTypeDropdown
+import com.adrzdv.mtocp.ui.component.newelements.NothingToShowPlug
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
@@ -50,12 +51,13 @@ fun ViolationCatalogScreen(
 
     Column(
         modifier = Modifier
-            .background(AppColors.LIGHT_GRAY.color)
+            .background(AppColors.BACKGROUND_COLOR.color)
             .fillMaxSize()
             .padding(16.dp)
     ) {
         OutlinedTextField(
             value = searchText,
+            maxLines = 1,
             trailingIcon = {
                 if (searchText.isNotEmpty()) {
                     IconButton(onClick = {
@@ -75,7 +77,7 @@ fun ViolationCatalogScreen(
                 viewModel.filterDataByString(it)
             },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = AppColors.OUTLINE_GREEN.color,
+                focusedBorderColor = AppColors.MAIN_COLOR.color,
                 unfocusedBorderColor = Color(0xFFCCCCCC),
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
@@ -111,26 +113,30 @@ fun ViolationCatalogScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(violations) { violation ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 12.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = violation.code.toString(),
-                        style = CustomTypography.bodyLarge,
-                        modifier = Modifier.weight(1f),
-                        color = Color.Black
-                    )
-                    Text(
-                        text = violation.name,
-                        style = CustomTypography.bodyLarge,
-                        modifier = Modifier.weight(5f),
-                        color = Color.Black
-                    )
+        if (violations.isEmpty()) {
+            NothingToShowPlug()
+        } else {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(violations) { violation ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = violation.code.toString(),
+                            style = CustomTypography.bodyLarge,
+                            modifier = Modifier.weight(1f),
+                            color = Color.Black
+                        )
+                        Text(
+                            text = violation.name,
+                            style = CustomTypography.bodyLarge,
+                            modifier = Modifier.weight(5f),
+                            color = Color.Black
+                        )
+                    }
                 }
             }
         }

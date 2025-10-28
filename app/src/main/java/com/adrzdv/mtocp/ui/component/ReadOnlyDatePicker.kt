@@ -35,7 +35,7 @@ fun ReadOnlyDatePickerField(
             if (isError) {
                 Icon(
                     imageVector = Icons.Default.Info,
-                    tint = AppColors.ERROR.color,
+                    tint = AppColors.ERROR_COLOR.color,
                     contentDescription = ""
                 )
             }
@@ -55,20 +55,20 @@ fun ReadOnlyDatePickerField(
             if (isBlankError) {
                 Text(
                     text = errorBlankMessage,
-                    color = AppColors.ERROR.color,
+                    color = AppColors.ERROR_COLOR.color,
                     style = AppTypography.labelSmall
                 )
             } else if (isFormatError) {
                 Text(
                     text = errorTimeMessage,
-                    color = AppColors.ERROR.color,
+                    color = AppColors.ERROR_COLOR.color,
                     style = AppTypography.labelSmall
                 )
             }
         },
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = if (isError) AppColors.ERROR.color else Color(0xFFCCCCCC),
-            unfocusedBorderColor = if (isError) AppColors.ERROR.color else Color(0xFFCCCCCC),
+            focusedBorderColor = if (isError) AppColors.ERROR_COLOR.color else Color(0xFFCCCCCC),
+            unfocusedBorderColor = if (isError) AppColors.ERROR_COLOR.color else Color(0xFFCCCCCC),
             focusedContainerColor = Color.White,
             unfocusedContainerColor = Color.White,
             focusedLabelColor = Color.Gray,
