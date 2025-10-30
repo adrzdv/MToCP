@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.data.api.RetrofitClient
 import com.adrzdv.mtocp.data.repository.AuthRepositoryImpl
@@ -19,6 +20,7 @@ import com.adrzdv.mtocp.ui.viewmodel.ServiceViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.launch
 
 class ChangePasswordBottomSheetFragment(
     private val onDismiss: () -> Unit
@@ -44,6 +46,13 @@ class ChangePasswordBottomSheetFragment(
         dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         dialog.behavior.isDraggable = true
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.isLoading.collect { loading ->
+                dialog.behavior.isDraggable = !loading
+                dialog.setCancelable(loading)
+                dialog.setCanceledOnTouchOutside(!loading)
+            }
+        }
         return dialog
     }
 
