@@ -36,7 +36,11 @@ class ServiceActivity : AppCompatActivity() {
                         this,
                         uri
                     ) { message ->
-                        serviceVM.showMessage(message)
+                        if (message == MessageCodes.SUCCESS.messageTitle) {
+                            serviceVM.showMessage(message)
+                        } else {
+                            serviceVM.showErrorMessage(message)
+                        }
                     }
                 }
             }
@@ -69,7 +73,7 @@ class ServiceActivity : AppCompatActivity() {
         try {
             filePickerLauncher.launch(Intent.createChooser(intent, "Выберете файл:"))
         } catch (ex: ActivityNotFoundException) {
-            App.showToast(this, MessageCodes.FILE_MANAGER_ERROR.messageTitle)
+            serviceVM.showErrorMessage(MessageCodes.FILE_MANAGER_ERROR.messageTitle)
         }
     }
 
