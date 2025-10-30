@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.ui.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,6 +11,7 @@ import com.adrzdv.mtocp.data.repository.AuthRepository
 import com.adrzdv.mtocp.ui.state.ChangePasswordState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ChangePasswordBottomSheetViewModel(
@@ -26,6 +28,9 @@ class ChangePasswordBottomSheetViewModel(
 
     private val _result = MutableStateFlow<ChangePasswordResult?>(null)
     val result: StateFlow<ChangePasswordResult?> = _result
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     val specCharList: List<Char> = listOf(
         '!',
@@ -62,14 +67,23 @@ class ChangePasswordBottomSheetViewModel(
 
     fun changePassword(): Boolean {
         if (!validate()) {
+            Log.d("AuthRepo", "Password invalid")
             return false
         }
 
         viewModelScope.launch {
+            _isLoading.value = true
+            Log.d("AuthRepo", "IS LOADING: " + _isLoading.value)
             state = state.copy(isError = false, errorMessage = null)
 
-            val res = authRepository.changePassword(state.newPassword)
-            _result.value = res
+            try {
+                val res = authRepository.changePassword(state.newPassword)
+                Log.d("AuthRepo", res.toString())
+                _result.value = res
+            } finally {
+                _isLoading.value = false
+                Log.d("AuthRepo", "IS LOADING: " + _isLoading.value)
+            }
         }
         return true
     }

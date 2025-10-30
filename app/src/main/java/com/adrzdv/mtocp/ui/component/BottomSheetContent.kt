@@ -15,6 +15,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,20 +26,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.data.model.ChangePasswordResult
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.newelements.RoundedButton
-import com.adrzdv.mtocp.ui.state.ChangePasswordState
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
+import com.adrzdv.mtocp.ui.viewmodel.ChangePasswordBottomSheetViewModel
+import com.adrzdv.mtocp.ui.viewmodel.ServiceViewModel
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ChangePasswordBottomSheet(
-    state: ChangePasswordState,
-    onPasswordChange: (String) -> Unit,
-    onConfirmChange: (String) -> Unit,
-    onTogglePasswordVisibility: () -> Unit,
-    onConfirm: () -> Unit,
+    viewModel: ChangePasswordBottomSheetViewModel,
+    serviceViewModel: ServiceViewModel,
     onDismiss: () -> Unit
 ) {
     val passwordRulesHint: List<String> = listOf(
@@ -46,6 +48,33 @@ fun ChangePasswordBottomSheet(
         stringResource(R.string.password_rule_3),
         stringResource(R.string.password_rule_4)
     )
+
+    val state = viewModel.state
+    val isLoading by viewModel.isLoading.collectAsState()
+    val result by viewModel.result.collectAsState()
+    val success = stringResource(R.string.password_changed_success)
+    val error = stringResource(R.string.error_password_change)
+
+    LaunchedEffect(result) {
+        result?.let { result ->
+            when (result) {
+                is ChangePasswordResult.Success -> {
+                    serviceViewModel.showMessage(success)
+                    onDismiss()
+                }
+
+                is ChangePasswordResult.ServerError -> {
+                    serviceViewModel.showErrorMessage(error)
+                    onDismiss()
+                }
+
+                is ChangePasswordResult.NetworkError -> {
+                    serviceViewModel.showErrorMessage(error)
+                    onDismiss()
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -105,9 +134,7 @@ fun ChangePasswordBottomSheet(
         InputTextField(
             modifier = Modifier.fillMaxWidth(),
             value = state.newPassword,
-            onValueChange = { it ->
-                onPasswordChange(it)
-            },
+            onValueChange = viewModel::onPasswordChange,
             isError = state.passwordHint?.isNotBlank() == true || state.isError,
             errorText = state.passwordHint ?: state.errorMessage,
             label = stringResource(R.string.password_new_hint),
@@ -117,14 +144,29 @@ fun ChangePasswordBottomSheet(
         InputTextField(
             modifier = Modifier.fillMaxWidth(),
             value = state.confirmNewPassword,
-            onValueChange = { it ->
-                onConfirmChange(it)
-            },
+            onValueChange = viewModel::onConfirmChange,
             isError = state.passwordHint?.isNotBlank() == true || state.isError,
             errorText = state.passwordHint ?: state.errorMessage,
             label = stringResource(R.string.password_confirm_hint),
             secretInput = !state.showPassword
         )
+        Spacer(modifier = Modifier.height(8.dp))
+        TextButton(
+            onClick = {
+                viewModel.togglePasswordVisibility()
+            },
+            colors = ButtonDefaults.buttonColors(
+                contentColor = AppColors.MAIN_COLOR.color,
+                containerColor = Color.Transparent,
+                disabledContentColor = AppColors.MAIN_COLOR.color.copy(alpha = 0.38f)
+            )
+        ) {
+            Text(
+                stringResource(R.string.show_password),
+                style = AppTypography.labelLarge,
+                color = AppColors.MAIN_COLOR.color
+            )
+        }
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -148,9 +190,10 @@ fun ChangePasswordBottomSheet(
             }
             RoundedButton(
                 onClick = {
-                    onConfirm()
+                    viewModel.changePassword()
                 },
-                text = stringResource(R.string.save_string)
+                text = stringResource(R.string.save_string),
+                isEnable = !isLoading
             )
         }
     }

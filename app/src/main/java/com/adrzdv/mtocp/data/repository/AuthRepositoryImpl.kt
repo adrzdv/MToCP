@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.data.repository
 
+import android.util.Log
 import com.adrzdv.mtocp.data.api.AuthApi
 import com.adrzdv.mtocp.data.model.AuthResult
 import com.adrzdv.mtocp.data.model.ChangePasswordResult
@@ -65,7 +66,11 @@ class AuthRepositoryImpl(
         withContext(Dispatchers.IO) {
             try {
                 val response = api.changePassword(PasswordRequest(password))
-
+                val msg = listOfNotNull(
+                    response.code(),
+                    response.errorBody().toString()
+                ).joinToString(",")
+                Log.d("AuthRepo", msg)
                 if (response.isSuccessful) {
                     ChangePasswordResult.Success
                 } else {
@@ -73,6 +78,7 @@ class AuthRepositoryImpl(
                     ChangePasswordResult.ServerError(response.code(), errMsg)
                 }
             } catch (e: Exception) {
+                Log.d("AuthRepo", e.message.toString())
                 ChangePasswordResult.NetworkError(e.message)
             }
         }

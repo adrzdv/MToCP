@@ -11,10 +11,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.data.api.RetrofitClient
-import com.adrzdv.mtocp.data.model.ChangePasswordResult
 import com.adrzdv.mtocp.data.repository.AuthRepositoryImpl
 import com.adrzdv.mtocp.ui.component.ChangePasswordBottomSheet
-import com.adrzdv.mtocp.ui.state.ChangePasswordState
 import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
 import com.adrzdv.mtocp.ui.viewmodel.ChangePasswordBottomSheetViewModel
 import com.adrzdv.mtocp.ui.viewmodel.ServiceViewModel
@@ -57,21 +55,8 @@ class ChangePasswordBottomSheetFragment(
         return ComposeView(requireContext()).apply {
             setContent {
                 ChangePasswordBottomSheet(
-                    state = viewModel.state,
-                    onPasswordChange = viewModel::onPasswordChange,
-                    onConfirmChange = viewModel::onConfirmChange,
-                    onTogglePasswordVisibility = viewModel::togglePasswordVisibility,
-                    onConfirm = {
-                        if (viewModel.changePassword()) {
-                            if (viewModel.result.value == ChangePasswordResult.Success) {
-                                serviceViewModel.showMessage(getString(R.string.password_changed_success))
-                                dismiss()
-                            } else {
-                                serviceViewModel.showErrorMessage(getString(R.string.error_password_change))
-                                dismiss()
-                            }
-                        }
-                    },
+                    viewModel = viewModel,
+                    serviceViewModel = serviceViewModel,
                     onDismiss = { dismiss() }
                 )
             }

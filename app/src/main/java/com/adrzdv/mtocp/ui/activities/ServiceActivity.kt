@@ -11,7 +11,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.mutableStateOf
 import com.adrzdv.mtocp.App
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.data.repository.UserDataStorage
@@ -21,7 +20,6 @@ import com.adrzdv.mtocp.util.DirectoryHandler
 
 class ServiceActivity : AppCompatActivity() {
     private lateinit var filePickerLauncher: ActivityResultLauncher<Intent>
-    private val snackMessage = mutableStateOf<String?>(null)
     private val serviceVM: ServiceViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
