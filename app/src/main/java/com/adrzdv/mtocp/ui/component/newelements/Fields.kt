@@ -21,7 +21,7 @@ fun InputTextField(
     isError: Boolean,
     errorText: String,
     label: String,
-    trailingIcon: Painter?,
+    trailingIcon: Painter? = null,
     secretInput: Boolean?
 ) {
     OutlinedTextField(

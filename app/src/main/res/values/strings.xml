@@ -162,4 +162,12 @@
 
     <string name="depot_warning">Обязательно обращайте внимание на пункт формирования поезда!</string>
 
+    <string name="password_rule_title">Пароль должен содержать</string>
+    <string name="password_rule_1">Минимум 1 цифру</string>
+    <string name="password_rule_2">Минимум 1 заглавную букву</string>
+    <string name="password_rule_3">Минимум 1 специальный символ: "!@#$%^*-_=+"</string>
+    <string name="password_rule_4">Мнимальная длина пароля - 8 символов</string>
+    <string name="password_rule">Пароль должен содержать как минимум 1 цифру, 1 заглавную букву и
+        1 специальный символ: "!@#$%^*-_=+"</string>
+
 </resources>
