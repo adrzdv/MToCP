@@ -1,6 +1,7 @@
 package com.adrzdv.mtocp.data.repository
 
 import com.adrzdv.mtocp.data.model.AuthResult
+import com.adrzdv.mtocp.data.model.ChangePasswordResult
 
 interface AuthRepository {
     suspend fun login(login: String, password: String): AuthResult
@@ -12,4 +13,5 @@ interface AuthRepository {
     fun getUsername(): String?
     fun getUserId(): Int?
     fun getUserSecId(): String?
+    suspend fun changePassword(password: String): ChangePasswordResult
 }

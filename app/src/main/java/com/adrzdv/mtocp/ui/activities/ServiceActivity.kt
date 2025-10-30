@@ -9,17 +9,20 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.mutableStateOf
 import com.adrzdv.mtocp.App
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.data.repository.UserDataStorage
 import com.adrzdv.mtocp.ui.screen.ServiceScreen
+import com.adrzdv.mtocp.ui.viewmodel.ServiceViewModel
 import com.adrzdv.mtocp.util.DirectoryHandler
 
 class ServiceActivity : AppCompatActivity() {
     private lateinit var filePickerLauncher: ActivityResultLauncher<Intent>
     private val snackMessage = mutableStateOf<String?>(null)
+    private val serviceVM: ServiceViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +38,7 @@ class ServiceActivity : AppCompatActivity() {
                         this,
                         uri
                     ) { message ->
-                        snackMessage.value = message
+                        serviceVM.showMessage(message)
                     }
                 }
             }
@@ -44,7 +47,7 @@ class ServiceActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContent {
             ServiceScreen(
-                snackMessage = snackMessage,
+                serviceVM = serviceVM,
                 onCleanRepositoryClick = { onResult ->
                     cleanDirs(onResult)
                 },

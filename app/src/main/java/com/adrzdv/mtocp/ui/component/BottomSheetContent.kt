@@ -21,19 +21,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.newelements.RoundedButton
+import com.adrzdv.mtocp.ui.state.ChangePasswordState
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ChangePasswordBottomSheet(
-
-    passwordRulesHint: List<String> = listOf(
+    state: ChangePasswordState,
+    onPasswordChange: (String) -> Unit,
+    onConfirmChange: (String) -> Unit,
+    onTogglePasswordVisibility: () -> Unit,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    val passwordRulesHint: List<String> = listOf(
         stringResource(R.string.password_rule_title),
         stringResource(R.string.password_rule_1),
         stringResource(R.string.password_rule_2),
@@ -41,7 +47,6 @@ fun ChangePasswordBottomSheet(
         stringResource(R.string.password_rule_4)
     )
 
-) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -99,24 +104,26 @@ fun ChangePasswordBottomSheet(
         Spacer(modifier = Modifier.height(8.dp))
         InputTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = "",
-            onValueChange = {
+            value = state.newPassword,
+            onValueChange = { it ->
+                onPasswordChange(it)
             },
-            isError = false,
-            errorText = "",
-            label = "",
-            secretInput = true
+            isError = state.passwordHint?.isNotBlank() == true || state.isError,
+            errorText = state.passwordHint ?: state.errorMessage,
+            label = stringResource(R.string.password_new_hint),
+            secretInput = !state.showPassword
         )
         Spacer(modifier = Modifier.height(8.dp))
         InputTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = "",
-            onValueChange = {
+            value = state.confirmNewPassword,
+            onValueChange = { it ->
+                onConfirmChange(it)
             },
-            isError = false,
-            errorText = "",
-            label = "",
-            secretInput = true
+            isError = state.passwordHint?.isNotBlank() == true || state.isError,
+            errorText = state.passwordHint ?: state.errorMessage,
+            label = stringResource(R.string.password_confirm_hint),
+            secretInput = !state.showPassword
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -124,7 +131,9 @@ fun ChangePasswordBottomSheet(
             horizontalArrangement = Arrangement.End
         ) {
             TextButton(
-                onClick = {},
+                onClick = {
+                    onDismiss()
+                },
                 colors = ButtonDefaults.buttonColors(
                     contentColor = AppColors.MAIN_COLOR.color,
                     containerColor = Color.Transparent,
@@ -138,15 +147,11 @@ fun ChangePasswordBottomSheet(
                 )
             }
             RoundedButton(
-                onClick = {},
+                onClick = {
+                    onConfirm()
+                },
                 text = stringResource(R.string.save_string)
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewBSPassword() {
-    ChangePasswordBottomSheet()
 }
