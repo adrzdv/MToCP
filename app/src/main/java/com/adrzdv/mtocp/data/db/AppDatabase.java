@@ -15,6 +15,7 @@ import com.adrzdv.mtocp.data.db.entity.BranchEntity;
 import com.adrzdv.mtocp.data.db.entity.CompanyEntity;
 import com.adrzdv.mtocp.data.db.entity.DepotEntity;
 import com.adrzdv.mtocp.data.db.entity.KriCoachEntity;
+import com.adrzdv.mtocp.data.db.entity.ProgressiveDatesEntity;
 import com.adrzdv.mtocp.data.db.entity.TempParametersEntity;
 import com.adrzdv.mtocp.data.db.entity.TrainEntity;
 import com.adrzdv.mtocp.data.db.entity.ViolationEntity;
@@ -25,7 +26,8 @@ import com.adrzdv.mtocp.data.db.entity.ViolationEntity;
         DepotEntity.class,
         BranchEntity.class,
         TrainEntity.class,
-        KriCoachEntity.class},
+        KriCoachEntity.class,
+        ProgressiveDatesEntity.class},
         version = 1,
         exportSchema = false)
 @TypeConverters({DataConverter.class})

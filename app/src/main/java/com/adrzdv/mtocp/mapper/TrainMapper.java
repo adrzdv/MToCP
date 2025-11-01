@@ -8,6 +8,8 @@ import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
 import com.adrzdv.mtocp.ui.model.TrainDto;
 
+import java.time.LocalDate;
+
 public class TrainMapper {
 
     public static TrainDomain fromEntityToDomain(TrainEntity trainEntity,
@@ -58,11 +60,26 @@ public class TrainMapper {
                 pojo.getDepot().getActive(),
                 pojo.getDepot().getDinnerDepot());
 
+        boolean isProgressiveService = false;
+
+        if (pojo.getTrain().getProgressive()) {
+            if (pojo.getProdPeriod().getDateStart() != null
+                    && pojo.getProdPeriod().getDateEnd() != null) {
+                if ((pojo.getProdPeriod().getDateStart().isBefore(LocalDate.now()))
+                        && (pojo.getProdPeriod().getDateEnd().isAfter(LocalDate.now()))) {
+                    isProgressiveService = true;
+                }
+            } else {
+                isProgressiveService = true;
+            }
+
+        }
+
         return new TrainDomain(pojo.getTrain().getNumber(),
                 pojo.getTrain().getRoute(),
                 depot,
                 pojo.getTrain().getVideo(),
-                pojo.getTrain().getProgressive(),
+                isProgressiveService,
                 false);
     }
 }
