@@ -2,8 +2,9 @@ package com.adrzdv.mtocp;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.room.Room;
@@ -39,7 +40,6 @@ import java.util.concurrent.Executors;
 
 public class App extends Application {
     private static App instance;
-    private static Toast currentToast;
     private AppDatabase database;
     private static ViolationRepository violationRepository;
     private static DepotRepository depotRepository;
@@ -60,6 +60,12 @@ public class App extends Application {
         super.onCreate();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         instance = this;
+
+        try {
+            clearDataBase(this);
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
         database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "mtocpdb")
                 .createFromAsset("db/mtocpdb.db")
@@ -104,15 +110,6 @@ public class App extends Application {
         return kriCoachRepo;
     }
 
-
-    public static void showToast(Context context, String message) {
-        if (currentToast != null) {
-            currentToast.cancel();
-        }
-        currentToast = Toast.makeText(context, message, Toast.LENGTH_LONG);
-        currentToast.show();
-    }
-
     private void initRepositories() {
         violationRepository = new ViolationRepositoryImpl(database.violationDao());
         depotRepository = new DepotRepositoryImpl(database.depotDao());
@@ -139,5 +136,22 @@ public class App extends Application {
         registry.register(AdditionalParamImport.class,
                 new AdditionalParamHandler(tempParamRepository,
                         msg -> Log.d("IMPORT", msg)));
+    }
+
+    private void clearDataBase(Context context) throws PackageManager.NameNotFoundException {
+        SharedPreferences prefs = context.getSharedPreferences("app", Context.MODE_PRIVATE);
+
+        String currVersion = context.getPackageManager()
+                .getPackageInfo(context.getPackageName(), 0)
+                .versionName;
+
+        String savedVersion = prefs.getString("version", "");
+
+        if (currVersion != null) {
+            if (!currVersion.equals(savedVersion)) {
+                context.deleteDatabase("mtocpdb");
+                prefs.edit().putString("version", currVersion).apply();
+            }
+        }
     }
 }
