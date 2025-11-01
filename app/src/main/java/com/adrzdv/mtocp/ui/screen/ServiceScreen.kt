@@ -1,7 +1,7 @@
 package com.adrzdv.mtocp.ui.screen
 
-import android.annotation.SuppressLint
 import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -17,15 +17,16 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
@@ -35,14 +36,16 @@ import com.adrzdv.mtocp.ui.component.newelements.SwitchRow
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.component.snackbar.InfoSnackbar
+import com.adrzdv.mtocp.ui.fragment.ChangePasswordBottomSheetFragment
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
+import com.adrzdv.mtocp.ui.viewmodel.ServiceViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ServiceScreen(
-    snackMessage: State<String?>,
+    serviceVM: ServiceViewModel,
     onCleanRepositoryClick: ((Boolean) -> Unit) -> Unit,
     onLoadCatalog: () -> Unit,
     onDeleteProfile: () -> Unit,
@@ -56,9 +59,21 @@ fun ServiceScreen(
     val prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
     val username = prefs.getString("username", "null")
 
-    LaunchedEffect(snackMessage.value) {
-        snackMessage.value?.let {
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val snackMessage by serviceVM.snackMessage.collectAsState()
+    val errorSnackMessage by serviceVM.errorMessage.collectAsState()
+
+    LaunchedEffect(snackMessage) {
+        snackMessage?.let {
             snackbarHostState.showSnackbar(visuals = InfoSnackbar(it))
+            serviceVM.clearMessage()
+        }
+    }
+
+    LaunchedEffect(errorSnackMessage) {
+        errorSnackMessage?.let {
+            snackbarHostState.showSnackbar(visuals = ErrorSnackbar(it))
+            serviceVM.clearMessage()
         }
     }
 
@@ -121,7 +136,7 @@ fun ServiceScreen(
                     title = stringResource(R.string.password),
                     subtitle = stringResource(R.string.change_password),
                     isClickable = true,
-                    onClick = {}
+                    onClick = { showBottomSheet = true }
                 )
             }
             item {
@@ -209,17 +224,13 @@ fun ServiceScreen(
             }
         }
     }
-}
 
-@SuppressLint("UnrememberedMutableState")
-@Preview(showBackground = true)
-@Composable
-fun PreviewServiceScreen() {
-    ServiceScreen(
-        snackMessage = mutableStateOf<String?>(null),
-        onBackClick = {},
-        onLoadCatalog = {},
-        onCleanRepositoryClick = {},
-        onDeleteProfile = {}
-    )
+    if (showBottomSheet) {
+        ChangePasswordBottomSheetFragment(
+            onDismiss = { showBottomSheet = false }
+        ).show(
+            (context as AppCompatActivity).supportFragmentManager,
+            "CHANGE_PASSWORD_BOTTOM_SHEET"
+        )
+    }
 }

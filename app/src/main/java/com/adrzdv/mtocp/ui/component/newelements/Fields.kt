@@ -19,9 +19,9 @@ fun InputTextField(
     onValueChange: (String) -> Unit,
     isEnabled: Boolean = true,
     isError: Boolean,
-    errorText: String,
+    errorText: String?,
     label: String,
-    trailingIcon: Painter?,
+    trailingIcon: Painter? = null,
     secretInput: Boolean?
 ) {
     OutlinedTextField(
@@ -33,7 +33,7 @@ fun InputTextField(
             trailingIcon?.let {
                 Icon(
                     painter = trailingIcon,
-                    tint = if (isError && errorText.isNotBlank()) AppColors.ERROR_COLOR.color
+                    tint = if (isError && errorText?.isNotBlank() == true) AppColors.ERROR_COLOR.color
                     else AppColors.MAIN_COLOR.color,
                     contentDescription = null
                 )
@@ -41,7 +41,7 @@ fun InputTextField(
         },
         isError = isError,
         supportingText = {
-            if (isError && errorText.isNotBlank()) {
+            if (isError && errorText?.isNotBlank() == true) {
                 Text(
                     text = errorText,
                     color = AppColors.ERROR_COLOR.color,
