@@ -3,6 +3,7 @@ package com.adrzdv.mtocp.data.db.pojo
 import androidx.room.Embedded
 import com.adrzdv.mtocp.data.db.entity.BranchEntity
 import com.adrzdv.mtocp.data.db.entity.DepotEntity
+import com.adrzdv.mtocp.data.db.entity.ProgressiveDatesEntity
 import com.adrzdv.mtocp.data.db.entity.TrainEntity
 
 data class TrainWithDepotAndBranch(
@@ -11,5 +12,7 @@ data class TrainWithDepotAndBranch(
     @Embedded(prefix = "dpt_")
     val depot: DepotEntity,
     @Embedded(prefix = "br_")
-    val branch: BranchEntity
+    val branch: BranchEntity,
+    @Embedded(prefix = "pde_")
+    val prodPeriod: ProgressiveDatesEntity
 )
