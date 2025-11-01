@@ -145,8 +145,8 @@ fun ChangePasswordBottomSheet(
             modifier = Modifier.fillMaxWidth(),
             value = state.confirmNewPassword,
             onValueChange = viewModel::onConfirmChange,
-            isError = state.passwordHint?.isNotBlank() == true || state.isError,
-            errorText = state.passwordHint ?: state.errorMessage,
+            isError = state.isError,
+            errorText = state.errorMessage,
             label = stringResource(R.string.password_confirm_hint),
             secretInput = !state.showPassword
         )

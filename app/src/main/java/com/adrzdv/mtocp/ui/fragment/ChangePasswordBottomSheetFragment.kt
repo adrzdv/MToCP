@@ -46,14 +46,21 @@ class ChangePasswordBottomSheetFragment(
         dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         dialog.behavior.isDraggable = true
 
+        return dialog
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.isLoading.collect { loading ->
-                dialog.behavior.isDraggable = !loading
-                dialog.setCancelable(loading)
-                dialog.setCanceledOnTouchOutside(!loading)
+                (dialog as? BottomSheetDialog)?.let {
+                    it.behavior.isDraggable = !loading
+                    it.setCancelable(!loading)
+                    it.setCanceledOnTouchOutside(!loading)
+                }
             }
         }
-        return dialog
     }
 
     override fun onCreateView(
