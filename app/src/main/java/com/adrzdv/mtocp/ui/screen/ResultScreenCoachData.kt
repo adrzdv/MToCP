@@ -26,12 +26,12 @@ fun ResultScreenCoachData(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColors.LIGHT_GRAY.color)
-            .padding(vertical = 8.dp)
-            .padding(horizontal = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+            .padding(vertical = 4.dp)
+            .padding(horizontal = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(6.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
             items(coaches) { coach ->
