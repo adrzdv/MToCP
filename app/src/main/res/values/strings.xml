@@ -127,6 +127,9 @@
     <string name="trains">Поезда</string>
     <string name="kri">КРИ</string>
 
+    <string name="train_revision">Проверка поезда</string>
+    <string name="ticket_office_revision">Проверка билетных касс</string>
+    <string name="coach_revision">Проверка вагонов</string>
 
     <string name="nfc_receiver">Получаю данные…</string>
     <string name="nfc_sender">Отправляю данные…</string>

@@ -1,7 +1,5 @@
 package com.adrzdv.mtocp.ui.screen
 
-import android.app.Activity
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -37,18 +35,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.ui.activities.MainMenuActivity
-import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.newelements.RoundedButton
+import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
+import com.adrzdv.mtocp.ui.navigation.Screen
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.AuthViewModel
 
 @Composable
 fun RegisterScreen(
+    navController: NavHostController? = null,
     viewModel: AuthViewModel
 ) {
     val state by viewModel.regState.collectAsState()
@@ -60,9 +60,7 @@ fun RegisterScreen(
         state.isSuccess
     ) {
         if (state.isSuccess) {
-            val intent = Intent(context, MainMenuActivity::class.java)
-            context.startActivity(intent)
-            (context as? Activity)?.finish()
+            navController?.navigate(Screen.MainMenu.route)
         }
     }
 

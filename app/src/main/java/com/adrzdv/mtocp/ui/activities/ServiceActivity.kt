@@ -55,7 +55,7 @@ class ServiceActivity : AppCompatActivity() {
                 },
                 onDeleteProfile = {
                     deleteProfile()
-                    startActivity(Intent(this, RegisterActivity::class.java))
+                    //startActivity(Intent(this, RegisterActivity::class.java))
                     finish()
                 },
                 onLoadCatalog = ::loadDataFromFile,

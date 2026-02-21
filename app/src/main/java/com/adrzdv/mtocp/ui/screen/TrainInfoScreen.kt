@@ -49,6 +49,7 @@ fun TrainInfoScreen(
 
     LaunchedEffect(Unit) {
         viewModel.loadTrains()
+        viewModel.filterTrainListByString("")
     }
 
     Column(

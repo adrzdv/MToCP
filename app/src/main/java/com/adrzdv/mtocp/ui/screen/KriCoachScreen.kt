@@ -52,6 +52,7 @@ fun KriCoachScreen(
         if (viewModel.filteredCoaches.value.isNullOrEmpty()) {
             viewModel.loadKriCoaches()
         }
+        viewModel.filterKriCoaches("")
     }
 
     Column(

@@ -28,8 +28,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.data.api.RetrofitClient
+import com.adrzdv.mtocp.data.repository.AuthRepositoryImpl
+import com.adrzdv.mtocp.ui.component.ChangePasswordBottomSheet
 import com.adrzdv.mtocp.ui.component.newelements.Divider
 import com.adrzdv.mtocp.ui.component.newelements.SettingsRow
 import com.adrzdv.mtocp.ui.component.newelements.SwitchRow
@@ -39,6 +44,8 @@ import com.adrzdv.mtocp.ui.component.snackbar.InfoSnackbar
 import com.adrzdv.mtocp.ui.fragment.ChangePasswordBottomSheetFragment
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
+import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
+import com.adrzdv.mtocp.ui.viewmodel.ChangePasswordBottomSheetViewModel
 import com.adrzdv.mtocp.ui.viewmodel.ServiceViewModel
 import kotlinx.coroutines.launch
 
@@ -58,6 +65,19 @@ fun ServiceScreen(
         context.packageManager.getPackageInfo(context.packageName, 0)?.versionName ?: "unknown"
     val prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
     val username = prefs.getString("username", "null")
+
+    val changePasswordVM: ChangePasswordBottomSheetViewModel = viewModel(
+        factory = AssistedViewModelFactory {
+            ChangePasswordBottomSheetViewModel(
+                authRepository = AuthRepositoryImpl(RetrofitClient.authApi, null),
+                lengthError = context.getString(R.string.password_rule_4),
+                digitError = context.getString(R.string.password_rule_1),
+                upperCaseError = context.getString(R.string.password_rule_2),
+                specDigitError = context.getString(R.string.password_rule_3),
+                passwordNotMatchedError = context.getString(R.string.password_not_match)
+            )
+        }
+    )
 
     var showBottomSheet by remember { mutableStateOf(false) }
     val snackMessage by serviceVM.snackMessage.collectAsState()
@@ -226,11 +246,10 @@ fun ServiceScreen(
     }
 
     if (showBottomSheet) {
-        ChangePasswordBottomSheetFragment(
+        ChangePasswordBottomSheet(
+            viewModel = changePasswordVM,
+            serviceViewModel = serviceVM,
             onDismiss = { showBottomSheet = false }
-        ).show(
-            (context as AppCompatActivity).supportFragmentManager,
-            "CHANGE_PASSWORD_BOTTOM_SHEET"
         )
     }
 }

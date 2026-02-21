@@ -1,3 +1,5 @@
+package com.adrzdv.mtocp.ui.screen
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +19,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +51,11 @@ fun ViolationCatalogScreen(
     val violations by viewModel.filteredViolations
         .asFlow()
         .collectAsState(initial = emptyList())
+
+    LaunchedEffect(Unit) {
+        viewModel.filterDataByString("")
+        viewModel.filterDataByRevisionType(RevisionType.ALL)
+    }
 
     Column(
         modifier = Modifier

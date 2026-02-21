@@ -56,6 +56,7 @@ fun DinnerDepotCatalogScreen(
 
     LaunchedEffect(Unit) {
         viewModel.filterDinner()
+        viewModel.filterByString("")
     }
 
     Column(

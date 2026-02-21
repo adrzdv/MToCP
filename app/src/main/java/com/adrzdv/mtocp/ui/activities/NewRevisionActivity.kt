@@ -5,19 +5,22 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.adrzdv.mtocp.domain.model.enums.RevisionType
-import com.adrzdv.mtocp.ui.screen.InfoCatalogScreen
+import com.adrzdv.mtocp.ui.screen.NewRevisionScreen
 
-class CatalogActivity : AppCompatActivity() {
+class NewRevisionActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         enableEdgeToEdge()
         setContent {
-            InfoCatalogScreen(
+            NewRevisionScreen(
                 onBackClick = { finish() },
-                revisionTypes = RevisionType.getListOfTypes()
+                onTrainRevisionClick = {},
+                onTicketOfficeRevisionClick = {},
+                onCoachRevisionClick = {}
             )
         }
     }

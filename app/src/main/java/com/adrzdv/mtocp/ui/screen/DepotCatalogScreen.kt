@@ -47,6 +47,7 @@ fun DepotCatalogScreen(
 
     LaunchedEffect(Unit) {
         viewModel.resetDinnerFilter()
+        viewModel.filterByString("")
     }
 
     Column(

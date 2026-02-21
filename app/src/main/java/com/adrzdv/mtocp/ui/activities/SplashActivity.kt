@@ -6,7 +6,9 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.ui.platform.LocalContext
 import com.adrzdv.mtocp.data.repository.UserDataStorage
+import com.adrzdv.mtocp.ui.navigation.NavigationGraph
 import com.adrzdv.mtocp.ui.screen.SplashScreen
 
 @SuppressLint("CustomSplashScreen")
@@ -18,19 +20,18 @@ class SplashActivity : ComponentActivity() {
 
         val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
         val userDataStorage = UserDataStorage(prefs)
+        val ver = packageManager.getPackageInfo(packageName, 0)?.versionName ?: "unknown"
+        val username = prefs.getString("username", "null")
 
         setContent {
-            SplashScreen(
-                onTimeout = {
-                    val token = userDataStorage.getToken()
-                    val nextActivity = if (!token.isNullOrEmpty()) {
-                        MainMenuActivity::class.java
-                    } else {
-                        RegisterActivity::class.java
-                    }
-                    startActivity(Intent(this, nextActivity))
-                    finish()
-                }
+            val activity = this
+            NavigationGraph(
+                activity = activity,
+                hasToken = userDataStorage.getToken()?.isNotEmpty() ?: false,
+                version = ver,
+                username = username ?: "Unknown",
+                prefs = prefs,
+                userDataStorage = userDataStorage
             )
         }
     }

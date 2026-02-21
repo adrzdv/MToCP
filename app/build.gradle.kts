@@ -1,3 +1,6 @@
+import com.android.build.api.dsl.ApplicationExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.kapt")
@@ -5,13 +8,14 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
-android {
+
+extensions.configure<ApplicationExtension> {
     namespace = "com.adrzdv.mtocp"
     compileSdk = 36
 
     defaultConfig {
         applicationId = "com.adrzdv.mtocp"
-        minSdk = 30                                                 //Android 11+
+        minSdk = 30
         targetSdk = 35
         versionCode = 1
         versionName = "0.9.6-beta-rb-01112025"
@@ -19,16 +23,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
-    kapt {
-        correctErrorTypes = true
-    }
-
     buildFeatures {
         compose = true
+        viewBinding = true
     }
 
     composeOptions {
@@ -36,7 +33,7 @@ android {
     }
 
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -44,14 +41,25 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+}
 
-    buildFeatures {
-        viewBinding = true
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 dependencies {

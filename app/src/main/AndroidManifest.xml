@@ -61,20 +61,23 @@
         <activity
             android:name=".ui.activities.HelpActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.activities.CatalogActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activities.RequestActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".ui.activities.CatalogActivity"-->
+<!--            android:exported="false" />-->
+<!--        <activity-->
+<!--            android:name=".ui.activities.RequestActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".ui.activities.CameraActivity"
             android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".ui.activities.RegisterActivity"-->
+<!--            android:exported="false" />-->
+<!--        <activity-->
+<!--            android:name=".ui.activities.MainMenuActivity"-->
+<!--            android:exported="false" />-->
         <activity
-            android:name=".ui.activities.RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activities.MainMenuActivity"
+            android:name=".ui.activities.NewRevisionActivity"
             android:exported="false" />
 
         <service

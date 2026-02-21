@@ -18,6 +18,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +46,10 @@ fun CompanyCatalogScreen(
     val companies by viewModel.filteredCompanies
         .asFlow()
         .collectAsState(initial = emptyList())
+
+    LaunchedEffect(Unit) {
+        viewModel.filterByString("")
+    }
 
     Column(
         modifier = Modifier
