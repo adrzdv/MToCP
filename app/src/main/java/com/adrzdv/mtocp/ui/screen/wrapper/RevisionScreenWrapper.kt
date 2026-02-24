@@ -2,9 +2,9 @@ package com.adrzdv.mtocp.ui.screen.wrapper
 
 import androidx.compose.ui.platform.ComposeView
 import com.adrzdv.mtocp.ui.screen.RevisionScreen
-import com.adrzdv.mtocp.ui.viewmodel.AutocompleteViewModel
-import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
-import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
 
 fun ComposeView.showRevisionScreen(
     orderViewModel: OrderViewModel,

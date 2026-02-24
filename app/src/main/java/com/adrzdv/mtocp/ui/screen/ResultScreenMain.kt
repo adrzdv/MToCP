@@ -28,7 +28,7 @@ import com.adrzdv.mtocp.ui.component.ServiceInfoBlock
 import com.adrzdv.mtocp.ui.intent.ShareIntentBuilder
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 

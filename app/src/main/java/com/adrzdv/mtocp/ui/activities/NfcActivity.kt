@@ -6,8 +6,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.adrzdv.mtocp.nfc.NfcCommunicatorImpl
 import com.adrzdv.mtocp.ui.screen.NfcScreen
-import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
-import com.adrzdv.mtocp.ui.viewmodel.NfcJsonReceiverViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
+import com.adrzdv.mtocp.ui.viewmodel.model.NfcJsonReceiverViewModel
 
 class NfcActivity : AppCompatActivity() {
     private val communicator = NfcCommunicatorImpl()

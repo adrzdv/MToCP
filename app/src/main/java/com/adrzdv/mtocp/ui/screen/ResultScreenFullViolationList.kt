@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
 
 @Composable
 fun ResultScreenFullViolationList(

@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.viewmodel
+package com.adrzdv.mtocp.ui.viewmodel.model
 
 import android.util.Log
 import androidx.compose.runtime.getValue

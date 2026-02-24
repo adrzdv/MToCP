@@ -36,11 +36,11 @@ import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
 import com.adrzdv.mtocp.ui.component.DropdownMenuField
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
-import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
-import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
-import com.adrzdv.mtocp.ui.viewmodel.RevisionObjectViewModel
-import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
+import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.RevisionObjectViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelFactoryProviderOld
 
 @Composable
 fun AddDinnerCarDialog(
@@ -60,7 +60,7 @@ fun AddDinnerCarDialog(
     var isDepotWhenCompanySelected by remember { mutableStateOf(false) }
     var isCompanyWhenDepotSelected by remember { mutableStateOf(false) }
     val companyViewModel: CompanyViewModel = viewModel(
-        factory = ViewModelFactoryProvider.provideFactory()
+        factory = ViewModelFactoryProviderOld.provideFactory()
     )
     companyViewModel.filterDinner()
     depotViewModel.filterDinner()

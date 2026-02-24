@@ -51,9 +51,9 @@ import com.adrzdv.mtocp.ui.component.buttons.FloatingSaveButton
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.fragment.NfcBottomSheetFragment
 import com.adrzdv.mtocp.ui.theme.AppColors
-import com.adrzdv.mtocp.ui.viewmodel.AdditionalParamViewModel
-import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
-import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
+import com.adrzdv.mtocp.ui.viewmodel.model.AdditionalParamViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelFactoryProviderOld
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
@@ -72,7 +72,7 @@ fun MonitoringProcessScreen(
     var showExitDialog by remember { mutableStateOf(false) }
     var showSaveDialog by remember { mutableStateOf(false) }
     val paramsViewModel: AdditionalParamViewModel =
-        viewModel(factory = ViewModelFactoryProvider.provideFactory())
+        viewModel(factory = ViewModelFactoryProviderOld.provideFactory())
     val scope = rememberCoroutineScope()
     val uncheckedCoaches = stringResource(R.string.unchecked_coaches)
     val uncheckedParams = stringResource(R.string.unchecked_params)

@@ -48,8 +48,8 @@ import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.theme.CustomTypography
-import com.adrzdv.mtocp.ui.viewmodel.AutocompleteViewModel
-import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
 import kotlinx.coroutines.launch
 import java.text.ParseException
 import java.time.LocalDateTime

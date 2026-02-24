@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.viewmodel
+package com.adrzdv.mtocp.ui.viewmodel.model
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

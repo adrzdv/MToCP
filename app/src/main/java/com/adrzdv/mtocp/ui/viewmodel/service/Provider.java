@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.viewmodel;
+package com.adrzdv.mtocp.ui.viewmodel.service;
 
 public interface Provider<T> {
 

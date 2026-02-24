@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.viewmodel;
+package com.adrzdv.mtocp.ui.viewmodel.model;
 
 import static com.adrzdv.mtocp.domain.model.enums.OrdersTypes.PASSENGER_TRAIN;
 import static com.adrzdv.mtocp.domain.model.enums.OrdersTypes.TICKET_OFFICE;

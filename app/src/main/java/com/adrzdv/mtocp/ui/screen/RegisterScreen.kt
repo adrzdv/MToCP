@@ -44,7 +44,7 @@ import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.navigation.Screen
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.AuthViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.AuthViewModel
 
 @Composable
 fun RegisterScreen(

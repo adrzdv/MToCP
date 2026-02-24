@@ -14,9 +14,9 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.data.api.RetrofitClient
 import com.adrzdv.mtocp.data.repository.AuthRepositoryImpl
 import com.adrzdv.mtocp.ui.component.ChangePasswordBottomSheet
-import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
-import com.adrzdv.mtocp.ui.viewmodel.ChangePasswordBottomSheetViewModel
-import com.adrzdv.mtocp.ui.viewmodel.ServiceViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
+import com.adrzdv.mtocp.ui.viewmodel.model.ChangePasswordBottomSheetViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

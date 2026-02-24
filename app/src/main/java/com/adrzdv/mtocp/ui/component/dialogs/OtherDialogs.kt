@@ -44,11 +44,11 @@ import com.adrzdv.mtocp.ui.component.DropdownMenuField
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.theme.CustomTypography
-import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
-import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
-import com.adrzdv.mtocp.ui.viewmodel.RequestWebViewModel
-import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
-import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.RequestWebViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelFactoryProviderOld
+import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
 
 @Composable
 fun CustomAlertDialog(
@@ -124,7 +124,7 @@ fun AddTempTrainDialog(
     var trainDepot by remember { mutableStateOf("") }
 
     val depotVM: DepotViewModel = viewModel(
-        factory = ViewModelFactoryProvider.provideFactory()
+        factory = ViewModelFactoryProviderOld.provideFactory()
     )
 
     fun addTempTrain() {
@@ -216,7 +216,7 @@ fun AddViolationToCoachDialog(
     onError: () -> Unit
 ) {
     var violationViewModel: ViolationViewModel =
-        viewModel(factory = ViewModelFactoryProvider.provideFactory())
+        viewModel(factory = ViewModelFactoryProviderOld.provideFactory())
     violationViewModel.filterDataByRevisionType(revisionType)
 
     var searchText by remember { mutableStateOf("") }

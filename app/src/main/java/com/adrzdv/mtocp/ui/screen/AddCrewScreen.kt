@@ -43,9 +43,9 @@ import com.adrzdv.mtocp.ui.component.dialogs.AddWorkerDialog
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
-import com.adrzdv.mtocp.ui.viewmodel.InnerWorkerViewModel
-import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.InnerWorkerViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
 import kotlinx.coroutines.launch
 
 @Composable

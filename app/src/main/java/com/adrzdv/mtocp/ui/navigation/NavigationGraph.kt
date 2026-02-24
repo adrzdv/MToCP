@@ -1,13 +1,14 @@
 package com.adrzdv.mtocp.ui.navigation
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -15,6 +16,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.adrzdv.mtocp.App
+import com.adrzdv.mtocp.AppDependencies
+import com.adrzdv.mtocp.AppOld
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.data.api.RetrofitClient
 import com.adrzdv.mtocp.data.repository.AuthRepositoryImpl
@@ -27,21 +30,23 @@ import com.adrzdv.mtocp.ui.screen.RequestWebScreen
 import com.adrzdv.mtocp.ui.screen.ServiceScreen
 import com.adrzdv.mtocp.ui.screen.SplashScreen
 import com.adrzdv.mtocp.ui.screen.StartMenuScreen
-import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
-import com.adrzdv.mtocp.ui.viewmodel.AuthViewModel
-import com.adrzdv.mtocp.ui.viewmodel.ServiceViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
+import com.adrzdv.mtocp.ui.viewmodel.model.AuthViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelLocator
 import com.adrzdv.mtocp.util.DirectoryHandler
 
 @Composable
 fun NavigationGraph(
+    appDependencies: AppDependencies,
     activity: Activity,
-    prefs: SharedPreferences,
     hasToken: Boolean,
     version: String,
     userDataStorage: UserDataStorage,
     username: String
 ) {
     val navController = rememberNavController()
+    val viewModelLocator = remember { ViewModelLocator(appDependencies) }
 
     NavHost(
         navController = navController,
@@ -94,7 +99,10 @@ fun NavigationGraph(
             ) { result ->
                 if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                     val fileUri: Uri = result.data?.data ?: return@rememberLauncherForActivityResult
-                    App.getImportManager().importFromJson(context, fileUri) { message ->
+                    AppOld.getInstance().appDependencies.importManager.importFromJson(
+                        context,
+                        fileUri
+                    ) { message ->
                         if (message == MessageCodes.SUCCESS.messageTitle) {
                             serviceVM.showMessage(message)
                         } else {
@@ -131,10 +139,15 @@ fun NavigationGraph(
         composable(Screen.Help.route) {
             //HelpScreen(navController = navController)
         }
-        composable(Screen.Catalog.route) {
+        composable(Screen.Catalog.route) { backStackEntry ->
             InfoCatalogScreen(
                 navPriorityHost = navController,
-                revisionTypes = RevisionType.getListOfTypes()
+                revisionTypes = RevisionType.getListOfTypes(),
+                violationViewModel = viewModelLocator.getViolationViewModel(backStackEntry),
+                trainInfoViewModel = viewModelLocator.getTrainInfoViewModel(backStackEntry),
+                kriCoachViewModel = viewModelLocator.getKriCoachViewModel(backStackEntry),
+                depotViewModel = viewModelLocator.getDepotViewModel(backStackEntry),
+                companyViewModel = viewModelLocator.getCompanyViewModel(backStackEntry)
             )
         }
         composable(Screen.Request.route) {
@@ -151,7 +164,5 @@ fun NavigationGraph(
                 onTicketOfficeRevisionClick = { },
                 onCoachRevisionClick = {})
         }
-
     }
-
 }

@@ -38,19 +38,24 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.model.MenuElementItem
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
-import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
-import com.adrzdv.mtocp.ui.viewmodel.KriCoachViewModel
-import com.adrzdv.mtocp.ui.viewmodel.TrainInfoViewModel
-import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
-import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.KriCoachViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelFactoryProviderOld
+import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InfoCatalogScreen(
     navPriorityHost: NavHostController,
-    revisionTypes: List<String>
+    revisionTypes: List<String>,
+    violationViewModel: ViolationViewModel,
+    trainInfoViewModel: TrainInfoViewModel,
+    kriCoachViewModel: KriCoachViewModel,
+    depotViewModel: DepotViewModel,
+    companyViewModel: CompanyViewModel
 ) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -58,23 +63,6 @@ fun InfoCatalogScreen(
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-
-    val viewModelFactory = ViewModelFactoryProvider.provideFactory()
-    val violationViewModel: ViolationViewModel = viewModel(
-        factory = viewModelFactory
-    )
-    val trainInfoViewModel: TrainInfoViewModel = viewModel(
-        factory = viewModelFactory
-    )
-    val kriCoachViewModel: KriCoachViewModel = viewModel(
-        factory = viewModelFactory
-    )
-    val depotViewModel: DepotViewModel = viewModel(
-        factory = viewModelFactory
-    )
-    val companyViewModel: CompanyViewModel = viewModel(
-        factory = viewModelFactory
-    )
 
     val menuItems = listOf(
         MenuElementItem(

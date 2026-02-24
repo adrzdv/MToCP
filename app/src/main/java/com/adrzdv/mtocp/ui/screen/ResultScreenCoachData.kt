@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.Coach
 import com.adrzdv.mtocp.ui.component.newelements.cards.CoachDropDownItemCard
 import com.adrzdv.mtocp.ui.theme.AppColors
-import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
 
 @Composable
 fun ResultScreenCoachData(

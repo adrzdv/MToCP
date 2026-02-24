@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.viewmodel;
+package com.adrzdv.mtocp.ui.viewmodel.service;
 
 import static com.adrzdv.mtocp.MessageCodes.UNSUPPORTED_CLASS;
 

@@ -1,7 +1,6 @@
 package com.adrzdv.mtocp.ui.screen
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -29,7 +28,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.data.api.RetrofitClient
@@ -41,12 +39,11 @@ import com.adrzdv.mtocp.ui.component.newelements.SwitchRow
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.component.snackbar.InfoSnackbar
-import com.adrzdv.mtocp.ui.fragment.ChangePasswordBottomSheetFragment
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
-import com.adrzdv.mtocp.ui.viewmodel.ChangePasswordBottomSheetViewModel
-import com.adrzdv.mtocp.ui.viewmodel.ServiceViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
+import com.adrzdv.mtocp.ui.viewmodel.model.ChangePasswordBottomSheetViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

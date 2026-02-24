@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.viewmodel
+package com.adrzdv.mtocp.ui.viewmodel.model
 
 import android.app.Activity
 import android.util.Log

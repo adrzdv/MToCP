@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.viewmodel;
+package com.adrzdv.mtocp.ui.viewmodel.model;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

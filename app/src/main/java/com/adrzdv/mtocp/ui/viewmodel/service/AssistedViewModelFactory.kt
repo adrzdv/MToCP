@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.viewmodel
+package com.adrzdv.mtocp.ui.viewmodel.service
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

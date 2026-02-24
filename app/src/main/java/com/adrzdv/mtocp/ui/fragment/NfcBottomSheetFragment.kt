@@ -19,8 +19,8 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
 import com.adrzdv.mtocp.nfc.NfcCommunicatorImpl
 import com.adrzdv.mtocp.ui.component.NFCBottomSheetContent
-import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
-import com.adrzdv.mtocp.ui.viewmodel.NfcJsonReceiverViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
+import com.adrzdv.mtocp.ui.viewmodel.model.NfcJsonReceiverViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.delay
 

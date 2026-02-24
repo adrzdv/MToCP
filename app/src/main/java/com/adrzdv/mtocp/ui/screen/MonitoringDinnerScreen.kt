@@ -57,10 +57,10 @@ import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
-import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
-import com.adrzdv.mtocp.ui.viewmodel.DinnerCoachViewModel
-import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
+import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.DinnerCoachViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 

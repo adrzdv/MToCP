@@ -27,7 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.theme.AppColors
-import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
 
 @Composable
 fun ResultScreen(

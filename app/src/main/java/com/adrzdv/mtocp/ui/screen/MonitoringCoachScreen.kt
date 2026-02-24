@@ -38,7 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.adrzdv.mtocp.App
+import com.adrzdv.mtocp.AppOld
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
@@ -59,12 +59,12 @@ import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.AdditionalParamViewModel
-import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
-import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
-import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
-import com.adrzdv.mtocp.ui.viewmodel.PassengerCoachViewModel
-import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
+import com.adrzdv.mtocp.ui.viewmodel.model.AdditionalParamViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
+import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.PassengerCoachViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelFactoryProviderOld
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
@@ -84,13 +84,13 @@ fun MonitoringCoachScreen(
                     orderViewModel.updateRevisionObject(updated)
                     navController.popBackStack()
                 },
-                getDepotByNameUseCase = GetDepotByNameUseCase(App.getDepotRepository()),
+                getDepotByNameUseCase = GetDepotByNameUseCase(AppOld.getInstance().appDependencies.depotRepo),
                 deleteViolationPhotoUseCase = DeleteViolationPhotoUseCase()
             )
         }
     )
     val paramsViewModel: AdditionalParamViewModel =
-        viewModel(factory = ViewModelFactoryProvider.provideFactory())
+        viewModel(factory = ViewModelFactoryProviderOld.provideFactory())
 
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()

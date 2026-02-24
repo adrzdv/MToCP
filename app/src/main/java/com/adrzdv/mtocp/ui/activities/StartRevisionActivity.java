@@ -9,10 +9,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.adrzdv.mtocp.domain.model.enums.OrdersTypes;
 import com.adrzdv.mtocp.ui.screen.wrapper.RevisionScreenWrapperKt;
-import com.adrzdv.mtocp.ui.viewmodel.AutocompleteViewModel;
-import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel;
-import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel;
-import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider;
+import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel;
+import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel;
+import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel;
+import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelFactoryProviderOld;
 
 import kotlin.Unit;
 
@@ -24,11 +24,11 @@ public class StartRevisionActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
 
         AutocompleteViewModel autocompleteViewModel = new ViewModelProvider(this,
-                ViewModelFactoryProvider.provideFactory()).get(AutocompleteViewModel.class);
+                ViewModelFactoryProviderOld.provideFactory()).get(AutocompleteViewModel.class);
         OrderViewModel orderViewModel = new ViewModelProvider(this,
-                ViewModelFactoryProvider.provideFactory()).get(OrderViewModel.class);
+                ViewModelFactoryProviderOld.provideFactory()).get(OrderViewModel.class);
         DepotViewModel depotViewModel = new ViewModelProvider(this,
-                ViewModelFactoryProvider.provideFactory()).get(DepotViewModel.class);
+                ViewModelFactoryProviderOld.provideFactory()).get(DepotViewModel.class);
 
         ComposeView composeView = new ComposeView(this);
         RevisionScreenWrapperKt.showRevisionScreen(composeView,

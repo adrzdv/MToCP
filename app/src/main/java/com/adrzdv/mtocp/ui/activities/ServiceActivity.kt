@@ -11,11 +11,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.adrzdv.mtocp.App
+import com.adrzdv.mtocp.AppOld
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.data.repository.UserDataStorage
 import com.adrzdv.mtocp.ui.screen.ServiceScreen
-import com.adrzdv.mtocp.ui.viewmodel.ServiceViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
 import com.adrzdv.mtocp.util.DirectoryHandler
 
 class ServiceActivity : AppCompatActivity() {
@@ -32,7 +32,7 @@ class ServiceActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK && result.data != null) {
                 val fileUri: Uri? = result.data?.data ?: return@registerForActivityResult
                 fileUri?.let { uri ->
-                    App.getImportManager().importFromJson(
+                    AppOld.getInstance().appDependencies.importManager.importFromJson(
                         this,
                         uri
                     ) { message ->

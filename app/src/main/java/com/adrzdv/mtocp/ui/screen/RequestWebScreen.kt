@@ -29,14 +29,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.ui.component.buttons.MenuButton
 import com.adrzdv.mtocp.ui.component.dialogs.CustomAlertDialog
 import com.adrzdv.mtocp.ui.component.newelements.SquaredBigButton
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.CustomTypography
-import com.adrzdv.mtocp.ui.viewmodel.RequestWebViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.RequestWebViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

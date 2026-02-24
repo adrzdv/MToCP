@@ -22,7 +22,7 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.buttons.CustomOutlinedButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.NfcJsonReceiverViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.NfcJsonReceiverViewModel
 
 @Composable
 fun NFCBottomSheetContent(

@@ -38,7 +38,7 @@ import com.adrzdv.mtocp.ui.component.RevisionTypeDropdown
 import com.adrzdv.mtocp.ui.component.newelements.NothingToShowPlug
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.CustomTypography
-import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
 
 @Composable
 fun ViolationCatalogScreen(

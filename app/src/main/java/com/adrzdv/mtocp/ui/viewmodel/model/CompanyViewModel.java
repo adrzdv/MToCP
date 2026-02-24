@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.viewmodel;
+package com.adrzdv.mtocp.ui.viewmodel.model;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.adrzdv.mtocp.data.db.entity.CompanyWithBranch;
 import com.adrzdv.mtocp.domain.model.departments.CompanyDomain;
-import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
 import com.adrzdv.mtocp.domain.repository.CompanyRepository;
 import com.adrzdv.mtocp.mapper.CompanyMapper;
 import com.adrzdv.mtocp.ui.model.CompanyDto;
