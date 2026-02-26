@@ -1,7 +1,6 @@
 package com.adrzdv.mtocp.ui.navigation
 
 import android.app.Activity
-import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -10,17 +9,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.adrzdv.mtocp.App
 import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.AppOld
 import com.adrzdv.mtocp.MessageCodes
-import com.adrzdv.mtocp.data.api.RetrofitClient
-import com.adrzdv.mtocp.data.repository.AuthRepositoryImpl
 import com.adrzdv.mtocp.data.repository.UserDataStorage
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.ui.screen.InfoCatalogScreen
@@ -30,8 +25,6 @@ import com.adrzdv.mtocp.ui.screen.RequestWebScreen
 import com.adrzdv.mtocp.ui.screen.ServiceScreen
 import com.adrzdv.mtocp.ui.screen.SplashScreen
 import com.adrzdv.mtocp.ui.screen.StartMenuScreen
-import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
-import com.adrzdv.mtocp.ui.viewmodel.model.AuthViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
 import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelLocator
 import com.adrzdv.mtocp.util.DirectoryHandler
@@ -77,22 +70,25 @@ fun NavigationGraph(
         }
 
         composable(Screen.Register.route) { backStackEntry ->
-            val registerVM: AuthViewModel = ViewModelProvider(
-                backStackEntry,
-                AssistedViewModelFactory {
-                    AuthViewModel(
-                        AuthRepositoryImpl(
-                            RetrofitClient.authApi,
-                            userDataStorage
-                        )
-                    )
-                }
-            )[AuthViewModel::class.java]
-            RegisterScreen(navController = navController, viewModel = registerVM)
+//            val registerVM: AuthViewModel = ViewModelProvider(
+//                backStackEntry,
+//                AssistedViewModelFactory {
+//                    AuthViewModel(
+//                        AuthRepositoryImpl(
+//                            RetrofitClient.authApi,
+//                            userDataStorage
+//                        )
+//                    )
+//                }
+//            )[AuthViewModel::class.java]
+            RegisterScreen(
+                navController = navController,
+                authViewModel = viewModelLocator.getAuthViewModel(backStackEntry)
+            )
         }
 
         composable(Screen.Settings.route) { backStackEntry ->
-            val serviceVM: ServiceViewModel = viewModel(backStackEntry)
+            val serviceScreenVM: ServiceViewModel = viewModel(backStackEntry)
             val context = LocalContext.current
             val filePickerLauncher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartActivityForResult()
@@ -104,15 +100,15 @@ fun NavigationGraph(
                         fileUri
                     ) { message ->
                         if (message == MessageCodes.SUCCESS.messageTitle) {
-                            serviceVM.showMessage(message)
+                            serviceScreenVM.showMessage(message)
                         } else {
-                            serviceVM.showErrorMessage(message)
+                            serviceScreenVM.showErrorMessage(message)
                         }
                     }
                 }
             }
             ServiceScreen(
-                serviceVM = serviceVM,
+                serviceScreenVM = serviceScreenVM,
                 onCleanRepositoryClick = { onResult ->
                     val success = DirectoryHandler.cleanDirectories()
                     onResult(success)

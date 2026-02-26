@@ -38,7 +38,7 @@ import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
 @Composable
 fun ChangePasswordBottomSheet(
     viewModel: ChangePasswordBottomSheetViewModel,
-    serviceViewModel: ServiceViewModel,
+    serviceScreenVM: ServiceViewModel,
     onDismiss: () -> Unit
 ) {
     val passwordRulesHint: List<String> = listOf(
@@ -59,17 +59,17 @@ fun ChangePasswordBottomSheet(
         result?.let { result ->
             when (result) {
                 is ChangePasswordResult.Success -> {
-                    serviceViewModel.showMessage(success)
+                    serviceScreenVM.showMessage(success)
                     onDismiss()
                 }
 
                 is ChangePasswordResult.ServerError -> {
-                    serviceViewModel.showErrorMessage(error)
+                    serviceScreenVM.showErrorMessage(error)
                     onDismiss()
                 }
 
                 is ChangePasswordResult.NetworkError -> {
-                    serviceViewModel.showErrorMessage(error)
+                    serviceScreenVM.showErrorMessage(error)
                     onDismiss()
                 }
             }

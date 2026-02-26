@@ -11,6 +11,7 @@ import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.KriCoachViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
 
@@ -44,6 +45,10 @@ class ViewModelLocator(
     fun getKriCoachViewModel(owner: ViewModelStoreOwner) =
         factory.provideFactory().create(KriCoachViewModel::class.java)
 
-//    fun getAuthViewModel() =
-//        AssistedViewModelFactory(AuthViewModel(appDependencies.authRepo))
+    fun getAuthViewModel(owner: ViewModelStoreOwner) =
+        ViewModelProvider(
+            owner,
+            AssistedViewModelFactory { AuthViewModel(appDependencies.authRepo) }
+        )[AuthViewModel::class.java]
+
 }

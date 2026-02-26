@@ -49,9 +49,9 @@ import com.adrzdv.mtocp.ui.viewmodel.model.AuthViewModel
 @Composable
 fun RegisterScreen(
     navController: NavHostController? = null,
-    viewModel: AuthViewModel
+    authViewModel: AuthViewModel
 ) {
-    val state by viewModel.regState.collectAsState()
+    val state by authViewModel.regState.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
     var passwordVisibility by remember { mutableStateOf(true) }
     val context = LocalContext.current
@@ -152,7 +152,7 @@ fun RegisterScreen(
                     InputTextField(
                         value = state.login,
                         onValueChange = {
-                            viewModel.onLoginChange(it)
+                            authViewModel.onLoginChange(it)
                         },
                         isEnabled = !state.isLoading,
                         isError = state.loginErrorRes != null,
@@ -167,7 +167,7 @@ fun RegisterScreen(
                     InputTextField(
                         value = state.password,
                         onValueChange = {
-                            viewModel.onPasswordChange(it)
+                            authViewModel.onPasswordChange(it)
                         },
                         isEnabled = !state.isLoading,
                         isError = state.passwordErrorRes != null,
@@ -200,7 +200,7 @@ fun RegisterScreen(
                     }
                     RoundedButton(
                         onClick = {
-                            viewModel.login()
+                            authViewModel.login()
                         },
                         text = stringResource(R.string.login_button),
                         isEnable = state.isFormValid && !state.isLoading,

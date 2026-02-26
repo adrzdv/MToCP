@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ServiceScreen(
-    serviceVM: ServiceViewModel,
+    serviceScreenVM: ServiceViewModel,
     onCleanRepositoryClick: ((Boolean) -> Unit) -> Unit,
     onLoadCatalog: () -> Unit,
     onDeleteProfile: () -> Unit,
@@ -77,20 +77,20 @@ fun ServiceScreen(
     )
 
     var showBottomSheet by remember { mutableStateOf(false) }
-    val snackMessage by serviceVM.snackMessage.collectAsState()
-    val errorSnackMessage by serviceVM.errorMessage.collectAsState()
+    val snackMessage by serviceScreenVM.snackMessage.collectAsState()
+    val errorSnackMessage by serviceScreenVM.errorMessage.collectAsState()
 
     LaunchedEffect(snackMessage) {
         snackMessage?.let {
             snackbarHostState.showSnackbar(visuals = InfoSnackbar(it))
-            serviceVM.clearMessage()
+            serviceScreenVM.clearMessage()
         }
     }
 
     LaunchedEffect(errorSnackMessage) {
         errorSnackMessage?.let {
             snackbarHostState.showSnackbar(visuals = ErrorSnackbar(it))
-            serviceVM.clearMessage()
+            serviceScreenVM.clearMessage()
         }
     }
 
@@ -245,7 +245,7 @@ fun ServiceScreen(
     if (showBottomSheet) {
         ChangePasswordBottomSheet(
             viewModel = changePasswordVM,
-            serviceViewModel = serviceVM,
+            serviceScreenVM = serviceScreenVM,
             onDismiss = { showBottomSheet = false }
         )
     }
