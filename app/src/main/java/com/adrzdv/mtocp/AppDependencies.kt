@@ -47,8 +47,9 @@ class AppDependencies(
     val trainRepo: TrainRepository = TrainRepositoryImpl(database.trainDao(), database.depotDao())
     val tempParamRepo: TempParamRepository = TempParamRepositoryImpl(database.tempParamsDao())
     val kriCoachRepo: KriCoachRepo = KriCoachRepoImpl(database.kriCoachDao())
+    val userDataStorage = UserDataStorage(prefs)
     val authRepo: AuthRepository =
-        AuthRepositoryImpl(RetrofitClient.authApi, UserDataStorage(prefs))
+        AuthRepositoryImpl(RetrofitClient.authApi, userDataStorage)
     val registry: ImportHandlerRegistry = ImportHandlerRegistry().apply {
         register(
             ViolationImport::class.java,

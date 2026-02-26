@@ -41,9 +41,9 @@ import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.component.snackbar.InfoSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
 import com.adrzdv.mtocp.ui.viewmodel.model.ChangePasswordBottomSheetViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

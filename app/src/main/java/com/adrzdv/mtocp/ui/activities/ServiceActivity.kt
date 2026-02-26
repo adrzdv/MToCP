@@ -18,6 +18,7 @@ import com.adrzdv.mtocp.ui.screen.ServiceScreen
 import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
 import com.adrzdv.mtocp.util.DirectoryHandler
 
+@Deprecated("Migrating to Single-Activity pattern")
 class ServiceActivity : AppCompatActivity() {
     private lateinit var filePickerLauncher: ActivityResultLauncher<Intent>
     private val serviceVM: ServiceViewModel by viewModels()
@@ -49,13 +50,12 @@ class ServiceActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContent {
             ServiceScreen(
-                serviceVM = serviceVM,
+                serviceScreenVM = serviceVM,
                 onCleanRepositoryClick = { onResult ->
                     cleanDirs(onResult)
                 },
                 onDeleteProfile = {
                     deleteProfile()
-                    //startActivity(Intent(this, RegisterActivity::class.java))
                     finish()
                 },
                 onLoadCatalog = ::loadDataFromFile,

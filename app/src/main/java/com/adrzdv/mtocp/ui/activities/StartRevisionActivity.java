@@ -16,6 +16,7 @@ import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelFactoryProviderOld;
 
 import kotlin.Unit;
 
+@Deprecated(forRemoval = true)
 public class StartRevisionActivity extends AppCompatActivity {
 
     @Override

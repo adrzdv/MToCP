@@ -31,7 +31,8 @@
             android:name=".ui.activities.SplashActivity"
             android:exported="true"
             android:label="@string/title_activity_register"
-            android:theme="@style/Theme.MToCP">
+            android:theme="@style/Theme.MToCP"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -52,32 +53,10 @@
         </provider>
 
         <activity
-            android:name=".ui.activities.StartRevisionActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".ui.activities.ServiceActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.activities.HelpActivity"
             android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".ui.activities.CatalogActivity"-->
-<!--            android:exported="false" />-->
-<!--        <activity-->
-<!--            android:name=".ui.activities.RequestActivity"-->
-<!--            android:exported="false" />-->
         <activity
             android:name=".ui.activities.CameraActivity"
-            android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".ui.activities.RegisterActivity"-->
-<!--            android:exported="false" />-->
-<!--        <activity-->
-<!--            android:name=".ui.activities.MainMenuActivity"-->
-<!--            android:exported="false" />-->
-        <activity
-            android:name=".ui.activities.NewRevisionActivity"
             android:exported="false" />
 
         <service

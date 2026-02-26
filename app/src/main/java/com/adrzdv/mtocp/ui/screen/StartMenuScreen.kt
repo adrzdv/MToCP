@@ -1,6 +1,5 @@
 package com.adrzdv.mtocp.ui.screen
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,13 +34,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.data.repository.UserDataStorage
 import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
 import com.adrzdv.mtocp.ui.component.newelements.SquaredBigButton
 import com.adrzdv.mtocp.ui.theme.AppColors
@@ -55,13 +53,14 @@ fun StartMenuScreen(
     onServiceMenuClick: () -> Unit,
     onExitClick: () -> Unit,
     onRequestWebClick: () -> Unit,
+    userDataStorage: UserDataStorage,
     appVersion: String
 ) {
     var showExitDialog by remember { mutableStateOf(false) }
-    val prefs = LocalContext.current.getSharedPreferences("prefs", Context.MODE_PRIVATE)
-    val username = prefs.getString("username", "null")
-    val id = prefs.getInt("user_id", 0)
-    val secId = prefs.getString("user_sec_id", "null")
+
+    val username = userDataStorage.getUsername()
+    val id = userDataStorage.getUserId()
+    val secId = userDataStorage.getUserSecId()
 
     Scaffold(
         containerColor = AppColors.BACKGROUND_COLOR.color,
@@ -229,17 +228,4 @@ fun StartMenuScreen(
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Preview() {
-    StartMenuScreen(
-        onServiceMenuClick = {},
-        onStartRevisionClick = {},
-        onOpenViolationCatalogClick = {},
-        onRequestWebClick = {},
-        onExitClick = {},
-        appVersion = ""
-    )
 }

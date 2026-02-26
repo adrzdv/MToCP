@@ -28,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -42,7 +41,6 @@ import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.KriCoachViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel
-import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelFactoryProviderOld
 import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
 import kotlinx.coroutines.launch
 

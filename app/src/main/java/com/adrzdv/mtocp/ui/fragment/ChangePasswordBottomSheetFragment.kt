@@ -72,7 +72,7 @@ class ChangePasswordBottomSheetFragment(
             setContent {
                 ChangePasswordBottomSheet(
                     viewModel = viewModel,
-                    serviceViewModel = serviceViewModel,
+                    serviceScreenVM = serviceViewModel,
                     onDismiss = { dismiss() }
                 )
             }
