@@ -1,7 +1,5 @@
 package com.adrzdv.mtocp.ui.viewmodel.model
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import androidx.lifecycle.ViewModel
 import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.domain.model.order.Order
@@ -11,7 +9,6 @@ import com.adrzdv.mtocp.ui.state.order.OrderDraftState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import java.util.Calendar
 
 /**
  * Base [ViewModel] for managing order-related logic and UI state within the application.
