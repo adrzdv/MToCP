@@ -24,6 +24,13 @@ public abstract class Order extends RegularValidator {
         this.route = route;
     }
 
+    public Order() {
+        this.number = "";
+        this.revisionDateStart = LocalDateTime.now();
+        this.getRevisionDateEnd = LocalDateTime.now();
+        this.route = "";
+    }
+
     public void setRevisionType(RevisionType revisionType) {
         this.revisionType = revisionType;
     }

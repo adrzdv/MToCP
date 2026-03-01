@@ -11,6 +11,7 @@
     <string name="search_text_hint">Поиск нарушения</string>
     <string name="search_depot_hint">Поиск предприятия</string>
     <string name="search_train">Поиск поезда</string>
+    <string name="train_number">Номер поезда</string>
     <string name="search_kri">Поиск вагона</string>
     <string name="ooops">Упс…</string>
     <string name="back_text">Назад</string>
@@ -24,7 +25,7 @@
     <string name="header_start_revision">Начало проверки</string>
     <string name="input_text_hint">Начните ввод</string>
     <string name="input_search_object_hint">Введите номер объекта проверки</string>
-    <string name="label_choose_revtype">Выберите тип проверки</string>
+    <string name="label_choose_revtype">Тип проверки</string>
     <string name="order_number_hint">Номер уведомления</string>
     <string name="order_route_hint">Место проверки</string>
     <string name="order_start_date_hint">Дата/время начала</string>
@@ -60,6 +61,7 @@
     <string name="info">Информация</string>
     <string name="clear_text">Очистить</string>
     <string name="empty_string">Не может быть пустым</string>
+
     <string name="dinner_department">Дирекция питания</string>
     <string name="dinner_departments">Дирекции питания</string>
     <string name="dinner_company">Арендатор</string>
@@ -177,5 +179,13 @@
     <string name="password_confirm_hint">Подтвердите пароль</string>
     <string name="error_password_change">Ошибка смены пароля</string>
     <string name="password_changed_success">Пароль изменен</string>
+
+    <!--DESCRIPTIONS-->
+    <string name="revision_start_description">Заполните все поля, добавьте работников и начните проверку</string>
+
+    <!--ERRORS-->
+    <string name="number_pattern_error">Некорректный номер</string>
+    <string name="route_error">Некорректный маршрут</string>
+    <string name="date_error">Некорректная дата</string>
 
 </resources>

@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /**
  * Branch import model
- * This model is using for import branch data from json
+ * This model is using for import branch data from JSON
  */
 public class BranchImport {
     private Integer id;

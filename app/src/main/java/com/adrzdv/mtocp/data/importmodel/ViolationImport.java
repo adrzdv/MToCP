@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /**
  * Violation import model
- * This model is using for import violation data from json
+ * This model is using for import violation data from JSON
  */
 public class ViolationImport {
 

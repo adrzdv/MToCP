@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.viewmodel.model;
+package com.adrzdv.mtocp.ui.viewmodel.model.old;
 
 import static com.adrzdv.mtocp.domain.model.enums.OrdersTypes.PASSENGER_TRAIN;
 import static com.adrzdv.mtocp.domain.model.enums.OrdersTypes.TICKET_OFFICE;
@@ -24,6 +24,7 @@ import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 import com.adrzdv.mtocp.domain.repository.TrainRepository;
 import com.adrzdv.mtocp.domain.usecase.ArchivePhotoInZipUseCase;
 import com.adrzdv.mtocp.domain.usecase.CheckUncheckedObjectsUseCase;
+import com.adrzdv.mtocp.domain.usecase.GenerateSmsReportUseCase;
 import com.adrzdv.mtocp.domain.usecase.GetGlobalViolationStringUseCase;
 import com.adrzdv.mtocp.domain.usecase.GetObjectMapSortedWithViolationsUseCase;
 import com.adrzdv.mtocp.domain.usecase.MakeAdditionalParamsUseCase;
@@ -31,7 +32,6 @@ import com.adrzdv.mtocp.domain.usecase.stats.CountMainAutodoorsUseCase;
 import com.adrzdv.mtocp.domain.usecase.stats.CountMainCarsUseCase;
 import com.adrzdv.mtocp.domain.usecase.stats.CountTrailingAutodoorsUseCase;
 import com.adrzdv.mtocp.domain.usecase.stats.CountTrailingCarsUseCase;
-import com.adrzdv.mtocp.domain.usecase.GenerateSmsReportUseCase;
 import com.adrzdv.mtocp.util.gson.CustomGson;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -69,8 +69,6 @@ public class OrderViewModel extends ViewModel {
     private final CountTrailingAutodoorsUseCase countTrailingAutodoorsUseCase;
     private OrdersTypes selectedType;
     private final TrainRepository trainRepository;
-    //private final TicketOfficeRepository ticketOfficeRepository;
-    //private final CompanyRepository companyRepository;
     private String orderNumber;
     private String objectNumber;
     private LocalDateTime dateStart;

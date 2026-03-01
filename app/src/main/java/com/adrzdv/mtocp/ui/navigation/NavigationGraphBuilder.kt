@@ -23,6 +23,7 @@ import com.adrzdv.mtocp.ui.screen.RequestWebScreen
 import com.adrzdv.mtocp.ui.screen.ServiceScreen
 import com.adrzdv.mtocp.ui.screen.SplashScreen
 import com.adrzdv.mtocp.ui.screen.StartMenuScreen
+import com.adrzdv.mtocp.ui.screen.monitoring.train.InitDataTrainMonitoringScreen
 import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
 import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelLocator
 import com.adrzdv.mtocp.util.DirectoryHandler
@@ -132,7 +133,7 @@ fun NavGraphBuilder.newRevisionDestination(
         NewRevisionScreen(
             navController = navController,
             onBackClick = { navController.popBackStack() },
-            onTrainRevisionClick = {},
+            onTrainRevisionClick = { navController.navigate(Screen.StartTrainRevision.route) },
             onTicketOfficeRevisionClick = { },
             onCoachRevisionClick = {})
     }
@@ -150,6 +151,19 @@ fun NavGraphBuilder.requestsDestination(
         RequestWebScreen(
             username = username,
             onBackClick = { navController.popBackStack() }
+        )
+    }
+}
+
+fun NavGraphBuilder.trainRevisionStartDestination(
+    navController: NavHostController,
+    viewModelLocator: ViewModelLocator,
+    appDependencies: AppDependencies
+) {
+    composable(Screen.StartTrainRevision.route) { backStackEntry ->
+        InitDataTrainMonitoringScreen(
+            viewModelLocator.getTrainOrderViewModel(backStackEntry),
+            navController = navController
         )
     }
 }

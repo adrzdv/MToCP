@@ -7,8 +7,9 @@ import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.KriCoachViewModel
-import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.TrainOrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
 
 class ViewModelFactoryProvider(
@@ -27,7 +28,8 @@ class ViewModelFactoryProvider(
                 )
             },
             TrainInfoViewModel::class.java to Provider { TrainInfoViewModel(appDependencies.trainRepo) },
-            KriCoachViewModel::class.java to Provider { KriCoachViewModel(appDependencies.kriCoachRepo) }
+            KriCoachViewModel::class.java to Provider { KriCoachViewModel(appDependencies.kriCoachRepo) },
+            TrainOrderViewModel::class.java to Provider { TrainOrderViewModel(appDependencies) }
         )
         return CustomViewModelProvider(creators)
     }

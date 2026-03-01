@@ -161,7 +161,7 @@ fun RegisterScreen(
                         } ?: "",
                         label = stringResource(R.string.login),
                         modifier = Modifier.fillMaxWidth(),
-                        trailingIcon = painterResource(R.drawable.ic_outline_person_edit_24),
+                        trailingIcon = { painterResource(R.drawable.ic_outline_person_edit_24) },
                         secretInput = false
                     )
                     InputTextField(
@@ -176,7 +176,7 @@ fun RegisterScreen(
                         } ?: "",
                         label = stringResource(R.string.password),
                         modifier = Modifier.fillMaxWidth(),
-                        trailingIcon = painterResource(R.drawable.ic_outline_lock_24),
+                        trailingIcon = { painterResource(R.drawable.ic_outline_lock_24) },
                         secretInput = when (passwordVisibility) {
                             true -> true
                             else -> false

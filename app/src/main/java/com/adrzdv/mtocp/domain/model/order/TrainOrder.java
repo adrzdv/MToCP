@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.domain.model.order;
 
+import com.adrzdv.mtocp.domain.model.enums.RevisionType;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.Coach;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar;

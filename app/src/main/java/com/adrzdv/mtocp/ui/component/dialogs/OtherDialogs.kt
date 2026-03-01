@@ -45,7 +45,7 @@ import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
-import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.RequestWebViewModel
 import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelFactoryProviderOld
 import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel

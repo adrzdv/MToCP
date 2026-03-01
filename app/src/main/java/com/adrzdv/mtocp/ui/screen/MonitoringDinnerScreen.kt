@@ -60,7 +60,7 @@ import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.DinnerCoachViewModel
-import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 

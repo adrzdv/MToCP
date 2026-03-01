@@ -62,7 +62,7 @@ import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.model.AdditionalParamViewModel
 import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
-import com.adrzdv.mtocp.ui.viewmodel.model.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.PassengerCoachViewModel
 import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelFactoryProviderOld
 import kotlinx.coroutines.launch
