@@ -15,12 +15,14 @@ enum class AppColors(val color: Color) {
     MATERIAL_RED(Color(0xFFEF5350)),
     LIGHT_GRAY(Color(0xFFF0F0F0)),
 
-    //MAIN_COLOR(Color(0xFF3E7B9D)),
+
     MAIN_COLOR(Color(0xFF70A1C0)),
-    //SECONDARY_COLOR(Color(0xFF70A1C0)),
-    //BACKGROUND_COLOR(Color(0xFFa3c1e0)),
     BACKGROUND_COLOR(Color(0xFFFAFAF9)),
     SURFACE_COLOR(Color(0xFFFAFAF9)),
-    ERROR_COLOR(Color(0xFFB83B4A))
+    ERROR_COLOR(Color(0xFFB83B4A)),
+
+    //MAIN_COLOR(Color(0xFF3E7B9D)),
+    //SECONDARY_COLOR(Color(0xFF70A1C0)),
+    //BACKGROUND_COLOR(Color(0xFFa3c1e0)),
 
 }

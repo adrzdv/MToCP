@@ -16,10 +16,10 @@ interface OrderDraftState {
 
     val isDateStartValid: Boolean
         get() = dateStart.isBefore(dateEnd)
-                && dateStart.isAfter(LocalDateTime.now())
+                && dateStart.isAfter(LocalDateTime.now().minusHours(1L))
 
     val isDateEndValid: Boolean
-        get() = dateStart.isAfter(dateStart)
+        get() = dateEnd.isAfter(dateStart)
 
     val isRouteValid: Boolean
         get() = route.isNotBlank()

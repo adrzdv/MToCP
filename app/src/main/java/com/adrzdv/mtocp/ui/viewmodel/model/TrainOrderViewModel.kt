@@ -6,6 +6,7 @@ import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.domain.model.order.TrainOrder
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain
+import com.adrzdv.mtocp.ui.state.order.PickerField
 import com.adrzdv.mtocp.ui.state.order.TrainOrderState
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -13,7 +14,6 @@ import java.time.format.DateTimeFormatter
 class TrainOrderViewModel(
     appDependencies: AppDependencies
 ) : BaseOrderViewModel<TrainOrderState, TrainOrder>(appDependencies) {
-    val pattern = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
 
     override fun createOrder(): TrainOrder {
         return TrainOrder(
@@ -49,8 +49,13 @@ class TrainOrderViewModel(
             current.copy(
                 orderNumber = number,
                 numberError = when {
-                    number.isEmpty() -> R.string.empty_string.toString()
-                    !current.isOrderNumberValid -> R.string.number_pattern_error.toString()
+                    number.isEmpty() -> appDependencies.stringProvider
+                        .getString(R.string.empty_string)
+
+                    !current.isOrderNumberValid -> appDependencies
+                        .stringProvider
+                        .getString(R.string.number_pattern_error)
+
                     else -> null
                 }
             )
@@ -65,10 +70,11 @@ class TrainOrderViewModel(
         }
     }
 
-    fun onPickDate() {
+    fun onPickDate(field: PickerField) {
         updateState { current ->
             current.copy(
-                showDatePicker = true
+                showDatePicker = true,
+                pickerVisibleFor = field
             )
         }
     }
@@ -76,60 +82,90 @@ class TrainOrderViewModel(
     fun onHidePickDate() {
         updateState { current ->
             current.copy(
-                showDatePicker = false
+                showDatePicker = false,
+                pickerVisibleFor = null
             )
         }
     }
 
-    fun onDateStartSelected(year: Int, month: Int, day: Int) {
-        val dateStart = orderState.value.dateStart
+    fun onDateSelected(year: Int, month: Int, day: Int) {
+        val selectedDate = orderState.value.dateStart
             .withYear(year)
             .withMonth(month)
             .withDayOfMonth(day)
 
         updateState { current ->
-            current.copy(
-                dateStart = dateStart,
-                showDatePicker = false,
-                showTimePicker = true
-            )
+            when (current.pickerVisibleFor) {
+                PickerField.START_DATE -> current.copy(
+                    dateStart = selectedDate,
+                    dateStartError = when {
+                        !validateDate(selectedDate) -> appDependencies
+                            .stringProvider
+                            .getString(R.string.date_error)
+
+                        else -> null
+                    },
+                    showDatePicker = false,
+                    showTimePicker = true
+                )
+
+                PickerField.END_DATE -> current.copy(
+                    dateEnd = selectedDate,
+                    dateEndError = when {
+                        !validateDate(selectedDate) -> appDependencies
+                            .stringProvider.getString(R.string.date_error)
+
+                        else -> null
+                    },
+                    showDatePicker = false,
+                    showTimePicker = true
+                )
+
+                else -> current
+            }
         }
     }
 
-    fun onTimeStartSelected(hour: Int, minute: Int) {
-        val dateStart = orderState.value.dateStart
+    fun onTimeSelected(hour: Int, minute: Int) {
+        val gottenDate = when (orderState.value.pickerVisibleFor) {
+            PickerField.START_DATE -> orderState.value.dateStart
+            PickerField.END_DATE -> orderState.value.dateEnd
+            else -> LocalDateTime.now()
+        }
+        val currentDate = gottenDate
             .withHour(hour)
             .withMinute(minute)
 
         updateState { current ->
-            current.copy(
-                dateStart = dateStart,
-                showTimePicker = false,
-            )
-        }
-    }
+            when (current.pickerVisibleFor) {
+                PickerField.START_DATE -> current.copy(
+                    dateStart = currentDate,
+                    dateStartError = when {
+                        !validateDate(currentDate) -> appDependencies
+                            .stringProvider
+                            .getString(R.string.date_error)
 
-    fun onDateStartChange(date: String) {
-        updateState { current ->
-            current.copy(
-                dateStart = LocalDateTime.parse(date, pattern),
-                dateStartError = when {
-                    !current.isDateStartValid -> R.string.date_error.toString()
-                    else -> null
-                }
-            )
-        }
-    }
+                        else -> null
+                    },
+                    showTimePicker = false,
+                    pickerVisibleFor = null
+                )
 
-    fun onDateEndChange(date: String) {
-        updateState { current ->
-            current.copy(
-                dateEnd = LocalDateTime.parse(date, pattern),
-                dateEndError = when {
-                    !current.isDateEndValid -> R.string.date_error.toString()
-                    else -> null
-                }
-            )
+                PickerField.END_DATE -> current.copy(
+                    dateEnd = currentDate,
+                    dateEndError = when {
+                        !validateDate(currentDate) -> appDependencies
+                            .stringProvider
+                            .getString(R.string.date_error)
+
+                        else -> null
+                    },
+                    showTimePicker = false,
+                    pickerVisibleFor = null
+                )
+
+                else -> current
+            }
 
         }
     }
@@ -172,6 +208,14 @@ class TrainOrderViewModel(
 
     override fun getTotalViolationsSum(): Int {
         TODO("Not yet implemented")
+    }
+
+    private fun validateDate(date: LocalDateTime): Boolean {
+        return when (orderState.value.pickerVisibleFor) {
+            PickerField.START_DATE -> date.isAfter(LocalDateTime.now().minusHours(1L))
+            PickerField.END_DATE -> date.isAfter(orderState.value.dateStart)
+            else -> false
+        }
     }
 
 }

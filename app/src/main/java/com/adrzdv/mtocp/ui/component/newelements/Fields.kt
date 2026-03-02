@@ -90,14 +90,19 @@ fun InputTextField(
             else AppColors.MAIN_COLOR.color,
             focusedContainerColor = AppColors.SURFACE_COLOR.color,
             unfocusedContainerColor = AppColors.SURFACE_COLOR.color,
-            focusedLabelColor = AppColors.MAIN_COLOR.color,
-            unfocusedLabelColor = AppColors.MAIN_COLOR.color,
+            focusedLabelColor = if (isError) AppColors.ERROR_COLOR.color
+            else AppColors.MAIN_COLOR.color,
+            unfocusedLabelColor = if (isError) AppColors.ERROR_COLOR.color
+            else AppColors.MAIN_COLOR.color,
             focusedTextColor = AppColors.MAIN_COLOR.color,
             unfocusedTextColor = AppColors.MAIN_COLOR.color,
             errorTextColor = AppColors.ERROR_COLOR.color,
-            disabledBorderColor = AppColors.MAIN_COLOR.color,
-            disabledTextColor = AppColors.MAIN_COLOR.color,
-            disabledLabelColor = AppColors.MAIN_COLOR.color,
+            disabledBorderColor = if (isError) AppColors.ERROR_COLOR.color
+            else AppColors.MAIN_COLOR.color,
+            disabledTextColor = if (isError) AppColors.ERROR_COLOR.color
+            else AppColors.MAIN_COLOR.color,
+            disabledLabelColor = if (isError) AppColors.ERROR_COLOR.color
+            else AppColors.MAIN_COLOR.color,
             disabledContainerColor = AppColors.SURFACE_COLOR.color,
         ),
         visualTransformation = when (secretInput) {

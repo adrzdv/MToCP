@@ -180,6 +180,9 @@
     <string name="error_password_change">Ошибка смены пароля</string>
     <string name="password_changed_success">Пароль изменен</string>
 
+    <!--LABELS-->
+    <string name="choose_time">Введите время проверки</string>
+
     <!--DESCRIPTIONS-->
     <string name="revision_start_description">Заполните все поля, добавьте работников и начните проверку</string>
 

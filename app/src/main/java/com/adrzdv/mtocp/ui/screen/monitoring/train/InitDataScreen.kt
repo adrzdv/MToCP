@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -15,7 +14,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePickerDialog
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
@@ -34,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
+import com.adrzdv.mtocp.ui.component.newelements.AppDatePicker
+import com.adrzdv.mtocp.ui.component.newelements.AppTimePicker
 import com.adrzdv.mtocp.ui.component.newelements.AutocompleteField
 import com.adrzdv.mtocp.ui.component.newelements.BlancInfoBlock
 import com.adrzdv.mtocp.ui.component.newelements.DatePickerReadOnlyField
@@ -41,6 +41,7 @@ import com.adrzdv.mtocp.ui.component.newelements.DropdownField
 import com.adrzdv.mtocp.ui.component.newelements.InfoBlock
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
+import com.adrzdv.mtocp.ui.state.order.PickerField
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainOrderViewModel
@@ -137,7 +138,7 @@ fun InitDataTrainMonitoringScreen(
                 isError = state.dateStartError?.isNotEmpty() == true,
                 error = state.dateStartError,
                 onClick = {
-                    trainOrderViewModel.onPickDate()
+                    trainOrderViewModel.onPickDate(PickerField.START_DATE)
                 }
             )
             DatePickerReadOnlyField(
@@ -146,7 +147,7 @@ fun InitDataTrainMonitoringScreen(
                 isError = state.dateEndError?.isNotEmpty() == true,
                 error = state.dateEndError,
                 onClick = {
-
+                    trainOrderViewModel.onPickDate(PickerField.END_DATE)
                 }
             )
             AutocompleteField(
@@ -176,7 +177,7 @@ fun InitDataTrainMonitoringScreen(
                             val instant = Instant.ofEpochMilli(millis)
                             val zone = ZoneId.systemDefault()
                             val date = LocalDateTime.ofInstant(instant, zone)
-                            trainOrderViewModel.onDateStartSelected(
+                            trainOrderViewModel.onDateSelected(
                                 year = date.year,
                                 month = date.monthValue,
                                 day = date.dayOfMonth
@@ -184,37 +185,35 @@ fun InitDataTrainMonitoringScreen(
                         }
                     }
                 ) {
-                    Text("OK")
+                    Text(stringResource(R.string.ok_string))
                 }
             }
         ) {
-            DatePicker(
-                state = datePickerState,
-                //colors =
+            AppDatePicker(
+                state = datePickerState
             )
         }
     }
 
     if (state.showTimePicker) {
         TimePickerDialog(
-            title = { },
+            title = { Text(stringResource(R.string.choose_time)) },
             onDismissRequest = { trainOrderViewModel.onHidePickDate() },
             confirmButton = {
                 TextButton(
                     onClick = {
-                        trainOrderViewModel.onTimeStartSelected(
+                        trainOrderViewModel.onTimeSelected(
                             timePickerState.hour,
                             timePickerState.minute
                         )
                     }
                 ) {
-                    Text("OK")
+                    Text(stringResource(R.string.ok_string))
                 }
             }
         ) {
-            TimeInput(
+            AppTimePicker(
                 state = timePickerState
-                //colors = TimePickerLayoutType.Vertical,
             )
         }
     }

@@ -25,6 +25,8 @@ import com.adrzdv.mtocp.domain.repository.KriCoachRepo
 import com.adrzdv.mtocp.domain.repository.TempParamRepository
 import com.adrzdv.mtocp.domain.repository.TrainRepository
 import com.adrzdv.mtocp.domain.repository.ViolationRepository
+import com.adrzdv.mtocp.service.stringprovider.StringProvider
+import com.adrzdv.mtocp.service.stringprovider.StringProviderImpl
 import com.adrzdv.mtocp.util.importmanager.ImportHandlerRegistry
 import com.adrzdv.mtocp.util.importmanager.ImportManager
 import com.adrzdv.mtocp.util.importmanager.handlers.AdditionalParamHandler
@@ -83,4 +85,5 @@ class AppDependencies(
         )
     }
     val importManager: ImportManager = ImportManager(registry, executor)
+    val stringProvider: StringProvider = StringProviderImpl(context)
 }

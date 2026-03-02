@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.adrzdv.mtocp.App
 import com.adrzdv.mtocp.ui.navigation.NavigationGraph
+import com.adrzdv.mtocp.ui.theme.AppTheme
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : ComponentActivity() {
@@ -19,10 +20,12 @@ class SplashActivity : ComponentActivity() {
         val appDependencies = (application as App).appDependencies
 
         setContent {
-            NavigationGraph(
-                appDependencies = appDependencies,
-                version = ver
-            )
+            AppTheme {
+                NavigationGraph(
+                    appDependencies = appDependencies,
+                    version = ver
+                )
+            }
         }
     }
 }

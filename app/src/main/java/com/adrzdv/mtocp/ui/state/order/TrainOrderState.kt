@@ -17,6 +17,7 @@ data class TrainOrderState(
     val train: TrainUI = TrainUI("", "", ""),
     val showDatePicker: Boolean = false,
     val showTimePicker: Boolean = false,
+    val pickerVisibleFor: PickerField? = null,
     val numberError: String? = null,
     val dateStartError: String? = null,
     val dateEndError: String? = null,
@@ -27,3 +28,5 @@ data class TrainOrderState(
     val conditionsError: String? = null,
     val isOrderReadyForSave: Boolean? = null
 ) : OrderDraftState
+
+enum class PickerField { START_DATE, END_DATE }
