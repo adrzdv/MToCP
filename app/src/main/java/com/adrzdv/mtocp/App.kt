@@ -42,7 +42,7 @@ class App : Application() {
 
         if (currVersion != null) {
             if (!currVersion.equals(savedVersion)) {
-                this.deleteDatabase("mtocp")
+                this.deleteDatabase("mtocpdb")
                 prefs.edit { putString("version", currVersion) }
             }
         }
