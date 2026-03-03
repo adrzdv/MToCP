@@ -179,6 +179,14 @@ fun InitDataTrainMonitoringScreen(
                 error = state.emptyTrainError
             )
 
+            InputTextField(
+                value = state.route,
+                onValueChange = { trainOrderViewModel.onOrderRouteChange(it) },
+                isError = state.routeError?.isNotEmpty() == true,
+                errorText = state.routeError,
+                label = stringResource(R.string.order_route)
+            )
+
             BlancInfoBlock {
                 Row(
                     modifier = Modifier.fillMaxWidth(),

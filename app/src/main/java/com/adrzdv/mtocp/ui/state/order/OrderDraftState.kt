@@ -8,9 +8,22 @@ interface OrderDraftState {
     val dateEnd: LocalDateTime
     val route: String
 
+    val regions: List<String>
+        get() = listOf(
+            "С-ЗАП",
+            "МОСК",
+            "ПРИВ",
+            "УР",
+            "З-СИБ",
+            "В-СИБ",
+            "ГОРЬК",
+            "ДВОСТ",
+            "С-КАВ"
+        )
+
     val isOrderNumberValid: Boolean
         get() {
-            val regex = Regex("""\d{4}/С-ЗАП/\d{4}""")
+            val regex = Regex("""\d{4}/(${regions.joinToString("|")})/\d{4}""")
             return regex.matches(orderNumber) && orderNumber.isNotBlank()
         }
 
