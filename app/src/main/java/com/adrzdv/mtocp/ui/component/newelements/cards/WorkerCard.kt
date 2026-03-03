@@ -19,8 +19,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
+import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
+
+@Deprecated("Use WorkerCard instead")
 @Composable
 fun InnerWorkerItemCard(worker: InnerWorkerDomain, onDeleteClick: () -> Unit) {
     Card(
@@ -51,6 +54,56 @@ fun InnerWorkerItemCard(worker: InnerWorkerDomain, onDeleteClick: () -> Unit) {
                 val info = listOfNotNull(
                     worker.workerType?.description,
                     worker.depotDomain?.shortName
+                ).joinToString(", ")
+                if (info.isNotBlank()) {
+                    Text(
+                        info,
+                        style = AppTypography.bodyMedium
+                    )
+                    Text(
+                        text = worker.id.toString(),
+                        style = AppTypography.bodySmall
+                    )
+                }
+            }
+            IconButton(onClick = onDeleteClick) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_delete_32_white),
+                    contentDescription = stringResource(R.string.delete)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun WorkerCard(
+    worker: WorkerUI,
+    onDeleteClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = AppColors.SURFACE_COLOR.color,
+            contentColor = AppColors.MAIN_COLOR.color
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    worker.name,
+                    style = AppTypography.bodyLarge
+                )
+                val info = listOfNotNull(
+                    worker.name,
+                    worker.position
                 ).joinToString(", ")
                 if (info.isNotBlank()) {
                     Text(

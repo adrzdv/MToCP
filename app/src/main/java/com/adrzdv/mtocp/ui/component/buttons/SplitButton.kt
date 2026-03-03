@@ -42,8 +42,8 @@ fun SplitButton(
                         actions[selectedAction]?.second?.invoke()
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = AppColors.MAIN_GREEN.color,
-                        contentColor = AppColors.OFF_WHITE.color
+                        containerColor = AppColors.MAIN_COLOR.color,
+                        contentColor = AppColors.SURFACE_COLOR.color
                     )
                 ) {
                     actions[selectedAction]?.first?.let {
@@ -66,8 +66,8 @@ fun SplitButton(
                         checked = expanded,
                         onCheckedChange = { expanded = it },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = AppColors.MAIN_GREEN.color,
-                            contentColor = AppColors.OFF_WHITE.color
+                            containerColor = AppColors.MAIN_COLOR.color,
+                            contentColor = AppColors.SURFACE_COLOR.color
                         )
                     ) {
                         val rotation: Float by
@@ -88,7 +88,7 @@ fun SplitButton(
                         expanded = expanded,
                         onDismissRequest = { expanded = false },
                         modifier = Modifier.align(Alignment.TopEnd),
-                        containerColor = AppColors.OFF_WHITE.color
+                        containerColor = AppColors.SURFACE_COLOR.color
                     ) {
                         actions.keys.forEach { item ->
                             DropdownMenuItem(

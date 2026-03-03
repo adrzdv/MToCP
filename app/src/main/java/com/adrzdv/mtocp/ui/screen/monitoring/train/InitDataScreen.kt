@@ -2,12 +2,19 @@ package com.adrzdv.mtocp.ui.screen.monitoring.train
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -27,11 +34,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
+import com.adrzdv.mtocp.ui.component.buttons.SplitButton
 import com.adrzdv.mtocp.ui.component.newelements.AppDatePicker
 import com.adrzdv.mtocp.ui.component.newelements.AppTimePicker
 import com.adrzdv.mtocp.ui.component.newelements.AutocompleteField
@@ -40,20 +48,23 @@ import com.adrzdv.mtocp.ui.component.newelements.DatePickerReadOnlyField
 import com.adrzdv.mtocp.ui.component.newelements.DropdownField
 import com.adrzdv.mtocp.ui.component.newelements.InfoBlock
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
+import com.adrzdv.mtocp.ui.component.newelements.cards.WorkerCard
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.state.order.PickerField
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
+import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainOrderViewModel
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun InitDataTrainMonitoringScreen(
     trainOrderViewModel: TrainOrderViewModel,
+    autocompleteViewModel: AutocompleteViewModel,
     navController: NavHostController
     //trainOrderViewModel: TrainOrderViewModel? = null
 ) {
@@ -64,6 +75,9 @@ fun InitDataTrainMonitoringScreen(
     val datePickerState = rememberDatePickerState()
     val timePickerState = rememberTimePickerState().apply { is24hour = true }
     val snackbarHostState = remember { SnackbarHostState() }
+    val query by autocompleteViewModel.query.collectAsState()
+    val suggestions by autocompleteViewModel.filteredItems.collectAsState()
+
 
 //    if (trainOrderViewModel != null) {
 //        val state by trainOrderViewModel.orderState.collectAsState()
@@ -151,76 +165,135 @@ fun InitDataTrainMonitoringScreen(
                 }
             )
             AutocompleteField(
-                value = "",
-                source = emptyList(),
-                onValueChange = {},
-                onValueSelected = {},
+                value = query,
+                source = suggestions,
+                onValueChange = { input ->
+                    autocompleteViewModel.onQueryChange(input)
+                },
+                onValueSelected = { selected ->
+                    trainOrderViewModel.onTrainSelected(selected)
+                },
                 label = stringResource(R.string.search_train),
-                isError = false,
+                isError = !state.emptyTrainError.isNullOrEmpty(),
                 enabled = true,
-                error = ""
+                error = state.emptyTrainError
             )
 
-            BlancInfoBlock(
-            )
-        }
-    }
-
-    if (state.showDatePicker) {
-        DatePickerDialog(
-            onDismissRequest = { trainOrderViewModel.onHidePickDate() },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        val millis = datePickerState.selectedDateMillis
-                        if (millis != null) {
-                            val instant = Instant.ofEpochMilli(millis)
-                            val zone = ZoneId.systemDefault()
-                            val date = LocalDateTime.ofInstant(instant, zone)
-                            trainOrderViewModel.onDateSelected(
-                                year = date.year,
-                                month = date.monthValue,
-                                day = date.dayOfMonth
-                            )
-                        }
-                    }
+            BlancInfoBlock {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(stringResource(R.string.ok_string))
+                    Text(
+                        text = stringResource(R.string.quality_passport),
+                        color = AppColors.MAIN_COLOR.color,
+                        softWrap = true,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Checkbox(
+                        checked = state.isQualityPassport,
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = AppColors.MAIN_COLOR.color,
+                            uncheckedColor = AppColors.MAIN_COLOR.color,
+                            checkmarkColor = AppColors.SURFACE_COLOR.color
+                        ),
+                        onCheckedChange = { trainOrderViewModel.onQualityPassportChange(it) }
+                    )
                 }
-            }
-        ) {
-            AppDatePicker(
-                state = datePickerState
-            )
-        }
-    }
 
-    if (state.showTimePicker) {
-        TimePickerDialog(
-            title = { Text(stringResource(R.string.choose_time)) },
-            onDismissRequest = { trainOrderViewModel.onHidePickDate() },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        trainOrderViewModel.onTimeSelected(
-                            timePickerState.hour,
-                            timePickerState.minute
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.train_crew),
+                        color = AppColors.MAIN_COLOR.color,
+                        softWrap = true,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2,
+                        modifier = Modifier.weight(1f)
+                    )
+                    SplitButton(
+                        actions = mapOf(
+                            stringResource(R.string.add_string) to Pair(
+                                painterResource(R.drawable.ic_add_person),
+                                { }
+                            ),
+                            stringResource(R.string.clean_string) to Pair(
+                                painterResource(R.drawable.ic_clear_list),
+                                { }
+                            )
+                        )
+                    )
+                }
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(state.crewList.values.toList()) { worker ->
+                        WorkerCard(
+                            worker = worker,
+                            onDeleteClick = { }
                         )
                     }
-                ) {
-                    Text(stringResource(R.string.ok_string))
                 }
             }
-        ) {
-            AppTimePicker(
-                state = timePickerState
-            )
+        }
+
+        if (state.showDatePicker) {
+            DatePickerDialog(
+                onDismissRequest = { trainOrderViewModel.onHidePickDate() },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            val millis = datePickerState.selectedDateMillis
+                            if (millis != null) {
+                                val instant = Instant.ofEpochMilli(millis)
+                                val zone = ZoneId.systemDefault()
+                                val date = LocalDateTime.ofInstant(instant, zone)
+                                trainOrderViewModel.onDateSelected(
+                                    year = date.year,
+                                    month = date.monthValue,
+                                    day = date.dayOfMonth
+                                )
+                            }
+                        }
+                    ) {
+                        Text(stringResource(R.string.ok_string))
+                    }
+                }
+            ) {
+                AppDatePicker(
+                    state = datePickerState
+                )
+            }
+        }
+
+        if (state.showTimePicker) {
+            TimePickerDialog(
+                title = { Text(stringResource(R.string.choose_time)) },
+                onDismissRequest = { trainOrderViewModel.onHidePickDate() },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            trainOrderViewModel.onTimeSelected(
+                                timePickerState.hour,
+                                timePickerState.minute
+                            )
+                        }
+                    ) {
+                        Text(stringResource(R.string.ok_string))
+                    }
+                }
+            ) {
+                AppTimePicker(
+                    state = timePickerState
+                )
+            }
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewInitDataTrainRevisionScreen() {
-    //InitDataTrainMonitoringScreen()
 }

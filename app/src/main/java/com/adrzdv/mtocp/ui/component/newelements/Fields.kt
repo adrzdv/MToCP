@@ -211,7 +211,7 @@ fun AutocompleteField(
     label: String,
     isError: Boolean,
     enabled: Boolean,
-    error: String,
+    error: String?,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -226,6 +226,7 @@ fun AutocompleteField(
             .fillMaxWidth()
     ) {
         InputTextField(
+            modifier = modifier.menuAnchor(MenuAnchorType.PrimaryEditable),
             value = value,
             onValueChange = {
                 if (enabled) {
@@ -241,6 +242,7 @@ fun AutocompleteField(
         )
         ExposedDropdownMenu(
             expanded = expanded && enabled && source.isNotEmpty(),
+            containerColor = AppColors.SURFACE_COLOR.color,
             onDismissRequest = { expanded = false }
         ) {
             source.forEach { item ->
