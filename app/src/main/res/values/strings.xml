@@ -182,6 +182,7 @@
 
     <!--LABELS-->
     <string name="choose_time">Введите время проверки</string>
+    <string name="order_route">Участок проверки</string>
 
     <!--DESCRIPTIONS-->
     <string name="revision_start_description">Заполните все поля, добавьте работников и начните проверку</string>

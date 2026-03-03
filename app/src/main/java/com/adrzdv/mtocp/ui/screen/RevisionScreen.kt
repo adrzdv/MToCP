@@ -30,7 +30,7 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.CustomTypography
-import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.AutocompleteViewModelJvm
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 
@@ -40,7 +40,7 @@ import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 fun RevisionScreen(
     orderViewModel: OrderViewModel,
     depotViewModel: DepotViewModel,
-    autocompleteViewModel: AutocompleteViewModel,
+    autocompleteViewModelJvm: AutocompleteViewModelJvm,
     orderTypes: List<String>,
     onBackClick: () -> Unit
 ) {
@@ -126,7 +126,7 @@ fun RevisionScreen(
             composable("startRevision") {
                 StartRevisionScreen(
                     orderViewModel = orderViewModel,
-                    autocompleteViewModel = autocompleteViewModel,
+                    autocompleteViewModelJvm = autocompleteViewModelJvm,
                     orderTypes = orderTypes,
                     navController = navRevisionController,
                     onBackClick = onBackClick

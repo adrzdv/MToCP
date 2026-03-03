@@ -27,6 +27,7 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -50,6 +51,7 @@ import com.adrzdv.mtocp.ui.component.newelements.InfoBlock
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.newelements.cards.WorkerCard
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
+import com.adrzdv.mtocp.ui.screen.component.InitDataScreenContent
 import com.adrzdv.mtocp.ui.state.order.PickerField
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
@@ -66,18 +68,20 @@ fun InitDataTrainMonitoringScreen(
     trainOrderViewModel: TrainOrderViewModel,
     autocompleteViewModel: AutocompleteViewModel,
     navController: NavHostController
-    //trainOrderViewModel: TrainOrderViewModel? = null
 ) {
+    LaunchedEffect(Unit) {
+        trainOrderViewModel.createOrder()
+        trainOrderViewModel.createInitialState()
+    }
+
     val state by trainOrderViewModel.orderState.collectAsState()
     val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
-    trainOrderViewModel.createOrder()
-    trainOrderViewModel.createInitialState()
+
     val datePickerState = rememberDatePickerState()
     val timePickerState = rememberTimePickerState().apply { is24hour = true }
     val snackbarHostState = remember { SnackbarHostState() }
-    val query by autocompleteViewModel.query.collectAsState()
-    val suggestions by autocompleteViewModel.filteredItems.collectAsState()
-
+//    val query by autocompleteViewModel.query.collectAsState()
+//    val suggestions by autocompleteViewModel.filteredItems.collectAsState()
 
 //    if (trainOrderViewModel != null) {
 //        val state by trainOrderViewModel.orderState.collectAsState()
@@ -119,138 +123,147 @@ fun InitDataTrainMonitoringScreen(
         snackbarHost = { CustomSnackbarHost(hostState = snackbarHostState) }
 
     ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            InfoBlock(
-                text = stringResource(R.string.revision_start_description)
-            )
-            InputTextField(
-                value = state.orderNumber,
-                onValueChange = { trainOrderViewModel.onNumberChange(it) },
-                isError = state.numberError?.isNotEmpty() == true,
-                errorText = state.numberError,
-                label = stringResource(R.string.order_number_hint)
-            )
-            DropdownField(
-                source = RevisionType.getMovableTypes(),
-                selected = state.orderConditions?.revisionTypeTitle ?: "",
-                isError = state.conditionsError?.isNotEmpty() == true,
-                errorMessage = state.conditionsError,
-                onOptionSelected = {
-                    trainOrderViewModel.onConditionsChange(it)
-                },
-                label = stringResource(R.string.label_choose_revtype)
-            )
-            DatePickerReadOnlyField(
-                value = state.dateStart.format(formatter),
-                label = stringResource(R.string.order_start_date_hint),
-                isError = state.dateStartError?.isNotEmpty() == true,
-                error = state.dateStartError,
-                onClick = {
-                    trainOrderViewModel.onPickDate(PickerField.START_DATE)
-                }
-            )
-            DatePickerReadOnlyField(
-                value = state.dateEnd.format(formatter),
-                label = stringResource(R.string.order_end_date_hint),
-                isError = state.dateEndError?.isNotEmpty() == true,
-                error = state.dateEndError,
-                onClick = {
-                    trainOrderViewModel.onPickDate(PickerField.END_DATE)
-                }
-            )
-            AutocompleteField(
-                value = query,
-                source = suggestions,
-                onValueChange = { input ->
-                    autocompleteViewModel.onQueryChange(input)
-                },
-                onValueSelected = { selected ->
-                    trainOrderViewModel.onTrainSelected(selected)
-                },
-                label = stringResource(R.string.search_train),
-                isError = !state.emptyTrainError.isNullOrEmpty(),
-                enabled = true,
-                error = state.emptyTrainError
-            )
+        InitDataScreenContent(
+            state = state,
+            trainOrderViewModel = trainOrderViewModel,
+            autocompleteViewModel = autocompleteViewModel,
+            navController = navController,
+            innerPadding = innerPadding,
+            formatter = formatter
+        )
 
-            InputTextField(
-                value = state.route,
-                onValueChange = { trainOrderViewModel.onOrderRouteChange(it) },
-                isError = state.routeError?.isNotEmpty() == true,
-                errorText = state.routeError,
-                label = stringResource(R.string.order_route)
-            )
-
-            BlancInfoBlock {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(R.string.quality_passport),
-                        color = AppColors.MAIN_COLOR.color,
-                        softWrap = true,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 2,
-                        modifier = Modifier.weight(1f)
-                    )
-                    Checkbox(
-                        checked = state.isQualityPassport,
-                        colors = CheckboxDefaults.colors(
-                            checkedColor = AppColors.MAIN_COLOR.color,
-                            uncheckedColor = AppColors.MAIN_COLOR.color,
-                            checkmarkColor = AppColors.SURFACE_COLOR.color
-                        ),
-                        onCheckedChange = { trainOrderViewModel.onQualityPassportChange(it) }
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(R.string.train_crew),
-                        color = AppColors.MAIN_COLOR.color,
-                        softWrap = true,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 2,
-                        modifier = Modifier.weight(1f)
-                    )
-                    SplitButton(
-                        actions = mapOf(
-                            stringResource(R.string.add_string) to Pair(
-                                painterResource(R.drawable.ic_add_person),
-                                { }
-                            ),
-                            stringResource(R.string.clean_string) to Pair(
-                                painterResource(R.drawable.ic_clear_list),
-                                { }
-                            )
-                        )
-                    )
-                }
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(6.dp),
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(state.crewList.values.toList()) { worker ->
-                        WorkerCard(
-                            worker = worker,
-                            onDeleteClick = { }
-                        )
-                    }
-                }
-            }
-        }
+//        Column(
+//            modifier = Modifier
+//                .padding(innerPadding)
+//                .fillMaxWidth(),
+//            verticalArrangement = Arrangement.Center,
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//            InfoBlock(
+//                text = stringResource(R.string.revision_start_description)
+//            )
+//            InputTextField(
+//                value = state.orderNumber,
+//                onValueChange = { trainOrderViewModel.onNumberChange(it) },
+//                isError = state.numberError?.isNotEmpty() == true,
+//                errorText = state.numberError,
+//                label = stringResource(R.string.order_number_hint)
+//            )
+//            DropdownField(
+//                source = RevisionType.getMovableTypes(),
+//                selected = state.orderConditions?.revisionTypeTitle ?: "",
+//                isError = state.conditionsError?.isNotEmpty() == true,
+//                errorMessage = state.conditionsError,
+//                onOptionSelected = {
+//                    trainOrderViewModel.onConditionsChange(it)
+//                },
+//                label = stringResource(R.string.label_choose_revtype)
+//            )
+//            DatePickerReadOnlyField(
+//                value = state.dateStart.format(formatter),
+//                label = stringResource(R.string.order_start_date_hint),
+//                isError = state.dateStartError?.isNotEmpty() == true,
+//                error = state.dateStartError,
+//                onClick = {
+//                    trainOrderViewModel.onPickDate(PickerField.START_DATE)
+//                }
+//            )
+//            DatePickerReadOnlyField(
+//                value = state.dateEnd.format(formatter),
+//                label = stringResource(R.string.order_end_date_hint),
+//                isError = state.dateEndError?.isNotEmpty() == true,
+//                error = state.dateEndError,
+//                onClick = {
+//                    trainOrderViewModel.onPickDate(PickerField.END_DATE)
+//                }
+//            )
+//            AutocompleteField(
+//                value = query,
+//                source = suggestions,
+//                onValueChange = { input ->
+//                    autocompleteViewModel.onQueryChange(input)
+//                },
+//                onValueSelected = { selected ->
+//                    trainOrderViewModel.onTrainSelected(selected)
+//                },
+//                label = stringResource(R.string.search_train),
+//                isError = !state.emptyTrainError.isNullOrEmpty(),
+//                enabled = true,
+//                error = state.emptyTrainError
+//            )
+//
+//            InputTextField(
+//                value = state.route,
+//                onValueChange = { trainOrderViewModel.onOrderRouteChange(it) },
+//                isError = state.routeError?.isNotEmpty() == true,
+//                errorText = state.routeError,
+//                label = stringResource(R.string.order_route)
+//            )
+//
+//            BlancInfoBlock {
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    Text(
+//                        text = stringResource(R.string.quality_passport),
+//                        color = AppColors.MAIN_COLOR.color,
+//                        softWrap = true,
+//                        overflow = TextOverflow.Ellipsis,
+//                        maxLines = 2,
+//                        modifier = Modifier.weight(1f)
+//                    )
+//                    Checkbox(
+//                        checked = state.isQualityPassport,
+//                        colors = CheckboxDefaults.colors(
+//                            checkedColor = AppColors.MAIN_COLOR.color,
+//                            uncheckedColor = AppColors.MAIN_COLOR.color,
+//                            checkmarkColor = AppColors.SURFACE_COLOR.color
+//                        ),
+//                        onCheckedChange = { trainOrderViewModel.onQualityPassportChange(it) }
+//                    )
+//                }
+//
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    Text(
+//                        text = stringResource(R.string.train_crew),
+//                        color = AppColors.MAIN_COLOR.color,
+//                        softWrap = true,
+//                        overflow = TextOverflow.Ellipsis,
+//                        maxLines = 2,
+//                        modifier = Modifier.weight(1f)
+//                    )
+//                    SplitButton(
+//                        actions = mapOf(
+//                            stringResource(R.string.add_string) to Pair(
+//                                painterResource(R.drawable.ic_add_person),
+//                                { }
+//                            ),
+//                            stringResource(R.string.clean_string) to Pair(
+//                                painterResource(R.drawable.ic_clear_list),
+//                                { }
+//                            )
+//                        )
+//                    )
+//                }
+//                LazyColumn(
+//                    verticalArrangement = Arrangement.spacedBy(6.dp),
+//                    modifier = Modifier.fillMaxSize()
+//                ) {
+//                    items(state.crewList.values.toList()) { worker ->
+//                        WorkerCard(
+//                            worker = worker,
+//                            onDeleteClick = { }
+//                        )
+//                    }
+//                }
+//            }
+//        }
 
         if (state.showDatePicker) {
             DatePickerDialog(
