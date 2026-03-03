@@ -8,8 +8,16 @@ class KriCoachRepoImpl(kriCoachDao: KriCoachDao) : KriCoachRepo {
 
     private var kriDao: KriCoachDao = kriCoachDao
 
-    override suspend fun getAllKriCoaches(): List<KriCoachEntity> {
+    override suspend fun getAll(): List<KriCoachEntity> {
         return kriDao.getAllKriCoaches()
             .map { it.copy(number = it.number.trim()) }
+    }
+
+    override suspend fun getEntity(id: String): KriCoachEntity {
+        return kriDao.getKriCoachByNumber(id)
+    }
+
+    override suspend fun saveAll(entities: List<KriCoachEntity>) {
+        TODO("Not yet implemented")
     }
 }

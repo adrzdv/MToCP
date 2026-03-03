@@ -12,19 +12,19 @@ import com.adrzdv.mtocp.data.importmodel.TrainImport
 import com.adrzdv.mtocp.data.importmodel.ViolationImport
 import com.adrzdv.mtocp.data.repository.AuthRepository
 import com.adrzdv.mtocp.data.repository.AuthRepositoryImpl
-import com.adrzdv.mtocp.data.repository.CompanyRepositoryImpl
-import com.adrzdv.mtocp.data.repository.DepotRepositoryImpl
 import com.adrzdv.mtocp.data.repository.KriCoachRepoImpl
-import com.adrzdv.mtocp.data.repository.TempParamRepositoryImpl
 import com.adrzdv.mtocp.data.repository.TrainRepositoryImpl
 import com.adrzdv.mtocp.data.repository.UserDataStorage
-import com.adrzdv.mtocp.data.repository.ViolationRepositoryImpl
-import com.adrzdv.mtocp.domain.repository.CompanyRepository
-import com.adrzdv.mtocp.domain.repository.DepotRepository
+import com.adrzdv.mtocp.data.repository.old.CompanyRepositoryImpl
+import com.adrzdv.mtocp.data.repository.old.DepotRepositoryImpl
+import com.adrzdv.mtocp.data.repository.old.TempParamRepositoryImpl
+import com.adrzdv.mtocp.data.repository.old.ViolationRepositoryImpl
 import com.adrzdv.mtocp.domain.repository.KriCoachRepo
-import com.adrzdv.mtocp.domain.repository.TempParamRepository
 import com.adrzdv.mtocp.domain.repository.TrainRepository
-import com.adrzdv.mtocp.domain.repository.ViolationRepository
+import com.adrzdv.mtocp.domain.repository.old.CompanyRepository
+import com.adrzdv.mtocp.domain.repository.old.DepotRepository
+import com.adrzdv.mtocp.domain.repository.old.TempParamRepository
+import com.adrzdv.mtocp.domain.repository.old.ViolationRepository
 import com.adrzdv.mtocp.service.stringprovider.StringProvider
 import com.adrzdv.mtocp.service.stringprovider.StringProviderImpl
 import com.adrzdv.mtocp.util.importmanager.ImportHandlerRegistry
@@ -37,6 +37,30 @@ import com.adrzdv.mtocp.util.importmanager.handlers.ViolationImportHandler
 import java.util.concurrent.ExecutorService
 import java.util.function.Consumer
 
+/**
+ * A manual dependency injection container that manages the lifecycle and initialization
+ * of application-wide components.
+ *
+ * This class serves as a central registry for repositories, data storage, network services,
+ * and utility managers. It facilitates the decoupling of object creation from business logic.
+ *
+ * @property context The application context used for initializing system-level services.
+ * @property database The [AppDatabase] instance providing DAOs for repository construction.
+ * @property prefs The [SharedPreferences] instance used for persistent user data storage.
+ * @property executor The [ExecutorService] used for background task processing in managers.
+ *
+ * @property violationRepo Repository for managing violation-related data.
+ * @property depotRepo Repository for managing depot-related data.
+ * @property companyRepo Repository for managing company-related data.
+ * @property trainRepo Repository for managing train and rolling stock data.
+ * @property tempParamRepo Repository for managing temporary parameters.
+ * @property kriCoachRepo Repository for managing KRI coach data.
+ * @property userDataStorage Manager for handling user-specific preferences and session data.
+ * @property authRepo Repository for handling authentication and API access.
+ * @property registry The [ImportHandlerRegistry] containing handlers for different data import types.
+ * @property importManager Orchestrator for performing asynchronous data import operations.
+ * @property stringProvider Utility for providing localized strings outside of Android components.
+ */
 class AppDependencies(
     context: Context,
     database: AppDatabase,
@@ -46,7 +70,9 @@ class AppDependencies(
     val violationRepo: ViolationRepository = ViolationRepositoryImpl(database.violationDao())
     val depotRepo: DepotRepository = DepotRepositoryImpl(database.depotDao())
     val companyRepo: CompanyRepository = CompanyRepositoryImpl(database.companyDao())
-    val trainRepo: TrainRepository = TrainRepositoryImpl(database.trainDao(), database.depotDao())
+    val trainRepo: TrainRepository =
+        TrainRepositoryImpl(database.trainDao(), database.depotDao())
+
     val tempParamRepo: TempParamRepository = TempParamRepositoryImpl(database.tempParamsDao())
     val kriCoachRepo: KriCoachRepo = KriCoachRepoImpl(database.kriCoachDao())
     val userDataStorage = UserDataStorage(prefs)

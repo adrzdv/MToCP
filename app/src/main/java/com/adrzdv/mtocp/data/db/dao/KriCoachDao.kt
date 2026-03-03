@@ -12,4 +12,7 @@ interface KriCoachDao {
     @Query("SELECT * FROM coaches")
     suspend fun getAllKriCoaches(): List<KriCoachEntity>
 
+    @Query("SELECT * FROM coaches WHERE number = :number")
+    suspend fun getKriCoachByNumber(number: String): KriCoachEntity
+
 }

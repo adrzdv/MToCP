@@ -163,6 +163,7 @@ fun NavGraphBuilder.trainRevisionStartDestination(
     composable(Screen.StartTrainRevision.route) { backStackEntry ->
         InitDataTrainMonitoringScreen(
             viewModelLocator.getTrainOrderViewModel(backStackEntry),
+            viewModelLocator.getTainAutocompleteViewModel(backStackEntry),
             navController = navController
         )
     }
