@@ -8,8 +8,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -65,6 +69,21 @@ fun InitDataScreenContent(
         item {
             InputTextField(
                 value = state.orderNumber,
+                trailingIcon = {
+                    if (state.orderNumber.isNotEmpty()) {
+                        IconButton(
+                            onClick = {
+                                trainOrderViewModel.onNumberChange("")
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = stringResource(R.string.clear_text),
+                                tint = AppColors.MAIN_COLOR.color
+                            )
+                        }
+                    }
+                },
                 onValueChange = { trainOrderViewModel.onNumberChange(it) },
                 isError = state.numberError?.isNotEmpty() == true,
                 errorText = state.numberError,
@@ -115,6 +134,21 @@ fun InitDataScreenContent(
                 onValueSelected = { selected ->
                     trainOrderViewModel.onTrainSelected(selected)
                 },
+                trailingIcon = {
+                    if (query.isNotEmpty()) {
+                        IconButton(
+                            onClick = {
+                                autocompleteViewModel.onQueryChange("")
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = stringResource(R.string.clear_text),
+                                tint = AppColors.MAIN_COLOR.color
+                            )
+                        }
+                    }
+                },
                 label = stringResource(R.string.search_train),
                 isError = !state.emptyTrainError.isNullOrEmpty(),
                 enabled = true,
@@ -124,6 +158,21 @@ fun InitDataScreenContent(
         item {
             InputTextField(
                 value = state.route,
+                trailingIcon = {
+                    if (state.route.isNotEmpty()) {
+                        IconButton(
+                            onClick = {
+                                trainOrderViewModel.onOrderRouteChange("")
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = stringResource(R.string.clear_text),
+                                tint = AppColors.MAIN_COLOR.color
+                            )
+                        }
+                    }
+                },
                 onValueChange = { trainOrderViewModel.onOrderRouteChange(it) },
                 isError = state.routeError?.isNotEmpty() == true,
                 errorText = state.routeError,

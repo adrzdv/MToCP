@@ -208,6 +208,7 @@ fun AutocompleteField(
     source: List<String>,
     onValueChange: (String) -> Unit,
     onValueSelected: (String) -> Unit,
+    trailingIcon: (@Composable () -> Unit)? = null,
     label: String,
     isError: Boolean,
     enabled: Boolean,
@@ -228,6 +229,7 @@ fun AutocompleteField(
         InputTextField(
             modifier = modifier.menuAnchor(MenuAnchorType.PrimaryEditable),
             value = value,
+            trailingIcon = trailingIcon,
             onValueChange = {
                 if (enabled) {
                     onValueChange(it)
