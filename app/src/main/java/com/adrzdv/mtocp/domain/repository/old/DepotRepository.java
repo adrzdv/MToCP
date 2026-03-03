@@ -1,6 +1,7 @@
-package com.adrzdv.mtocp.domain.repository;
+package com.adrzdv.mtocp.domain.repository.old;
 
 import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch;
+import com.adrzdv.mtocp.domain.repository.BaseAppRepository;
 
 import java.util.List;
 

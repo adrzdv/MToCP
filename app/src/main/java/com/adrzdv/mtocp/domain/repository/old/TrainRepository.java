@@ -1,8 +1,9 @@
-package com.adrzdv.mtocp.domain.repository;
+package com.adrzdv.mtocp.domain.repository.old;
 
 import com.adrzdv.mtocp.data.db.entity.TrainEntity;
 import com.adrzdv.mtocp.data.db.pojo.TrainWithDepotAndBranch;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
+import com.adrzdv.mtocp.domain.repository.BaseAppRepository;
 
 import java.util.List;
 

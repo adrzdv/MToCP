@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.data.repository;
+package com.adrzdv.mtocp.data.repository.old;
 
 import com.adrzdv.mtocp.data.db.dao.DepotDao;
 import com.adrzdv.mtocp.data.db.dao.TrainDao;
@@ -7,7 +7,7 @@ import com.adrzdv.mtocp.data.db.entity.TrainEntity;
 import com.adrzdv.mtocp.data.db.pojo.TrainWithDepotAndBranch;
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
-import com.adrzdv.mtocp.domain.repository.TrainRepository;
+import com.adrzdv.mtocp.domain.repository.old.TrainRepository;
 import com.adrzdv.mtocp.mapper.DepotMapper;
 import com.adrzdv.mtocp.mapper.TrainMapper;
 

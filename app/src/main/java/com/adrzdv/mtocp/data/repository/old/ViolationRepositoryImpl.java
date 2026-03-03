@@ -1,10 +1,10 @@
-package com.adrzdv.mtocp.data.repository;
+package com.adrzdv.mtocp.data.repository.old;
 
 import android.database.sqlite.SQLiteConstraintException;
 
 import com.adrzdv.mtocp.data.db.dao.ViolationDao;
 import com.adrzdv.mtocp.data.db.entity.ViolationEntity;
-import com.adrzdv.mtocp.domain.repository.ViolationRepository;
+import com.adrzdv.mtocp.domain.repository.old.ViolationRepository;
 
 import java.util.List;
 

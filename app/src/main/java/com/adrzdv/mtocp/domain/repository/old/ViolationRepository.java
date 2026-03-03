@@ -1,8 +1,6 @@
-package com.adrzdv.mtocp.domain.repository;
+package com.adrzdv.mtocp.domain.repository.old;
 
 import android.database.sqlite.SQLiteConstraintException;
-
-import androidx.room.Query;
 
 import com.adrzdv.mtocp.data.db.entity.ViolationEntity;
 

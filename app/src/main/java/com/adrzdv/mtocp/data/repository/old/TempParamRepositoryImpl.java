@@ -1,8 +1,8 @@
-package com.adrzdv.mtocp.data.repository;
+package com.adrzdv.mtocp.data.repository.old;
 
 import com.adrzdv.mtocp.data.db.dao.TempParamsDao;
 import com.adrzdv.mtocp.data.db.entity.TempParametersEntity;
-import com.adrzdv.mtocp.domain.repository.TempParamRepository;
+import com.adrzdv.mtocp.domain.repository.old.TempParamRepository;
 
 import java.util.List;
 

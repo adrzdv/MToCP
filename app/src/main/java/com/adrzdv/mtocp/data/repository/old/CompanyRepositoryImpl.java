@@ -1,11 +1,10 @@
-package com.adrzdv.mtocp.data.repository;
+package com.adrzdv.mtocp.data.repository.old;
 
 import com.adrzdv.mtocp.data.db.dao.CompanyDao;
 import com.adrzdv.mtocp.data.db.entity.CompanyEntity;
 import com.adrzdv.mtocp.data.db.entity.CompanyWithBranch;
-import com.adrzdv.mtocp.domain.repository.CompanyRepository;
+import com.adrzdv.mtocp.domain.repository.old.CompanyRepository;
 
-import java.util.Collections;
 import java.util.List;
 
 public class CompanyRepositoryImpl implements CompanyRepository {

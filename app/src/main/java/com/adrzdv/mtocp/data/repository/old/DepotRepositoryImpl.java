@@ -1,8 +1,8 @@
-package com.adrzdv.mtocp.data.repository;
+package com.adrzdv.mtocp.data.repository.old;
 
 import com.adrzdv.mtocp.data.db.dao.DepotDao;
 import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch;
-import com.adrzdv.mtocp.domain.repository.DepotRepository;
+import com.adrzdv.mtocp.domain.repository.old.DepotRepository;
 
 import java.util.List;
 

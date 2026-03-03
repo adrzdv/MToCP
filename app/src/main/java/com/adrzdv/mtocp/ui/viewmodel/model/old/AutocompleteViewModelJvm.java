@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.viewmodel.model;
+package com.adrzdv.mtocp.ui.viewmodel.model.old;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.adrzdv.mtocp.data.db.entity.TrainEntity;
 import com.adrzdv.mtocp.domain.model.enums.OrdersTypes;
-import com.adrzdv.mtocp.domain.repository.TrainRepository;
+import com.adrzdv.mtocp.domain.repository.old.TrainRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,14 +14,15 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class AutocompleteViewModel extends ViewModel {
+@Deprecated(forRemoval = true)
+public class AutocompleteViewModelJvm extends ViewModel {
 
     private final MutableLiveData<List<String>> filteredItems = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<String> query = new MutableLiveData<>("");
     private List<String> allItems = new ArrayList<>();
     private final TrainRepository trainRepository;
 
-    public AutocompleteViewModel(TrainRepository trainRepository) {
+    public AutocompleteViewModelJvm(TrainRepository trainRepository) {
         this.trainRepository = trainRepository;
     }
 
