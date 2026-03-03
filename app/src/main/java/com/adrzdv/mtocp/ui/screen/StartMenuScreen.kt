@@ -22,8 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.data.repository.UserDataStorage
+import com.adrzdv.mtocp.ui.component.AppBar
 import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
 import com.adrzdv.mtocp.ui.component.newelements.SquaredBigButton
 import com.adrzdv.mtocp.ui.theme.AppColors
@@ -65,7 +64,7 @@ fun StartMenuScreen(
     Scaffold(
         containerColor = AppColors.BACKGROUND_COLOR.color,
         topBar = {
-            TopAppBar(
+            AppBar(
                 title = {
                     Text(
                         text = stringResource(R.string.main_menu_text),
@@ -83,15 +82,7 @@ fun StartMenuScreen(
                             contentDescription = null
                         )
                     }
-                },
-                colors = TopAppBarColors(
-                    containerColor = AppColors.MAIN_COLOR.color,
-                    scrolledContainerColor = AppColors.MAIN_COLOR.color,
-                    navigationIconContentColor = AppColors.SURFACE_COLOR.color,
-                    titleContentColor = AppColors.SURFACE_COLOR.color,
-                    actionIconContentColor = AppColors.SURFACE_COLOR.color,
-                    subtitleContentColor = AppColors.BACKGROUND_COLOR.color
-                )
+                }
             )
         }
     ) { innerPadding ->

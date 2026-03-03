@@ -78,8 +78,7 @@ fun InitDataScreenContent(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(R.string.clear_text),
-                                tint = AppColors.MAIN_COLOR.color
+                                contentDescription = stringResource(R.string.clear_text)
                             )
                         }
                     }
@@ -143,8 +142,7 @@ fun InitDataScreenContent(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(R.string.clear_text),
-                                tint = AppColors.MAIN_COLOR.color
+                                contentDescription = stringResource(R.string.clear_text)
                             )
                         }
                     }
@@ -167,8 +165,7 @@ fun InitDataScreenContent(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(R.string.clear_text),
-                                tint = AppColors.MAIN_COLOR.color
+                                contentDescription = stringResource(R.string.clear_text)
                             )
                         }
                     }

@@ -12,8 +12,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePickerDialog
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
@@ -27,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.ui.component.AppBar
 import com.adrzdv.mtocp.ui.component.newelements.AppDatePicker
 import com.adrzdv.mtocp.ui.component.newelements.AppTimePicker
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
@@ -62,7 +61,7 @@ fun InitDataTrainMonitoringScreen(
     Scaffold(
         containerColor = AppColors.SURFACE_COLOR.color,
         topBar = {
-            TopAppBar(
+            AppBar(
                 title = {
                     Spacer(modifier = Modifier.height(0.dp))
                     Text(
@@ -79,15 +78,7 @@ fun InitDataTrainMonitoringScreen(
                             contentDescription = stringResource(R.string.menu_string)
                         )
                     }
-                },
-                colors = TopAppBarColors(
-                    containerColor = AppColors.MAIN_COLOR.color,
-                    scrolledContainerColor = AppColors.MAIN_COLOR.color,
-                    navigationIconContentColor = AppColors.SURFACE_COLOR.color,
-                    titleContentColor = AppColors.SURFACE_COLOR.color,
-                    actionIconContentColor = AppColors.SURFACE_COLOR.color,
-                    subtitleContentColor = AppColors.SURFACE_COLOR.color
-                )
+                }
             )
         },
         snackbarHost = { CustomSnackbarHost(hostState = snackbarHostState) }
