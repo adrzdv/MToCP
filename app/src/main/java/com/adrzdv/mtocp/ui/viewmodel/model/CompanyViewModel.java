@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.adrzdv.mtocp.data.db.entity.CompanyWithBranch;
 import com.adrzdv.mtocp.domain.model.departments.CompanyDomain;
-import com.adrzdv.mtocp.domain.repository.CompanyRepository;
+import com.adrzdv.mtocp.domain.repository.old.CompanyRepository;
 import com.adrzdv.mtocp.mapper.CompanyMapper;
 import com.adrzdv.mtocp.ui.model.CompanyDto;
 

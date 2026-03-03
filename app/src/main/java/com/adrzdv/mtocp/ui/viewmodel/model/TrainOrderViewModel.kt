@@ -6,10 +6,10 @@ import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.domain.model.order.TrainOrder
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain
+import com.adrzdv.mtocp.ui.model.statedtoui.TrainUI
 import com.adrzdv.mtocp.ui.state.order.PickerField
 import com.adrzdv.mtocp.ui.state.order.TrainOrderState
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class TrainOrderViewModel(
     appDependencies: AppDependencies
@@ -166,14 +166,24 @@ class TrainOrderViewModel(
 
                 else -> current
             }
-
         }
     }
 
-    private fun setOrderConditions(conditions: RevisionType) {
+    fun onTrainSelected(str: String) {
         updateState { current ->
             current.copy(
-                orderConditions = conditions
+                train = TrainUI(
+                    number = str.substringBefore(" "),
+                    route = str.substringAfter(" ")
+                )
+            )
+        }
+    }
+
+    fun onQualityPassportChange(checked: Boolean) {
+        updateState { current ->
+            current.copy(
+                isQualityPassport = checked
             )
         }
     }

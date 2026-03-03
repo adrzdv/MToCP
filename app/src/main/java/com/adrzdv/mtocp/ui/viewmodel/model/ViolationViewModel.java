@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.adrzdv.mtocp.data.db.entity.ViolationEntity;
 import com.adrzdv.mtocp.domain.model.enums.RevisionType;
-import com.adrzdv.mtocp.domain.repository.ViolationRepository;
+import com.adrzdv.mtocp.domain.repository.old.ViolationRepository;
 import com.adrzdv.mtocp.mapper.ViolationMapper;
 import com.adrzdv.mtocp.ui.model.ViolationDto;
 

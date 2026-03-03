@@ -1,7 +1,7 @@
 package com.adrzdv.mtocp.domain.usecase
 
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain
-import com.adrzdv.mtocp.domain.repository.DepotRepository
+import com.adrzdv.mtocp.domain.repository.old.DepotRepository
 import com.adrzdv.mtocp.mapper.DepotMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

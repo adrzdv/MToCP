@@ -3,13 +3,11 @@ package com.adrzdv.mtocp.ui.viewmodel.service
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.adrzdv.mtocp.AppDependencies
-import com.adrzdv.mtocp.ui.viewmodel.model.AdditionalParamViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.AuthViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.KriCoachViewModel
-import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainOrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
@@ -32,15 +30,6 @@ class ViewModelLocator(
     fun getCompanyViewModel(owner: ViewModelStoreOwner) =
         factory.provideFactory().create(CompanyViewModel::class.java)
 
-    fun getOrderViewModel(owner: ViewModelStoreOwner) =
-        factory.provideFactory().create(OrderViewModel::class.java)
-
-    fun getAutocompleteViewModel(owner: ViewModelStoreOwner) =
-        factory.provideFactory().create(AutocompleteViewModel::class.java)
-
-    fun getAdditionalParamViewModel(owner: ViewModelStoreOwner) =
-        factory.provideFactory().create(AdditionalParamViewModel::class.java)
-
     fun getTrainInfoViewModel(owner: ViewModelStoreOwner) =
         factory.provideFactory().create(TrainInfoViewModel::class.java)
 
@@ -52,5 +41,11 @@ class ViewModelLocator(
             owner,
             AssistedViewModelFactory { AuthViewModel(appDependencies.authRepo) }
         )[AuthViewModel::class.java]
+
+    fun getTainAutocompleteViewModel(owner: ViewModelStoreOwner) =
+        ViewModelProvider(
+            owner,
+            AssistedViewModelFactory { AutocompleteViewModel(appDependencies.trainRepo) }
+        )[AutocompleteViewModel::class.java]
 
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 import com.adrzdv.mtocp.AppOld;
 import com.adrzdv.mtocp.ui.viewmodel.model.AdditionalParamViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel;
+import com.adrzdv.mtocp.ui.viewmodel.model.old.AutocompleteViewModelJvm;
 import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.model.KriCoachViewModel;
@@ -15,7 +16,7 @@ import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel;
 import java.util.HashMap;
 import java.util.Map;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class ViewModelFactoryProviderOld {
 
     public static CustomViewModelProvider provideFactory() {
@@ -29,8 +30,6 @@ public class ViewModelFactoryProviderOld {
                 () -> new DepotViewModel(AppOld.getInstance().getAppDependencies().getDepotRepo()));
         creators.put(CompanyViewModel.class,
                 () -> new CompanyViewModel(AppOld.getInstance().getAppDependencies().getCompanyRepo()));
-        creators.put(OrderViewModel.class,
-                () -> new OrderViewModel(AppOld.getInstance().getAppDependencies().getTrainRepo()));
         creators.put(AutocompleteViewModel.class,
                 () -> new AutocompleteViewModel(AppOld.getInstance().getAppDependencies().getTrainRepo()));
         creators.put(AdditionalParamViewModel.class,

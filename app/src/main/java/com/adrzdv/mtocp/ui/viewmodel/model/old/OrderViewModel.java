@@ -21,7 +21,7 @@ import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
-import com.adrzdv.mtocp.domain.repository.TrainRepository;
+import com.adrzdv.mtocp.domain.repository.old.TrainRepository;
 import com.adrzdv.mtocp.domain.usecase.ArchivePhotoInZipUseCase;
 import com.adrzdv.mtocp.domain.usecase.CheckUncheckedObjectsUseCase;
 import com.adrzdv.mtocp.domain.usecase.GenerateSmsReportUseCase;

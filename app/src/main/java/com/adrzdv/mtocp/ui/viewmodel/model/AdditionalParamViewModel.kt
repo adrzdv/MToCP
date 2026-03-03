@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam
 import com.adrzdv.mtocp.domain.model.violation.TempParametersDomain
-import com.adrzdv.mtocp.domain.repository.TempParamRepository
+import com.adrzdv.mtocp.domain.repository.old.TempParamRepository
 import com.adrzdv.mtocp.mapper.StaticsParametersMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -7,10 +7,10 @@ import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.KriCoachViewModel
-import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainOrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 
 class ViewModelFactoryProvider(
     private val appDependencies: AppDependencies
@@ -20,8 +20,6 @@ class ViewModelFactoryProvider(
             ViolationViewModel::class.java to Provider { ViolationViewModel(appDependencies.violationRepo) },
             DepotViewModel::class.java to Provider { DepotViewModel(appDependencies.depotRepo) },
             CompanyViewModel::class.java to Provider { CompanyViewModel(appDependencies.companyRepo) },
-            OrderViewModel::class.java to Provider { OrderViewModel(appDependencies.trainRepo) },
-            AutocompleteViewModel::class.java to Provider { AutocompleteViewModel(appDependencies.trainRepo) },
             AdditionalParamViewModel::class.java to Provider {
                 AdditionalParamViewModel(
                     appDependencies.tempParamRepo

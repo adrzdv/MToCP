@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch;
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
-import com.adrzdv.mtocp.domain.repository.DepotRepository;
+import com.adrzdv.mtocp.domain.repository.old.DepotRepository;
 import com.adrzdv.mtocp.mapper.DepotMapper;
 import com.adrzdv.mtocp.ui.model.DepotDto;
 

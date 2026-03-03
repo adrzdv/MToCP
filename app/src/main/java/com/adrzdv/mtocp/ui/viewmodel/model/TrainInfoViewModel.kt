@@ -24,7 +24,7 @@ class TrainInfoViewModel(
 
     fun loadTrains() {
         viewModelScope.launch(Dispatchers.IO) {
-            val joinedData = trainRepo.trainsWithFullData
+            val joinedData = trainRepo.getTrainWithAllData()
             val domData = joinedData.map { TrainMapper.fromTrainWithDepotAndBranchToDomain(it) }
             val dtoData = domData.map { TrainMapper.fromDomainToDto(it) }
 
