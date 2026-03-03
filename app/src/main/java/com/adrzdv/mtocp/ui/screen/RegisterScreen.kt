@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -81,19 +84,21 @@ fun RegisterScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(innerPadding)
                 .background(AppColors.SURFACE_COLOR.color)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding),
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(0.5f),
+                        //.weight(0.5f),
+                        .padding(horizontal = 16.dp),
                     elevation = CardDefaults.cardElevation(8.dp),
                     shape = RoundedCornerShape(
                         topStart = 0.dp,
@@ -129,7 +134,8 @@ fun RegisterScreen(
                     }
 
                 }
-                Spacer(modifier = Modifier.weight(0.05f))
+                //Spacer(modifier = Modifier.weight(0.05f))
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = stringResource(R.string.welcome),
                     style = AppTypography.titleMedium,
@@ -141,10 +147,12 @@ fun RegisterScreen(
                     color = AppColors.MAIN_COLOR.color,
                     textAlign = TextAlign.Center
                 )
-                Spacer(modifier = Modifier.weight(0.05f))
+                //Spacer(modifier = Modifier.weight(0.05f))
+                Spacer(modifier = Modifier.height(16.dp))
                 Column(
                     modifier = Modifier
-                        .weight(0.4f)
+                        //.weight(0.4f)
+                        .fillMaxWidth()
                         .padding(32.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
