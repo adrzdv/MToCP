@@ -49,6 +49,7 @@ fun SplitButton(
                     actions[selectedAction]?.first?.let {
                         Icon(
                             painter = it,
+                            tint = AppColors.SURFACE_COLOR.color,
                             contentDescription = null
                         )
                     }
@@ -96,6 +97,7 @@ fun SplitButton(
                                     actions[item]?.first?.let {
                                         Icon(
                                             painter = it,
+                                            tint = AppColors.MAIN_COLOR.color,
                                             contentDescription = null
                                         )
                                     }
