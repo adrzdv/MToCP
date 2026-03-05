@@ -8,10 +8,12 @@ package com.adrzdv.mtocp.ui.model.statedtoui
  *
  * @property id The unique identifier of the worker.
  * @property name The display name of the worker.
- * @property position The display name of the workers position.
+ * @property position The display name of the worker's position.
+ * @property depot The display name of the worker's depot.
  */
 data class WorkerUI(
     val id: Int,
     val name: String,
-    val position: String
+    val position: String,
+    val depot: String
 )
