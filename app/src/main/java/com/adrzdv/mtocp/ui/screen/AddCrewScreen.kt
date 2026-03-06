@@ -39,7 +39,7 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.newelements.cards.InnerWorkerItemCard
 import com.adrzdv.mtocp.ui.component.buttons.SplitButton
-import com.adrzdv.mtocp.ui.component.dialogs.AddWorkerDialog
+import com.adrzdv.mtocp.ui.component.dialogs.old.AddWorkerDialog
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography

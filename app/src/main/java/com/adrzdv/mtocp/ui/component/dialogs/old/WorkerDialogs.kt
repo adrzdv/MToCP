@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.component.dialogs
+package com.adrzdv.mtocp.ui.component.dialogs.old
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
