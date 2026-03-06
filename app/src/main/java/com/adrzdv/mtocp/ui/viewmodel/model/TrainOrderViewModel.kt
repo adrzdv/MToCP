@@ -7,17 +7,21 @@ import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.domain.model.order.TrainOrder
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject
 import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
+import com.adrzdv.mtocp.domain.usecase.GetTrainByNumberUseCase
 import com.adrzdv.mtocp.mapper.WorkerMapper
 import com.adrzdv.mtocp.ui.model.statedtoui.TrainUI
 import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI
 import com.adrzdv.mtocp.ui.state.order.PickerField
 import com.adrzdv.mtocp.ui.state.order.TrainOrderState
+import com.adrzdv.mtocp.ui.state.order.isOrderReadyForSave
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class TrainOrderViewModel(
     appDependencies: AppDependencies,
-    val getDepotByNameUseCase: GetDepotByNameUseCase
+    val getDepotByNameUseCase: GetDepotByNameUseCase,
+    val getTrainByNumberUseCase: GetTrainByNumberUseCase
 ) : BaseOrderViewModel<TrainOrderState, TrainOrder>(appDependencies) {
 
     override fun createOrder(): TrainOrder {
@@ -66,6 +70,7 @@ class TrainOrderViewModel(
                     crewList = updatedCrewMap
                 )
             }
+            domainOrder.addCrewWorker(workerDomain)
         }
     }
 
@@ -77,6 +82,7 @@ class TrainOrderViewModel(
                 crewList = updatedCrewMap
             )
         }
+        domainOrder.removeWorker(worker.position)
     }
 
     override fun onClearCrew() {
@@ -85,10 +91,51 @@ class TrainOrderViewModel(
                 crewList = emptyMap()
             )
         }
+        domainOrder.clearCrewWorkers()
     }
 
-    override fun onSave() {
+    override fun onSave(): Boolean {
+        val emptyStringError = appDependencies.stringProvider.getString(R.string.empty_string)
+        val incorrectDate = appDependencies.stringProvider.getString(R.string.date_error)
+        val emptyCrewList = appDependencies.stringProvider.getString(R.string.empty_crew)
+        updateState { current ->
+            current.copy(
+                numberError = if (orderState.value.orderNumber.isBlank())
+                    emptyStringError
+                else null,
+                conditionsError = if (orderState.value.orderConditions == null)
+                    emptyStringError
+                else null,
+                routeError = if (orderState.value.route.isBlank())
+                    emptyStringError
+                else null,
+                dateEndError = if (orderState.value.dateEnd.equals(LocalDateTime.now()))
+                    incorrectDate
+                else null,
+                emptyCrewError = if (orderState.value.crewList.isEmpty())
+                    emptyCrewList
+                else null,
+                emptyTrainError = if (orderState.value.train.number.isEmpty())
+                    emptyStringError
+                else null
+            )
+        }
 
+        if (orderState.value.isOrderReadyForSave) {
+            viewModelScope.launch {
+                domainOrder.number = orderState.value.orderNumber
+                domainOrder.route = orderState.value.route
+                domainOrder.revisionDateStart = orderState.value.dateStart
+                domainOrder.revisionDateEnd = orderState.value.dateEnd
+                domainOrder.revisionType = orderState.value.orderConditions
+                domainOrder.setIsQualityPassport(orderState.value.isQualityPassport)
+            }
+            return true
+        } else {
+            _snackbarMessage.value = appDependencies.stringProvider
+                .getString(R.string.validation_error)
+            return false
+        }
     }
 
     fun onConditionsChange(condition: String) {
@@ -213,14 +260,19 @@ class TrainOrderViewModel(
     }
 
     fun onTrainSelected(str: String) {
-        updateState { current ->
-            current.copy(
-                train = TrainUI(
-                    number = str.substringBefore(" "),
-                    route = str.substringAfter(" ")
+        viewModelScope.launch(Dispatchers.IO) {
+            updateState { current ->
+                current.copy(
+                    train = TrainUI(
+                        number = str.substringBefore(" "),
+                        route = str.substringAfter(" ")
+                    )
                 )
-            )
+            }
+            val trainDomain = getTrainByNumberUseCase.invoke(str.substringBefore(" "))
+            domainOrder.collector = trainDomain
         }
+
     }
 
     fun onQualityPassportChange(checked: Boolean) {
