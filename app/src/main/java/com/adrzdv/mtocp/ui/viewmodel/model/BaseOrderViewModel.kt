@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.domain.model.order.Order
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject
-import com.adrzdv.mtocp.domain.model.workers.WorkerDomain
+import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI
 import com.adrzdv.mtocp.ui.state.order.OrderDraftState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,14 +36,14 @@ abstract class BaseOrderViewModel<S : OrderDraftState, O : Order>(
     abstract fun createOrder(): O
     abstract fun createInitialState(): S
     abstract fun onNumberChange(number: String)
-
-    protected abstract fun updateOrderNumber(number: String, error: String)
+    abstract fun onAddPersonCrew(worker: WorkerUI)
+    abstract fun onDeletePersonCrew(worker: WorkerUI)
+    abstract fun onClearCrew()
+    abstract fun onSave()
     protected abstract fun addRevisionObjectInOrder(o: RevisionObject)
     protected abstract fun removeRevisionObjectFromOrder(o: RevisionObject)
     protected abstract fun updateRevisionObjectInOrder(o: RevisionObject)
     protected abstract fun clearRevisionObjects()
-    protected abstract fun addPersonInCrew(person: WorkerDomain)
     protected abstract fun updatePersonInCrew()
-    protected abstract fun clearCrew()
     protected abstract fun getTotalViolationsSum(): Int
 }

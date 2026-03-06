@@ -46,6 +46,11 @@ class ViewModelLocator(
         ViewModelProvider(
             owner,
             AssistedViewModelFactory { AutocompleteViewModel(appDependencies.trainRepo) }
-        )[AutocompleteViewModel::class.java]
+        )["trainAutocompleteViewModel", AutocompleteViewModel::class.java]
 
+    fun getDepotAutocompleteViewModel(owner: ViewModelStoreOwner) =
+        ViewModelProvider(
+            owner,
+            AssistedViewModelFactory { AutocompleteViewModel(appDependencies.depotRepo) }
+        )["depotAutocompleteViewModel", AutocompleteViewModel::class.java]
 }

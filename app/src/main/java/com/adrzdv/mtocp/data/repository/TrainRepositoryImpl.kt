@@ -21,8 +21,8 @@ class TrainRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getTrainByNumber(str: String): TrainDomain {
-        val entity = dao.getTrainByString(str)
+    override suspend fun getTrainByNumber(nmb: String): TrainDomain {
+        val entity = dao.getTrainByString(nmb)
         val depotPojo = depotDao.getDepotById(entity.depotId)
         val depotDomain = DepotMapper.fromJoinModelToDomain(depotPojo)
         return TrainMapper.fromEntityToDomain(entity, depotDomain)
