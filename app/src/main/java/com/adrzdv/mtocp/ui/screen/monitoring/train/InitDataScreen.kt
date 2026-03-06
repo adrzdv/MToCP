@@ -24,12 +24,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.AppBar
 import com.adrzdv.mtocp.ui.component.dialogs.AddWorkerDialog
 import com.adrzdv.mtocp.ui.component.newelements.AppDatePicker
 import com.adrzdv.mtocp.ui.component.newelements.AppTimePicker
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
+import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
+import com.adrzdv.mtocp.ui.navigation.Screen
 import com.adrzdv.mtocp.ui.screen.component.InitDataScreenContent
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
@@ -59,6 +62,16 @@ fun InitDataTrainMonitoringScreen(
     val datePickerState = rememberDatePickerState()
     val timePickerState = rememberTimePickerState().apply { is24hour = true }
     val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarMessage by trainOrderViewModel.snackbarMessage.collectAsState()
+
+    LaunchedEffect(snackbarMessage) {
+        snackbarMessage?.let { message ->
+            snackbarHostState.showSnackbar(
+                visuals = ErrorSnackbar(message)
+            )
+            trainOrderViewModel.snackbarShown()
+        }
+    }
 
     Scaffold(
         containerColor = AppColors.SURFACE_COLOR.color,
@@ -84,7 +97,9 @@ fun InitDataTrainMonitoringScreen(
                 actions = {
                     IconButton(
                         onClick = {
-
+                            if (trainOrderViewModel.onSave()) {
+                                navController.navigate(Screen.MonitoringTrainInProgress.route)
+                            }
                         }
                     ) {
                         Icon(

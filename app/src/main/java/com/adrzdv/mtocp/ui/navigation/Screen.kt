@@ -9,6 +9,6 @@ sealed class Screen(val route: String) {
     object Catalog : Screen("catalog")
     object Request : Screen("request")
     object NewRevision : Screen("new_revision")
-    object StartTrainRevision: Screen("train_revision_start")
-
+    object StartTrainRevision : Screen("train_revision_start")
+    object MonitoringTrainInProgress : Screen("train_monitoring_in_progress")
 }

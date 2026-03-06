@@ -27,7 +27,8 @@ class ViewModelFactoryProvider(
             TrainOrderViewModel::class.java to Provider {
                 TrainOrderViewModel(
                     appDependencies,
-                    appDependencies.getDepotByNameUseCase
+                    appDependencies.getDepotByNameUseCase,
+                    appDependencies.getTrainByNumberUseCase
                 )
             }
         )

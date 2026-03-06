@@ -29,7 +29,8 @@ import com.adrzdv.mtocp.ui.theme.AppTypography
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SplitButton(
-    actions: Map<String, Pair<Painter, () -> Unit>>
+    actions: Map<String, Pair<Painter, () -> Unit>>,
+    enabled: Boolean = true
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedAction by remember { mutableStateOf(actions.keys.first()) }
@@ -43,8 +44,9 @@ fun SplitButton(
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = AppColors.MAIN_COLOR.color,
-                        contentColor = AppColors.SURFACE_COLOR.color
-                    )
+                        contentColor = AppColors.SURFACE_COLOR.color,
+                    ),
+                    enabled = enabled
                 ) {
                     actions[selectedAction]?.first?.let {
                         Icon(
@@ -64,6 +66,7 @@ fun SplitButton(
             trailingButton = {
                 Box {
                     SplitButtonDefaults.TrailingButton(
+                        enabled = enabled,
                         checked = expanded,
                         onCheckedChange = { expanded = it },
                         colors = ButtonDefaults.buttonColors(

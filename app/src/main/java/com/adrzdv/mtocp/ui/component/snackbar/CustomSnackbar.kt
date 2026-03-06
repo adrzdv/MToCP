@@ -78,8 +78,7 @@ fun CustomSnackbarHost(
                             style = AppTypography.labelLarge,
                             color = when {
                                 isError -> AppColors.ERROR_COLOR.color
-                                isInfo -> AppColors.MAIN_COLOR.color
-                                else -> AppColors.SURFACE_COLOR.color
+                                else -> AppColors.MAIN_COLOR.color
                             },
                             textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()

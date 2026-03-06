@@ -193,5 +193,7 @@
     <string name="number_pattern_error">Некорректный номер</string>
     <string name="route_error">Некорректный маршрут</string>
     <string name="date_error">Некорректная дата</string>
+    <string name="empty_crew">Отсутствуют руководители проверки</string>
+    <string name="validation_error">Ошибка валидации введенных данных</string>
 
 </resources>

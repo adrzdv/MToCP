@@ -105,6 +105,10 @@ public class TrainDomain extends ObjectCollector {
         workerMap.remove(worker.getWorkerType().getDescription());
     }
 
+    public void removeWorker(String position) {
+        workerMap.remove(position);
+    }
+
     public int countPassCoachType(PassengerCoachType type) {
         return (int) getObjectsMap().values().stream()
                 .filter(o -> o instanceof PassengerCar)

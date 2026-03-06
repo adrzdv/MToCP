@@ -8,6 +8,7 @@ import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI
 import com.adrzdv.mtocp.ui.state.order.OrderDraftState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 /**
@@ -33,17 +34,24 @@ abstract class BaseOrderViewModel<S : OrderDraftState, O : Order>(
         _orderState.update(transform)
     }
 
+    protected val _snackbarMessage = MutableStateFlow<String?>(null)
+    val snackbarMessage: StateFlow<String?> = _snackbarMessage.asStateFlow()
+
     abstract fun createOrder(): O
     abstract fun createInitialState(): S
     abstract fun onNumberChange(number: String)
     abstract fun onAddPersonCrew(worker: WorkerUI)
     abstract fun onDeletePersonCrew(worker: WorkerUI)
     abstract fun onClearCrew()
-    abstract fun onSave()
+    abstract fun onSave(): Boolean
     protected abstract fun addRevisionObjectInOrder(o: RevisionObject)
     protected abstract fun removeRevisionObjectFromOrder(o: RevisionObject)
     protected abstract fun updateRevisionObjectInOrder(o: RevisionObject)
     protected abstract fun clearRevisionObjects()
     protected abstract fun updatePersonInCrew()
     protected abstract fun getTotalViolationsSum(): Int
+
+    fun snackbarShown() {
+        _snackbarMessage.value = null
+    }
 }

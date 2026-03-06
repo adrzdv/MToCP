@@ -28,6 +28,7 @@ fun NavigationGraph(
         newRevisionDestination(navController)
         requestsDestination(navController, appDependencies)
         trainRevisionStartDestination(navController, viewModelLocator, appDependencies)
+        monitoringTrainInProgressDestination(navController, viewModelLocator, appDependencies)
 
         //Нужно подумать над целесообразностью такого экрана
         composable(Screen.Help.route) {

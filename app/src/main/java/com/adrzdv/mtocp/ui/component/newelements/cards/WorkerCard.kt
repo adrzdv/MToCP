@@ -101,10 +101,7 @@ fun WorkerCard(
                     worker.name,
                     style = AppTypography.bodyLarge
                 )
-                val info = listOfNotNull(
-                    worker.name,
-                    worker.position
-                ).joinToString(", ")
+                val info = worker.position
                 if (info.isNotBlank()) {
                     Text(
                         info,

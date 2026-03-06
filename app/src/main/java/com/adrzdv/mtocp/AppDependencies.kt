@@ -25,6 +25,7 @@ import com.adrzdv.mtocp.domain.repository.old.CompanyRepository
 import com.adrzdv.mtocp.domain.repository.old.TempParamRepository
 import com.adrzdv.mtocp.domain.repository.old.ViolationRepository
 import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
+import com.adrzdv.mtocp.domain.usecase.GetTrainByNumberUseCase
 import com.adrzdv.mtocp.service.stringprovider.StringProvider
 import com.adrzdv.mtocp.service.stringprovider.StringProviderImpl
 import com.adrzdv.mtocp.util.importmanager.ImportHandlerRegistry
@@ -114,4 +115,5 @@ class AppDependencies(
     val importManager: ImportManager = ImportManager(registry, executor)
     val stringProvider: StringProvider = StringProviderImpl(context)
     val getDepotByNameUseCase = GetDepotByNameUseCase(depotRepo)
+    val getTrainByNumberUseCase = GetTrainByNumberUseCase(trainRepo)
 }

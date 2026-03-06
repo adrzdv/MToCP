@@ -55,11 +55,11 @@ public abstract class Order extends RegularValidator {
         this.revisionDateStart = revisionDateStart;
     }
 
-    public LocalDateTime getGetRevisionDateEnd() {
+    public LocalDateTime getRevisionDateEnd() {
         return getRevisionDateEnd;
     }
 
-    public void setGetRevisionDateEnd(LocalDateTime getRevisionDateEnd) {
+    public void setRevisionDateEnd(LocalDateTime getRevisionDateEnd) {
         this.getRevisionDateEnd = getRevisionDateEnd;
     }
 
@@ -73,6 +73,7 @@ public abstract class Order extends RegularValidator {
 
     public abstract void updateRevisionObject(RevisionObject object);
 
+    @Deprecated//TODO: override updateRevisionObject?
     public abstract void updateRevisionObjectFromJson(RevisionObject object);
 
     public abstract void clearCrewWorkers();
@@ -82,6 +83,7 @@ public abstract class Order extends RegularValidator {
     public abstract boolean checkCrew();
 
     public abstract void deleteCrewWorker(WorkerDomain worker);
+    public abstract void removeWorker(String position);
 
     public abstract void deleteRevisionObject(RevisionObject o);
 

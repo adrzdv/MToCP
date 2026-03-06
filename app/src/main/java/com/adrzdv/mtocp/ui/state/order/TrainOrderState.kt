@@ -27,8 +27,19 @@ data class TrainOrderState(
     val emptyCrewError: String? = null,
     val emptyCoachError: String? = null,
     val emptyTrainError: String? = null,
-    val conditionsError: String? = null,
-    val isOrderReadyForSave: Boolean? = null
+    val conditionsError: String? = null
 ) : OrderDraftState
 
 enum class PickerField { START_DATE, END_DATE }
+
+val TrainOrderState.isOrderReadyForSave: Boolean
+    get() = listOf(
+        numberError,
+        dateStartError,
+        dateEndError,
+        routeError,
+        emptyCrewError,
+        emptyCoachError,
+        emptyTrainError,
+        conditionsError
+    ).all { it.isNullOrEmpty() }

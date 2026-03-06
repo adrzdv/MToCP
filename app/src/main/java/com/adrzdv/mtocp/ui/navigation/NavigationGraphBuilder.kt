@@ -17,6 +17,7 @@ import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.ui.screen.InfoCatalogScreen
+import com.adrzdv.mtocp.ui.screen.MonitoringTrainInProgress
 import com.adrzdv.mtocp.ui.screen.NewRevisionScreen
 import com.adrzdv.mtocp.ui.screen.RegisterScreen
 import com.adrzdv.mtocp.ui.screen.RequestWebScreen
@@ -166,6 +167,19 @@ fun NavGraphBuilder.trainRevisionStartDestination(
             viewModelLocator.getTainAutocompleteViewModel(backStackEntry),
             viewModelLocator.getDepotAutocompleteViewModel(backStackEntry),
             navController = navController
+        )
+    }
+}
+
+fun NavGraphBuilder.monitoringTrainInProgressDestination(
+    navController: NavHostController,
+    viewModelLocator: ViewModelLocator,
+    appDependencies: AppDependencies
+) {
+    composable(Screen.MonitoringTrainInProgress.route) { backStackEntry ->
+        MonitoringTrainInProgress(
+            navController = navController,
+            trainOrderViewModel = viewModelLocator.getTrainOrderViewModel(backStackEntry),
         )
     }
 }

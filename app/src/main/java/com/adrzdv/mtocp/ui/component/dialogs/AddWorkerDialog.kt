@@ -4,13 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -47,9 +43,8 @@ fun AddWorkerDialog(
     val queryDepot by depotAutocompleteViewModel.query.collectAsState()
     val suggestionsDepot by depotAutocompleteViewModel.filteredItems.collectAsState()
     var isSubmitClicked by remember { mutableStateOf(false) }
-    var isError by remember { mutableStateOf(false) }
     val isFormValid = tabNumber.isNotBlank() &&
-            name.isNotBlank() &&
+            (name.isNotBlank() && Validator.validateWorkerName(name)) &&
             selectedPosition != null &&
             selectedDepot.isNotBlank()
 
@@ -59,28 +54,17 @@ fun AddWorkerDialog(
         confirmButton = {
             Button(
                 onClick = {
-                    isError = listOf(tabNumber, name, selectedDepot).any { it.isEmpty() }
-                            || selectedPosition == null
-
-                    isSubmitClicked = true
-                    if (!isError) {
-                        val number = tabNumber.toIntOrNull()
-                        if (number == null) {
-                            isError = true
-                            return@Button
-                        }
-                        selectedPosition?.let { position ->
-                            onWorkerAdd(
-                                WorkerUI(
-                                    tabNumber.toInt(),
-                                    name,
-                                    position.description,
-                                    selectedDepot
-                                )
+                    selectedPosition?.let { position ->
+                        onWorkerAdd(
+                            WorkerUI(
+                                tabNumber.toInt(),
+                                name,
+                                position.description,
+                                selectedDepot
                             )
-                        }
-                        onDismiss()
+                        )
                     }
+                    onDismiss()
                 },
                 colors = ButtonDefaults
                     .buttonColors(containerColor = AppColors.MAIN_COLOR.color),
@@ -116,9 +100,8 @@ fun AddWorkerDialog(
                     value = tabNumber,
                     onValueChange = {
                         tabNumber = it
-                        isError = false
                     },
-                    isError = isSubmitClicked && tabNumber.isBlank(),
+                    isError = tabNumber.isBlank(),
                     errorText = stringResource(R.string.empty_string),
                     label = stringResource(R.string.worker_id),
                     trailingIcon = {
@@ -132,10 +115,8 @@ fun AddWorkerDialog(
                     value = name,
                     onValueChange = {
                         name = it
-                        isError = false
                     },
-                    isError = isSubmitClicked
-                            && name.isNotBlank()
+                    isError = name.isNotBlank()
                             && !Validator.validateWorkerName(name),
                     errorText = stringResource(R.string.empty_string),
                     label = stringResource(R.string.worker_name),
@@ -156,7 +137,6 @@ fun AddWorkerDialog(
                         selectedPosition = WorkerTypes.entries.firstOrNull {
                             it.description == selected
                         }
-                        isError = false
                     }
                 )
 
@@ -168,10 +148,9 @@ fun AddWorkerDialog(
                     },
                     onValueSelected = { selected ->
                         selectedDepot = selected
-                        isError = false
                     },
                     trailingIcon = {
-                        if (selectedDepot.isNotEmpty()) {
+                        if (queryDepot.isNotEmpty()) {
                             ClearIcon {
                                 depotAutocompleteViewModel.onQueryChange("")
                                 selectedDepot = ""

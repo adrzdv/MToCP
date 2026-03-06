@@ -83,6 +83,11 @@ public class TrainOrder extends Order implements CollectableOrder {
     }
 
     @Override
+    public void removeWorker(String position) {
+        train.removeWorker(position);
+    }
+
+    @Override
     public void deleteRevisionObject(RevisionObject o) {
         train.deleteRevisionObject(o);
     }

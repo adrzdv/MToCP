@@ -56,6 +56,11 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
     }
 
     @Override
+    public void removeWorker(String position) {
+
+    }
+
+    @Override
     public void deleteRevisionObject(RevisionObject o) {
         ticketOffice.getObjectsMap().remove(o.getNumber());
     }

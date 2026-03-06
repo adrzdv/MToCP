@@ -8,12 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -199,6 +195,7 @@ fun InitDataScreenContent(
                         modifier = Modifier.weight(1f)
                     )
                     SplitButton(
+                        enabled = state.train.number.isNotBlank(),
                         actions = mapOf(
                             stringResource(R.string.add_string) to Pair(
                                 painterResource(R.drawable.ic_add_person)
