@@ -1,18 +1,23 @@
 package com.adrzdv.mtocp.ui.viewmodel.model
 
+import androidx.lifecycle.viewModelScope
 import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.domain.model.order.TrainOrder
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject
-import com.adrzdv.mtocp.domain.model.workers.WorkerDomain
+import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
+import com.adrzdv.mtocp.mapper.WorkerMapper
 import com.adrzdv.mtocp.ui.model.statedtoui.TrainUI
+import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI
 import com.adrzdv.mtocp.ui.state.order.PickerField
 import com.adrzdv.mtocp.ui.state.order.TrainOrderState
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class TrainOrderViewModel(
-    appDependencies: AppDependencies
+    appDependencies: AppDependencies,
+    val getDepotByNameUseCase: GetDepotByNameUseCase
 ) : BaseOrderViewModel<TrainOrderState, TrainOrder>(appDependencies) {
 
     override fun createOrder(): TrainOrder {
@@ -32,18 +37,6 @@ class TrainOrderViewModel(
         )
     }
 
-    override fun updateOrderNumber(number: String, error: String) {
-        updateState { current ->
-            current.copy(
-                orderNumber = number,
-                numberError = when {
-                    number.isEmpty() -> error
-                    else -> null
-                }
-            )
-        }
-    }
-
     override fun onNumberChange(number: String) {
         updateState { current ->
             current.copy(
@@ -60,6 +53,42 @@ class TrainOrderViewModel(
                 }
             )
         }
+    }
+
+    override fun onAddPersonCrew(worker: WorkerUI) {
+        viewModelScope.launch {
+            val depot = getDepotByNameUseCase(worker.depot, false)
+            val workerDomain = WorkerMapper.fromUiToDomain(worker, depot)
+            updateState { current ->
+                val updatedCrewMap = current.crewList.toMutableMap()
+                updatedCrewMap[worker.id] = worker
+                current.copy(
+                    crewList = updatedCrewMap
+                )
+            }
+        }
+    }
+
+    override fun onDeletePersonCrew(worker: WorkerUI) {
+        val updatedCrewMap = orderState.value.crewList.toMutableMap()
+        updatedCrewMap.remove(worker.id)
+        updateState { current ->
+            current.copy(
+                crewList = updatedCrewMap
+            )
+        }
+    }
+
+    override fun onClearCrew() {
+        updateState { current ->
+            current.copy(
+                crewList = emptyMap()
+            )
+        }
+    }
+
+    override fun onSave() {
+
     }
 
     fun onConditionsChange(condition: String) {
@@ -169,6 +198,20 @@ class TrainOrderViewModel(
         }
     }
 
+    fun onOrderRouteChange(route: String) {
+        updateState { current ->
+            current.copy(
+                route = route,
+                routeError = when {
+                    route.isEmpty() -> appDependencies.stringProvider
+                        .getString(R.string.route_error)
+
+                    else -> null
+                }
+            )
+        }
+    }
+
     fun onTrainSelected(str: String) {
         updateState { current ->
             current.copy(
@@ -184,6 +227,22 @@ class TrainOrderViewModel(
         updateState { current ->
             current.copy(
                 isQualityPassport = checked
+            )
+        }
+    }
+
+    fun onShowDialog() {
+        updateState { current ->
+            current.copy(
+                showDialogs = true
+            )
+        }
+    }
+
+    fun onDismissDialog() {
+        updateState { current ->
+            current.copy(
+                showDialogs = false
             )
         }
     }
@@ -204,17 +263,11 @@ class TrainOrderViewModel(
         TODO("Not yet implemented")
     }
 
-    override fun addPersonInCrew(person: WorkerDomain) {
-        TODO("Not yet implemented")
-    }
 
     override fun updatePersonInCrew() {
         TODO("Not yet implemented")
     }
 
-    override fun clearCrew() {
-        TODO("Not yet implemented")
-    }
 
     override fun getTotalViolationsSum(): Int {
         TODO("Not yet implemented")

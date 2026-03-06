@@ -187,6 +187,7 @@
     <!--DESCRIPTIONS-->
     <string name="revision_start_description">Заполните все поля, добавьте работников и начните проверку</string>
     <string name="train_crew">Руководители поездной бригады</string>
+    <string name="add_crew_description">Внесите руководителей объекта проверки</string>
 
     <!--ERRORS-->
     <string name="number_pattern_error">Некорректный номер</string>

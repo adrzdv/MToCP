@@ -97,3 +97,23 @@ fun RoundedButton(
         }
     }
 }
+
+@Composable
+fun RoundedUnborderedButton(
+    onClick: () -> Unit,
+    text: String
+) {
+    OutlinedButton(
+        onClick = onClick,
+        border = null,
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = AppColors.MAIN_COLOR.color
+        )
+    ) {
+        Text(
+            text = text,
+            style = AppTypography.bodyMedium
+        )
+    }
+}
