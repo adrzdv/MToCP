@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
 import com.adrzdv.mtocp.ui.component.newelements.AutocompleteField
+import com.adrzdv.mtocp.ui.component.newelements.ClearIcon
 import com.adrzdv.mtocp.ui.component.newelements.DropdownField
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.newelements.RoundedUnborderedButton
@@ -47,6 +48,10 @@ fun AddWorkerDialog(
     val suggestionsDepot by depotAutocompleteViewModel.filteredItems.collectAsState()
     var isSubmitClicked by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
+    val isFormValid = tabNumber.isNotBlank() &&
+            name.isNotBlank() &&
+            selectedPosition != null &&
+            selectedDepot.isNotBlank()
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -59,21 +64,28 @@ fun AddWorkerDialog(
 
                     isSubmitClicked = true
                     if (!isError) {
-                        onWorkerAdd(
-                            WorkerUI(
-                                tabNumber.toInt(),
-                                name,
-                                selectedPosition!!.description,
-                                selectedDepot
+                        val number = tabNumber.toIntOrNull()
+                        if (number == null) {
+                            isError = true
+                            return@Button
+                        }
+                        selectedPosition?.let { position ->
+                            onWorkerAdd(
+                                WorkerUI(
+                                    tabNumber.toInt(),
+                                    name,
+                                    position.description,
+                                    selectedDepot
+                                )
                             )
-                        )
+                        }
                         onDismiss()
                     }
                 },
                 colors = ButtonDefaults
                     .buttonColors(containerColor = AppColors.MAIN_COLOR.color),
                 border = null,
-                enabled = !isError
+                enabled = isFormValid
             ) {
                 Text(
                     stringResource(R.string.add_string),
@@ -111,16 +123,7 @@ fun AddWorkerDialog(
                     label = stringResource(R.string.worker_id),
                     trailingIcon = {
                         if (tabNumber.isNotEmpty()) {
-                            IconButton(
-                                onClick = {
-                                    tabNumber = ""
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = stringResource(R.string.clear_text)
-                                )
-                            }
+                            ClearIcon(onClick = { tabNumber = "" })
                         }
                     }
                 )
@@ -138,16 +141,7 @@ fun AddWorkerDialog(
                     label = stringResource(R.string.worker_name),
                     trailingIcon = {
                         if (name.isNotEmpty()) {
-                            IconButton(
-                                onClick = {
-                                    name = ""
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = stringResource(R.string.clear_text)
-                                )
-                            }
+                            ClearIcon { name = "" }
                         }
                     }
                 )
@@ -178,16 +172,9 @@ fun AddWorkerDialog(
                     },
                     trailingIcon = {
                         if (selectedDepot.isNotEmpty()) {
-                            IconButton(
-                                onClick = {
-                                    depotAutocompleteViewModel.onQueryChange("")
-                                    selectedDepot = ""
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = stringResource(R.string.clear_text)
-                                )
+                            ClearIcon {
+                                depotAutocompleteViewModel.onQueryChange("")
+                                selectedDepot = ""
                             }
                         }
                     },

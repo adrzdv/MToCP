@@ -30,6 +30,7 @@ import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.ui.component.buttons.SplitButton
 import com.adrzdv.mtocp.ui.component.newelements.AutocompleteField
 import com.adrzdv.mtocp.ui.component.newelements.BlancInfoBlock
+import com.adrzdv.mtocp.ui.component.newelements.ClearIcon
 import com.adrzdv.mtocp.ui.component.newelements.DatePickerReadOnlyField
 import com.adrzdv.mtocp.ui.component.newelements.DropdownField
 import com.adrzdv.mtocp.ui.component.newelements.InfoBlock
@@ -71,15 +72,8 @@ fun InitDataScreenContent(
                 value = state.orderNumber,
                 trailingIcon = {
                     if (state.orderNumber.isNotEmpty()) {
-                        IconButton(
-                            onClick = {
-                                trainOrderViewModel.onNumberChange("")
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(R.string.clear_text)
-                            )
+                        ClearIcon {
+                            trainOrderViewModel.onNumberChange("")
                         }
                     }
                 },
@@ -135,15 +129,8 @@ fun InitDataScreenContent(
                 },
                 trailingIcon = {
                     if (query.isNotEmpty()) {
-                        IconButton(
-                            onClick = {
-                                autocompleteViewModel.onQueryChange("")
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(R.string.clear_text)
-                            )
+                        ClearIcon {
+                            autocompleteViewModel.onQueryChange("")
                         }
                     }
                 },
@@ -158,15 +145,8 @@ fun InitDataScreenContent(
                 value = state.route,
                 trailingIcon = {
                     if (state.route.isNotEmpty()) {
-                        IconButton(
-                            onClick = {
-                                trainOrderViewModel.onOrderRouteChange("")
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(R.string.clear_text)
-                            )
+                        ClearIcon {
+                            trainOrderViewModel.onOrderRouteChange("")
                         }
                     }
                 },
