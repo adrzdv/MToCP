@@ -1,23 +1,35 @@
 package com.adrzdv.mtocp.ui.component
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.ui.theme.AppColors
+import com.adrzdv.mtocp.ui.theme.AppTypography
 
 //TODO: need to add scrollBehavior in next version
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBar(
-    title: (@Composable () -> Unit),
+    title: String = "",
     actions: @Composable (RowScope.() -> Unit) = {},
     navigationIcon: @Composable (() -> Unit) = {}
-    //scrollBehavior: TopAppBarScrollBehavior
 ) {
     TopAppBar(
-        title = title,
+        title = {
+            Spacer(modifier = Modifier.height(0.dp))
+            Text(
+                text = title,
+                style = AppTypography.titleLarge,
+                color = AppColors.SURFACE_COLOR.color
+            )
+        },
         actions = actions,
         navigationIcon = navigationIcon,
         colors = TopAppBarColors(

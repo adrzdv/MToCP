@@ -11,28 +11,22 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.ui.component.AppBar
 import com.adrzdv.mtocp.ui.component.newelements.SquaredBigButton
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.theme.AppColors
-import com.adrzdv.mtocp.ui.theme.AppTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewRevisionScreen(
-    navController: NavHostController? = null,
     onBackClick: () -> Unit,
     onTrainRevisionClick: () -> Unit,
     onTicketOfficeRevisionClick: () -> Unit,
@@ -43,14 +37,9 @@ fun NewRevisionScreen(
     Scaffold(
         containerColor = AppColors.SURFACE_COLOR.color,
         topBar = {
-            TopAppBar(
-                title = {
-                    Spacer(modifier = Modifier.height(0.dp))
-                    Text(
-                        text = stringResource(id = R.string.start_revision_text),
-                        style = AppTypography.titleLarge
-                    )
-                },
+            AppBar(
+                title = stringResource(R.string.header_start_revision),
+                actions = {},
                 navigationIcon = {
                     IconButton(onClick = {
                         onBackClick()
@@ -60,17 +49,10 @@ fun NewRevisionScreen(
                             contentDescription = stringResource(R.string.menu_string)
                         )
                     }
-                },
-                colors = TopAppBarColors(
-                    containerColor = AppColors.MAIN_COLOR.color,
-                    scrolledContainerColor = AppColors.MAIN_COLOR.color,
-                    navigationIconContentColor = AppColors.SURFACE_COLOR.color,
-                    titleContentColor = AppColors.SURFACE_COLOR.color,
-                    actionIconContentColor = AppColors.SURFACE_COLOR.color,
-                    subtitleContentColor = AppColors.SURFACE_COLOR.color
-                )
+                }
             )
         },
+
         snackbarHost = { CustomSnackbarHost(hostState = snackbarHostState) }
     ) { innerPadding ->
         Column(
@@ -105,15 +87,4 @@ fun NewRevisionScreen(
             )
         }
     }
-}
-
-@Preview
-@Composable
-private fun PreviewNewRevisionScreen() {
-    NewRevisionScreen(
-        onBackClick = {},
-        onTrainRevisionClick = {},
-        onTicketOfficeRevisionClick = {},
-        onCoachRevisionClick = {}
-    )
 }

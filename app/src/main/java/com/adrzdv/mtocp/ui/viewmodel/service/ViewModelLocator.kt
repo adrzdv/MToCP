@@ -17,21 +17,25 @@ class ViewModelLocator(
 ) {
     private val factory = ViewModelFactoryProvider(appDependencies)
 
+    fun getTrainOrderViewModel(owner: ViewModelStoreOwner): TrainOrderViewModel {
+        return ViewModelProvider(owner, factory.provideFactory())[TrainOrderViewModel::class.java]
+    }
+
     fun getViolationViewModel(owner: ViewModelStoreOwner): ViolationViewModel {
         return ViewModelProvider(owner, factory.provideFactory())[ViolationViewModel::class.java]
     }
 
-    fun getDepotViewModel(owner: ViewModelStoreOwner) =
-        factory.provideFactory().create(DepotViewModel::class.java)
+    fun getDepotViewModel(owner: ViewModelStoreOwner): DepotViewModel {
+        return ViewModelProvider(owner, factory.provideFactory())[DepotViewModel::class.java]
+    }
 
-    fun getTrainOrderViewModel(owner: ViewModelStoreOwner) =
-        factory.provideFactory().create(TrainOrderViewModel::class.java)
+    fun getCompanyViewModel(owner: ViewModelStoreOwner): CompanyViewModel {
+        return ViewModelProvider(owner, factory.provideFactory())[CompanyViewModel::class.java]
+    }
 
-    fun getCompanyViewModel(owner: ViewModelStoreOwner) =
-        factory.provideFactory().create(CompanyViewModel::class.java)
-
-    fun getTrainInfoViewModel(owner: ViewModelStoreOwner) =
-        factory.provideFactory().create(TrainInfoViewModel::class.java)
+    fun getTrainInfoViewModel(owner: ViewModelStoreOwner): TrainInfoViewModel {
+        return ViewModelProvider(owner, factory.provideFactory())[TrainInfoViewModel::class.java]
+    }
 
     fun getKriCoachViewModel(owner: ViewModelStoreOwner) =
         factory.provideFactory().create(KriCoachViewModel::class.java)

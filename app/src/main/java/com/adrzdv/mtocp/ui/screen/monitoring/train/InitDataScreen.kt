@@ -1,7 +1,5 @@
 package com.adrzdv.mtocp.ui.screen.monitoring.train
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -19,12 +17,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.AppBar
 import com.adrzdv.mtocp.ui.component.dialogs.AddWorkerDialog
@@ -33,9 +28,7 @@ import com.adrzdv.mtocp.ui.component.newelements.AppTimePicker
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.navigation.Screen
-import com.adrzdv.mtocp.ui.screen.component.InitDataScreenContent
 import com.adrzdv.mtocp.ui.theme.AppColors
-import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainOrderViewModel
 import java.time.Instant
@@ -51,14 +44,8 @@ fun InitDataTrainMonitoringScreen(
     depotAutocompleteViewModel: AutocompleteViewModel,
     navController: NavHostController
 ) {
-    LaunchedEffect(Unit) {
-        trainOrderViewModel.createOrder()
-        trainOrderViewModel.createInitialState()
-    }
-
     val state by trainOrderViewModel.orderState.collectAsState()
     val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
-
     val datePickerState = rememberDatePickerState()
     val timePickerState = rememberTimePickerState().apply { is24hour = true }
     val snackbarHostState = remember { SnackbarHostState() }
@@ -77,13 +64,7 @@ fun InitDataTrainMonitoringScreen(
         containerColor = AppColors.SURFACE_COLOR.color,
         topBar = {
             AppBar(
-                title = {
-                    Spacer(modifier = Modifier.height(0.dp))
-                    Text(
-                        text = stringResource(id = R.string.start_revision_text),
-                        style = AppTypography.titleLarge
-                    )
-                },
+                title = stringResource(R.string.start_revision_text),
                 navigationIcon = {
                     IconButton(onClick = {
                         navController.popBackStack()
@@ -104,7 +85,7 @@ fun InitDataTrainMonitoringScreen(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_save_32_white),
-                            contentDescription = stringResource(R.string.menu_string)
+                            contentDescription = stringResource(R.string.save_string)
                         )
                     }
                 }
@@ -117,7 +98,6 @@ fun InitDataTrainMonitoringScreen(
             state = state,
             trainOrderViewModel = trainOrderViewModel,
             autocompleteViewModel = autocompleteViewModel,
-            navController = navController,
             innerPadding = innerPadding,
             formatter = formatter
         )

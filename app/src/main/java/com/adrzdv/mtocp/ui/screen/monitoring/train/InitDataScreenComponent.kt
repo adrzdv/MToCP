@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.screen.component
+package com.adrzdv.mtocp.ui.screen.monitoring.train
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,7 +20,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.ui.component.buttons.SplitButton
@@ -44,7 +43,6 @@ fun InitDataScreenContent(
     state: TrainOrderState,
     trainOrderViewModel: TrainOrderViewModel,
     autocompleteViewModel: AutocompleteViewModel,
-    navController: NavHostController,
     innerPadding: PaddingValues,
     formatter: DateTimeFormatter
 ) {
@@ -73,7 +71,9 @@ fun InitDataScreenContent(
                         }
                     }
                 },
-                onValueChange = { trainOrderViewModel.onNumberChange(it) },
+                onValueChange = {
+                    trainOrderViewModel.onNumberChange(it)
+                },
                 isError = state.numberError?.isNotEmpty() == true,
                 errorText = state.numberError,
                 label = stringResource(R.string.order_number_hint)
@@ -156,7 +156,9 @@ fun InitDataScreenContent(
             InfoBlock(
                 text = stringResource(R.string.add_crew_description)
             )
-            BlancInfoBlock {
+            BlancInfoBlock(
+                isError = state.emptyCrewError?.isNotBlank() == true
+            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),

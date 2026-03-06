@@ -196,4 +196,6 @@
     <string name="empty_crew">Отсутствуют руководители проверки</string>
     <string name="validation_error">Ошибка валидации введенных данных</string>
 
+    <string name="empty"> </string>
+
 </resources>

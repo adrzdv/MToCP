@@ -17,7 +17,6 @@ import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.ui.screen.InfoCatalogScreen
-import com.adrzdv.mtocp.ui.screen.MonitoringTrainInProgress
 import com.adrzdv.mtocp.ui.screen.NewRevisionScreen
 import com.adrzdv.mtocp.ui.screen.RegisterScreen
 import com.adrzdv.mtocp.ui.screen.RequestWebScreen
@@ -25,6 +24,7 @@ import com.adrzdv.mtocp.ui.screen.ServiceScreen
 import com.adrzdv.mtocp.ui.screen.SplashScreen
 import com.adrzdv.mtocp.ui.screen.StartMenuScreen
 import com.adrzdv.mtocp.ui.screen.monitoring.train.InitDataTrainMonitoringScreen
+import com.adrzdv.mtocp.ui.screen.monitoring.train.MonitoringTrainInProgress
 import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
 import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelLocator
 import com.adrzdv.mtocp.util.DirectoryHandler
@@ -132,7 +132,6 @@ fun NavGraphBuilder.newRevisionDestination(
 ) {
     composable(Screen.NewRevision.route) { backStackEntry ->
         NewRevisionScreen(
-            navController = navController,
             onBackClick = { navController.popBackStack() },
             onTrainRevisionClick = { navController.navigate(Screen.StartTrainRevision.route) },
             onTicketOfficeRevisionClick = { },

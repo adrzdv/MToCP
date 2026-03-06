@@ -23,6 +23,10 @@ class TrainOrderViewModel(
     val getDepotByNameUseCase: GetDepotByNameUseCase,
     val getTrainByNumberUseCase: GetTrainByNumberUseCase
 ) : BaseOrderViewModel<TrainOrderState, TrainOrder>(appDependencies) {
+    init {
+        createOrder()
+        createInitialState()
+    }
 
     override fun createOrder(): TrainOrder {
         return TrainOrder(

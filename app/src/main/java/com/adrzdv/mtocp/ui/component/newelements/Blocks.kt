@@ -24,6 +24,7 @@ fun InfoBlock(
 ) {
     Box(
         modifier = modifier
+            .fillMaxWidth()
             .padding(8.dp)
             .background(
                 color = AppColors.MAIN_COLOR.color,
@@ -48,6 +49,7 @@ fun InfoBlock(
 
 @Composable
 fun BlancInfoBlock(
+    isError: Boolean = false,
     content: @Composable () -> Unit = {}
 ) {
     Box(
@@ -60,7 +62,7 @@ fun BlancInfoBlock(
             )
             .border(
                 width = 1.dp,
-                color = AppColors.MAIN_COLOR.color,
+                color = if (isError) AppColors.ERROR_COLOR.color else AppColors.MAIN_COLOR.color,
                 shape = RoundedCornerShape(4.dp)
             )
             .padding(16.dp),
