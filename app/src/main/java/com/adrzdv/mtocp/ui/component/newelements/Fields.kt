@@ -52,7 +52,7 @@ fun InputTextField(
         readOnly = readOnly ?: false,
         trailingIcon = {
             val iconColor =
-                if (isError && errorText?.isNotBlank() == true)
+                if (isError)
                     AppColors.ERROR_COLOR.color
                 else
                     AppColors.MAIN_COLOR.color
@@ -64,9 +64,9 @@ fun InputTextField(
         },
         isError = isError,
         supportingText = {
-            if (isError && errorText?.isNotBlank() == true) {
+            if (isError) {
                 Text(
-                    text = errorText,
+                    text = errorText ?: "",
                     color = AppColors.ERROR_COLOR.color,
                     style = AppTypography.labelSmall
                 )
@@ -115,13 +115,13 @@ fun InputTextField(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropdownField(
+    modifier: Modifier = Modifier,
     source: List<String>,
     selected: String,
     isError: Boolean,
     errorMessage: String?,
     label: String?,
-    onOptionSelected: (String) -> Unit,
-    modifier: Modifier = Modifier
+    onOptionSelected: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     ExposedDropdownMenuBox(
@@ -211,7 +211,7 @@ fun AutocompleteField(
     trailingIcon: (@Composable () -> Unit)? = null,
     label: String,
     isError: Boolean,
-    enabled: Boolean,
+    enabled: Boolean = true,
     error: String?,
     modifier: Modifier = Modifier
 ) {

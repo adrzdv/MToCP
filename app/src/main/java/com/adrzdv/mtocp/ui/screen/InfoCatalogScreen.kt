@@ -44,6 +44,7 @@ import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
 import kotlinx.coroutines.launch
 
+//TODO: Redev TopAppBar using custom composable
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InfoCatalogScreen(

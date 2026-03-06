@@ -177,6 +177,9 @@ fun InitDataScreenContent(
             )
         }
         item {
+            InfoBlock(
+                text = stringResource(R.string.add_crew_description)
+            )
             BlancInfoBlock {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -218,13 +221,11 @@ fun InitDataScreenContent(
                     SplitButton(
                         actions = mapOf(
                             stringResource(R.string.add_string) to Pair(
-                                painterResource(R.drawable.ic_add_person),
-                                { }
-                            ),
+                                painterResource(R.drawable.ic_add_person)
+                            ) { trainOrderViewModel.onShowDialog() },
                             stringResource(R.string.clean_string) to Pair(
-                                painterResource(R.drawable.ic_clear_list),
-                                { }
-                            )
+                                painterResource(R.drawable.ic_clear_list)
+                            ) { trainOrderViewModel.onClearCrew() }
                         )
                     )
                 }
@@ -233,7 +234,7 @@ fun InitDataScreenContent(
         items(state.crewList.values.toList()) { worker ->
             WorkerCard(
                 worker = worker,
-                onDeleteClick = { }
+                onDeleteClick = { trainOrderViewModel.onDeletePersonCrew(worker) }
             )
         }
     }

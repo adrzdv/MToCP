@@ -48,7 +48,7 @@ import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.theme.CustomTypography
-import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.AutocompleteViewModelJvm
 import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 import kotlinx.coroutines.launch
 import java.text.ParseException
@@ -56,10 +56,11 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
+@Deprecated("for remove")
 @Composable
 fun StartRevisionScreen(
     orderViewModel: OrderViewModel,
-    autocompleteViewModel: AutocompleteViewModel,
+    autocompleteViewModelJvm: AutocompleteViewModelJvm,
     orderTypes: List<String>,
     navController: NavController,
     onBackClick: () -> Unit
@@ -74,8 +75,8 @@ fun StartRevisionScreen(
     var isTypeError by remember { mutableStateOf(false) }
     var isObjectNumberError by remember { mutableStateOf(false) }
     //Other val/var
-    val query by autocompleteViewModel.query.observeAsState("")
-    val suggestions by autocompleteViewModel.filteredItems.observeAsState(emptyList())
+    val query by autocompleteViewModelJvm.query.observeAsState("")
+    val suggestions by autocompleteViewModelJvm.filteredItems.observeAsState(emptyList())
     val format = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
     val localDateTimeFormater = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
     val context = LocalContext.current
@@ -265,7 +266,7 @@ fun StartRevisionScreen(
                         selectedOrderType = it
                         isTypeError = false
                         orderViewModel.selectedType = OrdersTypes.getFromString(it)
-                        autocompleteViewModel.setOrderType(OrdersTypes.getFromString(it))
+                        autocompleteViewModelJvm.setOrderType(OrdersTypes.getFromString(it))
                     }
                 )
             }
@@ -282,7 +283,7 @@ fun StartRevisionScreen(
                         query = query,
                         suggestions = suggestions,
                         onQueryChanged = { input ->
-                            autocompleteViewModel.onQueryChanged(input)
+                            autocompleteViewModelJvm.onQueryChanged(input)
                         },
                         onSuggestionSelected = { selected ->
                             selectedObjectNumber = selected

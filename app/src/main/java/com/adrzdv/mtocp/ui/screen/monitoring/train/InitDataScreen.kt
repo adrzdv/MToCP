@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.AppBar
+import com.adrzdv.mtocp.ui.component.dialogs.AddWorkerDialog
 import com.adrzdv.mtocp.ui.component.newelements.AppDatePicker
 import com.adrzdv.mtocp.ui.component.newelements.AppTimePicker
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
@@ -44,6 +45,7 @@ import java.time.format.DateTimeFormatter
 fun InitDataTrainMonitoringScreen(
     trainOrderViewModel: TrainOrderViewModel,
     autocompleteViewModel: AutocompleteViewModel,
+    depotAutocompleteViewModel: AutocompleteViewModel,
     navController: NavHostController
 ) {
     LaunchedEffect(Unit) {
@@ -75,6 +77,18 @@ fun InitDataTrainMonitoringScreen(
                     }) {
                         Icon(
                             painter = painterResource(R.drawable.ic_back_32_white),
+                            contentDescription = stringResource(R.string.menu_string)
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(
+                        onClick = {
+
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_save_32_white),
                             contentDescription = stringResource(R.string.menu_string)
                         )
                     }
@@ -143,6 +157,17 @@ fun InitDataTrainMonitoringScreen(
                     state = timePickerState
                 )
             }
+        }
+
+        if (state.showDialogs) {
+            AddWorkerDialog(
+                onWorkerAdd = { worker -> trainOrderViewModel.onAddPersonCrew(worker) },
+                onDismiss = {
+                    trainOrderViewModel.onDismissDialog()
+                    depotAutocompleteViewModel.onQueryChange("")
+                },
+                depotAutocompleteViewModel = depotAutocompleteViewModel,
+            )
         }
     }
 }

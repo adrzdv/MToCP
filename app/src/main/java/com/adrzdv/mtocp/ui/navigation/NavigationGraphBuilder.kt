@@ -164,6 +164,7 @@ fun NavGraphBuilder.trainRevisionStartDestination(
         InitDataTrainMonitoringScreen(
             viewModelLocator.getTrainOrderViewModel(backStackEntry),
             viewModelLocator.getTainAutocompleteViewModel(backStackEntry),
+            viewModelLocator.getDepotAutocompleteViewModel(backStackEntry),
             navController = navController
         )
     }

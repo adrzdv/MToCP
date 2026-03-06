@@ -18,7 +18,7 @@ fun FloatingSaveButton(
     ExtendedFloatingActionButton(
         onClick = onClick,
         contentColor = Color.White,
-        containerColor = AppColors.MAIN_GREEN.color,
+        containerColor = AppColors.MAIN_COLOR.color,
         icon = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_save_32_white),

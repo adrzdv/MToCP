@@ -38,13 +38,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.adrzdv.mtocp.AppOld
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.usecase.DeleteViolationPhotoUseCase
-import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
 import com.adrzdv.mtocp.mapper.ViolationMapper
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
 import com.adrzdv.mtocp.ui.component.DropdownMenuField
@@ -60,10 +58,10 @@ import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.model.AdditionalParamViewModel
-import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
-import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.PassengerCoachViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
 import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelFactoryProviderOld
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -80,11 +78,12 @@ fun MonitoringCoachScreen(
         factory = AssistedViewModelFactory {
             PassengerCoachViewModel(
                 initCoach = coach as PassengerCar,
-                onSaveCallback = { updated ->
-                    orderViewModel.updateRevisionObject(updated)
-                    navController.popBackStack()
+                onSaveCallback = {
+//                    updated ->
+//                    orderViewModel.updateRevisionObject(updated)
+//                    navController.popBackStack()
                 },
-                getDepotByNameUseCase = GetDepotByNameUseCase(AppOld.getInstance().appDependencies.depotRepo),
+                getDepotByNameUseCase = null,
                 deleteViolationPhotoUseCase = DeleteViolationPhotoUseCase()
             )
         }
