@@ -25,19 +25,19 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class PassengerCoachViewModel(
-    private val initCoach: PassengerCar,
-    private val onSaveCallback: (PassengerCar) -> Unit,
-    private val getDepotByNameUseCase: GetDepotByNameUseCase,
-    private val deleteViolationPhotoUseCase: DeleteViolationPhotoUseCase
+    private val initCoach: PassengerCar?,
+    private val onSaveCallback: (PassengerCar) -> Unit?,
+    private val getDepotByNameUseCase: GetDepotByNameUseCase?,
+    private val deleteViolationPhotoUseCase: DeleteViolationPhotoUseCase?
 ) : ViewModel() {
     private val _state = mutableStateOf(
         PassengerCoachState(
-            idWorker = initCoach.worker?.id?.toString() ?: "",
-            nameWorker = initCoach.worker?.name,
-            typeWorker = initCoach.worker?.workerType?.description,
-            depotWorker = (initCoach.worker as? InnerWorkerDomain)?.depotDomain?.name,
-            violations = initCoach.violationMap,
-            statParams = initCoach.additionalParams
+            idWorker = initCoach?.worker?.id?.toString() ?: "",
+            nameWorker = initCoach?.worker?.name,
+            typeWorker = initCoach?.worker?.workerType?.description,
+            depotWorker = (initCoach?.worker as? InnerWorkerDomain)?.depotDomain?.name,
+            violations = initCoach?.violationMap,
+            statParams = initCoach?.additionalParams
         )
     )
     private val _snackbarMessage = MutableStateFlow<String?>(null)
@@ -51,7 +51,7 @@ class PassengerCoachViewModel(
     fun cleanViolations(orderNumber: String) {
         val updatedMap = _state.value.violations?.toMutableMap()
         for (violation in updatedMap?.values!!) {
-            deletePhotoViolation(violation.code, initCoach.number, orderNumber)
+            deletePhotoViolation(violation.code, initCoach?.number, orderNumber)
         }
         updatedMap.clear()
         updateState(violations = updatedMap)
@@ -106,7 +106,7 @@ class PassengerCoachViewModel(
     }
 
     fun addAdditionalParams(statparams: Map<String, StaticsParam>) {
-        initCoach.additionalParams = statparams
+        initCoach?.additionalParams = statparams
         _state.value = _state.value.copy(
             statParams = statparams
         )
@@ -123,7 +123,7 @@ class PassengerCoachViewModel(
 
     fun deleteViolation(code: Int, orderNumber: String) {
         val updatedMap = _state.value.violations?.toMutableMap()
-        deletePhotoViolation(code, initCoach.number, orderNumber)
+        deletePhotoViolation(code, initCoach?.number, orderNumber)
         updatedMap?.remove(code)
         updateState(
             violations = updatedMap
@@ -208,28 +208,28 @@ class PassengerCoachViewModel(
                             current.statParams?.let { currParams ->
                                 val workerType = WorkerTypes.entries.find { it.description == type }
                                 current.depotWorker?.let { depot ->
-                                    val depotDomain = getDepotByNameUseCase(depot, false)
+                                    val depotDomain = getDepotByNameUseCase?.invoke(depot, false)
                                     val worker = InnerWorkerDomain(
                                         id.toInt(),
                                         name,
                                         depotDomain,
                                         workerType
                                     )
-                                    val updatedCoach = PassengerCar(initCoach.number).apply {
-                                        this.coachRoute = initCoach.coachRoute
-                                        this.depotDomain = initCoach.depotDomain
-                                        this.coachType = initCoach.coachType
-                                        this.trailing = initCoach.trailing
-                                        this.revisionDateStart = initCoach.revisionDateStart
-                                        if (initCoach.revisionDateEnd == null) {
+                                    val updatedCoach = PassengerCar(initCoach?.number).apply {
+                                        this.coachRoute = initCoach?.coachRoute
+                                        this.depotDomain = initCoach?.depotDomain
+                                        this.coachType = initCoach?.coachType
+                                        this.trailing = initCoach?.trailing
+                                        this.revisionDateStart = initCoach?.revisionDateStart
+                                        if (initCoach?.revisionDateEnd == null) {
                                             this.revisionDateEnd = LocalDateTime.now()
                                         } else {
                                             this.revisionDateEnd = initCoach.revisionDateEnd
                                         }
                                         this.additionalParams = currParams
-                                        this.depotDomain = initCoach.depotDomain
+                                        this.depotDomain = initCoach?.depotDomain
                                         this.worker = worker
-                                        this.qualityPassport = initCoach.qualityPassport
+                                        this.qualityPassport = initCoach?.qualityPassport
                                         this.violationMap = currViolations
                                     }
                                     onSaveCallback(updatedCoach)
@@ -271,9 +271,9 @@ class PassengerCoachViewModel(
         )
     }
 
-    private fun deletePhotoViolation(code: Int, coachNumber: String, orderNumber: String) {
+    private fun deletePhotoViolation(code: Int, coachNumber: String?, orderNumber: String) {
         viewModelScope.launch {
-            deleteViolationPhotoUseCase.invoke(code, orderNumber, coachNumber)
+            deleteViolationPhotoUseCase?.invoke(code, orderNumber, coachNumber)
         }
     }
 }

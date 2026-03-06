@@ -24,8 +24,8 @@ public class ViewModelFactoryProviderOld {
 
         creators.put(ViolationViewModel.class,
                 () -> new ViolationViewModel(AppOld.getInstance().getAppDependencies().getViolationRepo()));
-        creators.put(DepotViewModel.class,
-                () -> new DepotViewModel(AppOld.getInstance().getAppDependencies().getDepotRepo()));
+//        creators.put(DepotViewModel.class,
+//                () -> new DepotViewModel(AppOld.getInstance().getAppDependencies().getDepotRepo()));
         creators.put(CompanyViewModel.class,
                 () -> new CompanyViewModel(AppOld.getInstance().getAppDependencies().getCompanyRepo()));
         creators.put(AutocompleteViewModel.class,
