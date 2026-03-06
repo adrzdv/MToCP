@@ -54,6 +54,10 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>().configureEa
     }
 }
 
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
 kotlin {
     jvmToolchain(17)
 }
@@ -78,7 +82,6 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.recyclerview)
     implementation(libs.room.ktx)
-    testImplementation(libs.junit.jupiter)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     val composeBom = platform("androidx.compose:compose-bom:2024.09.00")
@@ -108,7 +111,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation("androidx.room:room-runtime:$roomVersion")
 
-    testImplementation(libs.junit)
+    //testImplementation(libs.junit)
 
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -122,5 +125,10 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.2.1")
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 }
