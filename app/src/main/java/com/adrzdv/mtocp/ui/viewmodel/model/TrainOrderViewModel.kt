@@ -104,16 +104,19 @@ class TrainOrderViewModel(
         val emptyCrewList = appDependencies.stringProvider.getString(R.string.empty_crew)
         updateState { current ->
             current.copy(
-                numberError = if (orderState.value.orderNumber.isBlank())
+                numberError = if (!orderState.value.isOrderNumberValid)
                     emptyStringError
                 else null,
                 conditionsError = if (orderState.value.orderConditions == null)
                     emptyStringError
                 else null,
-                routeError = if (orderState.value.route.isBlank())
+                routeError = if (!orderState.value.isRouteValid)
                     emptyStringError
                 else null,
-                dateEndError = if (orderState.value.dateEnd.equals(LocalDateTime.now()))
+                dateStartError = if (!orderState.value.isDateStartValid)
+                    incorrectDate
+                else null,
+                dateEndError = if (!orderState.value.isDateEndValid)
                     incorrectDate
                 else null,
                 emptyCrewError = if (orderState.value.crewList.isEmpty())
