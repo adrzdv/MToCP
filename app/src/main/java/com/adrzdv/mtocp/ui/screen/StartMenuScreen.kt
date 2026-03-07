@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -65,14 +64,7 @@ fun StartMenuScreen(
         containerColor = AppColors.BACKGROUND_COLOR.color,
         topBar = {
             AppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.main_menu_text),
-                        style = AppTypography.titleLarge,
-                        color = AppColors.SURFACE_COLOR.color
-                    )
-                    Spacer(modifier = Modifier.height(0.dp))
-                },
+                title = stringResource(R.string.main_menu_text),
                 actions = {
                     IconButton(
                         onClick = onServiceMenuClick

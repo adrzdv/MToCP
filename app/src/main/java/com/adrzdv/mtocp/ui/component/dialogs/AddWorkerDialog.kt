@@ -1,12 +1,15 @@
 package com.adrzdv.mtocp.ui.component.dialogs
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -14,11 +17,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
+import com.adrzdv.mtocp.ui.component.dialogs.sys.AppIconTitleDialog
 import com.adrzdv.mtocp.ui.component.newelements.AutocompleteField
 import com.adrzdv.mtocp.ui.component.newelements.ClearIcon
 import com.adrzdv.mtocp.ui.component.newelements.DropdownField
@@ -29,6 +36,7 @@ import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.validation.Validator
 import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
+
 
 @Composable
 fun AddWorkerDialog(
@@ -48,120 +56,115 @@ fun AddWorkerDialog(
             selectedPosition != null &&
             selectedDepot.isNotBlank()
 
-    AlertDialog(
+    AppIconTitleDialog(
+        icon = painterResource(R.drawable.ic_add_person),
         onDismissRequest = onDismiss,
-        containerColor = AppColors.SURFACE_COLOR.color,
-        confirmButton = {
-            Button(
-                onClick = {
-                    selectedPosition?.let { position ->
-                        onWorkerAdd(
-                            WorkerUI(
-                                tabNumber.toInt(),
-                                name,
-                                position.description,
-                                selectedDepot
-                            )
-                        )
-                    }
-                    onDismiss()
-                },
-                colors = ButtonDefaults
-                    .buttonColors(containerColor = AppColors.MAIN_COLOR.color),
-                border = null,
-                enabled = isFormValid
-            ) {
-                Text(
-                    stringResource(R.string.add_string),
-                    style = AppTypography.bodyMedium
-                )
-            }
-        },
         dismissButton = {
             RoundedUnborderedButton(
                 onClick = onDismiss,
                 stringResource(R.string.cancel)
             )
         },
-        title = {
-            Text(
-                text = stringResource(R.string.new_worker),
-                style = AppTypography.titleMedium
+        confirmButton =
+            {
+                Button(
+                    onClick = {
+                        selectedPosition?.let { position ->
+                            onWorkerAdd(
+                                WorkerUI(
+                                    tabNumber.toInt(),
+                                    name,
+                                    position.description,
+                                    selectedDepot
+                                )
+                            )
+                        }
+                        onDismiss()
+                    },
+                    colors = ButtonDefaults
+                        .buttonColors(containerColor = AppColors.MAIN_COLOR.color),
+                    border = null,
+                    enabled = isFormValid
+                ) {
+                    Text(
+                        stringResource(R.string.add_string),
+                        style = AppTypography.bodyMedium
+                    )
+                }
+            },
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            InputTextField(
+                value = tabNumber,
+                onValueChange = {
+                    tabNumber = it
+                },
+                isError = isSubmitClicked && tabNumber.isBlank(),
+                errorText = stringResource(R.string.empty_string),
+                label = stringResource(R.string.worker_id),
+                trailingIcon = {
+                    if (tabNumber.isNotEmpty()) {
+                        ClearIcon(onClick = { tabNumber = "" })
+                    }
+                }
             )
-        },
-        text = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                InputTextField(
-                    value = tabNumber,
-                    onValueChange = {
-                        tabNumber = it
-                    },
-                    isError = tabNumber.isBlank(),
-                    errorText = stringResource(R.string.empty_string),
-                    label = stringResource(R.string.worker_id),
-                    trailingIcon = {
-                        if (tabNumber.isNotEmpty()) {
-                            ClearIcon(onClick = { tabNumber = "" })
+
+            InputTextField(
+                value = name,
+                onValueChange = {
+                    name = it
+                },
+                isError = isSubmitClicked
+                        && name.isBlank()
+                        && !Validator.validateWorkerName(name),
+                errorText = stringResource(R.string.empty_string),
+                label = stringResource(R.string.worker_name),
+                trailingIcon = {
+                    if (name.isNotEmpty()) {
+                        ClearIcon { name = "" }
+                    }
+                }
+            )
+
+            DropdownField(
+                source = WorkerTypes.entries.map { it.description },
+                selected = selectedPosition?.description ?: "",
+                isError = isSubmitClicked && (selectedPosition == null),
+                errorMessage = stringResource(R.string.empty_string),
+                label = stringResource(R.string.worker_type),
+                onOptionSelected = { selected ->
+                    selectedPosition = WorkerTypes.entries.firstOrNull {
+                        it.description == selected
+                    }
+                }
+            )
+
+            AutocompleteField(
+                value = queryDepot,
+                source = suggestionsDepot,
+                onValueChange = { input ->
+                    depotAutocompleteViewModel.onQueryChange(input)
+                },
+                onValueSelected = { selected ->
+                    selectedDepot = selected
+                },
+                trailingIcon = {
+                    if (queryDepot.isNotEmpty()) {
+                        ClearIcon {
+                            depotAutocompleteViewModel.onQueryChange("")
+                            selectedDepot = ""
                         }
                     }
-                )
-
-                InputTextField(
-                    value = name,
-                    onValueChange = {
-                        name = it
-                    },
-                    isError = name.isNotBlank()
-                            && !Validator.validateWorkerName(name),
-                    errorText = stringResource(R.string.empty_string),
-                    label = stringResource(R.string.worker_name),
-                    trailingIcon = {
-                        if (name.isNotEmpty()) {
-                            ClearIcon { name = "" }
-                        }
-                    }
-                )
-
-                DropdownField(
-                    source = WorkerTypes.entries.map { it.description },
-                    selected = selectedPosition?.description ?: "",
-                    isError = isSubmitClicked && (selectedPosition == null),
-                    errorMessage = stringResource(R.string.empty_string),
-                    label = stringResource(R.string.worker_type),
-                    onOptionSelected = { selected ->
-                        selectedPosition = WorkerTypes.entries.firstOrNull {
-                            it.description == selected
-                        }
-                    }
-                )
-
-                AutocompleteField(
-                    value = queryDepot,
-                    source = suggestionsDepot,
-                    onValueChange = { input ->
-                        depotAutocompleteViewModel.onQueryChange(input)
-                    },
-                    onValueSelected = { selected ->
-                        selectedDepot = selected
-                    },
-                    trailingIcon = {
-                        if (queryDepot.isNotEmpty()) {
-                            ClearIcon {
-                                depotAutocompleteViewModel.onQueryChange("")
-                                selectedDepot = ""
-                            }
-                        }
-                    },
-                    label = stringResource(R.string.worker_depot),
-                    isError = isSubmitClicked && selectedDepot.isEmpty(),
-                    error = stringResource(R.string.empty_string)
-                )
-            }
+                },
+                label = stringResource(R.string.worker_depot),
+                isError = isSubmitClicked && selectedDepot.isEmpty(),
+                error = stringResource(R.string.empty_string)
+            )
         }
-    )
+    }
 }

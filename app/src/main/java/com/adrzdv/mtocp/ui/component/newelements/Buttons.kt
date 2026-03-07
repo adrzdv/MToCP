@@ -104,6 +104,34 @@ fun RoundedButton(
 }
 
 @Composable
+fun SquaredMediumButton(
+    onClick: () -> Unit,
+    text: String,
+    icon: (@Composable () -> Unit)? = null
+) {
+    OutlinedButton(
+        onClick = onClick,
+        colors = ButtonDefaults
+            .buttonColors(containerColor = AppColors.MAIN_COLOR.color),
+        shape = RoundedCornerShape(12.dp),
+        border = null,
+        modifier = Modifier.padding(4.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            icon?.invoke()
+            Text(
+                text = text,
+                style = AppTypography.labelSmall,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
 fun RoundedUnborderedButton(
     onClick: () -> Unit,
     text: String

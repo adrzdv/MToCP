@@ -130,7 +130,7 @@ fun AddTempTrainDialog(
     fun addTempTrain() {
         val depot: DepotDomain = depotVM.getDepotDomain(trainDepot)
         val tempTrain: TrainDomain =
-            TrainDomain(trainNumber, trainRoute, depot, false, false, false)
+            TrainDomain(trainNumber, trainRoute, depot)
         orderVM.setObjectNumber(trainNumber)
     }
 
