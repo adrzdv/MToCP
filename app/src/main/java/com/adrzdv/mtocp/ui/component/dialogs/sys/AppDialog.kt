@@ -20,42 +20,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 @Composable
-internal fun IconDialogTitle(
-    icon: Painter
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(72.dp)
-            .background(
-                color = MaterialTheme.colorScheme.primary,
-                shape = RoundedCornerShape(
-                    topStart = 16.dp,
-                    topEnd = 16.dp
-                )
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-
-        Icon(
-            painter = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onPrimary,
-            modifier = Modifier.padding(8.dp)
-        )
-    }
-}
-
-@Composable
 fun AppIconTitleDialog(
     icon: Painter,
-    onDismissRequest: () -> Unit,
+    onDismissRequest: (() -> Unit)? = null,
     confirmButton: @Composable () -> Unit,
     dismissButton: (@Composable () -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
     Dialog(
-        onDismissRequest = onDismissRequest
+        onDismissRequest = { onDismissRequest?.invoke() }
     ) {
         Surface(
             shape = RoundedCornerShape(16.dp),
@@ -85,12 +58,40 @@ fun AppIconTitleDialog(
                             end = 16.dp,
                             bottom = 16.dp
                         ),
-                    horizontalArrangement = Arrangement.End
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     dismissButton?.invoke()
                     confirmButton()
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun IconDialogTitle(
+    icon: Painter
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(72.dp)
+            .background(
+                color = MaterialTheme.colorScheme.primary,
+                shape = RoundedCornerShape(
+                    topStart = 16.dp,
+                    topEnd = 16.dp
+                )
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+
+        Icon(
+            painter = icon,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onPrimary,
+            modifier = Modifier.padding(8.dp)
+        )
     }
 }

@@ -1,5 +1,7 @@
 package com.adrzdv.mtocp.ui.screen.monitoring.train
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -16,19 +18,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.AppBar
 import com.adrzdv.mtocp.ui.component.dialogs.AddWorkerDialog
+import com.adrzdv.mtocp.ui.component.dialogs.sys.AppIconTitleDialog
 import com.adrzdv.mtocp.ui.component.newelements.AppDatePicker
 import com.adrzdv.mtocp.ui.component.newelements.AppTimePicker
+import com.adrzdv.mtocp.ui.component.newelements.RoundedUnborderedButton
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.navigation.Screen
 import com.adrzdv.mtocp.ui.theme.AppColors
+import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainOrderViewModel
 import java.time.Instant
@@ -50,6 +58,7 @@ fun InitDataTrainMonitoringScreen(
     val timePickerState = rememberTimePickerState().apply { is24hour = true }
     val snackbarHostState = remember { SnackbarHostState() }
     val snackbarMessage by trainOrderViewModel.snackbarMessage.collectAsState()
+    var showContinueDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(snackbarMessage) {
         snackbarMessage?.let { message ->
@@ -78,9 +87,7 @@ fun InitDataTrainMonitoringScreen(
                 actions = {
                     IconButton(
                         onClick = {
-                            if (trainOrderViewModel.onSave()) {
-                                navController.navigate(Screen.MonitoringTrainInProgress.route)
-                            }
+                            showContinueDialog = true
                         }
                     ) {
                         Icon(
@@ -163,6 +170,36 @@ fun InitDataTrainMonitoringScreen(
                 },
                 depotAutocompleteViewModel = depotAutocompleteViewModel,
             )
+        }
+
+        if (showContinueDialog) {
+            AppIconTitleDialog(
+                icon = rememberVectorPainter(Icons.Default.QuestionMark),
+                confirmButton = {
+                    RoundedUnborderedButton(
+                        onClick = {
+                            if (trainOrderViewModel.onSave()) {
+                                navController.navigate(Screen.MonitoringTrainInProgress.route)
+                            }
+                        },
+                        text = stringResource(R.string.yes_string)
+                    )
+
+                },
+                dismissButton = {
+                    RoundedUnborderedButton(
+                        onClick = { showContinueDialog = false },
+                        text = stringResource(R.string.no_string)
+
+                    )
+                }
+            ) {
+                Text(
+                    stringResource(R.string.ask_train_scheme),
+                    style = AppTypography.bodyMedium,
+                    color = AppColors.MAIN_COLOR.color
+                )
+            }
         }
     }
 }
