@@ -104,39 +104,37 @@ class TrainOrderViewModel(
         val emptyCrewList = appDependencies.stringProvider.getString(R.string.empty_crew)
         updateState { current ->
             current.copy(
-                numberError = if (!orderState.value.isOrderNumberValid)
+                numberError = if (!current.isOrderNumberValid)
                     emptyStringError
                 else null,
-                conditionsError = if (orderState.value.orderConditions == null)
+                conditionsError = if (current.orderConditions == null)
                     emptyStringError
                 else null,
-                routeError = if (!orderState.value.isRouteValid)
+                routeError = if (!current.isRouteValid)
                     emptyStringError
                 else null,
-                dateStartError = if (!orderState.value.isDateStartValid)
+                dateStartError = if (!current.isDateStartValid)
                     incorrectDate
                 else null,
-                dateEndError = if (!orderState.value.isDateEndValid)
+                dateEndError = if (!current.isDateEndValid)
                     incorrectDate
                 else null,
-                emptyCrewError = if (orderState.value.crewList.isEmpty())
+                emptyCrewError = if (current.crewList.isEmpty())
                     emptyCrewList
                 else null,
-                emptyTrainError = if (orderState.value.train.number.isEmpty())
+                emptyTrainError = if (current.train.number.isEmpty())
                     emptyStringError
                 else null
             )
         }
 
         if (orderState.value.isOrderReadyForSave) {
-            viewModelScope.launch {
-                domainOrder.number = orderState.value.orderNumber
-                domainOrder.route = orderState.value.route
-                domainOrder.revisionDateStart = orderState.value.dateStart
-                domainOrder.revisionDateEnd = orderState.value.dateEnd
-                domainOrder.revisionType = orderState.value.orderConditions
-                domainOrder.setIsQualityPassport(orderState.value.isQualityPassport)
-            }
+            domainOrder.number = orderState.value.orderNumber
+            domainOrder.route = orderState.value.route
+            domainOrder.revisionDateStart = orderState.value.dateStart
+            domainOrder.revisionDateEnd = orderState.value.dateEnd
+            domainOrder.revisionType = orderState.value.orderConditions
+            domainOrder.setIsQualityPassport(orderState.value.isQualityPassport)
             return true
         } else {
             _snackbarMessage.value = appDependencies.stringProvider
@@ -279,7 +277,6 @@ class TrainOrderViewModel(
             val trainDomain = getTrainByNumberUseCase.invoke(str.substringBefore(" "))
             domainOrder.collector = trainDomain
         }
-
     }
 
     fun onQualityPassportChange(checked: Boolean) {
