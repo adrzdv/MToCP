@@ -20,6 +20,8 @@ fun NavigationGraph(
         navController = navController,
         startDestination = Screen.Splash.route
     ) {
+        trainMonitoringGraph(navController, viewModelLocator, appDependencies)
+
         splashDestination(navController, appDependencies)
         mainMenuDestination(navController, appDependencies, version)
         authUserDestination(navController, viewModelLocator)
@@ -27,8 +29,12 @@ fun NavigationGraph(
         catalogsDestination(navController, viewModelLocator)
         newRevisionDestination(navController)
         requestsDestination(navController, appDependencies)
-        trainRevisionStartDestination(navController, viewModelLocator, appDependencies)
-        monitoringTrainInProgressDestination(navController, viewModelLocator, appDependencies)
+
+
+//        trainRevisionStartDestination(navController, viewModelLocator, appDependencies)
+//        monitoringTrainInProgressDestination(navController, viewModelLocator, appDependencies)
+//        editTrainScheme(navController, viewModelLocator)
+
 
         //Нужно подумать над целесообразностью такого экрана
         composable(Screen.Help.route) {

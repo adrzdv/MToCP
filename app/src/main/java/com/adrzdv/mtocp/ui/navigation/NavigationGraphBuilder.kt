@@ -25,6 +25,7 @@ import com.adrzdv.mtocp.ui.screen.SplashScreen
 import com.adrzdv.mtocp.ui.screen.StartMenuScreen
 import com.adrzdv.mtocp.ui.screen.monitoring.train.InitDataTrainMonitoringScreen
 import com.adrzdv.mtocp.ui.screen.monitoring.train.MonitoringTrainInProgress
+import com.adrzdv.mtocp.ui.screen.monitoring.train.TrainSchemeEditingScreen
 import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
 import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelLocator
 import com.adrzdv.mtocp.util.DirectoryHandler
@@ -155,33 +156,28 @@ fun NavGraphBuilder.requestsDestination(
     }
 }
 
-fun NavGraphBuilder.trainRevisionStartDestination(
-    navController: NavHostController,
-    viewModelLocator: ViewModelLocator,
-    appDependencies: AppDependencies
-) {
-    composable(Screen.StartTrainRevision.route) { backStackEntry ->
-        InitDataTrainMonitoringScreen(
-            viewModelLocator.getTrainOrderViewModel(backStackEntry),
-            viewModelLocator.getTainAutocompleteViewModel(backStackEntry),
-            viewModelLocator.getDepotAutocompleteViewModel(backStackEntry),
-            navController = navController
-        )
-    }
-}
-
-fun NavGraphBuilder.monitoringTrainInProgressDestination(
-    navController: NavHostController,
-    viewModelLocator: ViewModelLocator,
-    appDependencies: AppDependencies
-) {
-    composable(Screen.MonitoringTrainInProgress.route) { backStackEntry ->
-        MonitoringTrainInProgress(
-            navController = navController,
-            trainOrderViewModel = viewModelLocator.getTrainOrderViewModel(backStackEntry),
-        )
-    }
-}
+//fun NavGraphBuilder.trainRevisionStartDestination(
+//    navController: NavHostController,
+//    viewModelLocator: ViewModelLocator,
+//    appDependencies: AppDependencies
+//) {
+//
+//}
+//
+//fun NavGraphBuilder.monitoringTrainInProgressDestination(
+//    navController: NavHostController,
+//    viewModelLocator: ViewModelLocator,
+//    appDependencies: AppDependencies
+//) {
+//
+//}
+//
+//fun NavGraphBuilder.editTrainScheme(
+//    navController: NavHostController,
+//    viewModelLocator: ViewModelLocator
+//) {
+//
+//}
 
 private fun handleFilePickerResult(
     result: ActivityResult,
