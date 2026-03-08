@@ -52,6 +52,7 @@ import com.adrzdv.mtocp.ui.component.buttons.FloatingSaveButton
 import com.adrzdv.mtocp.ui.component.dialogs.AddTagDialog
 import com.adrzdv.mtocp.ui.component.dialogs.AddViolationToCoachDialog
 import com.adrzdv.mtocp.ui.component.dialogs.ChangeAmountDialog
+import com.adrzdv.mtocp.ui.component.newelements.FloatingButton
 import com.adrzdv.mtocp.ui.component.newelements.cards.ViolationCard
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
@@ -135,10 +136,11 @@ fun MonitoringCoachScreen(
     Scaffold(
         containerColor = AppColors.LIGHT_GRAY.color,
         floatingActionButton = {
-            FloatingSaveButton(
+            FloatingButton(
                 onClick = {
                     passengerCoachViewModel.onSave()
-                }
+                },
+                icon = { painterResource(R.drawable.ic_save_32_white) }
             )
         },
         snackbarHost = {

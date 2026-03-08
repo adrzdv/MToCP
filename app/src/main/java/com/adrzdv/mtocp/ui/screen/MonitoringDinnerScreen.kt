@@ -126,7 +126,8 @@ fun MonitoringDinnerScreen(
             FloatingSaveButton(
                 onClick = {
                     dinnerViewModel.onSave()
-                }
+                },
+                icon = {painterResource(R.drawable.ic_save_32_white)}
             )
         },
         snackbarHost = {

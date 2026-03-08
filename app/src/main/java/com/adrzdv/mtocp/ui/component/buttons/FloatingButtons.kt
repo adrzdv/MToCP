@@ -13,7 +13,8 @@ import com.adrzdv.mtocp.ui.theme.AppTypography
 
 @Composable
 fun FloatingSaveButton(
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    icon: @Composable () -> Unit
 ) {
     ExtendedFloatingActionButton(
         onClick = onClick,

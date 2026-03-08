@@ -13,7 +13,7 @@ data class TrainOrderState(
     override val route: String = "",
     val orderConditions: RevisionType? = null,
     val crewList: Map<Int, WorkerUI> = emptyMap(),
-    val coachList: Map<Int, CoachUi> = emptyMap(),
+    val coachList: Map<String, CoachUi> = emptyMap(),
     val train: TrainUI = TrainUI("", ""),
     val isQualityPassport: Boolean = false,
     val showDatePicker: Boolean = false,

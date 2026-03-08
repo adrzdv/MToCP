@@ -9,6 +9,8 @@ import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject
 import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
 import com.adrzdv.mtocp.domain.usecase.GetTrainByNumberUseCase
 import com.adrzdv.mtocp.mapper.WorkerMapper
+import com.adrzdv.mtocp.mapper.toDomain
+import com.adrzdv.mtocp.ui.model.statedtoui.CoachUi
 import com.adrzdv.mtocp.ui.model.statedtoui.TrainUI
 import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI
 import com.adrzdv.mtocp.ui.state.order.PickerField
@@ -48,17 +50,7 @@ class TrainOrderViewModel(
     override fun onNumberChange(number: String) {
         updateState { current ->
             current.copy(
-                orderNumber = number,
-                numberError = when {
-                    number.isEmpty() -> appDependencies.stringProvider
-                        .getString(R.string.empty_string)
-
-                    !current.isOrderNumberValid -> appDependencies
-                        .stringProvider
-                        .getString(R.string.number_pattern_error)
-
-                    else -> null
-                }
+                orderNumber = number
             )
         }
     }
@@ -99,6 +91,7 @@ class TrainOrderViewModel(
     }
 
     override fun onSave(): Boolean {
+
         val emptyStringError = appDependencies.stringProvider.getString(R.string.empty_string)
         val incorrectDate = appDependencies.stringProvider.getString(R.string.date_error)
         val emptyCrewList = appDependencies.stringProvider.getString(R.string.empty_crew)
@@ -303,22 +296,59 @@ class TrainOrderViewModel(
         }
     }
 
-    override fun addRevisionObjectInOrder(o: RevisionObject) {
-        TODO("Not yet implemented")
+    fun addCoachInOrder(coach: CoachUi) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val updatedCoach =
+                    if (coach.depot.isEmpty()) {
+                        val trainNumber = orderState.value.train.number.substringBefore(" ")
+                        val train = getTrainByNumberUseCase(trainNumber)
+                        val depotName = train.depot
+                        coach.copy(depot = depotName.shortName)
+
+                    } else {
+                        coach
+                    }
+
+                val updatedCoachMap = orderState.value.coachList.toMutableMap()
+                updatedCoachMap[coach.number] = updatedCoach
+
+                updateState { current ->
+                    current.copy(
+                        coachList = updatedCoachMap
+                    )
+                }
+                val depotDomain = getDepotByNameUseCase(updatedCoach.depot, false)
+                val coachDomain = coach.toDomain(depotDomain)
+                domainOrder.addRevisionObject(coachDomain)
+            } catch (e: IllegalArgumentException) {
+                _snackbarMessage.value = e.message
+            }
+        }
     }
 
-    override fun removeRevisionObjectFromOrder(o: RevisionObject) {
-        TODO("Not yet implemented")
+    fun removeCoachInOrder(number: String) {
+        val updatedCoach = orderState.value.coachList.toMutableMap()
+        updatedCoach.remove(number)
+
+        updateState { current ->
+            current.copy(
+                coachList = updatedCoach
+            )
+        }
+    }
+
+    fun clearCoaches() {
+        updateState { current ->
+            current.copy(
+                coachList = emptyMap()
+            )
+        }
     }
 
     override fun updateRevisionObjectInOrder(o: RevisionObject) {
         TODO("Not yet implemented")
     }
-
-    override fun clearRevisionObjects() {
-        TODO("Not yet implemented")
-    }
-
 
     override fun updatePersonInCrew() {
         TODO("Not yet implemented")

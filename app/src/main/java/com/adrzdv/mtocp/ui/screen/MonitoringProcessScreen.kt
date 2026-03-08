@@ -129,7 +129,8 @@ fun MonitoringProcessScreen(
             FloatingSaveButton(
                 onClick = {
                     showSaveDialog = true
-                }
+                },
+                icon = {painterResource(R.drawable.ic_save_32_white)}
             )
         },
         snackbarHost = {

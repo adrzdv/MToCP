@@ -50,6 +50,7 @@ fun NavGraphBuilder.trainMonitoringGraph(
             }
 
             TrainSchemeEditingScreen(
+                appDependencies = appDependencies,
                 navController = navController,
                 trainOrderViewModel = viewModelLocator.getTrainOrderViewModel(parentEntry),
                 depotAutocompleteViewModel = viewModelLocator.getDepotAutocompleteViewModel(

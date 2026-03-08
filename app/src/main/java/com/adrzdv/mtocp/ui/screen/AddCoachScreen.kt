@@ -42,8 +42,8 @@ import com.adrzdv.mtocp.ui.component.newelements.cards.CoachItemCard
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.InfoBlockWithLabel
 import com.adrzdv.mtocp.ui.component.buttons.SplitButton
-import com.adrzdv.mtocp.ui.component.dialogs.AddCoachDialog
-import com.adrzdv.mtocp.ui.component.dialogs.AddDinnerCarDialog
+import com.adrzdv.mtocp.ui.component.dialogs.old.AddCoachDialog
+import com.adrzdv.mtocp.ui.component.dialogs.old.AddDinnerCarDialog
 import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
