@@ -35,20 +35,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
-import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
 import com.adrzdv.mtocp.ui.component.AppFullscreenDialog
-import com.adrzdv.mtocp.ui.component.buttons.CustomOutlinedButton
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
 import com.adrzdv.mtocp.ui.component.DropdownMenuField
+import com.adrzdv.mtocp.ui.component.buttons.CustomOutlinedButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.theme.CustomTypography
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
-import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.RequestWebViewModel
-import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelFactoryProviderOld
 import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelFactoryProviderOld
 
 @Composable
 fun CustomAlertDialog(
@@ -129,8 +128,8 @@ fun AddTempTrainDialog(
 
     fun addTempTrain() {
         val depot: DepotDomain = depotVM.getDepotDomain(trainDepot)
-        val tempTrain: TrainDomain =
-            TrainDomain(trainNumber, trainRoute, depot)
+//        val tempTrain: TrainDomain =
+//            TrainDomain(trainNumber, trainRoute, depot)
         orderVM.setObjectNumber(trainNumber)
     }
 

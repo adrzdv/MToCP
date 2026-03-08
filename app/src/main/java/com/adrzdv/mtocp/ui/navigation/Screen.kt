@@ -11,4 +11,5 @@ sealed class Screen(val route: String) {
     object NewRevision : Screen("new_revision")
     object StartTrainRevision : Screen("train_revision_start")
     object MonitoringTrainInProgress : Screen("train_monitoring_in_progress")
+    object TrainSchemeEdit : Screen("train_scheme_edit")
 }
