@@ -49,6 +49,7 @@ fun InfoBlock(
 
 @Composable
 fun BlancInfoBlock(
+    modifier: Modifier = Modifier,
     isError: Boolean = false,
     content: @Composable () -> Unit = {}
 ) {

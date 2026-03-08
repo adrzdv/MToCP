@@ -23,7 +23,6 @@ fun AppBar(
 ) {
     TopAppBar(
         title = {
-            Spacer(modifier = Modifier.height(0.dp))
             Text(
                 text = title,
                 style = AppTypography.titleLarge,

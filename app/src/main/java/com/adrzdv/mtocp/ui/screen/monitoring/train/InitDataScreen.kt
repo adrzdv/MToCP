@@ -87,7 +87,9 @@ fun InitDataTrainMonitoringScreen(
                 actions = {
                     IconButton(
                         onClick = {
-                            showContinueDialog = true
+                            if (trainOrderViewModel.onSave()) {
+                                showContinueDialog = true
+                            }
                         }
                     ) {
                         Icon(
@@ -175,22 +177,22 @@ fun InitDataTrainMonitoringScreen(
         if (showContinueDialog) {
             AppIconTitleDialog(
                 icon = rememberVectorPainter(Icons.Default.QuestionMark),
+                dismissButton = {
+                    RoundedUnborderedButton(
+                        onClick = {
+                            showContinueDialog = false
+                            navController.navigate(Screen.MonitoringTrainInProgress.route)
+                        },
+                        text = stringResource(R.string.no_string)
+                    )
+                },
                 confirmButton = {
                     RoundedUnborderedButton(
                         onClick = {
-                            if (trainOrderViewModel.onSave()) {
-                                navController.navigate(Screen.MonitoringTrainInProgress.route)
-                            }
+                            showContinueDialog = false
+                            navController.navigate(Screen.TrainSchemeEdit.route)
                         },
                         text = stringResource(R.string.yes_string)
-                    )
-
-                },
-                dismissButton = {
-                    RoundedUnborderedButton(
-                        onClick = { showContinueDialog = false },
-                        text = stringResource(R.string.no_string)
-
                     )
                 }
             ) {

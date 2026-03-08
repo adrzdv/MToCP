@@ -44,10 +44,7 @@ abstract class BaseOrderViewModel<S : OrderDraftState, O : Order>(
     abstract fun onDeletePersonCrew(worker: WorkerUI)
     abstract fun onClearCrew()
     abstract fun onSave(): Boolean
-    protected abstract fun addRevisionObjectInOrder(o: RevisionObject)
-    protected abstract fun removeRevisionObjectFromOrder(o: RevisionObject)
     protected abstract fun updateRevisionObjectInOrder(o: RevisionObject)
-    protected abstract fun clearRevisionObjects()
     protected abstract fun updatePersonInCrew()
     protected abstract fun getTotalViolationsSum(): Int
 

@@ -22,6 +22,11 @@ class AutocompleteViewModel(
         viewModelScope.launch(Dispatchers.IO) { filterItems() }
     }
 
+    fun resetQuery() {
+        _query.value = ""
+        viewModelScope.launch(Dispatchers.IO) { filterItems() }
+    }
+
     private suspend fun filterItems() {
         if (_query.value.isBlank()) {
             _filteredItems.value = emptyList()

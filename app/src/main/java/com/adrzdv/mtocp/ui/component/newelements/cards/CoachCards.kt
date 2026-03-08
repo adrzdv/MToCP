@@ -40,14 +40,17 @@ import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import java.time.format.DateTimeFormatter
 
+@Deprecated("Use new CoachCard")
 @Composable
 fun CoachItemCard(
     coach: PassengerCar,
-    onDeleteClick: () -> Unit
+    onCoachClick: (() -> Unit)? = null,
+    onDeleteClick: (() -> Unit)? = null
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable(onClick = { onCoachClick?.invoke() }),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = AppColors.SURFACE_COLOR.color,
@@ -86,7 +89,7 @@ fun CoachItemCard(
                     style = AppTypography.bodyMedium
                 )
             }
-            IconButton(onClick = onDeleteClick) {
+            IconButton(onClick = { onDeleteClick?.invoke() }) {
                 Icon(
                     painter = painterResource(R.drawable.ic_delete_32_white),
                     contentDescription = stringResource(R.string.delete)
