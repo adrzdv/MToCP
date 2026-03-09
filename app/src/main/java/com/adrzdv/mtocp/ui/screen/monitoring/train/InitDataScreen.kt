@@ -1,5 +1,8 @@
 package com.adrzdv.mtocp.ui.screen.monitoring.train
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material3.DatePickerDialog
@@ -21,6 +24,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -175,32 +181,39 @@ fun InitDataTrainMonitoringScreen(
         }
 
         if (showContinueDialog) {
-            AppIconTitleDialog(
-                icon = rememberVectorPainter(Icons.Default.QuestionMark),
-                dismissButton = {
-                    RoundedUnborderedButton(
-                        onClick = {
-                            showContinueDialog = false
-                            navController.navigate(Screen.MonitoringTrainInProgress.route)
-                        },
-                        text = stringResource(R.string.no_string)
-                    )
-                },
-                confirmButton = {
-                    RoundedUnborderedButton(
-                        onClick = {
-                            showContinueDialog = false
-                            navController.navigate(Screen.TrainSchemeEdit.route)
-                        },
-                        text = stringResource(R.string.yes_string)
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.4f)),
+                contentAlignment = Alignment.Center
+            ) {
+                AppIconTitleDialog(
+                    icon = rememberVectorPainter(Icons.Default.QuestionMark),
+                    dismissButton = {
+                        RoundedUnborderedButton(
+                            onClick = {
+                                showContinueDialog = false
+                                navController.navigate(Screen.MonitoringTrainInProgress.route)
+                            },
+                            text = stringResource(R.string.no_string)
+                        )
+                    },
+                    confirmButton = {
+                        RoundedUnborderedButton(
+                            onClick = {
+                                showContinueDialog = false
+                                navController.navigate(Screen.TrainSchemeEdit.route)
+                            },
+                            text = stringResource(R.string.yes_string)
+                        )
+                    }
+                ) {
+                    Text(
+                        stringResource(R.string.ask_train_scheme),
+                        style = AppTypography.bodyMedium,
+                        color = AppColors.MAIN_COLOR.color
                     )
                 }
-            ) {
-                Text(
-                    stringResource(R.string.ask_train_scheme),
-                    style = AppTypography.bodyMedium,
-                    color = AppColors.MAIN_COLOR.color
-                )
             }
         }
     }
