@@ -6,6 +6,14 @@ import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
 import com.adrzdv.mtocp.mapper.toDomain
 import com.adrzdv.mtocp.ui.model.statedtoui.CoachUi
 
+/**
+ * Use case responsible for transforming a passenger coach UI model into a domain model.
+ *
+ * This class handles the orchestration of retrieving necessary domain entities (like Depots)
+ * based on the names provided in the UI model and mapping nested worker information if available.
+ *
+ * @property getDepotByNameUseCase Use case to fetch depot domain data by its name.
+ */
 class CreatePassengerCoachUseCase(
     private val getDepotByNameUseCase: GetDepotByNameUseCase
 ) {

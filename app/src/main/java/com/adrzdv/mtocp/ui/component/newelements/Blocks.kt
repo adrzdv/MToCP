@@ -54,7 +54,7 @@ fun BlancInfoBlock(
     content: @Composable () -> Unit = {}
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
             .background(

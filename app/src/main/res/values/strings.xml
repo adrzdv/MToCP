@@ -187,6 +187,7 @@
     <string name="open">Открыть</string>
     <string name="train_scheme">Схема поезда</string>
     <string name="copy_train_depot">Копировать формирование состава поезда</string>
+    <string name="add_worker_data">Внести данные работника</string>
 
     <!--DESCRIPTIONS-->
     <string name="revision_start_description">Заполните все поля, добавьте работников и начните проверку</string>
@@ -203,6 +204,8 @@
     <string name="validation_error">Ошибка валидации введенных данных</string>
     <string name="coach_number_invalid">Несоответствие номера вагона</string>
     <string name="coach_type_invalid">Несоответствие типа вагона</string>
+    <string name="invalid_worker_id">Неверный номер</string>
+    <string name="invalid_input_type">Неверный формат ввода</string>
 
     <string name="empty"> </string>
 

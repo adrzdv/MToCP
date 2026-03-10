@@ -1,6 +1,7 @@
 package com.adrzdv.mtocp.ui.component.newelements.cards
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,12 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.domain.model.departments.BranchDomain
-import com.adrzdv.mtocp.domain.model.departments.DepotDomain
-import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.ui.model.statedtoui.CoachUi
 import com.adrzdv.mtocp.ui.theme.AppColors
@@ -77,6 +74,11 @@ fun CoachCard(
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = AppColors.MAIN_COLOR.color,
+                shape = RoundedCornerShape(4.dp)
+            )
             .padding(horizontal = 6.dp, vertical = 1.dp)
     ) {
         Card(
