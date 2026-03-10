@@ -17,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +33,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType
+import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
 import com.adrzdv.mtocp.mapper.toUI
 import com.adrzdv.mtocp.ui.component.AppBar
 import com.adrzdv.mtocp.ui.component.newelements.AutocompleteField
@@ -49,12 +51,20 @@ fun AddNewCoach(
     onConfirm: (CoachUi) -> Unit,
     onDismiss: () -> Unit,
     depotAutocompleteViewModel: AutocompleteViewModel,
+    workerDepotAutocompleteViewModel: AutocompleteViewModel,
     appDependencies: AppDependencies
 ) {
     var state by remember { mutableStateOf(NewCoachState()) }
     val depotQuery by depotAutocompleteViewModel.query.collectAsState()
+    val workerDepotQuery by workerDepotAutocompleteViewModel.query.collectAsState()
     val depotSuggestions by depotAutocompleteViewModel.filteredItems.collectAsState()
+    val workerDepotSuggestions by workerDepotAutocompleteViewModel.filteredItems.collectAsState()
     val stringProvider = appDependencies.stringProvider
+
+    LaunchedEffect(Unit) {
+        depotAutocompleteViewModel.resetQuery()
+        workerDepotAutocompleteViewModel.resetQuery()
+    }
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -243,6 +253,123 @@ fun AddNewCoach(
                         isEnabled = state.isTrailing,
                         readOnly = false
                     )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Checkbox(
+                            checked = state.isWorkerAddSelected,
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = AppColors.MAIN_COLOR.color,
+                                uncheckedColor = AppColors.MAIN_COLOR.color,
+                                checkmarkColor = AppColors.SURFACE_COLOR.color
+                            ),
+                            onCheckedChange = { state = state.copy(isWorkerAddSelected = it) }
+                        )
+
+                        Text(
+                            text = stringResource(R.string.add_worker_data),
+                            color = AppColors.MAIN_COLOR.color
+                        )
+                    }
+
+                    if (state.isWorkerAddSelected) {
+
+                        InputTextField(
+                            value = state.workerId ?: "",
+                            onValueChange = {
+                                state = state.copy(
+                                    workerId = it
+                                )
+                            },
+                            label = stringResource(R.string.worker_id),
+                            trailingIcon = {
+                                if (state.workerId?.isNotEmpty() == true) {
+                                    ClearIcon {
+                                        state = state.copy(
+                                            workerId = ""
+                                        )
+                                    }
+                                }
+                            },
+                            isError = state.isValidationStarted && state.workerId != null,
+                            errorText = if (state.isValidationStarted) state.workerIdError else null,
+                            isEnabled = true,
+                            readOnly = false
+                        )
+
+                        InputTextField(
+                            value = state.workerName ?: "",
+                            onValueChange = {
+                                state = state.copy(
+                                    workerName = it
+                                )
+                            },
+                            label = stringResource(R.string.worker_name),
+                            trailingIcon = {
+                                if (state.workerName?.isNotEmpty() == true) {
+                                    ClearIcon {
+                                        state = state.copy(workerName = "")
+                                    }
+                                }
+                            },
+                            isError = state.isValidationStarted && state.workerNameError != null,
+                            errorText = if (state.isValidationStarted) state.workerNameError else null,
+                            isEnabled = true,
+                            readOnly = false
+                        )
+
+                        AutocompleteField(
+                            value = state.workerPosition ?: "",
+                            source = WorkerTypes.entries.map { it.shortName }.toList(),
+                            onValueChange = {
+                                state = state.copy(
+                                    workerPosition = it
+                                )
+                            },
+                            onValueSelected = {
+                                state = state.copy(
+                                    workerPosition = it
+                                )
+                            },
+                            trailingIcon = {
+                                if (state.workerPosition?.isNotEmpty() == true) {
+                                    ClearIcon {
+                                        state = state.copy(
+                                            workerPosition = ""
+                                        )
+                                    }
+                                }
+                            },
+                            label = stringResource(R.string.worker_type),
+                            isError = state.isValidationStarted && state.workerPositionError != null,
+                            enabled = true,
+                            error = if (state.isValidationStarted) state.workerPositionError else null
+                        )
+
+                        AutocompleteField(
+                            value = workerDepotQuery,
+                            source = workerDepotSuggestions,
+                            onValueChange = {
+                                workerDepotAutocompleteViewModel.onQueryChange(it)
+                            },
+                            onValueSelected = {
+                                state = state.copy(
+                                    workerDepot = it
+                                )
+                            },
+                            trailingIcon = {
+                                if (depotQuery.isNotEmpty()) {
+                                    ClearIcon { workerDepotAutocompleteViewModel.onQueryChange("") }
+                                }
+                            },
+                            label = stringResource(R.string.depot_string),
+                            isError = state.isValidationStarted && state.workerDepotError != null,
+                            enabled = true,
+                            error = if (state.isValidationStarted) state.workerDepotError else null
+                        )
+                    }
 
                     RoundedUnborderedButton(
                         text = stringResource(R.string.clean_string),

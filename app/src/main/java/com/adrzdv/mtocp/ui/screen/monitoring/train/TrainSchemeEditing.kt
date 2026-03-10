@@ -36,7 +36,8 @@ fun TrainSchemeEditingScreen(
     appDependencies: AppDependencies,
     navController: NavHostController,
     trainOrderViewModel: TrainOrderViewModel,
-    depotAutocompleteViewModel: AutocompleteViewModel
+    depotAutocompleteViewModel: AutocompleteViewModel,
+    workerDepotAutocompleteViewModel: AutocompleteViewModel
 ) {
     val state by trainOrderViewModel.orderState.collectAsState()
     var showAddCoachDialog by remember { mutableStateOf(false) }
@@ -113,6 +114,7 @@ fun TrainSchemeEditingScreen(
             },
             onDismiss = { showAddCoachDialog = false },
             depotAutocompleteViewModel = depotAutocompleteViewModel,
+            workerDepotAutocompleteViewModel = workerDepotAutocompleteViewModel,
             appDependencies = appDependencies
         )
     }

@@ -26,5 +26,9 @@ fun NewCoachState.toUI() = CoachUi().copy(
     route = route,
     type = selectedType,
     depot = selectedDepot ?: "",
-    isTrailing = isTrailing
+    isTrailing = isTrailing,
+    workerId = workerId,
+    workerName = workerName,
+    workerPosition = workerPosition,
+    workerDepot = workerDepot
 )

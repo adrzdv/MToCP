@@ -6,10 +6,10 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.domain.model.order.TrainOrder
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject
+import com.adrzdv.mtocp.domain.usecase.CreatePassengerCoachUseCase
 import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
 import com.adrzdv.mtocp.domain.usecase.GetTrainByNumberUseCase
 import com.adrzdv.mtocp.mapper.WorkerMapper
-import com.adrzdv.mtocp.mapper.toDomain
 import com.adrzdv.mtocp.ui.model.statedtoui.CoachUi
 import com.adrzdv.mtocp.ui.model.statedtoui.TrainUI
 import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI
@@ -23,7 +23,8 @@ import java.time.LocalDateTime
 class TrainOrderViewModel(
     appDependencies: AppDependencies,
     val getDepotByNameUseCase: GetDepotByNameUseCase,
-    val getTrainByNumberUseCase: GetTrainByNumberUseCase
+    val getTrainByNumberUseCase: GetTrainByNumberUseCase,
+    val createPassengerCoachUseCase: CreatePassengerCoachUseCase
 ) : BaseOrderViewModel<TrainOrderState, TrainOrder>(appDependencies) {
     init {
         createOrder()
@@ -318,9 +319,10 @@ class TrainOrderViewModel(
                         coachList = updatedCoachMap
                     )
                 }
-                val depotDomain = getDepotByNameUseCase(updatedCoach.depot, false)
-                val coachDomain = coach.toDomain(depotDomain)
+
+                val coachDomain = createPassengerCoachUseCase.invoke(updatedCoach)
                 domainOrder.addRevisionObject(coachDomain)
+
             } catch (e: IllegalArgumentException) {
                 _snackbarMessage.value = e.message
             }

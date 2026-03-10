@@ -24,6 +24,7 @@ import com.adrzdv.mtocp.domain.repository.TrainRepository
 import com.adrzdv.mtocp.domain.repository.old.CompanyRepository
 import com.adrzdv.mtocp.domain.repository.old.TempParamRepository
 import com.adrzdv.mtocp.domain.repository.old.ViolationRepository
+import com.adrzdv.mtocp.domain.usecase.CreatePassengerCoachUseCase
 import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
 import com.adrzdv.mtocp.domain.usecase.GetTrainByNumberUseCase
 import com.adrzdv.mtocp.service.stringprovider.StringProvider
@@ -116,4 +117,5 @@ class AppDependencies(
     val stringProvider: StringProvider = StringProviderImpl(context)
     val getDepotByNameUseCase = GetDepotByNameUseCase(depotRepo)
     val getTrainByNumberUseCase = GetTrainByNumberUseCase(trainRepo)
+    val createPassengerCoachUseCase = CreatePassengerCoachUseCase(getDepotByNameUseCase)
 }

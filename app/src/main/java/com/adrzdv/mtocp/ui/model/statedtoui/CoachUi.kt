@@ -10,5 +10,9 @@ data class CoachUi(
     val isTrailing: Boolean = false,
     val revisionStart: LocalDateTime? = null,
     val revisionEnd: LocalDateTime? = null,
-    val violationMap: Map<String, String> = emptyMap()
+    val violationMap: Map<String, String> = emptyMap(),
+    val workerId: String? = "",
+    val workerName: String? = "",
+    val workerPosition: String? = "",
+    val workerDepot: String? = ""
 )

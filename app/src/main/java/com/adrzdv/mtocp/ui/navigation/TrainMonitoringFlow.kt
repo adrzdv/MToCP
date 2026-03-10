@@ -55,6 +55,9 @@ fun NavGraphBuilder.trainMonitoringGraph(
                 trainOrderViewModel = viewModelLocator.getTrainOrderViewModel(parentEntry),
                 depotAutocompleteViewModel = viewModelLocator.getDepotAutocompleteViewModel(
                     backStackEntry
+                ),
+                workerDepotAutocompleteViewModel = viewModelLocator.getWorkerDepotAutocompleteViewModel(
+                    backStackEntry
                 )
             )
         }
