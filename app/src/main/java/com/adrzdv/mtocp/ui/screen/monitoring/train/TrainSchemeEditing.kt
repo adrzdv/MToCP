@@ -1,5 +1,7 @@
 package com.adrzdv.mtocp.ui.screen.monitoring.train
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.R
@@ -88,14 +91,18 @@ fun TrainSchemeEditingScreen(
         }
     ) { innerPadding ->
         LazyColumn(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(innerPadding)
+                .padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             item {
                 InfoBlock(
                     text = stringResource(R.string.add_car_scheme_description)
                 )
             }
-            items(state.coachList.values.toList()) { it ->
+            items(state.coachList.values.toList()) {
                 CoachCard(
                     it,
                     onDeleteClick = {

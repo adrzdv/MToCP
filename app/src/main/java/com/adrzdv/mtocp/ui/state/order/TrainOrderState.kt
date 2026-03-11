@@ -14,7 +14,7 @@ data class TrainOrderState(
     val orderConditions: RevisionType? = null,
     val crewList: Map<Int, WorkerUI> = emptyMap(),
     val coachList: Map<String, CoachUi> = emptyMap(),
-    val train: TrainUI = TrainUI("", ""),
+    val train: TrainUI = TrainUI("", "", "", ""),
     val isQualityPassport: Boolean = false,
     val showDatePicker: Boolean = false,
     val showTimePicker: Boolean = false,
