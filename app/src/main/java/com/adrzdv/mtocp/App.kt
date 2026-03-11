@@ -1,7 +1,6 @@
 package com.adrzdv.mtocp
 
 import android.app.Application
-import android.content.Context
 import androidx.core.content.edit
 import androidx.room.Room
 import com.adrzdv.mtocp.data.db.AppDatabase
