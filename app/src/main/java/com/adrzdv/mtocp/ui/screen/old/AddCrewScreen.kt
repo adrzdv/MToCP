@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.screen
+package com.adrzdv.mtocp.ui.screen.old
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
@@ -44,7 +44,7 @@ import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
-import com.adrzdv.mtocp.ui.viewmodel.model.InnerWorkerViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.InnerWorkerViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 import kotlinx.coroutines.launch
 
