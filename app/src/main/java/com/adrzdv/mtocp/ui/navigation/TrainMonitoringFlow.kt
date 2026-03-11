@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.adrzdv.mtocp.AppDependencies
+import com.adrzdv.mtocp.data.repository.refcache.CacheRepository
 import com.adrzdv.mtocp.ui.screen.monitoring.train.InitDataTrainMonitoringScreen
 import com.adrzdv.mtocp.ui.screen.monitoring.train.MonitoringTrainInProgress
 import com.adrzdv.mtocp.ui.screen.monitoring.train.TrainSchemeEditingScreen
@@ -13,6 +14,7 @@ import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelLocator
 
 fun NavGraphBuilder.trainMonitoringGraph(
     navController: NavHostController,
+    appCacheRepository: CacheRepository,
     viewModelLocator: ViewModelLocator,
     appDependencies: AppDependencies
 ) {
@@ -40,6 +42,7 @@ fun NavGraphBuilder.trainMonitoringGraph(
             }
             MonitoringTrainInProgress(
                 navController = navController,
+                appCacheRepository = appCacheRepository,
                 trainOrderViewModel = viewModelLocator.getTrainOrderViewModel(parentEntry),
             )
         }

@@ -18,11 +18,13 @@ class SplashActivity : ComponentActivity() {
 
         val ver = packageManager.getPackageInfo(packageName, 0)?.versionName ?: "unknown"
         val appDependencies = (application as App).appDependencies
+        val appCache = (application as App).cacheRepository
 
         setContent {
             AppTheme {
                 NavigationGraph(
                     appDependencies = appDependencies,
+                    appCacheRepository = appCache,
                     version = ver
                 )
             }

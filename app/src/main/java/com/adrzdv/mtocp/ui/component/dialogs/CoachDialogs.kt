@@ -322,7 +322,7 @@ fun AddNewCoach(
 
                         AutocompleteField(
                             value = state.workerPosition ?: "",
-                            source = WorkerTypes.entries.map { it.shortName }.toList(),
+                            source = WorkerTypes.entries.map { it.description }.toList(),
                             onValueChange = {
                                 state = state.copy(
                                     workerPosition = it

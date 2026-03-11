@@ -6,11 +6,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.adrzdv.mtocp.AppDependencies
+import com.adrzdv.mtocp.data.repository.refcache.CacheRepository
 import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelLocator
 
 @Composable
 fun NavigationGraph(
     appDependencies: AppDependencies,
+    appCacheRepository: CacheRepository,
     version: String
 ) {
     val navController = rememberNavController()
@@ -20,7 +22,7 @@ fun NavigationGraph(
         navController = navController,
         startDestination = Screen.Splash.route
     ) {
-        trainMonitoringGraph(navController, viewModelLocator, appDependencies)
+        trainMonitoringGraph(navController, appCacheRepository, viewModelLocator, appDependencies)
 
         splashDestination(navController, appDependencies)
         mainMenuDestination(navController, appDependencies, version)

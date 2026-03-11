@@ -35,7 +35,7 @@ class App : Application() {
         appDependencies = AppDependencies(
             this,
             database,
-            getSharedPreferences("prefs", Context.MODE_PRIVATE),
+            getSharedPreferences("prefs", MODE_PRIVATE),
             executor
         )
         cacheRepository = CacheRepository(appDependencies)
