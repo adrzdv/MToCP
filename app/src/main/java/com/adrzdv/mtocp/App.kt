@@ -5,11 +5,17 @@ import android.content.Context
 import androidx.core.content.edit
 import androidx.room.Room
 import com.adrzdv.mtocp.data.db.AppDatabase
+import com.adrzdv.mtocp.data.repository.refcache.CacheRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
 class App : Application() {
 
     lateinit var appDependencies: AppDependencies
+        private set
+    lateinit var cacheRepository: CacheRepository
         private set
 
     override fun onCreate() {
@@ -32,6 +38,11 @@ class App : Application() {
             getSharedPreferences("prefs", Context.MODE_PRIVATE),
             executor
         )
+        cacheRepository = CacheRepository(appDependencies)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            cacheRepository.loadCache()
+        }
     }
 
     private fun clearDatabase() {
