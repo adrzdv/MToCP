@@ -71,7 +71,7 @@ public class CompanyViewModel extends ViewModel {
         } else {
             res = res.stream()
                     .filter(company ->
-                            Boolean.TRUE.equals(company.getDinnerDepartment() == null))
+                            company.getDinnerDepartment() == null)
                     .toList();
         }
 

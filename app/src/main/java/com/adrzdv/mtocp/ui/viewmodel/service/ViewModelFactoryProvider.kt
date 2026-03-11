@@ -2,7 +2,7 @@ package com.adrzdv.mtocp.ui.viewmodel.service
 
 import androidx.lifecycle.ViewModel
 import com.adrzdv.mtocp.AppDependencies
-import com.adrzdv.mtocp.ui.viewmodel.model.AdditionalParamViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.AdditionalParamViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.KriCoachViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel

@@ -260,15 +260,17 @@ class TrainOrderViewModel(
 
     fun onTrainSelected(str: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            val trainDomain = getTrainByNumberUseCase.invoke(str.substringBefore(" "))
             updateState { current ->
                 current.copy(
                     train = TrainUI(
                         number = str.substringBefore(" "),
-                        route = str.substringAfter(" ")
+                        route = str.substringAfter(" "),
+                        depot = trainDomain.depot.shortName,
+                        branch = trainDomain.depot.branchDomain.shortName
                     )
                 )
             }
-            val trainDomain = getTrainByNumberUseCase.invoke(str.substringBefore(" "))
             domainOrder.collector = trainDomain
         }
     }
