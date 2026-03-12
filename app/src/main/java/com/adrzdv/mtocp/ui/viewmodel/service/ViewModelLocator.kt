@@ -3,6 +3,9 @@ package com.adrzdv.mtocp.ui.viewmodel.service
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.adrzdv.mtocp.AppDependencies
+import com.adrzdv.mtocp.data.db.entity.TrainEntity
+import com.adrzdv.mtocp.data.db.entity.ViolationEntity
+import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch
 import com.adrzdv.mtocp.ui.viewmodel.model.AuthViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
@@ -49,18 +52,45 @@ class ViewModelLocator(
     fun getTainAutocompleteViewModel(owner: ViewModelStoreOwner) =
         ViewModelProvider(
             owner,
-            AssistedViewModelFactory { AutocompleteViewModel(appDependencies.trainRepo) }
-        )["trainAutocompleteViewModel", AutocompleteViewModel::class.java]
+            AssistedViewModelFactory {
+                AutocompleteViewModel(
+                    appDependencies.trainRepo,
+                    TrainEntity::toString
+                )
+            }
+        )["trainAutocompleteViewModel", AutocompleteViewModel::class.java] as AutocompleteViewModel<TrainEntity>
 
-    fun getDepotAutocompleteViewModel(owner: ViewModelStoreOwner) =
+    fun getDepotAutocompleteViewModel(owner: ViewModelStoreOwner):
+            AutocompleteViewModel<DepotWithBranch> =
         ViewModelProvider(
             owner,
-            AssistedViewModelFactory { AutocompleteViewModel(appDependencies.depotRepo) }
-        )["depotAutocompleteViewModel", AutocompleteViewModel::class.java]
+            AssistedViewModelFactory {
+                AutocompleteViewModel(
+                    appDependencies.depotRepo,
+                    DepotWithBranch::toString
+                )
+            }
+        )["depotAutocompleteViewModel", AutocompleteViewModel::class.java] as AutocompleteViewModel<DepotWithBranch>
 
     fun getWorkerDepotAutocompleteViewModel(owner: ViewModelStoreOwner) =
         ViewModelProvider(
             owner,
-            AssistedViewModelFactory { AutocompleteViewModel(appDependencies.depotRepo) }
-        )["workerDepotAutocompleteViewModel", AutocompleteViewModel::class.java]
+            AssistedViewModelFactory {
+                AutocompleteViewModel(
+                    appDependencies.depotRepo,
+                    DepotWithBranch::toString
+                )
+            }
+        )["workerDepotAutocompleteViewModel", AutocompleteViewModel::class.java] as AutocompleteViewModel<DepotWithBranch>
+
+    fun violationAutocompleteViewModel(owner: ViewModelStoreOwner) =
+        ViewModelProvider(
+            owner,
+            AssistedViewModelFactory {
+                AutocompleteViewModel(
+                    appDependencies.violationRepo,
+                    ViolationEntity::toString
+                )
+            }
+        )["violationAutocompleteViewModel", AutocompleteViewModel::class.java] as AutocompleteViewModel<ViolationEntity>
 }

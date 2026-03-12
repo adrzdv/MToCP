@@ -1,15 +1,11 @@
 package com.adrzdv.mtocp.ui.component.dialogs
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,13 +13,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
 import com.adrzdv.mtocp.ui.component.dialogs.sys.AppIconTitleDialog
 import com.adrzdv.mtocp.ui.component.newelements.AutocompleteField
@@ -42,14 +37,14 @@ import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 fun AddWorkerDialog(
     onWorkerAdd: (WorkerUI) -> Unit,
     onDismiss: () -> Unit,
-    depotAutocompleteViewModel: AutocompleteViewModel
+    depotAutocompleteViewModel: AutocompleteViewModel<DepotWithBranch>
 ) {
     var tabNumber by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     var selectedPosition by remember { mutableStateOf<WorkerTypes?>(null) }
     var selectedDepot by remember { mutableStateOf("") }
     val queryDepot by depotAutocompleteViewModel.query.collectAsState()
-    val suggestionsDepot by depotAutocompleteViewModel.filteredItems.collectAsState()
+    val suggestionsDepot by depotAutocompleteViewModel.suggestions.collectAsState()
     var isSubmitClicked by remember { mutableStateOf(false) }
     val isFormValid = tabNumber.isNotBlank() &&
             (name.isNotBlank() && Validator.validateWorkerName(name)) &&

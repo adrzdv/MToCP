@@ -8,10 +8,10 @@ class CacheRepository(
 ) {
     val violationCache = ReferencesCache<Int, ViolationEntity>()
 
-    fun loadCache() {
-        val violationsMut =
-            appDependencies.violationRepo.all
+    suspend fun loadCache() {
+        val violations =
+            appDependencies.violationRepo.getAll()
                 .toList()
-        violationCache.set(violationsMut) { it.code }
+        violationCache.set(violations) { it.code }
     }
 }

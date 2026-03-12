@@ -32,6 +32,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.data.db.entity.TrainEntity
+import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch
 import com.adrzdv.mtocp.ui.component.AppBar
 import com.adrzdv.mtocp.ui.component.dialogs.AddWorkerDialog
 import com.adrzdv.mtocp.ui.component.dialogs.sys.AppIconTitleDialog
@@ -54,8 +56,8 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun InitDataTrainMonitoringScreen(
     trainOrderViewModel: TrainOrderViewModel,
-    autocompleteViewModel: AutocompleteViewModel,
-    depotAutocompleteViewModel: AutocompleteViewModel,
+    autocompleteViewModel: AutocompleteViewModel<TrainEntity>,
+    depotAutocompleteViewModel: AutocompleteViewModel<DepotWithBranch>,
     navController: NavHostController
 ) {
     val state by trainOrderViewModel.orderState.collectAsState()

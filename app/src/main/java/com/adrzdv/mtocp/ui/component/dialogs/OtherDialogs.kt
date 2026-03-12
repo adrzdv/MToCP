@@ -47,7 +47,7 @@ import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.RequestWebViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
-import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelFactoryProviderOld
+import com.adrzdv.mtocp.ui.viewmodel.model.old.ViewModelFactoryProviderOld
 
 @Composable
 fun CustomAlertDialog(

@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.screen
+package com.adrzdv.mtocp.ui.screen.old
 
 import android.content.pm.PackageManager
 import androidx.activity.compose.BackHandler
@@ -53,7 +53,7 @@ import com.adrzdv.mtocp.ui.fragment.NfcBottomSheetFragment
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.viewmodel.model.old.AdditionalParamViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
-import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelFactoryProviderOld
+import com.adrzdv.mtocp.ui.viewmodel.model.old.ViewModelFactoryProviderOld
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 

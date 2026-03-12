@@ -32,6 +32,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
 import com.adrzdv.mtocp.mapper.toUI
@@ -41,7 +42,7 @@ import com.adrzdv.mtocp.ui.component.newelements.ClearIcon
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.newelements.RoundedUnborderedButton
 import com.adrzdv.mtocp.ui.model.statedtoui.CoachUi
-import com.adrzdv.mtocp.ui.state.NewCoachState
+import com.adrzdv.mtocp.ui.state.coach.NewCoachState
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 
@@ -50,15 +51,15 @@ import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 fun AddNewCoach(
     onConfirm: (CoachUi) -> Unit,
     onDismiss: () -> Unit,
-    depotAutocompleteViewModel: AutocompleteViewModel,
-    workerDepotAutocompleteViewModel: AutocompleteViewModel,
+    depotAutocompleteViewModel: AutocompleteViewModel<DepotWithBranch>,
+    workerDepotAutocompleteViewModel: AutocompleteViewModel<DepotWithBranch>,
     appDependencies: AppDependencies
 ) {
     var state by remember { mutableStateOf(NewCoachState()) }
     val depotQuery by depotAutocompleteViewModel.query.collectAsState()
     val workerDepotQuery by workerDepotAutocompleteViewModel.query.collectAsState()
-    val depotSuggestions by depotAutocompleteViewModel.filteredItems.collectAsState()
-    val workerDepotSuggestions by workerDepotAutocompleteViewModel.filteredItems.collectAsState()
+    val depotSuggestions by depotAutocompleteViewModel.suggestions.collectAsState()
+    val workerDepotSuggestions by workerDepotAutocompleteViewModel.suggestions.collectAsState()
     val stringProvider = appDependencies.stringProvider
 
     LaunchedEffect(Unit) {

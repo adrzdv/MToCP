@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.screen
+package com.adrzdv.mtocp.ui.screen.old
 
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -41,76 +41,86 @@ import androidx.navigation.NavController
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
-import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar
-import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
+import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.usecase.DeleteViolationPhotoUseCase
-import com.adrzdv.mtocp.mapper.ViolationMapper
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
 import com.adrzdv.mtocp.ui.component.DropdownMenuField
+import com.adrzdv.mtocp.ui.component.ParameterSelectionBottomSheet
 import com.adrzdv.mtocp.ui.component.ServiceInfoBlock
-import com.adrzdv.mtocp.ui.component.buttons.FloatingSaveButton
 import com.adrzdv.mtocp.ui.component.dialogs.AddTagDialog
 import com.adrzdv.mtocp.ui.component.dialogs.AddViolationToCoachDialog
 import com.adrzdv.mtocp.ui.component.dialogs.ChangeAmountDialog
-import com.adrzdv.mtocp.ui.component.newelements.cards.ViolationCard
+import com.adrzdv.mtocp.ui.component.newelements.FloatingButton
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
-import com.adrzdv.mtocp.ui.viewmodel.model.DinnerCoachViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.AdditionalParamViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.PassengerCoachViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
+import com.adrzdv.mtocp.ui.viewmodel.model.old.ViewModelFactoryProviderOld
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 @Composable
-fun MonitoringDinnerScreen(
+fun MonitoringCoachScreen(
+    coachNumber: String,
     orderViewModel: OrderViewModel,
     depotViewModel: DepotViewModel,
     navController: NavController
 ) {
-    val dinnerCar = (orderViewModel.collector as? TrainDomain)?.dinnerCar
-    val dinnerViewModel: DinnerCoachViewModel = viewModel(
+    val coach = orderViewModel.collector?.objectsMap?.get(coachNumber) as? PassengerCar
+    val passengerCoachViewModel: PassengerCoachViewModel = viewModel(
         factory = AssistedViewModelFactory {
-            DinnerCoachViewModel(
-                initDinner = dinnerCar as DinnerCar,
-                onSave = { updated ->
-                    orderViewModel.updateRevisionObject(updated)
-                    navController.popBackStack()
+            PassengerCoachViewModel(
+                initCoach = coach as PassengerCar,
+                onSaveCallback = {
+//                    updated ->
+//                    orderViewModel.updateRevisionObject(updated)
+//                    navController.popBackStack()
                 },
+                getDepotByNameUseCase = null,
                 deleteViolationPhotoUseCase = DeleteViolationPhotoUseCase()
             )
         }
     )
+    val paramsViewModel: AdditionalParamViewModel =
+        viewModel(factory = ViewModelFactoryProviderOld.provideFactory())
 
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        dinnerViewModel.onCameraResult(result)
+        passengerCoachViewModel.onCameraResult(result)
     }
-    val snackbarMessage by dinnerViewModel.snackbarMessage.collectAsState()
+    val snackbarMessage by passengerCoachViewModel.snackbarMessage.collectAsState()
+
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
-    val state by dinnerViewModel.state
+    val state by passengerCoachViewModel.state
+
     var selectedViolationCode by remember { mutableStateOf<Int?>(null) }
+
     var showAddViolationDialog by remember { mutableStateOf(false) }
     var showAddAmountDialog by remember { mutableStateOf(false) }
     var showAddTagDialog by remember { mutableStateOf(false) }
     var showBottomSheet by remember { mutableStateOf(false) }
+
     val emptyString = stringResource(R.string.empty_string)
 
     LaunchedEffect(Unit) {
-        if (dinnerCar?.revisionDateStart == null) {
-            dinnerCar?.revisionDateStart = LocalDateTime.now()
+        if (coach?.revisionDateStart == null) {
+            coach?.revisionDateStart = LocalDateTime.now()
         }
         depotViewModel.resetDinnerFilter()
     }
+
     LaunchedEffect(snackbarMessage) {
         snackbarMessage?.let { message ->
             snackbarHostState.showSnackbar(message)
-            dinnerViewModel.snackbarShown()
+            passengerCoachViewModel.snackbarShown()
         }
     }
 
@@ -123,11 +133,11 @@ fun MonitoringDinnerScreen(
     Scaffold(
         containerColor = AppColors.LIGHT_GRAY.color,
         floatingActionButton = {
-            FloatingSaveButton(
+            FloatingButton(
                 onClick = {
-                    dinnerViewModel.onSave()
+                    passengerCoachViewModel.onSave()
                 },
-                icon = {painterResource(R.drawable.ic_save_32_white)}
+                icon = { painterResource(R.drawable.ic_save_32_white) }
             )
         },
         snackbarHost = {
@@ -149,7 +159,7 @@ fun MonitoringDinnerScreen(
                     CustomOutlinedTextField(
                         value = state.idWorker ?: "",
                         onValueChange = {
-                            dinnerViewModel.onIdChange(it, emptyString)
+                            passengerCoachViewModel.onIdChange(it, emptyString)
                         },
                         isEnabled = true,
                         isError = state.idError != null,
@@ -160,7 +170,7 @@ fun MonitoringDinnerScreen(
                     CustomOutlinedTextField(
                         value = state.nameWorker ?: "",
                         onValueChange = {
-                            dinnerViewModel.onNameChange(it, emptyString)
+                            passengerCoachViewModel.onNameChange(it, emptyString)
                         },
                         isEnabled = true,
                         isError = state.nameError != null,
@@ -170,14 +180,27 @@ fun MonitoringDinnerScreen(
                     )
                     DropdownMenuField(
                         label = stringResource(R.string.worker_type),
-                        options = WorkerTypes.values().map { it.description },
+                        options = WorkerTypes.entries.map { it.description },
                         selectedOption = WorkerTypes.entries
                             .firstOrNull { it.description == state.typeWorker }?.description ?: "",
                         onOptionSelected = {
-                            dinnerViewModel.onTypeChange(it, emptyString)
+                            passengerCoachViewModel.onTypeChange(it, emptyString)
                         },
                         isError = state.typeError != null,
                         errorMessage = state.typeError ?: "",
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    DropdownMenuField(
+                        label = stringResource(R.string.worker_depot),
+                        options = depotViewModel.filteredDepots.value?.map { it.name }
+                            ?: emptyList(),
+                        selectedOption = state.depotWorker ?: "",
+                        onOptionSelected = {
+                            passengerCoachViewModel.onDepotChange(it, emptyString)
+                        },
+                        isError = state.depotError != null,
+                        errorMessage = state.depotError ?: "",
                         modifier = Modifier.fillMaxWidth()
                     )
                     Box(
@@ -186,7 +209,7 @@ fun MonitoringDinnerScreen(
                     ) {
                         TextButton(
                             onClick = {
-                                dinnerViewModel.setInputsEmpty()
+                                passengerCoachViewModel.setInputsEmpty()
                             },
                             colors = ButtonDefaults.buttonColors(
                                 contentColor = AppColors.MAIN_GREEN.color,
@@ -211,6 +234,7 @@ fun MonitoringDinnerScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             )
+
             ServiceInfoBlock(
                 label = stringResource(R.string.violations),
                 content = {
@@ -269,7 +293,7 @@ fun MonitoringDinnerScreen(
                         }
                         TextButton(
                             onClick = {
-                                dinnerViewModel.cleanViolations(orderViewModel.orderNumber)
+                                passengerCoachViewModel.cleanViolations(orderViewModel.orderNumber)
                             },
                             colors = ButtonDefaults.buttonColors(
                                 contentColor = AppColors.OFF_WHITE.color,
@@ -299,56 +323,57 @@ fun MonitoringDinnerScreen(
                 verticalArrangement = Arrangement.spacedBy(6.dp),
                 modifier = Modifier.fillMaxSize(),
             ) {
-                items(dinnerViewModel.getDisplayViolations()) { item ->
-                    ViolationCard(
-                        ViolationMapper.fromDomainToDto(item),
-                        onChangeValueClick = {
-                            selectedViolationCode = item.code
-                            showAddAmountDialog = true
-                        },
-                        onResolveClick = {
-                            dinnerViewModel.toggleResolvedViolation(item.code)
-                        },
-                        onDeleteClick = {
-                            dinnerViewModel.deleteViolation(
-                                item.code,
-                                orderViewModel.orderNumber
-                            )
-
-                        },
-                        onAddTagClick = {
-                            selectedViolationCode = item.code
-                            showAddTagDialog = true
-                        },
-                        onMakeVideoClick = {},
-                        onMakePhotoClick = {
-                            val intent = dinnerViewModel.buildCameraIntent(context).apply {
-                                putExtra("order", orderViewModel.orderNumber)
-                                putExtra("coach", dinnerCar?.number)
-                                putExtra("violation", item.code)
-                                putExtra("violationShort", item.shortName)
-                            }
-                            launcher.launch(intent)
-                        }
-                    )
+                items(passengerCoachViewModel.getDisplayViolations()) { item ->
+//                    ViolationCard(
+//                        //ViolationMapper.fromDomainToDto(item),
+//                        onChangeValueClick = {
+//                            selectedViolationCode = item.code
+//                            showAddAmountDialog = true
+//                        },
+//                        onResolveClick = {
+//                            passengerCoachViewModel.toggleResolvedViolation(item.code)
+//                        },
+//                        onDeleteClick = {
+//                            passengerCoachViewModel.deleteViolation(
+//                                item.code,
+//                                orderViewModel.orderNumber
+//                            )
+//
+//                        },
+//                        onAddTagClick = {
+//                            selectedViolationCode = item.code
+//                            showAddTagDialog = true
+//                        },
+//                        onMakeVideoClick = {},
+//                        onMakePhotoClick = {
+////                            val intent = passengerCoachViewModel.buildCameraIntent(context).apply {
+////                                putExtra("order", orderViewModel.orderNumber)
+////                                putExtra("coach", coachNumber)
+////                                putExtra("violation", item.code)
+////                                putExtra("violationShort", item.shortName)
+////                            }
+////                            launcher.launch(intent)
+//                        }
+//                    )
                 }
             }
         }
 
-        //temporary solution: in future fix it!!! need to chose existing strings from db (for exmpl)
+        //FIXME: need to chose existing strings from db (for exmpl)
         if (showAddTagDialog) {
             AddTagDialog(
                 onConfirm = { tag ->
-                    dinnerViewModel.addTagToViolation(selectedViolationCode!!, tag)
+                    passengerCoachViewModel.addTagToViolation(selectedViolationCode!!, tag)
                     showAddTagDialog = false
                 },
                 onDismiss = { showAddTagDialog = false }
             )
         }
+
         if (showAddAmountDialog) {
             ChangeAmountDialog(
                 onConfirm = { amount ->
-                    dinnerViewModel.updateViolationValue(selectedViolationCode!!, amount)
+                    passengerCoachViewModel.updateViolationValue(selectedViolationCode!!, amount)
                     showAddAmountDialog = false
                 },
                 onDismiss = {
@@ -356,11 +381,12 @@ fun MonitoringDinnerScreen(
                 }
             )
         }
+
         if (showAddViolationDialog) {
             AddViolationToCoachDialog(
                 revisionType = orderViewModel.revisionType,
                 onConfirm = { violation ->
-                    dinnerViewModel.addViolation(violation)
+                    passengerCoachViewModel.addViolation(violation)
                 },
                 onDismiss = {
                     showAddViolationDialog = false
@@ -368,35 +394,38 @@ fun MonitoringDinnerScreen(
                 onError = {
                     showAddViolationDialog = false
                     coroutineScope.launch {
+
                         snackbarHostState.showSnackbar(
-                            visuals = ErrorSnackbar(MessageCodes.DUPLICATE_ERROR.messageTitle)
+                            visuals = ErrorSnackbar(
+                                MessageCodes.DUPLICATE_ERROR.messageTitle
+                            )
                         )
                     }
                 }
             )
         }
 
-//        if (showBottomSheet) {
-//            val paramsForCoach = dinnerCar?.additionalParams?.values?.toList()
-//            if (!paramsForCoach.isNullOrEmpty()) {
-//                paramsViewModel.setParams(paramsForCoach)
-//            } else {
-//                LaunchedEffect(Unit) {
-//                    paramsViewModel.loadCoachParams()
-//                }
-//            }
-//            ParameterSelectionBottomSheet(
-//                paramsViewModel = paramsViewModel,
-//                onSave = {
-//                    showBottomSheet = false
-//                },
-//                onDismiss = {
-//                    showBottomSheet = false
-//                }, callback = { params ->
-//                    passengerCoachViewModel.addAdditionalParams(params)
-//                }
-//            )
-//        }
+        if (showBottomSheet) {
+            val paramsForCoach = coach?.additionalParams?.values?.toList()
+            if (!paramsForCoach.isNullOrEmpty()) {
+                paramsViewModel.setParams(paramsForCoach)
+            } else {
+                LaunchedEffect(Unit) {
+                    paramsViewModel.loadCoachParams()
+                }
+            }
+            ParameterSelectionBottomSheet(
+                paramsViewModel = paramsViewModel,
+                onSave = {
+                    showBottomSheet = false
+                },
+                onDismiss = {
+                    showBottomSheet = false
+                },
+                callback = { params ->
+                    passengerCoachViewModel.addAdditionalParams(params)
+                }
+            )
+        }
     }
-
 }

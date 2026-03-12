@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.data.db.entity.TrainEntity
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.ui.component.buttons.SplitButton
 import com.adrzdv.mtocp.ui.component.newelements.AutocompleteField
@@ -42,12 +43,12 @@ import java.time.format.DateTimeFormatter
 fun InitDataScreenContent(
     state: TrainOrderState,
     trainOrderViewModel: TrainOrderViewModel,
-    autocompleteViewModel: AutocompleteViewModel,
+    autocompleteViewModel: AutocompleteViewModel<TrainEntity>,
     innerPadding: PaddingValues,
     formatter: DateTimeFormatter
 ) {
     val query by autocompleteViewModel.query.collectAsState()
-    val suggestions by autocompleteViewModel.filteredItems.collectAsState()
+    val suggestions by autocompleteViewModel.suggestions.collectAsState()
 
     LazyColumn(
         modifier = Modifier

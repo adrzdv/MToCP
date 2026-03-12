@@ -4,7 +4,7 @@ import com.adrzdv.mtocp.domain.model.departments.DepotDomain
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.ui.model.statedtoui.CoachUi
-import com.adrzdv.mtocp.ui.state.NewCoachState
+import com.adrzdv.mtocp.ui.state.coach.NewCoachState
 import java.time.LocalDateTime
 
 fun CoachUi.toDomain(depot: DepotDomain) = PassengerCar(number).apply {
@@ -32,3 +32,7 @@ fun NewCoachState.toUI() = CoachUi().copy(
     workerPosition = workerPosition,
     workerDepot = workerDepot
 )
+
+//fun ViolationUi.toDomain(): ViolationDomain {
+//
+//}

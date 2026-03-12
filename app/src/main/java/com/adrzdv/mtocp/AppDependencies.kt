@@ -8,22 +8,21 @@ import com.adrzdv.mtocp.data.db.AppDatabase
 import com.adrzdv.mtocp.data.importmodel.AdditionalParamImport
 import com.adrzdv.mtocp.data.importmodel.CompanyImport
 import com.adrzdv.mtocp.data.importmodel.TrainImport
-import com.adrzdv.mtocp.data.importmodel.ViolationImport
 import com.adrzdv.mtocp.data.repository.AuthRepository
 import com.adrzdv.mtocp.data.repository.AuthRepositoryImpl
 import com.adrzdv.mtocp.data.repository.DepotRepositoryImpl
 import com.adrzdv.mtocp.data.repository.KriCoachRepoImpl
 import com.adrzdv.mtocp.data.repository.TrainRepositoryImpl
 import com.adrzdv.mtocp.data.repository.UserDataStorage
+import com.adrzdv.mtocp.data.repository.ViolationRepositoryImpl
 import com.adrzdv.mtocp.data.repository.old.CompanyRepositoryImpl
 import com.adrzdv.mtocp.data.repository.old.TempParamRepositoryImpl
-import com.adrzdv.mtocp.data.repository.old.ViolationRepositoryImpl
 import com.adrzdv.mtocp.domain.repository.DepotRepository
 import com.adrzdv.mtocp.domain.repository.KriCoachRepo
 import com.adrzdv.mtocp.domain.repository.TrainRepository
+import com.adrzdv.mtocp.domain.repository.ViolationRepository
 import com.adrzdv.mtocp.domain.repository.old.CompanyRepository
 import com.adrzdv.mtocp.domain.repository.old.TempParamRepository
-import com.adrzdv.mtocp.domain.repository.old.ViolationRepository
 import com.adrzdv.mtocp.domain.usecase.CreatePassengerCoachUseCase
 import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
 import com.adrzdv.mtocp.domain.usecase.GetTrainByNumberUseCase
@@ -34,7 +33,6 @@ import com.adrzdv.mtocp.util.importmanager.ImportManager
 import com.adrzdv.mtocp.util.importmanager.handlers.AdditionalParamHandler
 import com.adrzdv.mtocp.util.importmanager.handlers.CompanyImportHandler
 import com.adrzdv.mtocp.util.importmanager.handlers.TrainImportHandler
-import com.adrzdv.mtocp.util.importmanager.handlers.ViolationImportHandler
 import java.util.concurrent.ExecutorService
 import java.util.function.Consumer
 
@@ -68,6 +66,7 @@ class AppDependencies(
     prefs: SharedPreferences,
     executor: ExecutorService
 ) {
+    //val violationRepo: ViolationRepository = ViolationRepositoryImpl(database.violationDao())
     val violationRepo: ViolationRepository = ViolationRepositoryImpl(database.violationDao())
 
     //val depotRepo: DepotRepository = DepotRepositoryImpl(database.depotDao())
@@ -82,12 +81,12 @@ class AppDependencies(
     val authRepo: AuthRepository =
         AuthRepositoryImpl(RetrofitClient.authApi, userDataStorage)
     val registry: ImportHandlerRegistry = ImportHandlerRegistry().apply {
-        register(
-            ViolationImport::class.java,
-            ViolationImportHandler(
-                violationRepo,
-                Consumer { msg: String? -> Log.d("IMPORT", msg!!) })
-        )
+//        register(
+//            ViolationImport::class.java,
+//            ViolationImportHandler(
+//                violationRepo,
+//                Consumer { msg: String? -> Log.d("IMPORT", msg!!) })
+//        )
 //        register(
 //            DepotImport::class.java,
 //            DepotImportHandler(

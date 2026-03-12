@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch
 import com.adrzdv.mtocp.ui.component.AppBar
 import com.adrzdv.mtocp.ui.component.dialogs.AddNewCoach
 import com.adrzdv.mtocp.ui.component.newelements.FloatingButton
@@ -39,8 +40,8 @@ fun TrainSchemeEditingScreen(
     appDependencies: AppDependencies,
     navController: NavHostController,
     trainOrderViewModel: TrainOrderViewModel,
-    depotAutocompleteViewModel: AutocompleteViewModel,
-    workerDepotAutocompleteViewModel: AutocompleteViewModel
+    depotAutocompleteViewModel: AutocompleteViewModel<DepotWithBranch>,
+    workerDepotAutocompleteViewModel: AutocompleteViewModel<DepotWithBranch>
 ) {
     val state by trainOrderViewModel.orderState.collectAsState()
     var showAddCoachDialog by remember { mutableStateOf(false) }

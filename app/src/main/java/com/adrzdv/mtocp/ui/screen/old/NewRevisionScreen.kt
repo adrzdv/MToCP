@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.screen
+package com.adrzdv.mtocp.ui.screen.old
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

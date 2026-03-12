@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.state
+package com.adrzdv.mtocp.ui.state.coach
 
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.service.stringprovider.StringProvider

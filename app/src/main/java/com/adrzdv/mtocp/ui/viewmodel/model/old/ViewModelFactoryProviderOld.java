@@ -1,14 +1,14 @@
-package com.adrzdv.mtocp.ui.viewmodel.service;
+package com.adrzdv.mtocp.ui.viewmodel.model.old;
 
 import androidx.lifecycle.ViewModel;
 
 import com.adrzdv.mtocp.AppOld;
-import com.adrzdv.mtocp.ui.viewmodel.model.old.AdditionalParamViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.model.KriCoachViewModel;
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel;
-import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel;
+import com.adrzdv.mtocp.ui.viewmodel.service.CustomViewModelProvider;
+import com.adrzdv.mtocp.ui.viewmodel.service.Provider;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,15 +21,15 @@ public class ViewModelFactoryProviderOld {
         Map<Class<? extends androidx.lifecycle.ViewModel>,
                 Provider<? extends ViewModel>> creators = new HashMap<>();
 
-        creators.put(ViolationViewModel.class,
-                () -> new ViolationViewModel(AppOld.getInstance().getAppDependencies().getViolationRepo()));
+//        creators.put(ViolationViewModel.class,
+//                () -> new ViolationViewModel(AppOld.getInstance().getAppDependencies().getViolationRepo()));
 //        creators.put(DepotViewModel.class,
 //                () -> new DepotViewModel(AppOld.getInstance().getAppDependencies().getDepotRepo()));
         creators.put(CompanyViewModel.class,
                 () -> new CompanyViewModel(AppOld.getInstance().getAppDependencies().getCompanyRepo()));
         creators.put(AutocompleteViewModel.class,
-                () -> new AutocompleteViewModel(AppOld.getInstance().getAppDependencies().getTrainRepo()));
-        creators.put(AdditionalParamViewModel.class,
+//                () -> new AutocompleteViewModel(AppOld.getInstance().getAppDependencies().getTrainRepo()));
+//        creators.put(AdditionalParamViewModel.class,
                 () -> new AdditionalParamViewModel(AppOld.getInstance().getAppDependencies().getTempParamRepo()));
         creators.put(TrainInfoViewModel.class,
                 () -> new TrainInfoViewModel(AppOld.getInstance().getAppDependencies().getTrainRepo()));
