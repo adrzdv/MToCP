@@ -3,7 +3,6 @@ package com.adrzdv.mtocp.domain.usecase;
 import android.util.Pair;
 
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
-import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.Coach;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
 

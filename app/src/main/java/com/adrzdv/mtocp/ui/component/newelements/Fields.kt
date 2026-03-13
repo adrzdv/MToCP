@@ -119,7 +119,7 @@ fun DropdownField(
     source: List<String>,
     selected: String,
     isError: Boolean,
-    errorMessage: String?,
+    errorMessage: String? = null,
     label: String?,
     onOptionSelected: (String) -> Unit
 ) {

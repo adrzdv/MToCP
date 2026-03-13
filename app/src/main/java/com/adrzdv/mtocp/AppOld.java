@@ -1,17 +1,12 @@
 package com.adrzdv.mtocp;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.room.Room;
-
 import com.adrzdv.mtocp.data.db.AppDatabase;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Deprecated
 public class AppOld  {

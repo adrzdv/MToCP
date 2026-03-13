@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.screen
+package com.adrzdv.mtocp.ui.screen.old
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -28,11 +28,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
-import com.adrzdv.mtocp.ui.screen.old.AddCrewScreen
+import com.adrzdv.mtocp.ui.screen.AddCoachScreen
+import com.adrzdv.mtocp.ui.screen.ResultScreen
+import com.adrzdv.mtocp.ui.screen.StartRevisionScreen
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.CustomTypography
-import com.adrzdv.mtocp.ui.viewmodel.model.old.AutocompleteViewModelJvm
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.AutocompleteViewModelJvm
 import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 
 @SuppressLint("ContextCastToActivity")

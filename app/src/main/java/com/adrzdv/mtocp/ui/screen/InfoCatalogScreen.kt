@@ -38,7 +38,6 @@ import com.adrzdv.mtocp.ui.model.MenuElementItem
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
-import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.KriCoachViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
@@ -49,11 +48,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun InfoCatalogScreen(
     navPriorityHost: NavHostController,
-    revisionTypes: List<String>,
     violationViewModel: ViolationViewModel,
     trainInfoViewModel: TrainInfoViewModel,
     kriCoachViewModel: KriCoachViewModel,
-    depotViewModel: DepotViewModel,
+    //depotViewModel: DepotViewModel,
     companyViewModel: CompanyViewModel
 ) {
     val navController = rememberNavController()
@@ -69,16 +67,16 @@ fun InfoCatalogScreen(
             stringResource(R.string.header_catalog),
             painterResource(R.drawable.ic_outline_book_2_24)
         ),
-        MenuElementItem(
-            "depot",
-            stringResource(R.string.header_depot),
-            painterResource(R.drawable.ic_outline_home_work_24)
-        ),
-        MenuElementItem(
-            "dinner",
-            stringResource(R.string.dinner_departments),
-            painterResource(R.drawable.ic_food_waiter)
-        ),
+//        MenuElementItem(
+//            "depot",
+//            stringResource(R.string.header_depot),
+//            painterResource(R.drawable.ic_outline_home_work_24)
+//        ),
+//        MenuElementItem(
+//            "dinner",
+//            stringResource(R.string.dinner_departments),
+//            painterResource(R.drawable.ic_food_waiter)
+//        ),
         MenuElementItem(
             "company",
             stringResource(R.string.header_company),
@@ -162,7 +160,7 @@ fun InfoCatalogScreen(
                     },
                     actions = {
                         IconButton(onClick = {
-                            depotViewModel.resetDinnerFilter()
+                            //depotViewModel.resetDinnerFilter()
                             companyViewModel.resetDinnerFilter()
                             navPriorityHost.popBackStack()
                         }) {
@@ -190,25 +188,24 @@ fun InfoCatalogScreen(
             ) {
                 composable("violations") {
                     ViolationCatalogScreen(
-                        viewModel = violationViewModel,
-                        revisionTypes = revisionTypes
+                        viewModel = violationViewModel
                     )
                 }
-                composable("depot") {
-                    DepotCatalogScreen(
-                        viewModel = depotViewModel
-                    )
-                }
+//                composable("depot") {
+//                    DepotCatalogScreen(
+//                        viewModel = depotViewModel
+//                    )
+//                }
                 composable("company") {
                     CompanyCatalogScreen(
                         viewModel = companyViewModel
                     )
                 }
-                composable("dinner") {
-                    DinnerDepotCatalogScreen(
-                        viewModel = depotViewModel
-                    )
-                }
+//                composable("dinner") {
+//                    DinnerDepotCatalogScreen(
+//                        viewModel = depotViewModel
+//                    )
+//                }
                 composable(route = "train") {
                     TrainInfoScreen(
                         viewModel = trainInfoViewModel

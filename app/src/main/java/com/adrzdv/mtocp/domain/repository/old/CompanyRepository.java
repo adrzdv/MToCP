@@ -2,7 +2,6 @@ package com.adrzdv.mtocp.domain.repository.old;
 
 import com.adrzdv.mtocp.data.db.entity.CompanyEntity;
 import com.adrzdv.mtocp.data.db.entity.CompanyWithBranch;
-import com.adrzdv.mtocp.domain.repository.BaseAppRepository;
 
 import java.util.List;
 

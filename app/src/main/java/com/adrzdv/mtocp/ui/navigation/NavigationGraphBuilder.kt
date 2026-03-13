@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.MessageCodes
+import com.adrzdv.mtocp.ui.screen.InfoCatalogScreen
 import com.adrzdv.mtocp.ui.screen.RegisterScreen
 import com.adrzdv.mtocp.ui.screen.RequestWebScreen
 import com.adrzdv.mtocp.ui.screen.ServiceScreen
@@ -110,17 +111,16 @@ fun NavGraphBuilder.catalogsDestination(
     navController: NavHostController,
     viewModelLocator: ViewModelLocator
 ) {
-//    composable(Screen.Catalog.route) { backStackEntry ->
-//        InfoCatalogScreen(
-//            navPriorityHost = navController,
-//            revisionTypes = RevisionType.getListOfTypes(),
-//            violationViewModel = viewModelLocator.getViolationViewModel(backStackEntry),
-//            trainInfoViewModel = viewModelLocator.getTrainInfoViewModel(backStackEntry),
-//            kriCoachViewModel = viewModelLocator.getKriCoachViewModel(backStackEntry),
-//            depotViewModel = viewModelLocator.getDepotViewModel(backStackEntry),
-//            companyViewModel = viewModelLocator.getCompanyViewModel(backStackEntry)
-//        )
-//    }
+    composable(Screen.Catalog.route) { backStackEntry ->
+        InfoCatalogScreen(
+            navPriorityHost = navController,
+            violationViewModel = viewModelLocator.getViolationViewModel(backStackEntry),
+            trainInfoViewModel = viewModelLocator.getTrainInfoViewModel(backStackEntry),
+            kriCoachViewModel = viewModelLocator.getKriCoachViewModel(backStackEntry),
+            //depotViewModel = viewModelLocator.getDepotViewModel(backStackEntry),
+            companyViewModel = viewModelLocator.getCompanyViewModel(backStackEntry)
+        )
+    }
 }
 
 fun NavGraphBuilder.newRevisionDestination(

@@ -1,12 +1,8 @@
 package com.adrzdv.mtocp.domain.model.revisionobject.basic.coach;
 
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
-import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
 
 import org.jspecify.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Domain class model for abstract coach object.

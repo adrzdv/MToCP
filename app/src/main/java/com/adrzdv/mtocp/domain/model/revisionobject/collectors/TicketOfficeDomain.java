@@ -3,7 +3,6 @@ package com.adrzdv.mtocp.domain.model.revisionobject.collectors;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
-import java.util.Collections;
 import java.util.Map;
 
 /**

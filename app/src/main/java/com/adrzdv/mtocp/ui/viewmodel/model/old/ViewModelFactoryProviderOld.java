@@ -21,8 +21,8 @@ public class ViewModelFactoryProviderOld {
         Map<Class<? extends androidx.lifecycle.ViewModel>,
                 Provider<? extends ViewModel>> creators = new HashMap<>();
 
-//        creators.put(ViolationViewModel.class,
-//                () -> new ViolationViewModel(AppOld.getInstance().getAppDependencies().getViolationRepo()));
+//        creators.put(ViolationViewModelOld.class,
+//                () -> new ViolationViewModelOld(AppOld.getInstance().getAppDependencies().getViolationRepo()));
 //        creators.put(DepotViewModel.class,
 //                () -> new DepotViewModel(AppOld.getInstance().getAppDependencies().getDepotRepo()));
         creators.put(CompanyViewModel.class,

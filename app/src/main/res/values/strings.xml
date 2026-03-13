@@ -8,7 +8,6 @@
     <string name="help">Помощь</string>
     <string name="app_title">Мобильный терминал сбора контроллируемых параметров</string>
     <string name="main_menu_text">Главное меню</string>
-    <string name="search_text_hint">Поиск нарушения</string>
     <string name="search_depot_hint">Поиск предприятия</string>
     <string name="search_train">Поиск поезда</string>
     <string name="train_number">Номер поезда</string>
@@ -188,6 +187,9 @@
     <string name="train_scheme">Схема поезда</string>
     <string name="copy_train_depot">Копировать формирование состава поезда</string>
     <string name="add_worker_data">Внести данные работника</string>
+    <string name="start_input_text">Начните ввод</string>
+    <string name="search_violation">Поиск нарушения</string>
+    <string name="choose_revision_type">Выберите тип проверки</string>
 
     <!--DESCRIPTIONS-->
     <string name="revision_start_description">Заполните все поля, добавьте работников и начните проверку</string>

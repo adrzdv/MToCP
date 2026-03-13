@@ -2,19 +2,18 @@ package com.adrzdv.mtocp.ui.viewmodel.service
 
 import androidx.lifecycle.ViewModel
 import com.adrzdv.mtocp.AppDependencies
-import com.adrzdv.mtocp.ui.viewmodel.model.old.AdditionalParamViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.KriCoachViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainOrderViewModel
-import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.AdditionalParamViewModel
 
 class ViewModelFactoryProvider(
     private val appDependencies: AppDependencies
 ) {
     fun provideFactory(): CustomViewModelProvider {
         val creators: Map<Class<out ViewModel>, Provider<out ViewModel>> = mapOf(
-            ViolationViewModel::class.java to Provider { ViolationViewModel(appDependencies.violationRepo) },
+            //ViolationViewModelOld::class.java to Provider { ViolationViewModelOld(appDependencies.violationRepo) },
             //DepotViewModel::class.java to Provider { DepotViewModel(appDependencies.depotRepo) },
             CompanyViewModel::class.java to Provider { CompanyViewModel(appDependencies.companyRepo) },
             AdditionalParamViewModel::class.java to Provider {

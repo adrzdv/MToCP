@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.viewmodel.model;
+package com.adrzdv.mtocp.ui.viewmodel.model.old;
 
 import static com.adrzdv.mtocp.domain.model.enums.RevisionType.ALL;
 
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ViolationViewModel extends ViewModel {
+public class ViolationViewModelOld extends ViewModel {
 
     private final ViolationRepository repository;
     private final MutableLiveData<List<ViolationDto>> filteredViolations;
@@ -27,7 +27,7 @@ public class ViolationViewModel extends ViewModel {
     private final ExecutorService executor;
 
 
-    public ViolationViewModel(ViolationRepository repository) {
+    public ViolationViewModelOld(ViolationRepository repository) {
         this.repository = repository;
         this.filteredViolations = new MutableLiveData<>(new ArrayList<>());
         this.allViolations = new ArrayList<>();

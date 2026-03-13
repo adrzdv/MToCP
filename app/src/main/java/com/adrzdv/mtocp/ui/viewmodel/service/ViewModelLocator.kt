@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.data.db.entity.TrainEntity
-import com.adrzdv.mtocp.data.db.entity.ViolationEntity
 import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch
+import com.adrzdv.mtocp.data.repository.refcache.CacheRepository
 import com.adrzdv.mtocp.ui.viewmodel.model.AuthViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
@@ -16,7 +16,8 @@ import com.adrzdv.mtocp.ui.viewmodel.model.TrainOrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
 
 class ViewModelLocator(
-    private val appDependencies: AppDependencies
+    private val appDependencies: AppDependencies,
+    private val appCache: CacheRepository
 ) {
     private val factory = ViewModelFactoryProvider(appDependencies)
 
@@ -24,9 +25,9 @@ class ViewModelLocator(
         return ViewModelProvider(owner, factory.provideFactory())[TrainOrderViewModel::class.java]
     }
 
-    fun getViolationViewModel(owner: ViewModelStoreOwner): ViolationViewModel {
-        return ViewModelProvider(owner, factory.provideFactory())[ViolationViewModel::class.java]
-    }
+//    fun getViolationViewModel(owner: ViewModelStoreOwner): ViolationViewModel {
+//        return ViewModelProvider(owner, factory.provideFactory())[ViolationViewModel::class.java]
+//    }
 
     fun getDepotViewModel(owner: ViewModelStoreOwner): DepotViewModel {
         return ViewModelProvider(owner, factory.provideFactory())[DepotViewModel::class.java]
@@ -83,14 +84,24 @@ class ViewModelLocator(
             }
         )["workerDepotAutocompleteViewModel", AutocompleteViewModel::class.java] as AutocompleteViewModel<DepotWithBranch>
 
-    fun violationAutocompleteViewModel(owner: ViewModelStoreOwner) =
+//    fun violationAutocompleteViewModel(owner: ViewModelStoreOwner) =
+//        ViewModelProvider(
+//            owner,
+//            AssistedViewModelFactory {
+//                AutocompleteViewModel(
+//                    appDependencies.violationRepo,
+//                    ViolationEntity::toString
+//                )
+//            }
+//        )["violationAutocompleteViewModel", AutocompleteViewModel::class.java] as AutocompleteViewModel<ViolationEntity>
+
+    fun getViolationViewModel(owner: ViewModelStoreOwner) =
         ViewModelProvider(
             owner,
             AssistedViewModelFactory {
-                AutocompleteViewModel(
-                    appDependencies.violationRepo,
-                    ViolationEntity::toString
+                ViolationViewModel(
+                    appCache
                 )
             }
-        )["violationAutocompleteViewModel", AutocompleteViewModel::class.java] as AutocompleteViewModel<ViolationEntity>
+        )[ViolationViewModel::class.java]
 }

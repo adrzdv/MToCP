@@ -59,8 +59,8 @@ import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.old.AdditionalParamViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.old.PassengerCoachViewModel
-import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
 import com.adrzdv.mtocp.ui.viewmodel.model.old.ViewModelFactoryProviderOld
+import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
