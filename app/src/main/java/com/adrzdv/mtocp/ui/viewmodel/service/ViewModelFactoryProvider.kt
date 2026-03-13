@@ -28,7 +28,8 @@ class ViewModelFactoryProvider(
                     appDependencies,
                     appDependencies.getDepotByNameUseCase,
                     appDependencies.getTrainByNumberUseCase,
-                    appDependencies.createPassengerCoachUseCase
+                    appDependencies.createPassengerCoachUseCase,
+                    appDependencies.getTrainSchemeUseCase
                 )
             }
         )

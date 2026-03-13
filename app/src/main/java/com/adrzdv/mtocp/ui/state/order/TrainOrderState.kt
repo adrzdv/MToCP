@@ -12,6 +12,7 @@ data class TrainOrderState(
     override val dateEnd: LocalDateTime = LocalDateTime.now(),
     override val route: String = "",
     val orderConditions: RevisionType? = null,
+    val trainScheme: String? = null,
     val crewList: Map<Int, WorkerUI> = emptyMap(),
     val coachList: Map<String, CoachUi> = emptyMap(),
     val train: TrainUI = TrainUI("", "", "", ""),

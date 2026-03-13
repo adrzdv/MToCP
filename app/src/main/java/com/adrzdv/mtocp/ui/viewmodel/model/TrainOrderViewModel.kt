@@ -6,9 +6,11 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.domain.model.order.TrainOrder
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject
+import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
 import com.adrzdv.mtocp.domain.usecase.CreatePassengerCoachUseCase
 import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
 import com.adrzdv.mtocp.domain.usecase.GetTrainByNumberUseCase
+import com.adrzdv.mtocp.domain.usecase.GetTrainSchemeUseCase
 import com.adrzdv.mtocp.mapper.WorkerMapper
 import com.adrzdv.mtocp.ui.model.statedtoui.CoachUi
 import com.adrzdv.mtocp.ui.model.statedtoui.TrainUI
@@ -24,7 +26,8 @@ class TrainOrderViewModel(
     appDependencies: AppDependencies,
     val getDepotByNameUseCase: GetDepotByNameUseCase,
     val getTrainByNumberUseCase: GetTrainByNumberUseCase,
-    val createPassengerCoachUseCase: CreatePassengerCoachUseCase
+    val createPassengerCoachUseCase: CreatePassengerCoachUseCase,
+    val getTrainSchemeUseCase: GetTrainSchemeUseCase
 ) : BaseOrderViewModel<TrainOrderState, TrainOrder>(appDependencies) {
     init {
         createOrder()
@@ -304,7 +307,7 @@ class TrainOrderViewModel(
             try {
                 val updatedCoach =
                     if (coach.depot.isEmpty()) {
-                        val trainNumber = orderState.value.train.number.substringBefore(" ")
+                        val trainNumber = orderState.value.train.number
                         val train = getTrainByNumberUseCase(trainNumber)
                         val depotName = train.depot
                         coach.copy(depot = depotName.shortName)
@@ -324,6 +327,7 @@ class TrainOrderViewModel(
 
                 val coachDomain = createPassengerCoachUseCase.invoke(updatedCoach)
                 domainOrder.addRevisionObject(coachDomain)
+                updateTrainScheme()
 
             } catch (e: IllegalArgumentException) {
                 _snackbarMessage.value = e.message
@@ -332,20 +336,42 @@ class TrainOrderViewModel(
     }
 
     fun removeCoachInOrder(number: String) {
-        val updatedCoach = orderState.value.coachList.toMutableMap()
-        updatedCoach.remove(number)
+        val updatedList = orderState.value.coachList.toMutableMap()
+        updatedList.remove(number)
 
         updateState { current ->
             current.copy(
-                coachList = updatedCoach
+                coachList = updatedList
             )
         }
+
+        val obj = domainOrder.collector.objectsMap[number]
+        domainOrder.collector.deleteRevisionObject(obj)
+        updateTrainScheme()
     }
 
     fun clearCoaches() {
+
         updateState { current ->
             current.copy(
                 coachList = emptyMap()
+            )
+        }
+
+        domainOrder.collector.clearObjects()
+        updateTrainScheme()
+    }
+
+    private fun updateTrainScheme() {
+        val trainScheme = getTrainSchemeUseCase.invoke(domainOrder.collector as TrainDomain)
+        var res = ""
+        for (key in trainScheme.keys) {
+            res += "$key - ${trainScheme[key]}\n"
+        }
+
+        updateState { current ->
+            current.copy(
+                trainScheme = res
             )
         }
     }
