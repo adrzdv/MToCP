@@ -63,10 +63,6 @@ class AutocompleteViewModel<V>(
                             .filter {
                                 searchSelector(it).contains(query, ignoreCase = true)
                             }
-//                            .map { it.toString() }
-//                            .filter {
-//                                it.contains(query, ignoreCase = true)
-//                            }
                     }
                 }
                 .flowOn(Dispatchers.Default)

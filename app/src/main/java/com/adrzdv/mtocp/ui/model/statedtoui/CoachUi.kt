@@ -20,5 +20,8 @@ data class CoachUi(
 data class ViolationUi(
     val code: Int,
     val description: String,
-    val value: Int
+    val shortDescription: String,
+    val value: Int,
+    val isResolved: Boolean,
+    val attributes: Map<String, String> = emptyMap()
 )

@@ -16,7 +16,7 @@ fun NavigationGraph(
     version: String
 ) {
     val navController = rememberNavController()
-    val viewModelLocator = remember { ViewModelLocator(appDependencies) }
+    val viewModelLocator = remember { ViewModelLocator(appDependencies, appCacheRepository) }
 
     NavHost(
         navController = navController,
