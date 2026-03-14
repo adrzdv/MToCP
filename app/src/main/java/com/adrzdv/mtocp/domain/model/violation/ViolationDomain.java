@@ -1,7 +1,7 @@
 package com.adrzdv.mtocp.domain.model.violation;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ViolationDomain {
@@ -9,16 +9,18 @@ public class ViolationDomain {
     private String name;
     private String shortName;
     private int amount;
-    private Map<String, String> attributeMap;
+    private List<String> attributeList;
     private boolean isResolved;
+    private List<String> mediaPaths;
 
     public ViolationDomain(Integer code, String name, String shortName) {
         this.code = code;
         this.name = name;
         this.shortName = shortName;
         this.amount = 1;
-        this.attributeMap = new HashMap<>();
+        this.attributeList = new ArrayList<>();
         this.isResolved = false;
+        this.mediaPaths = new ArrayList<>();
     }
 
     public Integer getCode() {
@@ -53,12 +55,12 @@ public class ViolationDomain {
         this.amount = amount;
     }
 
-    public Map<String, String> getAttributeMap() {
-        return attributeMap;
+    public List<String> getAttributeMap() {
+        return attributeList;
     }
 
-    public void setAttributeMap(Map<String, String> attributeMap) {
-        this.attributeMap = attributeMap;
+    public void setAttributeMap(List<String> attributeList) {
+        this.attributeList = attributeList;
     }
 
     public boolean isResolved() {
@@ -81,4 +83,11 @@ public class ViolationDomain {
     }
 
 
+    public List<String> getMediaPaths() {
+        return mediaPaths;
+    }
+
+    public void setMediaPaths(List<String> mediaPaths) {
+        this.mediaPaths = mediaPaths;
+    }
 }

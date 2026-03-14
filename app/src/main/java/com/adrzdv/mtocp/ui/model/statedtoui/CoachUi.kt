@@ -23,5 +23,13 @@ data class ViolationUi(
     val shortDescription: String,
     val value: Int,
     val isResolved: Boolean,
-    val attributes: Map<String, String> = emptyMap()
+    val attributes: List<String> = emptyList(),
+    val mediaPaths: List<String> = emptyList()
+)
+
+data class StaticsParamUi(
+    val id: Int,
+    val name: String,
+    val isCompleted: Boolean,
+    val note: String
 )
