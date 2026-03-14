@@ -22,7 +22,7 @@ fun ViolationUi.toDomain(): ViolationDomain {
     )
     violation.amount = value
     violation.isResolved = isResolved
-    violation.attributeMap = attributes
+    violation.attributeList = attributes
     violation.mediaPaths = mediaPaths
 
     return violation
@@ -34,7 +34,7 @@ fun ViolationDomain.toUi() = ViolationUi(
     shortName,
     amount,
     isResolved,
-    attributeMap
+    attributeList
 )
 
 fun StaticsParamUi.toDomain() = StaticsParam(

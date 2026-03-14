@@ -55,11 +55,7 @@ public class ViolationDomain {
         this.amount = amount;
     }
 
-    public List<String> getAttributeMap() {
-        return attributeList;
-    }
-
-    public void setAttributeMap(List<String> attributeList) {
+    public void setAttributeList(List<String> attributeList) {
         this.attributeList = attributeList;
     }
 
@@ -89,5 +85,9 @@ public class ViolationDomain {
 
     public void setMediaPaths(List<String> mediaPaths) {
         this.mediaPaths = mediaPaths;
+    }
+
+    public List<String> getAttributeList() {
+        return attributeList;
     }
 }
