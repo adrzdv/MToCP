@@ -26,7 +26,7 @@ class RegisterActivity : ComponentActivity() {
         val viewModel = ViewModelProvider(
             this,
             AssistedViewModelFactory { AuthViewModel(authRepo) }
-        ).get(AuthViewModel::class.java)
+        )[AuthViewModel::class.java]
 
 
         enableEdgeToEdge()

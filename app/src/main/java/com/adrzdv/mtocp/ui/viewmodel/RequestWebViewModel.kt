@@ -53,6 +53,7 @@ class RequestWebViewModel : ViewModel() {
                 } else {
                     getNumberByAuthUser()
                 }
+                loadLastLogs()
             } else {
                 resultDialogText = "Ошибка подключения к Render"
             }
@@ -86,8 +87,11 @@ class RequestWebViewModel : ViewModel() {
     fun loadLastLogs() {
         viewModelScope.launch {
             isLogsLoading = true
-            val result = wakeUpService.getLastLogs()
-            logs = result ?: emptyList()
+            val success = wakeUpService.wakeUpRender()
+            if (success) {
+                logs = wakeUpService.getLastLogs() ?: emptyList()
+                isLogsLoading = false
+            }
             isLogsLoading = false
         }
     }

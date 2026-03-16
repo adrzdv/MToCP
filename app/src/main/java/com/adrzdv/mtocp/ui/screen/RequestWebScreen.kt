@@ -96,7 +96,6 @@ fun RequestWebScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 16.dp)
-                    //.verticalScroll(rememberScrollState())
                     .align(Alignment.TopCenter),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -123,7 +122,6 @@ fun RequestWebScreen(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-// Header таблицы
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -155,10 +153,7 @@ fun RequestWebScreen(
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(bottom = 32.dp)
                 ) {
-
-                    // Loader
                     if (viewModel.isLogsLoading) {
-
                         item {
                             Box(
                                 modifier = Modifier
@@ -171,12 +166,8 @@ fun RequestWebScreen(
                                 )
                             }
                         }
-
                     }
-
-                    // Пустой список
                     else if (viewModel.logs.isEmpty()) {
-
                         item {
                             Text(
                                 text = "Нет записей",
@@ -188,43 +179,33 @@ fun RequestWebScreen(
                         }
 
                     }
-
-                    // Данные
                     else {
-
                         items(viewModel.logs) { log ->
-
                             val formattedDate = log.timestamp
                                 .replace("T", " ")
                                 .substring(0, 16)
-
                             Column {
-
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(vertical = 8.dp)
                                 ) {
-
                                     Text(
                                         text = log.number.toString(),
                                         modifier = Modifier.weight(1f),
                                         style = CustomTypography.bodyMedium
                                     )
-
                                     Text(
                                         text = log.worker,
                                         modifier = Modifier.weight(3f),
                                         style = CustomTypography.bodyMedium
                                     )
-
                                     Text(
                                         text = formattedDate,
                                         modifier = Modifier.weight(3f),
                                         style = CustomTypography.bodyMedium
                                     )
                                 }
-
                                 Divider()
                             }
                         }
