@@ -1,8 +1,10 @@
 package com.adrzdv.mtocp.ui.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,11 +31,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.dialogs.CustomAlertDialog
 import com.adrzdv.mtocp.ui.component.newelements.Divider
+import com.adrzdv.mtocp.ui.component.newelements.NothingToShowPlug
 import com.adrzdv.mtocp.ui.component.newelements.SquaredBigButton
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
@@ -94,10 +98,10 @@ fun RequestWebScreen(
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp)
-                    .align(Alignment.TopCenter),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
                 Spacer(modifier = Modifier.height(32.dp))
 
@@ -114,99 +118,105 @@ fun RequestWebScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text(
-                    text = "Последние записи",
-                    style = CustomTypography.titleMedium,
-                    color = AppColors.MAIN_COLOR.color
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
+                        .padding(horizontal = 16.dp),
+                    contentAlignment = Alignment.Center
                 ) {
 
-                    Text(
-                        text = "№",
-                        modifier = Modifier.weight(1f),
-                        style = CustomTypography.titleSmall
-                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(IntrinsicSize.Min)
+                        ) {
 
-                    Text(
-                        text = "Работник",
-                        modifier = Modifier.weight(3f),
-                        style = CustomTypography.titleSmall
-                    )
-
-                    Text(
-                        text = "Дата",
-                        modifier = Modifier.weight(3f),
-                        style = CustomTypography.titleSmall
-                    )
-                }
-
-                Divider()
-
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(bottom = 32.dp)
-                ) {
-                    if (viewModel.isLogsLoading) {
-                        item {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(24.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator(
-                                    color = AppColors.MAIN_COLOR.color
-                                )
-                            }
-                        }
-                    }
-                    else if (viewModel.logs.isEmpty()) {
-                        item {
                             Text(
-                                text = "Нет записей",
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                style = CustomTypography.bodyMedium
+                                text = stringResource(R.string.number_symbol),
+                                modifier = Modifier.weight(1f),
+                                style = CustomTypography.titleSmall,
+                                textAlign = TextAlign.Center
+                            )
+
+                            Text(
+                                text = stringResource(R.string.worker_table_header),
+                                modifier = Modifier.weight(3f),
+                                style = CustomTypography.titleSmall,
+                                textAlign = TextAlign.Center
+                            )
+
+                            Text(
+                                text = stringResource(R.string.date_table_header),
+                                modifier = Modifier.weight(3f),
+                                style = CustomTypography.titleSmall,
+                                textAlign = TextAlign.Center
                             )
                         }
 
-                    }
-                    else {
-                        items(viewModel.logs) { log ->
-                            val formattedDate = log.timestamp
-                                .replace("T", " ")
-                                .substring(0, 16)
-                            Column {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 8.dp)
-                                ) {
-                                    Text(
-                                        text = log.number.toString(),
-                                        modifier = Modifier.weight(1f),
-                                        style = CustomTypography.bodyMedium
-                                    )
-                                    Text(
-                                        text = log.worker,
-                                        modifier = Modifier.weight(3f),
-                                        style = CustomTypography.bodyMedium
-                                    )
-                                    Text(
-                                        text = formattedDate,
-                                        modifier = Modifier.weight(3f),
-                                        style = CustomTypography.bodyMedium
-                                    )
+                        Divider()
+
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentPadding = PaddingValues(bottom = 32.dp)
+                        ) {
+                            if (viewModel.isLogsLoading) {
+                                item {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(24.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        CircularProgressIndicator(
+                                            color = AppColors.MAIN_COLOR.color
+                                        )
+                                    }
                                 }
-                                Divider()
+                            } else if (viewModel.logs.isEmpty()) {
+                                item {
+                                    NothingToShowPlug()
+                                }
+
+                            } else {
+                                items(viewModel.logs) { log ->
+                                    val formattedDate = log.timestamp
+                                        .replace("T", " ")
+                                        .substring(0, 16)
+                                    Column {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(vertical = 8.dp)
+                                        ) {
+                                            Text(
+                                                text = log.number.toString(),
+                                                modifier = Modifier.weight(1f),
+                                                style = CustomTypography.bodyMedium,
+                                                textAlign = TextAlign.Center
+                                            )
+                                            Text(
+                                                text = log.worker,
+                                                modifier = Modifier.weight(3f),
+                                                style = CustomTypography.bodyMedium,
+                                                textAlign = TextAlign.Center
+                                            )
+                                            Text(
+                                                text = formattedDate,
+                                                modifier = Modifier.weight(3f),
+                                                style = CustomTypography.bodyMedium,
+                                                textAlign = TextAlign.Center
+                                            )
+                                        }
+                                        Divider()
+                                    }
+                                }
                             }
                         }
                     }

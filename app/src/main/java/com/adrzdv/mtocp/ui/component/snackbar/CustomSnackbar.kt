@@ -41,7 +41,7 @@ fun CustomSnackbarHost(
                         color = when {
                             isError -> AppColors.ERROR_COLOR.color
                             isInfo -> AppColors.MAIN_COLOR.color
-                            else -> AppColors.SURFACE_COLOR.color
+                            else -> AppColors.MAIN_COLOR.color
                         },
                         shape = RoundedCornerShape(4.dp)
                     ),

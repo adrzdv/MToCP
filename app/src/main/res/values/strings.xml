@@ -174,5 +174,10 @@
     <string name="password_confirm_hint">Подтвердите пароль</string>
     <string name="error_password_change">Ошибка смены пароля</string>
     <string name="password_changed_success">Пароль изменен</string>
+    <string name="last_entries_header">Последние 20 номеров</string>
+
+    <string name="number_symbol">№</string>
+    <string name="worker_table_header">Работник</string>
+    <string name="date_table_header">Дата</string>
 
 </resources>

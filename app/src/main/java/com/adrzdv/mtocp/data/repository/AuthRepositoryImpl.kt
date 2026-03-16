@@ -6,12 +6,14 @@ import com.adrzdv.mtocp.data.model.AuthResult
 import com.adrzdv.mtocp.data.model.ChangePasswordResult
 import com.adrzdv.mtocp.data.model.LoginRequest
 import com.adrzdv.mtocp.data.model.PasswordRequest
+import com.adrzdv.mtocp.util.RenderWakeUpService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class AuthRepositoryImpl(
     private val api: AuthApi,
-    private val userDataStorage: UserDataStorage?
+    private val userDataStorage: UserDataStorage?,
+    private val renderService: RenderWakeUpService
 ) : AuthRepository {
 
     override suspend fun login(
@@ -20,19 +22,27 @@ class AuthRepositoryImpl(
     ): AuthResult =
         withContext(Dispatchers.IO) {
             try {
-                val response = api.login(LoginRequest(login, password))
+                if (renderService.wakeUpRender()) {
+                    val response = api.login(LoginRequest(login, password))
 
-                if (response.token != null) {
-                    AuthResult(
-                        isSuccess = true,
-                        token = response.token,
-                        name = response.name ?: "",
-                        id = response.id ?: 0,
-                        secId = response.secId ?: ""
-                    )
+                    if (response.token != null) {
+                        AuthResult(
+                            isSuccess = true,
+                            token = response.token,
+                            name = response.name ?: "",
+                            id = response.id ?: 0,
+                            secId = response.secId ?: ""
+                        )
+                    } else {
+                        AuthResult(
+                            isSuccess = false,
+                            errorMessage = response.error ?: "Unknown error"
+                        )
+                    }
                 } else {
-                    AuthResult(isSuccess = false, errorMessage = response.error ?: "Unknown error")
+                    AuthResult(isSuccess = false, errorMessage = "Network error")
                 }
+
             } catch (e: Exception) {
                 AuthResult(isSuccess = false, errorMessage = e.message ?: "Network error")
             }
