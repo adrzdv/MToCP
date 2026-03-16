@@ -3,12 +3,17 @@ package com.adrzdv.mtocp.ui.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -29,8 +34,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.ui.component.buttons.MenuButton
 import com.adrzdv.mtocp.ui.component.dialogs.CustomAlertDialog
+import com.adrzdv.mtocp.ui.component.newelements.Divider
 import com.adrzdv.mtocp.ui.component.newelements.SquaredBigButton
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
@@ -93,7 +98,7 @@ fun RequestWebScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 16.dp)
-                    .verticalScroll(rememberScrollState())
+                    //.verticalScroll(rememberScrollState())
                     .align(Alignment.TopCenter),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -109,6 +114,124 @@ fun RequestWebScreen(
                         viewModel.requestRender()
                     }
                 )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "Последние записи",
+                    style = CustomTypography.titleMedium,
+                    color = AppColors.MAIN_COLOR.color
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+// Header таблицы
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                ) {
+
+                    Text(
+                        text = "№",
+                        modifier = Modifier.weight(1f),
+                        style = CustomTypography.titleSmall
+                    )
+
+                    Text(
+                        text = "Работник",
+                        modifier = Modifier.weight(3f),
+                        style = CustomTypography.titleSmall
+                    )
+
+                    Text(
+                        text = "Дата",
+                        modifier = Modifier.weight(3f),
+                        style = CustomTypography.titleSmall
+                    )
+                }
+
+                Divider()
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(bottom = 32.dp)
+                ) {
+
+                    // Loader
+                    if (viewModel.isLogsLoading) {
+
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(24.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(
+                                    color = AppColors.MAIN_COLOR.color
+                                )
+                            }
+                        }
+
+                    }
+
+                    // Пустой список
+                    else if (viewModel.logs.isEmpty()) {
+
+                        item {
+                            Text(
+                                text = "Нет записей",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                style = CustomTypography.bodyMedium
+                            )
+                        }
+
+                    }
+
+                    // Данные
+                    else {
+
+                        items(viewModel.logs) { log ->
+
+                            val formattedDate = log.timestamp
+                                .replace("T", " ")
+                                .substring(0, 16)
+
+                            Column {
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 8.dp)
+                                ) {
+
+                                    Text(
+                                        text = log.number.toString(),
+                                        modifier = Modifier.weight(1f),
+                                        style = CustomTypography.bodyMedium
+                                    )
+
+                                    Text(
+                                        text = log.worker,
+                                        modifier = Modifier.weight(3f),
+                                        style = CustomTypography.bodyMedium
+                                    )
+
+                                    Text(
+                                        text = formattedDate,
+                                        modifier = Modifier.weight(3f),
+                                        style = CustomTypography.bodyMedium
+                                    )
+                                }
+
+                                Divider()
+                            }
+                        }
+                    }
+                }
             }
 
             if (isLoading || isGettingNumber) {
@@ -127,6 +250,7 @@ fun RequestWebScreen(
             }
 
             LaunchedEffect(resultDialogText) {
+                viewModel.loadLastLogs()
                 resultDialogText?.let { text ->
                     snackbarHostState.showSnackbar(visuals = ErrorSnackbar(message = text))
                 }
