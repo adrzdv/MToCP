@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.adrzdv.mtocp.data.model.LogEntry
 import com.adrzdv.mtocp.util.RenderWakeUpService
 import kotlinx.coroutines.launch
 
@@ -23,6 +24,12 @@ class RequestWebViewModel : ViewModel() {
         private set
 
     var workerName by mutableStateOf("")
+        private set
+
+    var logs by mutableStateOf<List<LogEntry>>(emptyList())
+        private set
+
+    var isLogsLoading by mutableStateOf(false)
         private set
 
     private val wakeUpService = RenderWakeUpService()
@@ -75,4 +82,15 @@ class RequestWebViewModel : ViewModel() {
         showNameDialog = false
         resultDialogText = null
     }
+
+    fun loadLastLogs() {
+        viewModelScope.launch {
+            isLogsLoading = true
+            val result = wakeUpService.getLastLogs()
+            logs = result ?: emptyList()
+            isLogsLoading = false
+        }
+    }
+
+
 }

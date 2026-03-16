@@ -1,8 +1,10 @@
 package com.adrzdv.mtocp.util
 
+import com.adrzdv.mtocp.data.model.LogEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okio.use
+import org.json.JSONArray
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.SocketTimeoutException
@@ -57,6 +59,51 @@ class RenderWakeUpService {
                 val jsonObject = JSONObject(json)
                 jsonObject.getString("number")
             } else null
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    suspend fun getLastLogs(): List<LogEntry>? = withContext(Dispatchers.IO) {
+        try {
+            val url = URL("https://reg-log-bt.onrender.com/lastlogs")
+            val conn = url.openConnection() as HttpURLConnection
+            conn.requestMethod = "POST"
+            conn.setRequestProperty("Content-Type", "application/json")
+
+            conn.connectTimeout = 15000
+            conn.readTimeout = 15000
+            conn.doOutput = true
+
+            conn.outputStream.use {
+                it.write("""{}""".toByteArray())
+            }
+
+            val responseCode = conn.responseCode
+
+            if (responseCode in 200..299) {
+                val json = conn.inputStream.bufferedReader().use { it.readText() }
+
+                val array = JSONArray(json)
+
+                val result = mutableListOf<LogEntry>()
+
+                for (i in 0 until array.length()) {
+                    val obj = array.getJSONObject(i)
+
+                    result.add(
+                        LogEntry(
+                            number = obj.getInt("number"),
+                            worker = obj.getString("worker"),
+                            timestamp = obj.getString("timestamp")
+                        )
+                    )
+                }
+
+                result
+            } else null
+
         } catch (e: Exception) {
             e.printStackTrace()
             null
