@@ -24,9 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.data.db.entity.CompanyWithBranch
 import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch
+import com.adrzdv.mtocp.domain.model.enums.CoachTypes
 import com.adrzdv.mtocp.ui.component.AppBar
 import com.adrzdv.mtocp.ui.component.dialogs.AddNewCoach
+import com.adrzdv.mtocp.ui.component.dialogs.CoachSelectionDialog
 import com.adrzdv.mtocp.ui.component.newelements.FloatingButton
 import com.adrzdv.mtocp.ui.component.newelements.InfoBlock
 import com.adrzdv.mtocp.ui.component.newelements.cards.CoachCard
@@ -41,10 +44,13 @@ fun TrainSchemeEditingScreen(
     navController: NavHostController,
     trainOrderViewModel: TrainOrderViewModel,
     depotAutocompleteViewModel: AutocompleteViewModel<DepotWithBranch>,
-    workerDepotAutocompleteViewModel: AutocompleteViewModel<DepotWithBranch>
+    workerDepotAutocompleteViewModel: AutocompleteViewModel<DepotWithBranch>,
+    companyAutocompleteViewModel: AutocompleteViewModel<CompanyWithBranch>
 ) {
     val state by trainOrderViewModel.orderState.collectAsState()
     var showAddCoachDialog by remember { mutableStateOf(false) }
+    var showCoachTypeSelectionDialog by remember { mutableStateOf(false) }
+    var selectedCoachType by remember { mutableStateOf<CoachTypes?>(null) }
 
     Scaffold(
         topBar = {
@@ -79,7 +85,7 @@ fun TrainSchemeEditingScreen(
         floatingActionButton = {
             FloatingButton(
                 onClick = {
-                    showAddCoachDialog = true
+                    showCoachTypeSelectionDialog = true
                 },
                 icon = {
                     Icon(
@@ -114,15 +120,30 @@ fun TrainSchemeEditingScreen(
         }
     }
 
-    if (showAddCoachDialog) {
+    if (showCoachTypeSelectionDialog) {
+        CoachSelectionDialog(
+            onAddClick = { selected ->
+                selectedCoachType = selected
+                showCoachTypeSelectionDialog = false
+                showAddCoachDialog = true
+            },
+            onDismiss = { showCoachTypeSelectionDialog = false }
+        )
+    }
+
+    if (showAddCoachDialog && selectedCoachType != null) {
         AddNewCoach(
+            selectedType = selectedCoachType!!,
             onConfirm = {
                 trainOrderViewModel.addCoachInOrder(it)
                 showAddCoachDialog = false
             },
-            onDismiss = { showAddCoachDialog = false },
+            onDismiss = {
+                showAddCoachDialog = false
+            },
             depotAutocompleteViewModel = depotAutocompleteViewModel,
             workerDepotAutocompleteViewModel = workerDepotAutocompleteViewModel,
+            companyAutocompleteViewModel = companyAutocompleteViewModel,
             appDependencies = appDependencies
         )
     }

@@ -15,7 +15,8 @@ private val LightColors = lightColorScheme(
     onSurface = ApplicationColors.MAIN_COLOR,
     error = ApplicationColors.ERROR_COLOR,
     onError = ApplicationColors.SURFACE_COLOR,
-    surfaceContainerHigh = ApplicationColors.SURFACE_COLOR
+    surfaceContainerHigh = ApplicationColors.SURFACE_COLOR,
+    onSurfaceVariant = ApplicationColors.MAIN_COLOR
 )
 
 @Composable

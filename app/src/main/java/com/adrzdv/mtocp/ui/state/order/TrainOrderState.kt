@@ -1,6 +1,7 @@
 package com.adrzdv.mtocp.ui.state.order
 
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
+import com.adrzdv.mtocp.ui.model.statedtoui.CoachUIBase
 import com.adrzdv.mtocp.ui.model.statedtoui.CoachUi
 import com.adrzdv.mtocp.ui.model.statedtoui.TrainUI
 import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI
@@ -14,7 +15,7 @@ data class TrainOrderState(
     val orderConditions: RevisionType? = null,
     val trainScheme: String? = null,
     val crewList: Map<Int, WorkerUI> = emptyMap(),
-    val coachList: Map<String, CoachUi> = emptyMap(),
+    val coachList: Map<String, CoachUIBase> = emptyMap(),
     val train: TrainUI = TrainUI("", "", "", ""),
     val isQualityPassport: Boolean = false,
     val showDatePicker: Boolean = false,

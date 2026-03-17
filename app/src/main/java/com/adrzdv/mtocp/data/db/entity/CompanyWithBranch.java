@@ -12,4 +12,9 @@ public class CompanyWithBranch {
             entityColumn = "id"
     )
     public BranchEntity branch;
+
+    @Override
+    public String toString() {
+        return company.getName();
+    }
 }

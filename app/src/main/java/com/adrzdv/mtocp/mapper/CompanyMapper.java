@@ -37,4 +37,14 @@ public class CompanyMapper {
                 company.getBranchId(),
                 company.getDinnerDepartment());
     }
+
+    public static CompanyEntity fromPojoToEntity(CompanyWithBranch company) {
+        return new CompanyEntity(company.company.getEls(),
+                company.company.getName(),
+                company.company.getActive(),
+                company.company.getContractNumber(),
+                company.company.getExpirationDate(),
+                company.company.getBranchId(),
+                company.company.getDinnerDepartment());
+    }
 }

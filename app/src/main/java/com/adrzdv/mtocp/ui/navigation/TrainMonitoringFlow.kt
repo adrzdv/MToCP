@@ -61,6 +61,9 @@ fun NavGraphBuilder.trainMonitoringGraph(
                 ),
                 workerDepotAutocompleteViewModel = viewModelLocator.getWorkerDepotAutocompleteViewModel(
                     backStackEntry
+                ),
+                companyAutocompleteViewModel = viewModelLocator.getCompanyAutocompleteViewModel(
+                    backStackEntry
                 )
             )
         }

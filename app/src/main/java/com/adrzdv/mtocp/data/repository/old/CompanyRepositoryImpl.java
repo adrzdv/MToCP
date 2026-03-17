@@ -7,6 +7,7 @@ import com.adrzdv.mtocp.domain.repository.old.CompanyRepository;
 
 import java.util.List;
 
+@Deprecated
 public class CompanyRepositoryImpl implements CompanyRepository {
 
     private final CompanyDao dao;

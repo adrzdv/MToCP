@@ -5,6 +5,7 @@ import com.adrzdv.mtocp.data.db.entity.CompanyWithBranch;
 
 import java.util.List;
 
+@Deprecated
 public interface CompanyRepository {
     List<CompanyWithBranch> getAll();
 
