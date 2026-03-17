@@ -38,7 +38,7 @@ class CoachViewModel(
     }
 
     fun addTagToViolation(code: Int, tag: String) {
-        _violationMap[code]?.attributeMap?.put("tag", tag)
+        //_violationMap[code]?.attributeMap?.put("tag", tag)
     }
 
     fun changeAmount(code: Int, amount: Int) {

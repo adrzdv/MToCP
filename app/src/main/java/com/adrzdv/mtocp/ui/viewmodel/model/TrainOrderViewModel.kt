@@ -3,16 +3,20 @@ package com.adrzdv.mtocp.ui.viewmodel.model
 import androidx.lifecycle.viewModelScope
 import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.domain.model.enums.CoachTypes
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.domain.model.order.TrainOrder
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
+import com.adrzdv.mtocp.domain.usecase.CreateDinnerCarUseCase
 import com.adrzdv.mtocp.domain.usecase.CreatePassengerCoachUseCase
 import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
 import com.adrzdv.mtocp.domain.usecase.GetTrainByNumberUseCase
 import com.adrzdv.mtocp.domain.usecase.GetTrainSchemeUseCase
 import com.adrzdv.mtocp.mapper.WorkerMapper
+import com.adrzdv.mtocp.ui.model.statedtoui.CoachUIBase
 import com.adrzdv.mtocp.ui.model.statedtoui.CoachUi
+import com.adrzdv.mtocp.ui.model.statedtoui.DinnerCarUI
 import com.adrzdv.mtocp.ui.model.statedtoui.TrainUI
 import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI
 import com.adrzdv.mtocp.ui.state.order.PickerField
@@ -27,7 +31,8 @@ class TrainOrderViewModel(
     val getDepotByNameUseCase: GetDepotByNameUseCase,
     val getTrainByNumberUseCase: GetTrainByNumberUseCase,
     val createPassengerCoachUseCase: CreatePassengerCoachUseCase,
-    val getTrainSchemeUseCase: GetTrainSchemeUseCase
+    val getTrainSchemeUseCase: GetTrainSchemeUseCase,
+    val createDinnerCarUseCase: CreateDinnerCarUseCase
 ) : BaseOrderViewModel<TrainOrderState, TrainOrder>(appDependencies) {
     init {
         createOrder()
@@ -302,35 +307,15 @@ class TrainOrderViewModel(
         }
     }
 
-    fun addCoachInOrder(coach: CoachUi) {
+    fun addCoachInOrder(coach: CoachUIBase) {
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val updatedCoach =
-                    if (coach.depot.isEmpty()) {
-                        val trainNumber = orderState.value.train.number
-                        val train = getTrainByNumberUseCase(trainNumber)
-                        val depotName = train.depot
-                        coach.copy(depot = depotName.shortName)
-
-                    } else {
-                        coach
-                    }
-
-                val updatedCoachMap = orderState.value.coachList.toMutableMap()
-                updatedCoachMap[coach.number] = updatedCoach
-
-                updateState { current ->
-                    current.copy(
-                        coachList = updatedCoachMap
-                    )
+            when (coach.globalType) {
+                CoachTypes.PASSENGER_CAR -> addPassengerCoachInOrder(coach as CoachUi)
+                CoachTypes.DINNER_CAR -> addDinnerCarInOrder(coach as DinnerCarUI)
+                CoachTypes.COMMERCIAL_CAR -> TODO()
+                else -> {
+                    throw IllegalArgumentException("Unknown coach type")
                 }
-
-                val coachDomain = createPassengerCoachUseCase.invoke(updatedCoach)
-                domainOrder.addRevisionObject(coachDomain)
-                updateTrainScheme()
-
-            } catch (e: IllegalArgumentException) {
-                _snackbarMessage.value = e.message
             }
         }
     }
@@ -394,6 +379,56 @@ class TrainOrderViewModel(
             PickerField.START_DATE -> date.isAfter(LocalDateTime.now().minusHours(1L))
             PickerField.END_DATE -> date.isAfter(orderState.value.dateStart)
             else -> false
+        }
+    }
+
+    private suspend fun addPassengerCoachInOrder(coach: CoachUi) {
+        try {
+            val updatedCoach =
+                if (coach.depot.isEmpty()) {
+                    val trainNumber = orderState.value.train.number
+                    val train = getTrainByNumberUseCase(trainNumber)
+                    val depotName = train.depot
+                    coach.copy(depot = depotName.shortName)
+                } else {
+                    coach
+                }
+
+            val updatedCoachMap = orderState.value.coachList.toMutableMap()
+            updatedCoachMap[coach.number] = updatedCoach
+
+            updateState { current ->
+                current.copy(
+                    coachList = updatedCoachMap
+                )
+            }
+
+            val coachDomain = createPassengerCoachUseCase.invoke(updatedCoach)
+            domainOrder.addRevisionObject(coachDomain)
+            updateTrainScheme()
+
+        } catch (e: IllegalArgumentException) {
+            _snackbarMessage.value = e.message
+        }
+    }
+
+    private suspend fun addDinnerCarInOrder(coach: DinnerCarUI) {
+        try {
+            val updatedCoachMap = orderState.value.coachList.toMutableMap()
+            updatedCoachMap[coach.number] = coach
+
+            updateState { current ->
+                current.copy(
+                    coachList = updatedCoachMap
+                )
+            }
+
+            val dinnerDomain = createDinnerCarUseCase.invoke(coach)
+            domainOrder.addRevisionObject(dinnerDomain)
+            updateTrainScheme()
+
+        } catch (e: IllegalArgumentException) {
+            _snackbarMessage.value = e.message
         }
     }
 

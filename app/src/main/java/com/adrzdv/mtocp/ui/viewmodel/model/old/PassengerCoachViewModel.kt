@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adrzdv.mtocp.MessageCodes
+import com.adrzdv.mtocp.domain.model.enums.CoachTypes
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam
@@ -113,12 +114,12 @@ class PassengerCoachViewModel(
     }
 
     fun addTagToViolation(code: Int, tag: String) {
-        _state.value = _state.value.copy(
-            violations = _state.value.violations?.toMutableMap()
-                .apply {
-                    this?.get(code)?.attributeMap?.set(tag, tag)
-                }
-        )
+//        _state.value = _state.value.copy(
+//            violations = _state.value.violations?.toMutableMap()
+//                .apply {
+//                    this?.get(code)?.attributeMap?.set(tag, tag)
+//                }
+//        )
     }
 
     fun deleteViolation(code: Int, orderNumber: String) {
@@ -215,7 +216,7 @@ class PassengerCoachViewModel(
                                         depotDomain,
                                         workerType
                                     )
-                                    val updatedCoach = PassengerCar(initCoach?.number).apply {
+                                    val updatedCoach = PassengerCar(initCoach?.number, CoachTypes.PASSENGER_CAR).apply {
                                         this.coachRoute = initCoach?.coachRoute
                                         this.depotDomain = initCoach?.depotDomain
                                         this.coachType = initCoach?.coachType

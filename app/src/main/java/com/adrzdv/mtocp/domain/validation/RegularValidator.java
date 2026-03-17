@@ -76,7 +76,7 @@ public abstract class RegularValidator {
                 throw new IllegalArgumentException(MessageCodes.PATTERN_MATCHES_ERROR.toString());
             }
         } else if (o instanceof DinnerCar c && !c.getNumber().isEmpty()) {
-            DinnerCarsType type = c.getType();
+            DinnerCarsType type = c.getDinnerType();
             if (!dinnerPatterns.get(type).contains(firstDigit)) {
                 throw new IllegalArgumentException(MessageCodes.PATTERN_MATCHES_ERROR.toString());
             }

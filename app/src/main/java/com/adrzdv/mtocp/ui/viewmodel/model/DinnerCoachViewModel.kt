@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adrzdv.mtocp.MessageCodes
+import com.adrzdv.mtocp.domain.model.enums.CoachTypes
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam
@@ -91,12 +92,12 @@ class DinnerCoachViewModel(
     }
 
     fun addTagToViolation(code: Int, tag: String) {
-        _state.value = _state.value.copy(
-            violations = _state.value.violations?.toMutableMap()
-                .apply {
-                    this?.get(code)?.attributeMap?.set(tag, tag)
-                }
-        )
+//        _state.value = _state.value.copy(
+//            violations = _state.value.violations?.toMutableMap()
+//                .apply {
+//                    this?.get(code)?.attributeMap?.set(tag, tag)
+//                }
+//        )
     }
 
     fun cleanViolations(orderNumber: String) {
@@ -203,21 +204,22 @@ class DinnerCoachViewModel(
                                     )
                                 }
 
-                                val updatedCoach = DinnerCar(initDinner.number).apply {
-                                    this.worker = worker
-                                    this.type = initDinner.type
-                                    this.revisionDateStart = initDinner.revisionDateStart
-                                    if (initDinner.revisionDateEnd == null) {
-                                        this.revisionDateEnd = LocalDateTime.now()
-                                    } else {
-                                        this.revisionDateEnd = initDinner.revisionDateEnd
+                                val updatedCoach =
+                                    DinnerCar(initDinner.number, CoachTypes.DINNER_CAR).apply {
+                                        this.worker = worker
+                                        //this.dinnerType = initDinner.type
+                                        this.revisionDateStart = initDinner.revisionDateStart
+                                        if (initDinner.revisionDateEnd == null) {
+                                            this.revisionDateEnd = LocalDateTime.now()
+                                        } else {
+                                            this.revisionDateEnd = initDinner.revisionDateEnd
+                                        }
+                                        this.companyDomain = initDinner.companyDomain
+                                        this.depot = initDinner.depot
+                                        this.coachRoute = initDinner.coachRoute
+                                        this.additionalParams = currParams
+                                        this.violationMap = currViolations
                                     }
-                                    this.companyDomain = initDinner.companyDomain
-                                    this.depot = initDinner.depot
-                                    this.coachRoute = initDinner.coachRoute
-                                    this.additionalParams = currParams
-                                    this.violationMap = currViolations
-                                }
                                 onSave(updatedCoach)
                             }
                         }
