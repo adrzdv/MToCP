@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.model.statedtoui
+package com.adrzdv.mtocp.ui.model.dto
 
 /**
  * UI representation of a worker entity.

@@ -32,7 +32,7 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.newelements.BlancInfoBlock
 import com.adrzdv.mtocp.ui.component.newelements.SquaredMediumButton
 import com.adrzdv.mtocp.ui.component.newelements.cards.CoachCard
-import com.adrzdv.mtocp.ui.model.statedtoui.TrainUI
+import com.adrzdv.mtocp.ui.model.dto.TrainUI
 import com.adrzdv.mtocp.ui.state.order.TrainOrderState
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainOrderViewModel

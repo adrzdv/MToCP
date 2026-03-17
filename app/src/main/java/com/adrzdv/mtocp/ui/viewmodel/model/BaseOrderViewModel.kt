@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.domain.model.order.Order
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject
-import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI
+import com.adrzdv.mtocp.ui.model.dto.WorkerUI
 import com.adrzdv.mtocp.ui.state.order.OrderDraftState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

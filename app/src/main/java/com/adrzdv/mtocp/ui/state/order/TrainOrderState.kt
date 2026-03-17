@@ -1,9 +1,9 @@
 package com.adrzdv.mtocp.ui.state.order
 
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
-import com.adrzdv.mtocp.ui.model.statedtoui.CoachUIBase
-import com.adrzdv.mtocp.ui.model.statedtoui.TrainUI
-import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI
+import com.adrzdv.mtocp.ui.model.dto.CoachUIBase
+import com.adrzdv.mtocp.ui.model.dto.TrainUI
+import com.adrzdv.mtocp.ui.model.dto.WorkerUI
 import java.time.LocalDateTime
 
 data class TrainOrderState(

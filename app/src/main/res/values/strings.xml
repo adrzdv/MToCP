@@ -190,6 +190,8 @@
     <string name="start_input_text">Начните ввод</string>
     <string name="search_violation">Поиск нарушения</string>
     <string name="choose_revision_type">Выберите тип проверки</string>
+    <string name="is_rent">Аренда</string>
+    <string name="doc_id">Номер удостоверения</string>
 
     <!--DESCRIPTIONS-->
     <string name="revision_start_description">Заполните все поля, добавьте работников и начните проверку</string>
@@ -197,6 +199,8 @@
     <string name="add_crew_description">Внесите руководителей объекта проверки</string>
     <string name="ask_train_scheme">Ввести схему поезда?</string>
     <string name="add_car_scheme_description">Добавьте вагоны в схему поезда</string>
+    <string name="train_scheme_text">Схема поезда</string>
+    <string name="total">Всего:</string>
 
     <!--ERRORS-->
     <string name="number_pattern_error">Некорректный номер</string>

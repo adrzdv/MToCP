@@ -5,7 +5,7 @@ import com.adrzdv.mtocp.domain.model.enums.WorkerTypes;
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 import com.adrzdv.mtocp.ui.model.InnerWorkerDto;
-import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI;
+import com.adrzdv.mtocp.ui.model.dto.WorkerUI;
 
 public class WorkerMapper {
     public static InnerWorkerDto fromDomainToDtoInner(InnerWorkerDomain worker) {

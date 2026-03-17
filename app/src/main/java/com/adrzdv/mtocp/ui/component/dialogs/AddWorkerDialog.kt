@@ -26,7 +26,7 @@ import com.adrzdv.mtocp.ui.component.newelements.ClearIcon
 import com.adrzdv.mtocp.ui.component.newelements.DropdownField
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.newelements.RoundedUnborderedButton
-import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI
+import com.adrzdv.mtocp.ui.model.dto.WorkerUI
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.validation.Validator

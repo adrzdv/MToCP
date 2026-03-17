@@ -7,8 +7,8 @@ import com.adrzdv.mtocp.domain.model.enums.DinnerCarsType
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
-import com.adrzdv.mtocp.ui.model.statedtoui.CoachUi
-import com.adrzdv.mtocp.ui.model.statedtoui.DinnerCarUI
+import com.adrzdv.mtocp.ui.model.dto.CoachUi
+import com.adrzdv.mtocp.ui.model.dto.DinnerCarUI
 import com.adrzdv.mtocp.ui.state.coach.NewDinnerCoachState
 import com.adrzdv.mtocp.ui.state.coach.NewPassengerCoachState
 import java.time.LocalDateTime

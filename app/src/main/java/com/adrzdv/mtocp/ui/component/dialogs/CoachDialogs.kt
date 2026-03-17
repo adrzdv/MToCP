@@ -30,7 +30,7 @@ import com.adrzdv.mtocp.mapper.toUI
 import com.adrzdv.mtocp.ui.component.AppBar
 import com.adrzdv.mtocp.ui.component.dialogs.newcoachcontent.NewDinnerCarContent
 import com.adrzdv.mtocp.ui.component.dialogs.newcoachcontent.NewPassengerCoachContent
-import com.adrzdv.mtocp.ui.model.statedtoui.CoachUIBase
+import com.adrzdv.mtocp.ui.model.dto.CoachUIBase
 import com.adrzdv.mtocp.ui.state.coach.CoachStateFactory
 import com.adrzdv.mtocp.ui.state.coach.NewDinnerCoachState
 import com.adrzdv.mtocp.ui.state.coach.NewPassengerCoachState

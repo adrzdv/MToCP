@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
-import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI
+import com.adrzdv.mtocp.ui.model.dto.WorkerUI
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 

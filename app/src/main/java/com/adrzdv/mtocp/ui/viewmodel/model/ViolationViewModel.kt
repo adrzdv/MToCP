@@ -8,7 +8,7 @@ import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
 import com.adrzdv.mtocp.mapper.ViolationMapper
 import com.adrzdv.mtocp.mapper.toUi
-import com.adrzdv.mtocp.ui.model.statedtoui.ViolationUi
+import com.adrzdv.mtocp.ui.model.dto.ViolationUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow

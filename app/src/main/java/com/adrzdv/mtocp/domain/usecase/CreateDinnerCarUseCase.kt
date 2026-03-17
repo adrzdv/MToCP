@@ -2,7 +2,7 @@ package com.adrzdv.mtocp.domain.usecase
 
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar
 import com.adrzdv.mtocp.mapper.toDomain
-import com.adrzdv.mtocp.ui.model.statedtoui.DinnerCarUI
+import com.adrzdv.mtocp.ui.model.dto.DinnerCarUI
 
 class CreateDinnerCarUseCase(
     private val getDepotByNameUseCase: GetDepotByNameUseCase,

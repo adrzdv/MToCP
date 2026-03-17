@@ -33,9 +33,9 @@ import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.CoachTypes
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
-import com.adrzdv.mtocp.ui.model.statedtoui.CoachUIBase
-import com.adrzdv.mtocp.ui.model.statedtoui.CoachUi
-import com.adrzdv.mtocp.ui.model.statedtoui.DinnerCarUI
+import com.adrzdv.mtocp.ui.model.dto.CoachUIBase
+import com.adrzdv.mtocp.ui.model.dto.CoachUi
+import com.adrzdv.mtocp.ui.model.dto.DinnerCarUI
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 

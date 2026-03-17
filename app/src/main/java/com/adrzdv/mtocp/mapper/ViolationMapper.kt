@@ -3,8 +3,8 @@ package com.adrzdv.mtocp.mapper
 import com.adrzdv.mtocp.data.db.entity.ViolationEntity
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
-import com.adrzdv.mtocp.ui.model.statedtoui.StaticsParamUi
-import com.adrzdv.mtocp.ui.model.statedtoui.ViolationUi
+import com.adrzdv.mtocp.ui.model.dto.StaticsParamUi
+import com.adrzdv.mtocp.ui.model.dto.ViolationUi
 
 fun ViolationEntity.toUi() = ViolationUi(
     this.code,

@@ -4,7 +4,7 @@ import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
 import com.adrzdv.mtocp.mapper.toDomain
-import com.adrzdv.mtocp.ui.model.statedtoui.CoachUi
+import com.adrzdv.mtocp.ui.model.dto.CoachUi
 
 /**
  * Use case responsible for transforming a passenger coach UI model into a domain model.

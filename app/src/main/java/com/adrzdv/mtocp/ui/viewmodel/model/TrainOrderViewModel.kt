@@ -14,11 +14,11 @@ import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
 import com.adrzdv.mtocp.domain.usecase.GetTrainByNumberUseCase
 import com.adrzdv.mtocp.domain.usecase.GetTrainSchemeUseCase
 import com.adrzdv.mtocp.mapper.WorkerMapper
-import com.adrzdv.mtocp.ui.model.statedtoui.CoachUIBase
-import com.adrzdv.mtocp.ui.model.statedtoui.CoachUi
-import com.adrzdv.mtocp.ui.model.statedtoui.DinnerCarUI
-import com.adrzdv.mtocp.ui.model.statedtoui.TrainUI
-import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI
+import com.adrzdv.mtocp.ui.model.dto.CoachUIBase
+import com.adrzdv.mtocp.ui.model.dto.CoachUi
+import com.adrzdv.mtocp.ui.model.dto.DinnerCarUI
+import com.adrzdv.mtocp.ui.model.dto.TrainUI
+import com.adrzdv.mtocp.ui.model.dto.WorkerUI
 import com.adrzdv.mtocp.ui.state.order.PickerField
 import com.adrzdv.mtocp.ui.state.order.TrainOrderState
 import com.adrzdv.mtocp.ui.state.order.isOrderReadyForSave

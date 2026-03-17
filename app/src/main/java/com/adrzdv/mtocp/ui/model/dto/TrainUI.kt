@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.ui.model.statedtoui
+package com.adrzdv.mtocp.ui.model.dto
 
 data class TrainUI(
     val number: String,
