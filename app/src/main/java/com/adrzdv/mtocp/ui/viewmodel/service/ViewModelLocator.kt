@@ -7,7 +7,6 @@ import com.adrzdv.mtocp.data.db.entity.CompanyWithBranch
 import com.adrzdv.mtocp.data.db.entity.TrainEntity
 import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch
 import com.adrzdv.mtocp.data.repository.refcache.CacheRepository
-import com.adrzdv.mtocp.domain.model.departments.CompanyDomain
 import com.adrzdv.mtocp.ui.viewmodel.model.AuthViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel

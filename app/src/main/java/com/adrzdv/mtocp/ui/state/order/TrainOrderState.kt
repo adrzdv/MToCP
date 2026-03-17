@@ -2,7 +2,6 @@ package com.adrzdv.mtocp.ui.state.order
 
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.ui.model.statedtoui.CoachUIBase
-import com.adrzdv.mtocp.ui.model.statedtoui.CoachUi
 import com.adrzdv.mtocp.ui.model.statedtoui.TrainUI
 import com.adrzdv.mtocp.ui.model.statedtoui.WorkerUI
 import java.time.LocalDateTime
