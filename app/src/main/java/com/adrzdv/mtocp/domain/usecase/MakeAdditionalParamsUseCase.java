@@ -8,6 +8,7 @@ import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class MakeAdditionalParamsUseCase {
 
@@ -17,16 +18,16 @@ public class MakeAdditionalParamsUseCase {
      * and the value is a HashMap where the key is the coach number,
      * and the value is a Pair containing the worker name and the parameter note
      */
-    public Map<String, Map<String, Pair<String, String>>> execute(Map<String, RevisionObject> revMap) {
+    public Map<String, Map<String, Pair<String, String>>> execute(Map<UUID, RevisionObject> revMap) {
         Map<String, Map<String, Pair<String, String>>> res = new HashMap<>();
 
         for (RevisionObject obj : revMap.values()) {
             if (!obj.getAdditionalParams().isEmpty()) {
                 String first = "";
                 if (obj instanceof PassengerCar that && that.getTrailing()) {
-                    first = obj.getWorker().getName() + " (прицепной)";
+                    //first = obj.getWorker().getName() + " (прицепной)";
                 } else {
-                    first = obj.getWorker().getName();
+                    //first = obj.getWorker().getName();
                 }
 
                 for (StaticsParam staticsParam : obj.getAdditionalParams().values()) {

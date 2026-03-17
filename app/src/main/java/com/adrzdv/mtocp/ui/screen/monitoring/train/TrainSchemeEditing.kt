@@ -113,7 +113,7 @@ fun TrainSchemeEditingScreen(
                 CoachCard(
                     it,
                     onDeleteClick = {
-                        trainOrderViewModel.removeCoachInOrder(it.number)
+                        trainOrderViewModel.removeCoachInOrder(it.id)
                     }
                 )
             }

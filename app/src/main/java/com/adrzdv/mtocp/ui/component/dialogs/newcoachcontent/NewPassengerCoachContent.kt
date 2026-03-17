@@ -10,6 +10,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -39,6 +40,11 @@ fun NewPassengerCoachContent(
     val workerDepotQuery by workerDepotAutocompleteViewModel.query.collectAsState()
     val depotSuggestions by depotAutocompleteViewModel.suggestions.collectAsState()
     val workerDepotSuggestions by workerDepotAutocompleteViewModel.suggestions.collectAsState()
+
+    LaunchedEffect(Unit) {
+        workerDepotAutocompleteViewModel.resetQuery()
+        depotAutocompleteViewModel.resetQuery()
+    }
 
     Column(
         modifier = Modifier

@@ -1,13 +1,12 @@
 package com.adrzdv.mtocp.domain.model.revisionobject.collectors;
 
-import com.adrzdv.mtocp.MessageCodes;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.violation.StaticsParam;
-import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Domain class model for abstract collectors of revision objects.
@@ -17,7 +16,7 @@ import java.util.Map;
 public abstract class ObjectCollector {
     private String number;
     private Boolean isQualityPassport;
-    private Map<String, RevisionObject> objectsMap;
+    private Map<UUID, RevisionObject> objectsMap;
     private Map<String, StaticsParam> additionalParams;
 
     public ObjectCollector(String number) {
@@ -35,11 +34,11 @@ public abstract class ObjectCollector {
         this.number = number;
     }
 
-    public Map<String, RevisionObject> getObjectsMap() {
+    public Map<UUID, RevisionObject> getObjectsMap() {
         return objectsMap;
     }
 
-    public void setObjectsMap(Map<String, RevisionObject> objectsMap) {
+    public void setObjectsMap(Map<UUID, RevisionObject> objectsMap) {
         this.objectsMap = objectsMap;
     }
 
@@ -76,30 +75,12 @@ public abstract class ObjectCollector {
     }
 
     public void deleteRevisionObject(RevisionObject o) {
-        objectsMap.remove(o.getNumber());
+        objectsMap.remove(o.getUuid());
     }
 
     public void addRevisionObject(RevisionObject o) {
-        objectsMap.put(o.getNumber(), o);
+        objectsMap.put(o.getUuid(), o);
     }
 
-    public void addViolationToObject(String objNumber, ViolationDomain violation) {
-
-        if (!objectsMap.containsKey(objNumber) && objectsMap.get(objNumber) == null) {
-            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getMessageTitle());
-        }
-
-        objectsMap.get(objNumber).addViolation(violation);
-    }
-
-    public void deleteViolationInObject(String objNumber, int code) {
-
-        if (!objectsMap.containsKey(objNumber) && objectsMap.get(objNumber) == null) {
-            throw new IllegalArgumentException(MessageCodes.NOT_FOUND_ERROR.getMessageTitle());
-        }
-
-        objectsMap.get(objNumber).deleteViolation(code);
-
-    }
-    public abstract Map<String, RevisionObject> getCheckedObjects();
+    public abstract Map<UUID, RevisionObject> getCheckedObjects();
 }

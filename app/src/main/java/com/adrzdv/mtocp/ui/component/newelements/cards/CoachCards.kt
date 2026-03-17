@@ -191,11 +191,11 @@ fun CoachDropDownItemCard(
     }
 
     val workerDepot = when (coach) {
-        is PassengerCar -> (coach.worker as? InnerWorkerDomain)?.depotDomain?.shortName
+        is PassengerCar -> (coach.workerDomain as? InnerWorkerDomain)?.depotDomain?.shortName
         is DinnerCar -> if (coach.companyDomain != null) {
-            (coach.worker as? OuterWorkerDomain)?.company?.name
+            (coach.workerDomain as? OuterWorkerDomain)?.company?.name
         } else {
-            (coach.worker as? InnerWorkerDomain)?.depotDomain?.shortName
+            (coach.workerDomain as? InnerWorkerDomain)?.depotDomain?.shortName
         }
 
         else -> null
@@ -252,15 +252,15 @@ fun CoachDropDownItemCard(
                                     modifier = Modifier.padding(8.dp)
                                 ) {
                                     Text(
-                                        text = "${stringResource(R.string.worker)}: ${coach.worker.name}",
+                                        text = "${stringResource(R.string.worker)}: ${coach.workerDomain.name}",
                                         style = AppTypography.bodyMedium
                                     )
                                     Text(
-                                        text = "${stringResource(R.string.worker_type)}: ${coach.worker.workerType.description}",
+                                        text = "${stringResource(R.string.worker_type)}: ${coach.workerDomain.workerType.description}",
                                         style = AppTypography.bodyMedium
                                     )
                                     Text(
-                                        text = "${stringResource(R.string.worker_id)}: ${coach.worker.id}",
+                                        text = "${stringResource(R.string.worker_id)}: ${coach.workerDomain.id}",
                                         style = AppTypography.bodySmall
                                     )
                                     Text(

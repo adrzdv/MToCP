@@ -11,6 +11,7 @@ import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -144,7 +145,7 @@ public class TrainDomain extends ObjectCollector {
 
 
     @Override
-    public Map<String, RevisionObject> getCheckedObjects() {
+    public Map<UUID, RevisionObject> getCheckedObjects() {
         return this.getObjectsMap().entrySet()
                 .stream().filter(o -> o.getValue().getRevisionDateEnd() != null)
                 .collect(Collectors.toMap(Map.Entry::getKey,

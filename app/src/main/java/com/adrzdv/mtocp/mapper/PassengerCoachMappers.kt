@@ -12,8 +12,10 @@ import com.adrzdv.mtocp.ui.model.dto.DinnerCarUI
 import com.adrzdv.mtocp.ui.state.coach.NewDinnerCoachState
 import com.adrzdv.mtocp.ui.state.coach.NewPassengerCoachState
 import java.time.LocalDateTime
+import java.util.UUID
 
 fun CoachUi.toDomain(depot: DepotDomain) = PassengerCar(number, this.globalType).apply {
+    this.uuid = id
     this.depotDomain = depot
     this.coachType = PassengerCoachType.fromString(type)
     this.coachRoute = route
@@ -23,6 +25,7 @@ fun CoachUi.toDomain(depot: DepotDomain) = PassengerCar(number, this.globalType)
 
 fun NewPassengerCoachState.toDomain(depot: DepotDomain) =
     PassengerCar(number, CoachTypes.PASSENGER_CAR).apply {
+        this.uuid = UUID.randomUUID()
         this.depotDomain = depot
         this.coachType = PassengerCoachType.fromString(selectedType)
         this.coachRoute = route
@@ -53,6 +56,7 @@ fun NewDinnerCoachState.toUI() = DinnerCarUI().copy(
 
 fun DinnerCarUI.toDomain(depot: DepotDomain? = null, company: CompanyDomain? = null) =
     DinnerCar(number, CoachTypes.DINNER_CAR).apply {
+        this.uuid = id
         this.depot?.let {
             this.depot = depot
         }

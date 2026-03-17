@@ -5,6 +5,7 @@ import com.adrzdv.mtocp.ui.model.dto.CoachUIBase
 import com.adrzdv.mtocp.ui.model.dto.TrainUI
 import com.adrzdv.mtocp.ui.model.dto.WorkerUI
 import java.time.LocalDateTime
+import java.util.UUID
 
 data class TrainOrderState(
     override val orderNumber: String = "",
@@ -14,7 +15,7 @@ data class TrainOrderState(
     val orderConditions: RevisionType? = null,
     val trainScheme: String? = null,
     val crewList: Map<Int, WorkerUI> = emptyMap(),
-    val coachList: Map<String, CoachUIBase> = emptyMap(),
+    val coachList: Map<UUID, CoachUIBase> = emptyMap(),
     val train: TrainUI = TrainUI("", "", "", ""),
     val isQualityPassport: Boolean = false,
     val showDatePicker: Boolean = false,

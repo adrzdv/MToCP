@@ -32,7 +32,7 @@ class CreatePassengerCoachUseCase(
                     workerDomainDepot,
                     WorkerTypes.fromString(coachUI.workerPosition)
                 )
-                coachDomain.worker = workerDomain
+                coachDomain.workerDomain = workerDomain
             }
         }
         return coachDomain

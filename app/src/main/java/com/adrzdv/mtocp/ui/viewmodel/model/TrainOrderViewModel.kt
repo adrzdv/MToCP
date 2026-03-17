@@ -25,6 +25,7 @@ import com.adrzdv.mtocp.ui.state.order.isOrderReadyForSave
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import java.util.UUID
 
 class TrainOrderViewModel(
     appDependencies: AppDependencies,
@@ -320,9 +321,9 @@ class TrainOrderViewModel(
         }
     }
 
-    fun removeCoachInOrder(number: String) {
+    fun removeCoachInOrder(id: UUID) {
         val updatedList = orderState.value.coachList.toMutableMap()
-        updatedList.remove(number)
+        updatedList.remove(id)
 
         updateState { current ->
             current.copy(
@@ -330,7 +331,7 @@ class TrainOrderViewModel(
             )
         }
 
-        val obj = domainOrder.collector.objectsMap[number]
+        val obj = domainOrder.collector.objectsMap[id]
         domainOrder.collector.deleteRevisionObject(obj)
         updateTrainScheme()
     }
@@ -395,7 +396,7 @@ class TrainOrderViewModel(
                 }
 
             val updatedCoachMap = orderState.value.coachList.toMutableMap()
-            updatedCoachMap[coach.number] = updatedCoach
+            updatedCoachMap[coach.id] = updatedCoach
 
             updateState { current ->
                 current.copy(
@@ -415,7 +416,7 @@ class TrainOrderViewModel(
     private suspend fun addDinnerCarInOrder(coach: DinnerCarUI) {
         try {
             val updatedCoachMap = orderState.value.coachList.toMutableMap()
-            updatedCoachMap[coach.number] = coach
+            updatedCoachMap[coach.id] = coach
 
             updateState { current ->
                 current.copy(

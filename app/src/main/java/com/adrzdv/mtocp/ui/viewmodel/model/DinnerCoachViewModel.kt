@@ -32,9 +32,9 @@ class DinnerCoachViewModel(
 ) : ViewModel() {
     private val _state = mutableStateOf(
         DinnerCoachState(
-            idWorker = initDinner.worker?.id?.toString() ?: "",
-            nameWorker = initDinner.worker?.name,
-            typeWorker = initDinner.worker?.workerType?.description,
+            idWorker = initDinner.workerDomain?.id?.toString() ?: "",
+            nameWorker = initDinner.workerDomain?.name,
+            typeWorker = initDinner.workerDomain?.workerType?.description,
             violations = initDinner.violationMap
         )
     )
@@ -206,7 +206,7 @@ class DinnerCoachViewModel(
 
                                 val updatedCoach =
                                     DinnerCar(initDinner.number, CoachTypes.DINNER_CAR).apply {
-                                        this.worker = worker
+                                        this.workerDomain = worker
                                         //this.dinnerType = initDinner.type
                                         this.revisionDateStart = initDinner.revisionDateStart
                                         if (initDinner.revisionDateEnd == null) {

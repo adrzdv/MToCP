@@ -2,8 +2,10 @@ package com.adrzdv.mtocp.ui.model.dto
 
 import com.adrzdv.mtocp.domain.model.enums.CoachTypes
 import java.time.LocalDateTime
+import java.util.UUID
 
 interface CoachUIBase {
+    val id: UUID
     val globalType: CoachTypes?
     val number: String
     val type: String

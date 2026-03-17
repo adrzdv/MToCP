@@ -25,7 +25,7 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
     @Override
     public void updateRevisionObject(RevisionObject o) {
         if (o instanceof TicketTerminal that) {
-            ticketOffice.getObjectsMap().put(that.getNumber(), that);
+            ticketOffice.getObjectsMap().put(that.getUuid(), that);
         }
     }
 
@@ -114,7 +114,7 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
     @Override
     protected void doAddRevisionObject(RevisionObject o) {
         if (o instanceof TicketTerminal termial) {
-            ticketOffice.getObjectsMap().put(o.getNumber(), termial);
+            ticketOffice.getObjectsMap().put(o.getUuid(), termial);
         } else {
             throw new IllegalArgumentException("Expected TicketTerminal.class; Got: "
                     + o.getClass().getSimpleName());

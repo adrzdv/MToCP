@@ -4,6 +4,7 @@ import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Domain class model for ticket office - ticket terminals collector
@@ -18,7 +19,7 @@ public class TicketOfficeDomain extends ObjectCollector {
     }
 
     @Override
-    public Map<String, RevisionObject> getCheckedObjects() {
+    public Map<UUID, RevisionObject> getCheckedObjects() {
         return null;
     }
 

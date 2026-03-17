@@ -9,6 +9,7 @@ import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
 import java.time.LocalDateTime
+import java.util.UUID
 
 class CoachViewModel(
     private val coachNumber: String,
@@ -18,13 +19,13 @@ class CoachViewModel(
     private val _coachMut
         get() = mutableStateOf(
             orderViewModel.collector?.objectsMap?.get(
-                coachNumber
+                UUID.randomUUID()
             )
         )
     private val _coach = _coachMut.value
     private val _violationMap = mutableStateMapOf<Int, ViolationDomain>()
     val violationMap: Map<Int, ViolationDomain> get() = _violationMap
-    private val _worker = mutableStateOf((_coach as? PassengerCar)?.worker as? InnerWorkerDomain)
+    private val _worker = mutableStateOf((_coach as? PassengerCar)?.workerDomain as? InnerWorkerDomain)
     val workerType: WorkerTypes? get() = _worker.value?.workerType
 
     init {
@@ -34,7 +35,7 @@ class CoachViewModel(
     }
 
     fun getWorker(): InnerWorkerDomain? {
-        return _coach?.worker as? InnerWorkerDomain
+        return _coach?.workerDomain as? InnerWorkerDomain
     }
 
     fun addTagToViolation(code: Int, tag: String) {
@@ -73,12 +74,12 @@ class CoachViewModel(
     ) {
         val depot = depotViewModel.getDepotDomain(depotName)
         val newWorker = InnerWorkerDomain(id, name, depot, workerType)
-        _coach?.worker = newWorker
+        _coach?.workerDomain = newWorker
         _worker.value = newWorker
     }
 
     fun addWorker(worker: InnerWorkerDomain) {
-        _coach?.worker = worker
+        _coach?.workerDomain = worker
         _worker.value = worker
     }
 
@@ -108,11 +109,11 @@ class CoachViewModel(
         _coach?.violationMap = _violationMap.toMutableMap()
     }
 
-    fun reloadViolationsFromOrder() {
-        _violationMap.clear()
-        val coach = orderViewModel.collector?.objectsMap?.get(coachNumber)
-        coach?.violationMap?.forEach { (code, violation) ->
-            _violationMap[code] = violation
-        }
-    }
+//    fun reloadViolationsFromOrder() {
+//        _violationMap.clear()
+//        val coach = orderViewModel.collector?.objectsMap?.get(coachNumber)
+//        coach?.violationMap?.forEach { (code, violation) ->
+//            _violationMap[code] = violation
+//        }
+//    }
 }

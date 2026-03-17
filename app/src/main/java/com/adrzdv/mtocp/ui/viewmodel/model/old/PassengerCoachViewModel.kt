@@ -33,10 +33,10 @@ class PassengerCoachViewModel(
 ) : ViewModel() {
     private val _state = mutableStateOf(
         PassengerCoachState(
-            idWorker = initCoach?.worker?.id?.toString() ?: "",
-            nameWorker = initCoach?.worker?.name,
-            typeWorker = initCoach?.worker?.workerType?.description,
-            depotWorker = (initCoach?.worker as? InnerWorkerDomain)?.depotDomain?.name,
+            idWorker = initCoach?.workerDomain?.id?.toString() ?: "",
+            nameWorker = initCoach?.workerDomain?.name,
+            typeWorker = initCoach?.workerDomain?.workerType?.description,
+            depotWorker = (initCoach?.workerDomain as? InnerWorkerDomain)?.depotDomain?.name,
             violations = initCoach?.violationMap,
             statParams = initCoach?.additionalParams
         )
@@ -229,7 +229,7 @@ class PassengerCoachViewModel(
                                         }
                                         this.additionalParams = currParams
                                         this.depotDomain = initCoach?.depotDomain
-                                        this.worker = worker
+                                        this.workerDomain = worker
                                         this.qualityPassport = initCoach?.qualityPassport
                                         this.violationMap = currViolations
                                     }

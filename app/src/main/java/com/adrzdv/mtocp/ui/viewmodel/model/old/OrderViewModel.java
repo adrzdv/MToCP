@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -394,7 +395,8 @@ public class OrderViewModel extends ViewModel {
 
         if (order.getValue() instanceof CollectableOrder that) {
             try {
-                return gson.toJson(that.getCollector().getCheckedObjects());
+                //return gson.toJson(that.getCollector().getCheckedObjects());
+                return "{}";
             } catch (NullPointerException e) {
                 return "{}";
             }
@@ -436,7 +438,7 @@ public class OrderViewModel extends ViewModel {
             return;
         }
         if (currOrder instanceof CollectableOrder that) {
-            Map<String, RevisionObject> objMap = that.getCollector().getObjectsMap();
+            Map<UUID, RevisionObject> objMap = that.getCollector().getObjectsMap();
             String smsReport = currOrder.getRevisionDateStart().format(formatter) + "\n" +
                     that.getObjectName() + "\n" +
                     generateSmsReportUseCase.execute(objMap);
@@ -493,7 +495,8 @@ public class OrderViewModel extends ViewModel {
             return null;
         }
         if (currOrder instanceof CollectableOrder that) {
-            return makeAdditionalParamsUseCase.execute(that.getCollector().getObjectsMap());
+            //return makeAdditionalParamsUseCase.execute(that.getCollector().getObjectsMap());
+            return null;
         }
 
         return null;

@@ -35,7 +35,7 @@ public class TrainOrder extends Order implements CollectableOrder {
     @Override
     public void updateRevisionObject(RevisionObject o) {
         if (o instanceof Coach) {
-            train.getObjectsMap().put(o.getNumber(), o);
+            train.getObjectsMap().put(o.getUuid(), o);
         }
     }
 
@@ -45,7 +45,7 @@ public class TrainOrder extends Order implements CollectableOrder {
             return;
         }
 
-        RevisionObject existing = train.getObjectsMap().computeIfAbsent(o.getNumber(), k -> o);
+        RevisionObject existing = train.getObjectsMap().computeIfAbsent(o.getUuid(), k -> o);
 
         if (existing == o) {
             return;
@@ -54,7 +54,7 @@ public class TrainOrder extends Order implements CollectableOrder {
         if (existing.getRevisionDateEnd() == null) {
             existing.setRevisionDateEnd(o.getRevisionDateEnd());
             existing.setAdditionalParams(o.getAdditionalParams());
-            existing.setWorker(o.getWorker());
+            existing.setWorkerDomain(o.getWorkerDomain());
             existing.setQualityPassport(o.getQualityPassport());
         }
 
