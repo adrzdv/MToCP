@@ -28,6 +28,7 @@ import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.newelements.RoundedUnborderedButton
 import com.adrzdv.mtocp.ui.state.coach.NewDinnerCoachState
 import com.adrzdv.mtocp.ui.theme.AppColors
+import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 
 @Composable
@@ -113,7 +114,6 @@ fun NewDinnerCarContent(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
                 Checkbox(
                     checked = state.isRentalCoach,
                     colors = CheckboxDefaults.colors(
@@ -130,7 +130,8 @@ fun NewDinnerCarContent(
                 )
                 Text(
                     text = stringResource(R.string.is_rent),
-                    color = AppColors.MAIN_COLOR.color
+                    color = AppColors.MAIN_COLOR.color,
+                    style = AppTypography.labelSmall
                 )
             }
 
@@ -181,7 +182,7 @@ fun NewDinnerCarContent(
                     }
                 }
             },
-            isError = state.isValidationStarted && state.workerId != null,
+            isError = state.isValidationStarted && state.workerIdError != null,
             errorText = if (state.isValidationStarted) state.workerIdError else null,
             isEnabled = true,
             readOnly = false

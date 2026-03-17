@@ -95,7 +95,8 @@ data class NewDinnerCoachState(
             selectedCompanyError = companyError,
             workerIdError = workerIdError,
             workerNameError = workerNameError,
-            workerPositionError = workerPositionError
+            workerPositionError = workerPositionError,
+            isValidationStarted = true
         )
     }
 

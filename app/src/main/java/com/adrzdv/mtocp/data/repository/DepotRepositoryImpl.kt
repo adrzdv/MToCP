@@ -22,4 +22,8 @@ class DepotRepositoryImpl(
         }
     }
 
+    override suspend fun getDinnerDepots(): List<DepotWithBranch> {
+        return dao.dinnerDepots
+    }
+
 }

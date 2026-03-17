@@ -30,6 +30,7 @@ import com.adrzdv.mtocp.mapper.toUI
 import com.adrzdv.mtocp.ui.component.AppBar
 import com.adrzdv.mtocp.ui.component.dialogs.newcoachcontent.NewDinnerCarContent
 import com.adrzdv.mtocp.ui.component.dialogs.newcoachcontent.NewPassengerCoachContent
+import com.adrzdv.mtocp.ui.component.newelements.NothingToShowPlug
 import com.adrzdv.mtocp.ui.model.dto.CoachUIBase
 import com.adrzdv.mtocp.ui.state.coach.CoachStateFactory
 import com.adrzdv.mtocp.ui.state.coach.NewDinnerCoachState
@@ -82,7 +83,7 @@ fun AddNewCoach(
                                         when (selectedType) {
                                             CoachTypes.PASSENGER_CAR -> onConfirm((validatedState as NewPassengerCoachState).toUI())
                                             CoachTypes.DINNER_CAR -> onConfirm((validatedState as NewDinnerCoachState).toUI())
-                                            CoachTypes.COMMERCIAL_CAR -> TODO()
+                                            CoachTypes.COMMERCIAL_CAR -> {}
                                         }
                                     }
                                 }
@@ -129,7 +130,9 @@ fun AddNewCoach(
                         )
                     }
 
-                    CoachTypes.COMMERCIAL_CAR -> TODO()
+                    CoachTypes.COMMERCIAL_CAR -> {
+                        NothingToShowPlug()
+                    }
                 }
             }
         }
