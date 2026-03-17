@@ -27,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain
+import com.adrzdv.mtocp.domain.model.enums.CoachTypes
 import com.adrzdv.mtocp.domain.model.enums.DinnerCarsType
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar
@@ -81,10 +82,10 @@ fun AddDinnerCarDialog(
             return
         }
 
-        val revObject = DinnerCar(coachNumber)
+        val revObject = DinnerCar(coachNumber, CoachTypes.DINNER_CAR)
 
         try {
-            revObject.type = selectedType
+            //revObject.dinnerType = selectedType
             if (selectedDepot.isNotEmpty()) {
                 revObject.depot = depotViewModel.getDepotDomain(selectedDepot)
             } else if (selectedCompany.isNotEmpty()) {
@@ -234,7 +235,7 @@ fun AddCoachDialog(
     var isCoachTypeError by remember { mutableStateOf(false) }
 
     fun addCoach() {
-        val revObject = PassengerCar(coachNumber)
+        val revObject = PassengerCar(coachNumber, CoachTypes.PASSENGER_CAR)
         if (selectedDepot.isEmpty()) {
             isDepotError = true
             return

@@ -99,6 +99,7 @@ fun CoachItemCard(
     }
 }
 
+@Deprecated("Use new CoachCard")
 @Composable
 fun CoachItemCardReadOnly(
     coach: PassengerCar,
@@ -171,6 +172,7 @@ fun CoachItemCardReadOnly(
     }
 }
 
+@Deprecated("Use new CoachCard")
 @Composable
 fun CoachDropDownItemCard(
     coach: Coach
@@ -287,15 +289,15 @@ fun CoachDropDownItemCard(
                                                 if (violation.isResolved) {
                                                     append(" (${stringResource(R.string.resolved)})")
                                                 }
-                                                if (violation.attributeMap.isNotEmpty()) {
-                                                    append(" [")
-                                                    append(
-                                                        violation.attributeMap.values.joinToString(
-                                                            ", "
-                                                        )
-                                                    )
-                                                    append(" ]")
-                                                }
+//                                                if (violation.attributeMap.isNotEmpty()) {
+//                                                    append(" [")
+//                                                    append(
+//                                                        violation.attributeMap.values.joinToString(
+//                                                            ", "
+//                                                        )
+//                                                    )
+//                                                    append(" ]")
+//                                                }
                                             },
                                             style = AppTypography.bodyMedium
                                         )

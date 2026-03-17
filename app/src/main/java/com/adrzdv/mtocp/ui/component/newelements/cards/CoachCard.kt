@@ -31,8 +31,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.domain.model.enums.CoachTypes
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
+import com.adrzdv.mtocp.ui.model.statedtoui.CoachUIBase
 import com.adrzdv.mtocp.ui.model.statedtoui.CoachUi
+import com.adrzdv.mtocp.ui.model.statedtoui.DinnerCarUI
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 
@@ -50,7 +53,7 @@ import com.adrzdv.mtocp.ui.theme.AppTypography
  */
 @Composable
 fun CoachCard(
-    coach: CoachUi,
+    coach: CoachUIBase,
     onCoachClick: (() -> Unit)? = null,
     onDeleteClick: () -> Unit
 ) {
@@ -60,17 +63,26 @@ fun CoachCard(
         coach.number,
         coach.type
     ).joinToString(", ")
+    var coachInfo = ""
 
-    val coachInfo = if (coach.isTrailing) {
-        listOfNotNull(
-            stringResource(R.string.trailing_string),
-            coach.depot,
-            coach.route
-        ).joinToString("\n")
+    if (coach.globalType == CoachTypes.PASSENGER_CAR) {
+        (coach as CoachUi).let {
+            coachInfo = if (coach.isTrailing) {
+                listOfNotNull(
+                    stringResource(R.string.trailing_string),
+                    coach.depot,
+                    coach.route
+                ).joinToString("\n")
+            } else {
+                coach.depot
+            }
+        }
     } else {
-        coach.depot
+        (coach as DinnerCarUI).let {
+            coachInfo = coach.depot.ifEmpty { coach.company }
+        }
     }
-
+    
     Box(
         modifier = Modifier
             .fillMaxWidth()
