@@ -8,7 +8,7 @@ import androidx.compose.ui.res.stringResource
 import com.adrzdv.mtocp.R
 
 @Composable
-fun SaveButton(
+fun SaveActionButton(
     onClick: () -> Unit
 ) {
     IconButton(
@@ -24,7 +24,7 @@ fun SaveButton(
 }
 
 @Composable
-fun BackButton(
+fun BackNavigationButton(
     onClick: () -> Unit
 ) {
     IconButton(onClick = {
@@ -33,6 +33,20 @@ fun BackButton(
         Icon(
             painter = painterResource(R.drawable.ic_back_32_white),
             contentDescription = stringResource(R.string.menu_string)
+        )
+    }
+}
+
+@Composable
+fun ServiceActionButton(
+    onClick: () -> Unit
+) {
+    IconButton(
+        onClick = { onClick() }
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_outline_settings_24),
+            contentDescription = null
         )
     }
 }

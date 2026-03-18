@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -28,6 +27,8 @@ import com.adrzdv.mtocp.data.db.entity.CompanyWithBranch
 import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch
 import com.adrzdv.mtocp.domain.model.enums.CoachTypes
 import com.adrzdv.mtocp.ui.component.AppBar
+import com.adrzdv.mtocp.ui.component.BackNavigationButton
+import com.adrzdv.mtocp.ui.component.SaveActionButton
 import com.adrzdv.mtocp.ui.component.dialogs.AddNewCoach
 import com.adrzdv.mtocp.ui.component.dialogs.CoachSelectionDialog
 import com.adrzdv.mtocp.ui.component.newelements.FloatingButton
@@ -57,27 +58,13 @@ fun TrainSchemeEditingScreen(
             AppBar(
                 title = stringResource(R.string.train_scheme),
                 actions = {
-                    IconButton(
-                        onClick = {
-                            navController.navigate(Screen.MonitoringTrainInProgress.route)
-                        }
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_save_32_white),
-                            contentDescription = stringResource(R.string.save_string)
-                        )
+                    SaveActionButton {
+                        navController.navigate(Screen.MonitoringTrainInProgress.route)
                     }
                 },
                 navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            navController.popBackStack()
-                        }
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_back_32_white),
-                            contentDescription = stringResource(R.string.menu_string)
-                        )
+                    BackNavigationButton {
+                        navController.popBackStack()
                     }
                 }
             )

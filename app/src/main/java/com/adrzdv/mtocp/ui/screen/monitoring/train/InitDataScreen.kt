@@ -8,8 +8,6 @@ import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -28,13 +26,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.data.db.entity.TrainEntity
 import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch
 import com.adrzdv.mtocp.ui.component.AppBar
+import com.adrzdv.mtocp.ui.component.BackNavigationButton
+import com.adrzdv.mtocp.ui.component.SaveActionButton
 import com.adrzdv.mtocp.ui.component.dialogs.AddWorkerDialog
 import com.adrzdv.mtocp.ui.component.dialogs.sys.AppIconTitleDialog
 import com.adrzdv.mtocp.ui.component.newelements.AppDatePicker
@@ -84,27 +83,15 @@ fun InitDataTrainMonitoringScreen(
             AppBar(
                 title = stringResource(R.string.start_revision_text),
                 navigationIcon = {
-                    IconButton(onClick = {
+                    BackNavigationButton {
                         navController.popBackStack()
-                    }) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_back_32_white),
-                            contentDescription = stringResource(R.string.menu_string)
-                        )
                     }
                 },
                 actions = {
-                    IconButton(
-                        onClick = {
-                            if (trainOrderViewModel.onSave()) {
-                                showContinueDialog = true
-                            }
+                    SaveActionButton {
+                        if (trainOrderViewModel.onSave()) {
+                            showContinueDialog = true
                         }
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_save_32_white),
-                            contentDescription = stringResource(R.string.save_string)
-                        )
                     }
                 }
             )

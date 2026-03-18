@@ -17,8 +17,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.data.repository.UserDataStorage
 import com.adrzdv.mtocp.ui.component.AppBar
+import com.adrzdv.mtocp.ui.component.ServiceActionButton
 import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
 import com.adrzdv.mtocp.ui.component.newelements.SquaredBigButton
 import com.adrzdv.mtocp.ui.theme.AppColors
@@ -66,13 +65,8 @@ fun StartMenuScreen(
             AppBar(
                 title = stringResource(R.string.main_menu_text),
                 actions = {
-                    IconButton(
-                        onClick = onServiceMenuClick
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_outline_settings_24),
-                            contentDescription = null
-                        )
+                    ServiceActionButton {
+                        onServiceMenuClick()
                     }
                 }
             )

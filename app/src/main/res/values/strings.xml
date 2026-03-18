@@ -35,7 +35,6 @@
     <string name="masters_object">Руководители объекта</string>
     <string name="revision_string">Мониторинг</string>
     <string name="add_string">Добавить</string>
-    <string name="clean_string">Очистить</string>
     <string name="cancel">Отмена</string>
     <string name="worker_id">Табельный номер</string>
     <string name="worker_name">ФИО</string>
@@ -193,6 +192,7 @@
     <string name="coach_data">Сведения о вагоне</string>
     <string name="worker_data">Сведения о работнике</string>
     <string name="worker_position">Должность</string>
+    <string name="clean_string">Очистить список</string>
 
     <!--DESCRIPTIONS-->
     <string name="revision_start_description">Заполните все поля, добавьте работников и начните проверку</string>
