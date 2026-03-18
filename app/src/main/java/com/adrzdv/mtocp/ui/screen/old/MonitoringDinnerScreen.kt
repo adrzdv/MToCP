@@ -167,7 +167,7 @@ fun MonitoringDinnerScreen(
                         modifier = Modifier.fillMaxWidth()
                     )
                     DropdownMenuField(
-                        label = stringResource(R.string.worker_type),
+                        label = stringResource(R.string.worker_position),
                         options = WorkerTypes.values().map { it.description },
                         selectedOption = WorkerTypes.entries
                             .firstOrNull { it.description == state.typeWorker }?.description ?: "",

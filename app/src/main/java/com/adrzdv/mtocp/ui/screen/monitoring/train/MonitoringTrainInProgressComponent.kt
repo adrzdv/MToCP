@@ -37,6 +37,9 @@ import com.adrzdv.mtocp.ui.state.order.TrainOrderState
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainOrderViewModel
 
+/**
+ * Показывает экран мониторинга поезда.
+ */
 @Composable
 fun MonitoringTrainInProgressContent(
     innerPadding: PaddingValues,
@@ -86,7 +89,7 @@ fun MonitoringTrainInProgressContent(
             CoachCard(
                 coach = it,
                 onCoachClick = {},
-                onDeleteClick = { trainOrderViewModel.removeCoachInOrder(it.number) }
+                onDeleteClick = { trainOrderViewModel.removeCoachInOrder(it.id) }
             )
         }
     }

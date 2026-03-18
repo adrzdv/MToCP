@@ -135,7 +135,7 @@ fun AddWorkerDialog(
                 )
 
                 DropdownMenuField(
-                    label = stringResource(R.string.worker_type),
+                    label = stringResource(R.string.worker_position),
                     options = WorkerTypes.values().map { it.description },
                     selectedOption = selectedWorkerType?.description ?: "",
                     onOptionSelected = { desc ->

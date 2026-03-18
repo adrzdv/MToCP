@@ -242,7 +242,7 @@ fun NewDinnerCarContent(
                     }
                 }
             },
-            label = stringResource(R.string.worker_type),
+            label = stringResource(R.string.worker_position),
             isError = state.isValidationStarted && state.workerPositionError != null,
             enabled = true,
             error = if (state.isValidationStarted) state.workerPositionError else null

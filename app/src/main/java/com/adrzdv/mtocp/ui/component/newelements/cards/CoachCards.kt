@@ -256,7 +256,7 @@ fun CoachDropDownItemCard(
                                         style = AppTypography.bodyMedium
                                     )
                                     Text(
-                                        text = "${stringResource(R.string.worker_type)}: ${coach.workerDomain.workerType.description}",
+                                        text = "${stringResource(R.string.worker_position)}: ${coach.workerDomain.workerType.description}",
                                         style = AppTypography.bodyMedium
                                     )
                                     Text(

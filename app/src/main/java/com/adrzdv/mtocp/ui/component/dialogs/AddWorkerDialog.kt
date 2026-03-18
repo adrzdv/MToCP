@@ -131,7 +131,7 @@ fun AddWorkerDialog(
                 selected = selectedPosition?.description ?: "",
                 isError = isSubmitClicked && (selectedPosition == null),
                 errorMessage = stringResource(R.string.empty_string),
-                label = stringResource(R.string.worker_type),
+                label = stringResource(R.string.worker_position),
                 onOptionSelected = { selected ->
                     selectedPosition = WorkerTypes.entries.firstOrNull {
                         it.description == selected
