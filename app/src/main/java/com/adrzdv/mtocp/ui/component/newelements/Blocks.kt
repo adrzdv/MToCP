@@ -5,7 +5,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -13,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
@@ -78,6 +81,43 @@ fun BlancInfoBlock(
     }
 }
 
+@Composable
+fun LabeledBlock(
+    label: String,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit = {}
+) {
+    Box(modifier = modifier.fillMaxWidth()) {
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = AppColors.MAIN_COLOR.color,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(top = 18.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
+                .background(AppColors.SURFACE_COLOR.color)
+        ) {
+            Column(
+                modifier = modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                content()
+            }
+        }
 
-
-
+        Text(
+            text = label,
+            style = AppTypography.labelSmall,
+            color = AppColors.MAIN_COLOR.color,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .padding(start = 12.dp)
+                .background(AppColors.SURFACE_COLOR.color)
+                .padding(horizontal = 4.dp)
+                .offset(y = (-4).dp)
+        )
+    }
+}

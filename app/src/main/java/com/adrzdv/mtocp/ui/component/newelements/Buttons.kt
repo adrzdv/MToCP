@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -25,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
@@ -124,8 +126,44 @@ fun SquaredMediumButton(
             icon?.invoke()
             Text(
                 text = text,
-                style = AppTypography.labelSmall,
+                style = AppTypography.labelSmall.copy(
+                    lineBreak = LineBreak.Paragraph
+                ),
                 textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+fun SquaredMediumButtonUnderneathText(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    text: String,
+    icon: (@Composable () -> Unit)? = null
+) {
+    OutlinedButton(
+        onClick = onClick,
+        colors = ButtonDefaults
+            .buttonColors(containerColor = AppColors.MAIN_COLOR.color),
+        shape = RoundedCornerShape(12.dp),
+        border = null,
+        modifier = modifier.fillMaxWidth().padding(4.dp),
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            icon?.invoke()
+            Text(
+                text = text,
+                style = AppTypography.labelSmall.copy(
+                    lineBreak = LineBreak.Paragraph
+                ),
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                minLines = 2
             )
         }
     }
