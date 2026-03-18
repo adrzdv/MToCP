@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.ui.component.newelements.cards
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -61,10 +62,15 @@ fun ViolationCard(
                     }
                 )
             }
+            .border(
+                width = 1.dp,
+                color = AppColors.MAIN_COLOR.color,
+                shape = RoundedCornerShape(8.dp)
+            )
     ) {
         Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .fillMaxWidth(),
             colors = CardDefaults.cardColors(
                 containerColor = AppColors.SURFACE_COLOR.color,
                 contentColor = AppColors.MAIN_COLOR.color

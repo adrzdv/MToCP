@@ -96,7 +96,7 @@ fun LabeledBlock(
                     color = AppColors.MAIN_COLOR.color,
                     shape = RoundedCornerShape(8.dp)
                 )
-                .padding(top = 18.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
+                .padding(top = 20.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
                 .background(AppColors.SURFACE_COLOR.color)
         ) {
             Column(

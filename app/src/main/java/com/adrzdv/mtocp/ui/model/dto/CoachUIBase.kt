@@ -6,7 +6,7 @@ import java.util.UUID
 
 interface CoachUIBase {
     val id: UUID
-    val globalType: CoachTypes?
+    val globalType: CoachTypes
     val number: String
     val type: String
     val depot: String
