@@ -12,4 +12,18 @@ sealed class Screen(val route: String) {
     object StartTrainRevision : Screen("train_revision_start")
     object MonitoringTrainInProgress : Screen("train_monitoring_in_progress")
     object TrainSchemeEdit : Screen("train_scheme_edit")
+    object CoachEdit : Screen("coach_edit?coachId={coachId}&selectedType={selectedType}") {
+        fun createRoute(
+            coachId: String? = null,
+            selectedType: String? = null
+        ): String {
+            return if (coachId != null) {
+                "coach_edit?coachId=$coachId"
+            } else if (selectedType != null) {
+                "coach_edit?selectedType=$selectedType"
+            } else {
+                "coach_edit"
+            }
+        }
+    }
 }

@@ -42,6 +42,7 @@ fun MonitoringTrainInProgress(
         snackbarHost = { CustomSnackbarHost(hostState = snackbarHostState) }
     ) { innerPadding ->
         MonitoringTrainInProgressContent(
+            navController,
             innerPadding,
             state = state,
             trainOrderViewModel = trainOrderViewModel

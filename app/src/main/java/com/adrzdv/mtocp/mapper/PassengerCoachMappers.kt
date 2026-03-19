@@ -7,8 +7,11 @@ import com.adrzdv.mtocp.domain.model.enums.DinnerCarsType
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.DinnerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
+import com.adrzdv.mtocp.ui.model.dto.CoachUIBase
 import com.adrzdv.mtocp.ui.model.dto.CoachUi
 import com.adrzdv.mtocp.ui.model.dto.DinnerCarUI
+import com.adrzdv.mtocp.ui.model.dto.WorkerUI
+import com.adrzdv.mtocp.ui.state.coach.CoachDraftState
 import com.adrzdv.mtocp.ui.state.coach.NewDinnerCoachState
 import com.adrzdv.mtocp.ui.state.coach.NewPassengerCoachState
 import java.time.LocalDateTime
@@ -21,6 +24,8 @@ fun CoachUi.toDomain(depot: DepotDomain) = PassengerCar(number, this.globalType)
     this.coachRoute = route
     this.revisionDateStart = revisionStart ?: LocalDateTime.now()
     this.revisionDateEnd = revisionEnd ?: LocalDateTime.now()
+    this.violationMap = this@toDomain.violationMap.mapValues { it.value.toDomain() }
+    this.additionalParams = this@toDomain.statParams.mapValues { it.value.toDomain() }
 }
 
 fun NewPassengerCoachState.toDomain(depot: DepotDomain) =
@@ -61,6 +66,9 @@ fun DinnerCarUI.toDomain(depot: DepotDomain? = null, company: CompanyDomain? = n
             this.depot = depot
         }
 
+        this.violationMap = violationMap
+        this.additionalParams = additionalParams
+
         this.companyDomain?.let {
             this.companyDomain = company
         }
@@ -70,6 +78,41 @@ fun DinnerCarUI.toDomain(depot: DepotDomain? = null, company: CompanyDomain? = n
         this.revisionDateEnd = revisionEnd ?: LocalDateTime.now()
     }
 
-//fun ViolationUi.toDomain(): ViolationDomain {
-//
-//}
+fun CoachUIBase.toDraftState(): CoachDraftState {
+    return when (this) {
+        is CoachUi -> this.toDraftState()
+        is DinnerCarUI -> this.toDraftState()
+    }
+}
+
+fun CoachUi.toDraftState(): CoachDraftState = CoachDraftState(
+    id = id,
+    globalType = globalType,
+    number = number,
+    depot = depot,
+    type = type,
+    worker = WorkerUI(
+        workerId ?: "",
+        workerName ?: "",
+        workerPosition ?: "",
+        workerDepot ?: ""
+    ),
+    violationMap = violationMap,
+    isTrailing = isTrailing,
+    route = route,
+)
+
+fun DinnerCarUI.toDraftState(): CoachDraftState = CoachDraftState(
+    id = id,
+    globalType = globalType,
+    number = number,
+    depot = depot,
+    type = type,
+    worker = WorkerUI(
+        workerId ?: "",
+        workerName ?: "",
+        workerPosition ?: "",
+        depot.ifEmpty { company }
+    ),
+    violationMap = violationMap,
+)

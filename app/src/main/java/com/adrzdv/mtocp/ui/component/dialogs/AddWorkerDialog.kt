@@ -67,7 +67,7 @@ fun AddWorkerDialog(
                         selectedPosition?.let { position ->
                             onWorkerAdd(
                                 WorkerUI(
-                                    tabNumber.toInt(),
+                                    tabNumber,
                                     name,
                                     position.description,
                                     selectedDepot

@@ -13,7 +13,7 @@ import com.adrzdv.mtocp.domain.usecase.CreatePassengerCoachUseCase
 import com.adrzdv.mtocp.domain.usecase.GetDepotByNameUseCase
 import com.adrzdv.mtocp.domain.usecase.GetTrainByNumberUseCase
 import com.adrzdv.mtocp.domain.usecase.GetTrainSchemeUseCase
-import com.adrzdv.mtocp.mapper.WorkerMapper
+import com.adrzdv.mtocp.mapper.toInnerDomain
 import com.adrzdv.mtocp.ui.model.dto.CoachUIBase
 import com.adrzdv.mtocp.ui.model.dto.CoachUi
 import com.adrzdv.mtocp.ui.model.dto.DinnerCarUI
@@ -68,10 +68,10 @@ class TrainOrderViewModel(
     override fun onAddPersonCrew(worker: WorkerUI) {
         viewModelScope.launch {
             val depot = getDepotByNameUseCase(worker.depot, false)
-            val workerDomain = WorkerMapper.fromUiToDomain(worker, depot)
+            val workerDomain = worker.toInnerDomain(depot)
             updateState { current ->
                 val updatedCrewMap = current.crewList.toMutableMap()
-                updatedCrewMap[worker.id] = worker
+                updatedCrewMap[worker.id.toInt()] = worker
                 current.copy(
                     crewList = updatedCrewMap
                 )
@@ -82,7 +82,7 @@ class TrainOrderViewModel(
 
     override fun onDeletePersonCrew(worker: WorkerUI) {
         val updatedCrewMap = orderState.value.crewList.toMutableMap()
-        updatedCrewMap.remove(worker.id)
+        updatedCrewMap.remove(worker.id.toInt())
         updateState { current ->
             current.copy(
                 crewList = updatedCrewMap
@@ -346,6 +346,10 @@ class TrainOrderViewModel(
 
         domainOrder.collector.clearObjects()
         updateTrainScheme()
+    }
+
+    fun getOrder(): TrainOrder {
+        return domainOrder
     }
 
     private fun updateTrainScheme() {

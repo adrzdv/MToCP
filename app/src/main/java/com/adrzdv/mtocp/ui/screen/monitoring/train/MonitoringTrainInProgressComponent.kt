@@ -28,11 +28,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.ui.component.dialogs.CoachSelectionDialog
 import com.adrzdv.mtocp.ui.component.newelements.BlancInfoBlock
 import com.adrzdv.mtocp.ui.component.newelements.SquaredMediumButton
 import com.adrzdv.mtocp.ui.component.newelements.cards.CoachCard
 import com.adrzdv.mtocp.ui.model.dto.TrainUI
+import com.adrzdv.mtocp.ui.navigation.Screen
 import com.adrzdv.mtocp.ui.state.order.TrainOrderState
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainOrderViewModel
@@ -42,6 +45,7 @@ import com.adrzdv.mtocp.ui.viewmodel.model.TrainOrderViewModel
  */
 @Composable
 fun MonitoringTrainInProgressContent(
+    navController: NavHostController,
     innerPadding: PaddingValues,
     modifier: Modifier = Modifier,
     state: TrainOrderState,
@@ -79,7 +83,9 @@ fun MonitoringTrainInProgressContent(
         item {
             ButtonsCoachBlock(
                 modifier,
-                onCoachAddClick = { },
+                onCoachAddClick = {
+                    showEditCoachDialog = true
+                },
                 onClearCoachListClick = { trainOrderViewModel.clearCoaches() },
                 onOtherParamsClick = { },
                 onInfoClick = {}
@@ -88,14 +94,26 @@ fun MonitoringTrainInProgressContent(
         items(state.coachList.values.toList()) {
             CoachCard(
                 coach = it,
-                onCoachClick = {},
+                onCoachClick = {
+                    navController.navigate(
+                        Screen.CoachEdit.createRoute(coachId = it.id.toString())
+                    )
+                },
                 onDeleteClick = { trainOrderViewModel.removeCoachInOrder(it.id) }
             )
         }
     }
 
     if (showEditCoachDialog) {
-
+        CoachSelectionDialog(
+            onAddClick = { selected ->
+                navController.navigate(Screen.CoachEdit.createRoute(selectedType = selected.description))
+                showEditCoachDialog = false
+            },
+            onDismiss = {
+                showEditCoachDialog = false
+            }
+        )
     }
 }
 
@@ -234,7 +252,9 @@ fun ButtonsCoachBlock(
         ) {
             item {
                 SquaredMediumButton(
-                    onClick = {},
+                    onClick = {
+                        onCoachAddClick()
+                    },
                     text = stringResource(R.string.new_coach),
                     icon = {
                         Icon(
