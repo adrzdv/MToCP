@@ -12,7 +12,7 @@ package com.adrzdv.mtocp.ui.model.dto
  * @property depot The display name of the worker's depot.
  */
 data class WorkerUI(
-    val id: Int,
+    val id: String,
     val name: String,
     val position: String,
     val depot: String

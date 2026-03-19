@@ -4,7 +4,7 @@ import com.adrzdv.mtocp.domain.model.enums.CoachTypes
 import java.time.LocalDateTime
 import java.util.UUID
 
-interface CoachUIBase {
+sealed interface CoachUIBase {
     val id: UUID
     val globalType: CoachTypes
     val number: String
@@ -13,6 +13,7 @@ interface CoachUIBase {
     val revisionStart: LocalDateTime?
     val revisionEnd: LocalDateTime?
     val violationMap: Map<Int, ViolationUi>
+    val statParams: Map<String, StaticsParamUi>
     val workerId: String?
     val workerName: String?
     val workerPosition: String?

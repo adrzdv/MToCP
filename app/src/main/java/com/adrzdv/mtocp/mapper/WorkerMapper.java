@@ -19,14 +19,15 @@ public class WorkerMapper {
 
     @Deprecated(forRemoval = true)
     public static WorkerUI fromDomainToUI(WorkerDomain workerDomain) {
-        return new WorkerUI(workerDomain.getId(),
+        return new WorkerUI(workerDomain.toString(),
                 workerDomain.getName(),
                 workerDomain.getWorkerType().getDescription(),
                 null);
     }
 
+    @Deprecated(forRemoval = true)
     public static WorkerDomain fromUiToDomain(WorkerUI worker, DepotDomain depot) {
-        return new InnerWorkerDomain(worker.getId(),
+        return new InnerWorkerDomain(Integer.getInteger(worker.getId()),
                 worker.getName(),
                 depot,
                 WorkerTypes.fromString(worker.getPosition()));

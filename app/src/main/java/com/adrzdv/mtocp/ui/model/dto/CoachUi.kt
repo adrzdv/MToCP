@@ -13,6 +13,7 @@ data class CoachUi(
     override val revisionStart: LocalDateTime? = null,
     override val revisionEnd: LocalDateTime? = null,
     override val violationMap: Map<Int, ViolationUi> = emptyMap(),
+    override val statParams: Map<String, StaticsParamUi> = emptyMap(),
     override val workerId: String? = "",
     override val workerName: String? = "",
     override val workerPosition: String? = "",
