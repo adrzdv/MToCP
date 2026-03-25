@@ -314,9 +314,6 @@ class TrainOrderViewModel(
                 CoachTypes.PASSENGER_CAR -> addPassengerCoachInOrder(coach as CoachUi)
                 CoachTypes.DINNER_CAR -> addDinnerCarInOrder(coach as DinnerCarUI)
                 CoachTypes.COMMERCIAL_CAR -> TODO()
-                else -> {
-                    throw IllegalArgumentException("Unknown coach type")
-                }
             }
         }
     }

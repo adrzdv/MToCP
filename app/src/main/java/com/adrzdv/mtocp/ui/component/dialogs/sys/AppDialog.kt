@@ -42,11 +42,13 @@ fun AppIconTitleDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            start = 8.dp,
-                            end = 8.dp,
-                            top = 8.dp,
-                            bottom = 8.dp
-                        )
+                            start = 12.dp,
+                            end = 12.dp,
+                            top = 12.dp,
+                            bottom = 12.dp
+                        ),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
                     content()
                 }

@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -22,13 +19,13 @@ import com.adrzdv.mtocp.data.db.entity.CompanyWithBranch
 import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch
 import com.adrzdv.mtocp.domain.model.enums.DinnerCarsType
 import com.adrzdv.mtocp.domain.model.enums.WorkerTypes
+import com.adrzdv.mtocp.ui.component.newelements.AppCheckBox
 import com.adrzdv.mtocp.ui.component.newelements.AutocompleteField
 import com.adrzdv.mtocp.ui.component.newelements.ClearIcon
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.newelements.RoundedUnborderedButton
 import com.adrzdv.mtocp.ui.state.coach.NewDinnerCoachState
 import com.adrzdv.mtocp.ui.theme.AppColors
-import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 
 @Composable
@@ -114,25 +111,14 @@ fun NewDinnerCarContent(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Checkbox(
-                    checked = state.isRentalCoach,
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = AppColors.MAIN_COLOR.color,
-                        uncheckedColor = AppColors.MAIN_COLOR.color,
-                        checkmarkColor = AppColors.SURFACE_COLOR.color
-                    ),
-                    onCheckedChange = {
-                        onStateChange(
-                            state.copy(isRentalCoach = it)
-                        )
-                    },
-                    enabled = true
-                )
-                Text(
-                    text = stringResource(R.string.is_rent),
-                    color = AppColors.MAIN_COLOR.color,
-                    style = AppTypography.labelSmall
-                )
+                AppCheckBox(
+                    state.isRentalCoach,
+                    stringResource(R.string.is_rent)
+                ) {
+                    onStateChange(
+                        state.copy(isRentalCoach = !state.isRentalCoach)
+                    )
+                }
             }
 
         }
