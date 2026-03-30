@@ -1,12 +1,13 @@
 package com.adrzdv.mtocp.data.api
 
+import com.adrzdv.mtocp.BuildConfig
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
-    private const val BASE_URL = "https://reg-log-bt.onrender.com"
+    private const val BASE_URL = BuildConfig.BASE_URL
 
     private val okHttpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()

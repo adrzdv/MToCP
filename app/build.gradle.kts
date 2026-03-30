@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.kapt")
@@ -9,12 +12,24 @@ android {
     namespace = "com.adrzdv.mtocp"
     compileSdk = 36
 
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localProperties.load(FileInputStream(localPropertiesFile))
+    }
+
+    val baseUrl = localProperties.getProperty("BASE_URL") ?: "https://default.com"
+
+
+
     defaultConfig {
         applicationId = "com.adrzdv.mtocp"
-        minSdk = 30                                                 //Android 11+
+        minSdk = 29                                                 //Android 11+
         targetSdk = 35
         versionCode = 1
         versionName = "0.9.7-beta-hf-16032026"
+
+        buildConfigField("String", "BASE_URL", baseUrl)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -29,6 +44,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
