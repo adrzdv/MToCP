@@ -12,7 +12,6 @@ import com.adrzdv.mtocp.data.repository.UserDataStorage
 import com.adrzdv.mtocp.ui.screen.RegisterScreen
 import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
 import com.adrzdv.mtocp.ui.viewmodel.AuthViewModel
-import com.adrzdv.mtocp.util.RenderWakeUpService
 
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,9 +20,8 @@ class RegisterActivity : ComponentActivity() {
 
         val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
         val userDataStorage = UserDataStorage(prefs)
-        val renderService = RenderWakeUpService()
 
-        val authRepo = AuthRepositoryImpl(RetrofitClient.authApi, userDataStorage, renderService)
+        val authRepo = AuthRepositoryImpl(RetrofitClient.authApi, userDataStorage)
 
         val viewModel = ViewModelProvider(
             this,

@@ -1,15 +1,19 @@
 package com.adrzdv.mtocp.ui.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.adrzdv.mtocp.data.api.RetrofitClient
 import com.adrzdv.mtocp.data.model.LogEntry
-import com.adrzdv.mtocp.util.RenderWakeUpService
+import com.adrzdv.mtocp.data.model.NameRequest
 import kotlinx.coroutines.launch
 
 class RequestWebViewModel : ViewModel() {
+
+    private val api = RetrofitClient.docRequestApi
 
     var isLoading by mutableStateOf(false)
         private set
@@ -32,8 +36,6 @@ class RequestWebViewModel : ViewModel() {
     var isLogsLoading by mutableStateOf(false)
         private set
 
-    private val wakeUpService = RenderWakeUpService()
-
     fun setWorkerIfTokenExist(username: String) {
         workerName = username
     }
@@ -45,17 +47,20 @@ class RequestWebViewModel : ViewModel() {
     fun requestRender() {
         viewModelScope.launch {
             isLoading = true
-            val success = wakeUpService.wakeUpRender()
-            isLoading = false
-            if (success) {
-                if (workerName.isNullOrEmpty()) {
+
+            try {
+                if (workerName.isBlank()) {
                     showNameDialog = true
                 } else {
-                    getNumberByAuthUser()
+                    getNumberByAuthUserInternal()
                 }
+
                 loadLastLogs()
-            } else {
-                resultDialogText = "Ошибка подключения к Render"
+            } catch (e: Exception) {
+                resultDialogText = "Ошибка подключения к серверу"
+                Log.d("RequestWebViewModel", e.message.toString())
+            } finally {
+                isLoading = false
             }
         }
     }
@@ -64,18 +69,16 @@ class RequestWebViewModel : ViewModel() {
         viewModelScope.launch {
             showNameDialog = false
             isGettingNumber = true
-            val number = wakeUpService.getNumber(workerName)
-            isGettingNumber = false
-            resultDialogText = number ?: "Ошибка получения номера"
-        }
-    }
 
-    fun getNumberByAuthUser() {
-        viewModelScope.launch {
-            isGettingNumber = true
-            val number = wakeUpService.getNumber(workerName)
-            isGettingNumber = false
-            resultDialogText = number ?: "Ошибка получения номера"
+            try {
+                val response = api.getNumber(NameRequest(workerName))
+                resultDialogText = response.number
+            } catch (e: Exception) {
+                resultDialogText = "Ошибка получения номера"
+                Log.d("RequestWebViewModel", e.message.toString())
+            } finally {
+                isGettingNumber = false
+            }
         }
     }
 
@@ -87,12 +90,29 @@ class RequestWebViewModel : ViewModel() {
     fun loadLastLogs() {
         viewModelScope.launch {
             isLogsLoading = true
-            val success = wakeUpService.wakeUpRender()
-            if (success) {
-                logs = wakeUpService.getLastLogs() ?: emptyList()
+
+            try {
+                logs = api.getLastLogs()
+            } catch (e: Exception) {
+                logs = emptyList()
+                Log.d("RequestWebViewModel", e.message.toString())
+            } finally {
                 isLogsLoading = false
             }
-            isLogsLoading = false
+        }
+    }
+
+    private suspend fun getNumberByAuthUserInternal() {
+        isGettingNumber = true
+
+        try {
+            val response = api.getNumber(NameRequest(workerName))
+            resultDialogText = response.number
+        } catch (e: Exception) {
+            resultDialogText = "Ошибка получения номера"
+            Log.d("RequestWebViewModel", e.message.toString())
+        } finally {
+            isGettingNumber = false
         }
     }
 

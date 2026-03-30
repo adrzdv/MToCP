@@ -17,7 +17,6 @@ import com.adrzdv.mtocp.ui.component.ChangePasswordBottomSheet
 import com.adrzdv.mtocp.ui.viewmodel.AssistedViewModelFactory
 import com.adrzdv.mtocp.ui.viewmodel.ChangePasswordBottomSheetViewModel
 import com.adrzdv.mtocp.ui.viewmodel.ServiceViewModel
-import com.adrzdv.mtocp.util.RenderWakeUpService
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -26,9 +25,7 @@ import kotlinx.coroutines.launch
 class ChangePasswordBottomSheetFragment(
     private val onDismiss: () -> Unit
 ) : BottomSheetDialogFragment() {
-
-    private val renderService = RenderWakeUpService()
-    private val authRepo = AuthRepositoryImpl(RetrofitClient.authApi, null, renderService)
+    private val authRepo = AuthRepositoryImpl(RetrofitClient.authApi, null)
     private val viewModel: ChangePasswordBottomSheetViewModel by viewModels {
         AssistedViewModelFactory {
             ChangePasswordBottomSheetViewModel(
