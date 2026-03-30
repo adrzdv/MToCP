@@ -212,7 +212,10 @@
     <string name="coach_number_invalid">Несоответствие номера вагона</string>
     <string name="coach_type_invalid">Несоответствие типа вагона</string>
     <string name="invalid_worker_id">Неверный номер</string>
+    <string name="invalid_worker_name">Некорректное имя</string>
     <string name="invalid_input_type">Неверный формат ввода</string>
+    <string name="empty_depot">Введите предприятие работника</string>
+    <string name="empty_position">Выберите должность работника</string>
 
     <string name="empty"> </string>
 

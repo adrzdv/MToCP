@@ -3,21 +3,19 @@ package com.adrzdv.mtocp.ui.screen.share
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
 import com.adrzdv.mtocp.mapper.toDomain
 import com.adrzdv.mtocp.ui.component.AppBar
+import com.adrzdv.mtocp.ui.component.BackNavigationButton
 import com.adrzdv.mtocp.ui.component.newelements.ClearIcon
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.newelements.cards.ViolationCard
@@ -43,13 +41,8 @@ fun ViolationSelectionScreen(
             AppBar(
                 title = stringResource(R.string.violation_catalog_string),
                 navigationIcon = {
-                    IconButton(onClick = {
+                    BackNavigationButton {
                         onBackClick()
-                    }) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_back_32_white),
-                            contentDescription = stringResource(R.string.back_text)
-                        )
                     }
                 },
                 actions = {}

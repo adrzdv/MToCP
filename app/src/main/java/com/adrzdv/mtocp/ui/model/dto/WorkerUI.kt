@@ -16,4 +16,7 @@ data class WorkerUI(
     val name: String,
     val position: String,
     val depot: String
-)
+) {
+}
+
+

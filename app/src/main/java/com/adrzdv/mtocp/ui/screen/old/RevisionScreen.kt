@@ -155,19 +155,19 @@ fun RevisionScreen(
                     navController = navRevisionController
                 )
             }
-            composable(
-                route = "monitoringCoach/{coachNumber}",
-                arguments = listOf(navArgument("coachNumber") { type = NavType.StringType })
-            ) { navBackStackEntry ->
-                val coachNumber =
-                    navBackStackEntry.arguments?.getString("coachNumber") ?: return@composable
-                MonitoringCoachScreen(
-                    coachNumber = coachNumber,
-                    orderViewModel = orderViewModel,
-                    depotViewModel = depotViewModel,
-                    navController = navRevisionController
-                )
-            }
+//            composable(
+//                route = "monitoringCoach/{coachNumber}",
+//                arguments = listOf(navArgument("coachNumber") { type = NavType.StringType })
+//            ) { navBackStackEntry ->
+//                val coachNumber =
+//                    navBackStackEntry.arguments?.getString("coachNumber") ?: return@composable
+//                MonitoringCoachScreen(
+//                    coachNumber = coachNumber,
+//                    orderViewModel = orderViewModel,
+//                    depotViewModel = depotViewModel,
+//                    navController = navRevisionController
+//                )
+//            }
             composable(
                 route = "monitoringDinner/{coachNumber}",
                 arguments = listOf(navArgument("coachNumber") { type = NavType.StringType })
