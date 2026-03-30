@@ -18,9 +18,7 @@ android {
         localProperties.load(FileInputStream(localPropertiesFile))
     }
 
-    val baseUrl = localProperties.getProperty("BASE_URL") ?: "https://default.com"
-
-
+    val baseUrl = localProperties.getProperty("BASE_URL") ?: "https://localhost:8080"
 
     defaultConfig {
         applicationId = "com.adrzdv.mtocp"
