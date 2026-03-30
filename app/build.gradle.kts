@@ -24,10 +24,10 @@ android {
 
     defaultConfig {
         applicationId = "com.adrzdv.mtocp"
-        minSdk = 29                                                 //Android 11+
+        minSdk = 29                                                 //Android 10+
         targetSdk = 35
         versionCode = 1
-        versionName = "0.9.7-beta-hf-16032026"
+        versionName = "0.9.7-beta-hf-30032026"
 
         buildConfigField("String", "BASE_URL", baseUrl)
 
