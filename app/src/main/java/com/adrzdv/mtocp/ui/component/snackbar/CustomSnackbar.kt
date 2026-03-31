@@ -25,10 +25,12 @@ import com.adrzdv.mtocp.ui.theme.AppTypography
 
 @Composable
 fun CustomSnackbarHost(
-    hostState: SnackbarHostState
+    hostState: SnackbarHostState,
+    modifier: Modifier = Modifier
 ) {
     SnackbarHost(
         hostState = hostState,
+        modifier = modifier,
         snackbar = { snackbarData ->
             val isError = snackbarData.visuals is ErrorSnackbar
             val isInfo = snackbarData.visuals is InfoSnackbar
