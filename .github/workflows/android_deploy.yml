@@ -51,7 +51,7 @@ jobs:
           echo "{\"newVersionCode\": \"$VERSION_NAME\", \"apkUrl\": \"$APK_URL\", \"releaseNotes\": \"$CLEAN_MSG\"}" > version.json
           
           aws s3 cp version.json s3://${{ secrets.YC_BUCKET_NAME }}/version.json \
-            --endpoint-url=https://yandexcloud.net
+            --endpoint-url=https://storage.yandexcloud.net
           
           aws s3 cp app/build/outputs/apk/release/app-release.apk s3://${{ secrets.YC_BUCKET_NAME }}/app.apk \
-            --endpoint-url=https://yandexcloud.net
+            --endpoint-url=https://storage.yandexcloud.net
