@@ -41,10 +41,41 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file(keystoreProperties["storeFile"] as String)
-            storePassword = keystoreProperties["storePassword"] as String
-            keyAlias = keystoreProperties["keyAlias"] as String
-            keyPassword = keystoreProperties["keyPassword"] as String
+
+            val isCi = System.getenv("CI") == "true"
+
+            if (isCi) {
+
+                val storeFile = System.getenv("STORE_FILE")
+                val storePassword = System.getenv("STORE_PASSWORD")
+                val keyAlias = System.getenv("KEY_ALIAS")
+                val keyPassword = System.getenv("KEY_PASSWORD")
+
+                if (storeFile != null &&
+                    storePassword != null &&
+                    keyAlias != null &&
+                    keyPassword != null
+                ) {
+                    this.storeFile = file(storeFile)
+                    this.storePassword = storePassword
+                    this.keyAlias = keyAlias
+                    this.keyPassword = keyPassword
+                }
+
+            } else {
+
+                val keystoreProperties = Properties()
+                val keystoreFile = rootProject.file("keystore.properties")
+
+                if (keystoreFile.exists()) {
+                    keystoreProperties.load(FileInputStream(keystoreFile))
+
+                    this.storeFile = file(keystoreProperties["storeFile"].toString())
+                    this.storePassword = keystoreProperties["storePassword"].toString()
+                    this.keyAlias = keystoreProperties["keyAlias"].toString()
+                    this.keyPassword = keystoreProperties["keyPassword"].toString()
+                }
+            }
         }
     }
 
