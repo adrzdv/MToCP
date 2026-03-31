@@ -28,8 +28,9 @@ android {
         versionCode = 1
         versionName = "0.9.7-beta-hf-31032026"
 
-        buildConfigField("String", "BASE_URL", baseUrl)
-        buildConfigField("String", "UPDATE_URL", updateUrl)
+        buildConfigField("String", "BASE_URL", "\"${project.findProperty("BASE_URL") ?: ""}\"")
+        buildConfigField("String", "UPDATE_URL", "\"${project.findProperty("UPDATE_URL") ?: ""}\"")
+
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

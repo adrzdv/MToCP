@@ -29,6 +29,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.YC_SECRET_KEY }}
           aws-region: ru-central1
 
+      - name: Create local.properties
+        run: |
+          echo "BASE_URL=${{ secrets.BASE_URL }}" > local.properties
+          echo "UPDATE_URL=${{ secrets.UPDATE_URL }}" >> local.properties
+
       - name: Deploy to storage
         run: |
           VERSION_NAME=$(echo ${GITHUB_REF#refs/tags/v})
