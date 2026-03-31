@@ -22,12 +22,12 @@ jobs:
       - name: Build Release APK
         run: ./gradlew assembleRelease
 
-#      - name: Configure AWS Credentials
-#        uses: aws-actions/configure-aws-credentials@v4
-#        with:
-#          aws-access-key-id: ${{ secrets.YC_ACCESS_KEY }}
-#          aws-secret-access-key: ${{ secrets.YC_SECRET_KEY }}
-#          aws-region: ru-central1
+      #      - name: Configure AWS Credentials
+      #        uses: aws-actions/configure-aws-credentials@v4
+      #        with:
+      #          aws-access-key-id: ${{ secrets.YC_ACCESS_KEY }}
+      #          aws-secret-access-key: ${{ secrets.YC_SECRET_KEY }}
+      #          aws-region: ru-central1
 
       - name: Create local.properties
         run: |
@@ -45,6 +45,15 @@ jobs:
           
           APK_URL="https://${{ secrets.YC_BUCKET_NAME }}.storage.yandexcloud.net/app.apk"
           
+          APK_PATH=$(find app/build/outputs/apk/release -name "*.apk" | head -n 1)
+          
+          if [ -z "$APK_PATH" ]; then
+            echo "ERROR: APK file not found!"
+            exit 1
+          fi
+          
+          echo "Uploading $APK_PATH to Yandex Cloud..."
+          
           COMMIT_MSG=$(git log -1 --pretty=%B)
           CLEAN_MSG=$(echo "$COMMIT_MSG" | tr -d '"' | tr '\n' ' ')
           
@@ -53,5 +62,5 @@ jobs:
           aws s3 cp version.json s3://${{ secrets.YC_BUCKET_NAME }}/version.json \
             --endpoint-url=https://storage.yandexcloud.net
           
-          aws s3 cp app/build/outputs/apk/release/app-release.apk s3://${{ secrets.YC_BUCKET_NAME }}/app.apk \
+          aws s3 cp "$APK_PATH" s3://${{ secrets.YC_BUCKET_NAME }}/app.apk \
             --endpoint-url=https://storage.yandexcloud.net
