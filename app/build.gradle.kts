@@ -26,7 +26,7 @@ android {
         minSdk = 29                                                 //Android 10+
         targetSdk = 35
         versionCode = 1
-        versionName = "0.9.7-beta-hf-30032026"
+        versionName = "0.9.7-beta-hf-31032026"
 
         buildConfigField("String", "BASE_URL", baseUrl)
         buildConfigField("String", "UPDATE_URL", updateUrl)
