@@ -180,4 +180,12 @@
     <string name="worker_table_header">Работник</string>
     <string name="date_table_header">Дата</string>
 
+    <string name="update_available">Доступно обновление</string>
+    <string name="update">Обновить</string>
+    <string name="new_version">Новая версия</string>
+    <string name="loading">Загрузка</string>
+    <string name="later">Позже</string>
+    <string name="download_error">Ошибка при загрузке файла</string>
+
+
 </resources>

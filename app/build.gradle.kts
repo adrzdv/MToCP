@@ -1,5 +1,5 @@
-import java.util.Properties
 import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -19,6 +19,7 @@ android {
     }
 
     val baseUrl = localProperties.getProperty("BASE_URL") ?: "https://localhost:8080"
+    val updateUrl = localProperties.getProperty("UPDATE_URL") ?: "https://localhost:8080"
 
     defaultConfig {
         applicationId = "com.adrzdv.mtocp"
@@ -28,6 +29,7 @@ android {
         versionName = "0.9.7-beta-hf-30032026"
 
         buildConfigField("String", "BASE_URL", baseUrl)
+        buildConfigField("String", "UPDATE_URL", updateUrl)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

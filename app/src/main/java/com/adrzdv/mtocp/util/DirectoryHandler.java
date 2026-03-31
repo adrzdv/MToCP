@@ -13,6 +13,10 @@ public class DirectoryHandler {
             .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) +
             "/mtocp";
 
+    public static final String UPDATER_DIRECTORY = Environment
+            .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) +
+            "/mtocp/update";
+
     public static final String ZIP_DIRECTORY = Environment
             .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) +
             "/mtocp/zip";
@@ -29,6 +33,7 @@ public class DirectoryHandler {
             new File(MEDIA_DIRECTORY).mkdirs();
             new File(ZIP_DIRECTORY).mkdirs();
             new File(EXPORT_DIRECTORY).mkdirs();
+            new File(UPDATER_DIRECTORY).mkdirs();
         } else {
             res = false;
         }
