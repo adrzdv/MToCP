@@ -8,59 +8,62 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      KEYSTORE_FILE: release-key.jks
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: set up JDK 17
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
 
-      - name: Build Release APK
-        run: ./gradlew assembleRelease
-
-      #      - name: Configure AWS Credentials
-      #        uses: aws-actions/configure-aws-credentials@v4
-      #        with:
-      #          aws-access-key-id: ${{ secrets.YC_ACCESS_KEY }}
-      #          aws-secret-access-key: ${{ secrets.YC_SECRET_KEY }}
-      #          aws-region: ru-central1
-
       - name: Create local.properties
         run: |
           echo "BASE_URL=${{ secrets.BASE_URL }}" > local.properties
           echo "UPDATE_URL=${{ secrets.UPDATE_URL }}" >> local.properties
 
-      - name: Deploy to storage
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > release-key.jks
+
+      - name: Build Release APK
+        run: ./gradlew assembleRelease
+        env:
+          KEYSTORE_FILE: release-key.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Locate APK
+        run: |
+          APK_PATH=$(find app/build/outputs/apk/release -name "*.apk" | head -n 1)
+          echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
+
+      - name: Create version.json
+        run: |
+          VERSION_NAME=$(echo ${GITHUB_REF#refs/tags/v})
+
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          CLEAN_MSG=$(echo "$COMMIT_MSG" | tr -d '"' | tr '\n' ' ')
+
+          APK_URL="https://${{ secrets.YC_BUCKET_NAME }}.storage.yandexcloud.net/app.apk"
+
+          echo "{\"newVersionCode\":\"$VERSION_NAME\",\"apkUrl\":\"$APK_URL\",\"releaseNotes\":\"$CLEAN_MSG\"}" > version.json
+
+      - name: Deploy to Yandex Cloud
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.YC_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.YC_SECRET_KEY }}
           AWS_DEFAULT_REGION: ru-central1
         run: |
-          
-          VERSION_NAME=$(echo ${GITHUB_REF#refs/tags/v})
-          
-          APK_URL="https://${{ secrets.YC_BUCKET_NAME }}.storage.yandexcloud.net/app.apk"
-          
-          APK_PATH=$(find app/build/outputs/apk/release -name "*.apk" | head -n 1)
-          
-          if [ -z "$APK_PATH" ]; then
-            echo "ERROR: APK file not found!"
-            exit 1
-          fi
-          
-          echo "Uploading $APK_PATH to Yandex Cloud..."
-          
-          COMMIT_MSG=$(git log -1 --pretty=%B)
-          CLEAN_MSG=$(echo "$COMMIT_MSG" | tr -d '"' | tr '\n' ' ')
-          
-          echo "{\"newVersionCode\": \"$VERSION_NAME\", \"apkUrl\": \"$APK_URL\", \"releaseNotes\": \"$CLEAN_MSG\"}" > version.json
-          
           aws s3 cp version.json s3://${{ secrets.YC_BUCKET_NAME }}/version.json \
             --endpoint-url=https://storage.yandexcloud.net
-          
+
           aws s3 cp "$APK_PATH" s3://${{ secrets.YC_BUCKET_NAME }}/app.apk \
             --endpoint-url=https://storage.yandexcloud.net
