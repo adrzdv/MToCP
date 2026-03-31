@@ -35,11 +35,11 @@ jobs:
           echo "UPDATE_URL=${{ secrets.UPDATE_URL }}" >> local.properties
 
       - name: Deploy to storage
-        run: |
-          env:
+        env:
           AWS_ACCESS_KEY_ID: ${{ secrets.YC_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.YC_SECRET_KEY }}
           AWS_DEFAULT_REGION: ru-central1
+        run: |
           
           VERSION_NAME=$(echo ${GITHUB_REF#refs/tags/v})
           
