@@ -13,6 +13,10 @@ public class DirectoryHandler {
             .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) +
             "/mtocp";
 
+    public static final String UPDATER_DIRECTORY = Environment
+            .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) +
+            "/mtocp/update";
+
     public static final String ZIP_DIRECTORY = Environment
             .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) +
             "/mtocp/zip";
@@ -21,7 +25,6 @@ public class DirectoryHandler {
             "/mtocp/export";
 
     public static boolean cleanDirectories() {
-
         boolean res;
         File dir = new File(WORK_DIRECTORY);
 
@@ -30,13 +33,13 @@ public class DirectoryHandler {
             new File(MEDIA_DIRECTORY).mkdirs();
             new File(ZIP_DIRECTORY).mkdirs();
             new File(EXPORT_DIRECTORY).mkdirs();
+            new File(UPDATER_DIRECTORY).mkdirs();
         } else {
             res = false;
         }
 
         new File(WORK_DIRECTORY).mkdir();
         return res;
-
     }
 
     private static boolean delRecursFile(File file) {

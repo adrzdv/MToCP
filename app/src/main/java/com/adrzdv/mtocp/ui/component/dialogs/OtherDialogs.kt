@@ -38,7 +38,7 @@ import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
 import com.adrzdv.mtocp.ui.component.AppFullscreenDialog
-import com.adrzdv.mtocp.ui.component.CustomOutlinedButton
+import com.adrzdv.mtocp.ui.component.buttons.CustomOutlinedButton
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
 import com.adrzdv.mtocp.ui.component.DropdownMenuField
 import com.adrzdv.mtocp.ui.theme.AppColors
@@ -361,7 +361,7 @@ fun AddTagDialog(
         title = {
             Text(
                 text = stringResource(R.string.input_new_value),
-                style = AppTypography.titleMedium
+                style = AppTypography.titleMedium,
             )
         },
         containerColor = AppColors.LIGHT_GRAY.color,

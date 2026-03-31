@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.adrzdv.mtocp.data.db.entity.DepotWithBranch;
+import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch;
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
 import com.adrzdv.mtocp.domain.repository.DepotRepository;
 import com.adrzdv.mtocp.mapper.DepotMapper;

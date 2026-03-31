@@ -3,22 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-feature
         android:name="android.hardware.camera.autofocus"
-        android:required="true" />
-
+        android:required="false" />
     <uses-permission android:name="android.permission.NFC" />
-
     <uses-feature
         android:name="android.hardware.nfc"
-        android:required="true" />
+        android:required="false" />
 
     <application
         android:name=".App"
@@ -31,6 +28,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MToCP"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.activities.SplashActivity"
+            android:exported="true"
+            android:label="@string/title_activity_register"
+            android:theme="@style/Theme.MToCP">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activities.NfcActivity"
             android:exported="false" />
@@ -50,29 +57,26 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.activities.ServiceMenuActivity"
+            android:name=".ui.activities.ServiceActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.HelpActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.InfoCatalogActivity"
+            android:name=".ui.activities.CatalogActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.RequestWebActivity"
+            android:name=".ui.activities.RequestActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.CameraActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.StartMenuActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".ui.activities.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.MainMenuActivity"
+            android:exported="false" />
 
         <service
             android:name=".nfc.JsonCardService"

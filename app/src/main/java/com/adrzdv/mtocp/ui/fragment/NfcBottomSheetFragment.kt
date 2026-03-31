@@ -49,7 +49,6 @@ class NfcBottomSheetFragment : BottomSheetDialogFragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 var isVisible by remember { mutableStateOf(true) }
-
                 LaunchedEffect(animateDismiss) {
                     if (animateDismiss) {
                         isVisible = false
@@ -57,7 +56,6 @@ class NfcBottomSheetFragment : BottomSheetDialogFragment() {
                         dismissAllowingStateLoss()
                     }
                 }
-
                 AnimatedVisibility(
                     visible = isVisible,
                     enter = fadeIn() + slideInVertically(initialOffsetY = { it }),
@@ -80,6 +78,10 @@ class NfcBottomSheetFragment : BottomSheetDialogFragment() {
                 playSuccessSound()
                 dismiss()
             }
+        }
+        nfcViewModel.transferCompleted.observe(viewLifecycleOwner) {
+            playSuccessSound()
+            animateDismiss = true
         }
     }
 

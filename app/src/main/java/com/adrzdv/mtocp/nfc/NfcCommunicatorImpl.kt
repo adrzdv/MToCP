@@ -16,4 +16,8 @@ class NfcCommunicatorImpl : NfcCommunicator {
     override fun disableReader(activity: Activity) {
         reader.disableReaderMode(activity)
     }
+
+    override fun setTransferCompleted(listener: () -> Unit) {
+        JsonCardService.onTransferComplete = listener
+    }
 }

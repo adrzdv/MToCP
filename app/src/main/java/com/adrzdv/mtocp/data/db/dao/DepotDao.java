@@ -8,7 +8,7 @@ import androidx.room.Transaction;
 
 import com.adrzdv.mtocp.data.db.entity.BranchEntity;
 import com.adrzdv.mtocp.data.db.entity.DepotEntity;
-import com.adrzdv.mtocp.data.db.entity.DepotWithBranch;
+import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch;
 
 import java.util.List;
 

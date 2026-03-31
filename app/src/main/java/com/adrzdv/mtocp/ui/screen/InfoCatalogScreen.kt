@@ -26,19 +26,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.ui.model.MenuElementItem
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
+import com.adrzdv.mtocp.ui.viewmodel.KriCoachViewModel
+import com.adrzdv.mtocp.ui.viewmodel.TrainInfoViewModel
+import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
 import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
 import kotlinx.coroutines.launch
 
@@ -46,13 +50,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun InfoCatalogScreen(
     onBackClick: () -> Unit,
-    violationViewModel: ViolationViewModel,
-    revisionTypes: List<String>,
-    depotViewModel: DepotViewModel,
-    companyViewMode: CompanyViewModel
+    revisionTypes: List<String>
 ) {
-
-    //Navigation controller, drawer state (opened/closed), and val for coroutine
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -60,28 +59,56 @@ fun InfoCatalogScreen(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    //Main elements of menu
     val menuItems = listOf(
-        MenuElementItem("violations", "Классификатор", painterResource(R.drawable.ic_catalog)),
+        MenuElementItem(
+            "violations",
+            stringResource(R.string.header_catalog),
+            painterResource(R.drawable.ic_outline_book_2_24)
+        ),
         MenuElementItem(
             "depot",
-            "Структурные подразделения",
-            painterResource(R.drawable.ic_contract)
+            stringResource(R.string.header_depot),
+            painterResource(R.drawable.ic_outline_home_work_24)
         ),
-        MenuElementItem("dinner", "Дирекции", painterResource(R.drawable.ic_train)),
-        MenuElementItem("company", "Перевозчики", painterResource(R.drawable.ic_train))
+        MenuElementItem(
+            "dinner",
+            stringResource(R.string.dinner_departments),
+            painterResource(R.drawable.ic_food_waiter)
+        ),
+        MenuElementItem(
+            "company",
+            stringResource(R.string.header_company),
+            painterResource(R.drawable.ic_carrier)
+        ),
+        MenuElementItem(
+            "train",
+            title = stringResource(R.string.trains),
+            painterResource(R.drawable.ic_outline_train_24)
+        ),
+        MenuElementItem(
+            route = "kri",
+            title = stringResource(R.string.kri),
+            icon = painterResource(R.drawable.ic_wagon)
+        )
     )
 
     val currentTitle = menuItems.find { it.route == currentRoute }?.title ?: ""
+    val depotViewModel: DepotViewModel = viewModel(
+        factory = ViewModelFactoryProvider.provideFactory()
+    )
+    val companyViewModel: CompanyViewModel = viewModel(
+        factory = ViewModelFactoryProvider.provideFactory()
+    )
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet(
-                modifier = Modifier.width(240.dp)
+                modifier = Modifier.width(240.dp),
+                drawerContainerColor = AppColors.BACKGROUND_COLOR.color
             ) {
                 Spacer(Modifier.height(16.dp))
-                menuItems.forEach() { menuItem ->
+                menuItems.forEach { menuItem ->
                     NavigationDrawerItem(
                         label = {
                             Text(
@@ -101,12 +128,12 @@ fun InfoCatalogScreen(
                             }
                         },
                         colors = NavigationDrawerItemDefaults.colors(
-                            selectedContainerColor = AppColors.MAIN_GREEN.color,
-                            selectedIconColor = Color.White,
-                            selectedTextColor = Color.White,
+                            selectedContainerColor = AppColors.MAIN_COLOR.color,
+                            selectedIconColor = AppColors.SURFACE_COLOR.color,
+                            selectedTextColor = AppColors.SURFACE_COLOR.color,
                             unselectedContainerColor = Color.Transparent,
-                            unselectedIconColor = Color.Gray,
-                            unselectedTextColor = Color.Gray
+                            unselectedIconColor = AppColors.MAIN_COLOR.color,
+                            unselectedTextColor = AppColors.MAIN_COLOR.color
                         ),
                         shape = RoundedCornerShape(0.dp)
                     )
@@ -115,7 +142,7 @@ fun InfoCatalogScreen(
         }
     ) {
         Scaffold(
-            contentColor = AppColors.LIGHT_GRAY.color,
+            contentColor = AppColors.BACKGROUND_COLOR.color,
             topBar = {
                 TopAppBar(
                     title = {
@@ -138,7 +165,7 @@ fun InfoCatalogScreen(
                     actions = {
                         IconButton(onClick = {
                             depotViewModel.resetDinnerFilter()
-                            companyViewMode.resetDinnerFilter()
+                            companyViewModel.resetDinnerFilter()
                             onBackClick()
                         }) {
                             Icon(
@@ -148,11 +175,12 @@ fun InfoCatalogScreen(
                         }
                     },
                     colors = TopAppBarColors(
-                        containerColor = AppColors.MAIN_GREEN.color,
-                        scrolledContainerColor = AppColors.MAIN_GREEN.color,
-                        titleContentColor = AppColors.OFF_WHITE.color,
-                        navigationIconContentColor = AppColors.OFF_WHITE.color,
-                        actionIconContentColor = AppColors.OFF_WHITE.color
+                        containerColor = AppColors.MAIN_COLOR.color,
+                        scrolledContainerColor = AppColors.MAIN_COLOR.color,
+                        navigationIconContentColor = AppColors.SURFACE_COLOR.color,
+                        titleContentColor = AppColors.SURFACE_COLOR.color,
+                        actionIconContentColor = AppColors.SURFACE_COLOR.color,
+                        subtitleContentColor = AppColors.BACKGROUND_COLOR.color
                     )
                 )
             }
@@ -163,6 +191,9 @@ fun InfoCatalogScreen(
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable("violations") {
+                    val violationViewModel: ViolationViewModel = viewModel(
+                        factory = ViewModelFactoryProvider.provideFactory()
+                    )
                     ViolationCatalogScreen(
                         viewModel = violationViewModel,
                         revisionTypes = revisionTypes
@@ -173,26 +204,31 @@ fun InfoCatalogScreen(
                         viewModel = depotViewModel
                     )
                 }
-
                 composable("company") {
                     CompanyCatalogScreen(
-                        viewModel = companyViewMode
+                        viewModel = companyViewModel
                     )
                 }
-
                 composable("dinner") {
                     DinnerDepotCatalogScreen(
                         viewModel = depotViewModel
                     )
                 }
+                composable(route = "train") {
+                    val trainInfoViewModel: TrainInfoViewModel = viewModel(
+                        factory = ViewModelFactoryProvider.provideFactory()
+                    )
+                    TrainInfoScreen(
+                        viewModel = trainInfoViewModel
+                    )
+                }
+                composable(route = "kri") {
+                    val kriCoachViewModel: KriCoachViewModel = viewModel(
+                        factory = ViewModelFactoryProvider.provideFactory()
+                    )
+                    KriCoachScreen(viewModel = kriCoachViewModel)
+                }
             }
         }
     }
 }
-
-
-data class MenuElementItem(
-    val route: String,
-    val title: String,
-    val icon: Painter
-)

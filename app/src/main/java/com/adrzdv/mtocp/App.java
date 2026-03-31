@@ -2,8 +2,9 @@ package com.adrzdv.mtocp;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.room.Room;
@@ -16,19 +17,21 @@ import com.adrzdv.mtocp.data.importmodel.TrainImport;
 import com.adrzdv.mtocp.data.importmodel.ViolationImport;
 import com.adrzdv.mtocp.data.repository.CompanyRepositoryImpl;
 import com.adrzdv.mtocp.data.repository.DepotRepositoryImpl;
+import com.adrzdv.mtocp.data.repository.KriCoachRepoImpl;
 import com.adrzdv.mtocp.data.repository.TempParamRepositoryImpl;
 import com.adrzdv.mtocp.data.repository.TrainRepositoryImpl;
 import com.adrzdv.mtocp.data.repository.ViolationRepositoryImpl;
 import com.adrzdv.mtocp.domain.repository.CompanyRepository;
 import com.adrzdv.mtocp.domain.repository.DepotRepository;
+import com.adrzdv.mtocp.domain.repository.KriCoachRepo;
 import com.adrzdv.mtocp.domain.repository.TempParamRepository;
 import com.adrzdv.mtocp.domain.repository.TrainRepository;
 import com.adrzdv.mtocp.domain.repository.ViolationRepository;
+import com.adrzdv.mtocp.util.importmanager.ImportHandlerRegistry;
+import com.adrzdv.mtocp.util.importmanager.ImportManager;
 import com.adrzdv.mtocp.util.importmanager.handlers.AdditionalParamHandler;
 import com.adrzdv.mtocp.util.importmanager.handlers.CompanyImportHandler;
 import com.adrzdv.mtocp.util.importmanager.handlers.DepotImportHandler;
-import com.adrzdv.mtocp.util.importmanager.ImportHandlerRegistry;
-import com.adrzdv.mtocp.util.importmanager.ImportManager;
 import com.adrzdv.mtocp.util.importmanager.handlers.TrainImportHandler;
 import com.adrzdv.mtocp.util.importmanager.handlers.ViolationImportHandler;
 
@@ -37,13 +40,13 @@ import java.util.concurrent.Executors;
 
 public class App extends Application {
     private static App instance;
-    private static Toast currentToast;
     private AppDatabase database;
     private static ViolationRepository violationRepository;
     private static DepotRepository depotRepository;
     private static CompanyRepository companyRepository;
     private static TrainRepository trainRepository;
     private static TempParamRepository tempParamRepository;
+    private static KriCoachRepo kriCoachRepo;
     private static ExecutorService executor;
     private static ImportHandlerRegistry registry;
     private static ImportManager importManager;
@@ -57,6 +60,12 @@ public class App extends Application {
         super.onCreate();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         instance = this;
+
+        try {
+            clearDataBase(this);
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
         database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "mtocpdb")
                 .createFromAsset("db/mtocpdb.db")
@@ -97,12 +106,8 @@ public class App extends Application {
         return tempParamRepository;
     }
 
-    public static void showToast(Context context, String message) {
-        if (currentToast != null) {
-            currentToast.cancel();
-        }
-        currentToast = Toast.makeText(context, message, Toast.LENGTH_LONG);
-        currentToast.show();
+    public static KriCoachRepo getKriCoachRepo() {
+        return kriCoachRepo;
     }
 
     private void initRepositories() {
@@ -111,6 +116,7 @@ public class App extends Application {
         companyRepository = new CompanyRepositoryImpl(database.companyDao());
         trainRepository = new TrainRepositoryImpl(database.trainDao(), database.depotDao());
         tempParamRepository = new TempParamRepositoryImpl(database.tempParamsDao());
+        kriCoachRepo = new KriCoachRepoImpl(database.kriCoachDao());
     }
 
     private void regHandlers() {
@@ -130,5 +136,22 @@ public class App extends Application {
         registry.register(AdditionalParamImport.class,
                 new AdditionalParamHandler(tempParamRepository,
                         msg -> Log.d("IMPORT", msg)));
+    }
+
+    private void clearDataBase(Context context) throws PackageManager.NameNotFoundException {
+        SharedPreferences prefs = context.getSharedPreferences("app", Context.MODE_PRIVATE);
+
+        String currVersion = context.getPackageManager()
+                .getPackageInfo(context.getPackageName(), 0)
+                .versionName;
+
+        String savedVersion = prefs.getString("version", "");
+
+        if (currVersion != null) {
+            if (!currVersion.equals(savedVersion)) {
+                context.deleteDatabase("mtocpdb");
+                prefs.edit().putString("version", currVersion).apply();
+            }
+        }
     }
 }

@@ -18,6 +18,9 @@ class NfcJsonReceiverViewModel(
     private val _isTransferring = MutableLiveData(false)
     val isTransferring: LiveData<Boolean> = _isTransferring
 
+    private val _transferCompleted = MutableLiveData<Unit>()
+    val transferCompleted: LiveData<Unit> = _transferCompleted
+
     fun startReader(activity: Activity) {
         Log.d("NfcVM", "startReader called")
         communicator.enableReader(activity) { receivedJson ->
@@ -38,6 +41,11 @@ class NfcJsonReceiverViewModel(
         stopReader(activity)
         _isTransferring.postValue(true)
         prepareJsonToSend()
+
+        communicator.setTransferCompleted {
+            _isTransferring.postValue(false)
+            _transferCompleted.postValue(Unit)
+        }
     }
 
     fun stopTransfer(activity: Activity) {

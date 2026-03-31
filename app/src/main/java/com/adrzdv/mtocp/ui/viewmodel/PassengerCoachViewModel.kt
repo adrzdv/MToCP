@@ -159,9 +159,9 @@ class PassengerCoachViewModel(
 
     fun onCameraResult(result: ActivityResult) {
         val message = if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.getStringExtra("result") ?: MessageCodes.PHOTO_SUCCESS.errorTitle
+            result.data?.getStringExtra("result") ?: MessageCodes.PHOTO_SUCCESS.messageTitle
         } else {
-            result.data?.getStringExtra("result") ?: MessageCodes.PHOTO_ERROR.errorTitle
+            result.data?.getStringExtra("result") ?: MessageCodes.PHOTO_ERROR.messageTitle
         }
         _snackbarMessage.value = message
     }
@@ -188,15 +188,15 @@ class PassengerCoachViewModel(
             !depotValid
         ) {
             updateState(
-                idError = if (!idValid) MessageCodes.EMPTY_STRING.errorTitle else null,                 //строки бы нужно было получить как string resource!
-                nameError = if (!nameValid) MessageCodes.EMPTY_STRING.errorTitle else null,
-                typeError = if (!typeValid) MessageCodes.EMPTY_STRING.errorTitle else null,
-                depotError = if (!depotValid) MessageCodes.EMPTY_STRING.errorTitle else null
+                idError = if (!idValid) MessageCodes.EMPTY_STRING.messageTitle else null,                 //строки бы нужно было получить как string resource!
+                nameError = if (!nameValid) MessageCodes.EMPTY_STRING.messageTitle else null,
+                typeError = if (!typeValid) MessageCodes.EMPTY_STRING.messageTitle else null,
+                depotError = if (!depotValid) MessageCodes.EMPTY_STRING.messageTitle else null
             )
             return
         }
         if (!paramsValid) {
-            _snackbarMessage.value = MessageCodes.PARAMS_NOT_DONE.errorTitle
+            _snackbarMessage.value = MessageCodes.PARAMS_NOT_DONE.messageTitle
             return
         }
 

@@ -11,7 +11,7 @@ import java.util.Objects;
 public class BranchEntity {
     @NonNull
     @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = "id")
+    //@ColumnInfo(name = "id")
     private Integer id;
     @NonNull
     @ColumnInfo(name = "name")

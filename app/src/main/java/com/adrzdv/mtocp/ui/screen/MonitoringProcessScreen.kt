@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.ui.screen
 
+import android.content.pm.PackageManager
 import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -19,7 +19,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -29,7 +28,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,143 +37,25 @@ import androidx.navigation.NavController
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
-import com.adrzdv.mtocp.ui.component.CoachItemCardReadOnly
-import com.adrzdv.mtocp.ui.component.CompactMenuButton
-import com.adrzdv.mtocp.ui.component.ConfirmDialog
-import com.adrzdv.mtocp.ui.component.CustomSnackbarHost
+import com.adrzdv.mtocp.ui.component.newelements.cards.CoachItemCardReadOnly
+import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
+import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.InfoBlockWithLabel
+import com.adrzdv.mtocp.ui.component.buttons.MediumMenuButton
+import com.adrzdv.mtocp.ui.component.MenuElementData
+import com.adrzdv.mtocp.ui.component.MonitoringMenuItem
 import com.adrzdv.mtocp.ui.component.ParameterSelectionBottomSheet
 import com.adrzdv.mtocp.ui.component.ServiceInfoBlock
+import com.adrzdv.mtocp.ui.component.ServiceRowBlock
 import com.adrzdv.mtocp.ui.component.buttons.FloatingSaveButton
+import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.fragment.NfcBottomSheetFragment
 import com.adrzdv.mtocp.ui.theme.AppColors
-import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.AdditionalParamViewModel
 import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
-
-private enum class MenuItem {
-    CHECK_ADD_PARAMS,
-    CHECK_DINING_CAR,
-    IMPORT_DATA,
-    EXPORT_DATA
-}
-
-private data class MenuElementData(
-    val name: MenuItem,
-    val iconRes: Int,
-    val onClick: () -> Unit,
-    val isEnable: Boolean
-)
-
-@Composable
-private fun ServiceRowBlock(
-    painter: Painter,
-    title: String,
-    isState: Boolean
-) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column {
-            Icon(
-                painter = painter,
-                contentDescription = null,
-                tint = if (isState) AppColors.DARK_GREEN.color else AppColors.MATERIAL_RED.color,
-                modifier = Modifier.size(24.dp)
-            )
-        }
-        Column {
-            Text(
-                text = title,
-                style = AppTypography.bodyMedium
-            )
-        }
-    }
-}
-
-@Composable
-private fun InfoBlock(
-    isCCTVUsing: Boolean,
-    isProgressiveUsing: Boolean,
-    isAdditionalParamsChecked: Boolean,
-    isDinnerChecked: Boolean,
-    isDinnerGoing: Boolean,
-    items: List<MenuElementData>
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .weight(1f),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(6.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                ServiceRowBlock(
-                    painter = painterResource(R.drawable.ic_person_14),
-                    title = stringResource(R.string.progress_using),
-                    isState = isProgressiveUsing
-                )
-
-                ServiceRowBlock(
-                    painter = painterResource(R.drawable.ic_camera_14),
-                    title = stringResource(R.string.cctv_using),
-                    isState = isCCTVUsing
-                )
-
-                HorizontalDivider()
-
-                ServiceRowBlock(
-                    painter = painterResource(R.drawable.ic_dinner_24),
-                    title = stringResource(R.string.dinner_going),
-                    isState = isDinnerChecked
-                )
-
-                ServiceRowBlock(
-                    painter = painterResource(R.drawable.ic_list_24_white),
-                    title = stringResource(R.string.additional_params_checked),
-                    isState = isAdditionalParamsChecked
-                )
-            }
-        }
-
-        Box(
-            modifier = Modifier
-                .weight(1f),
-            contentAlignment = Alignment.CenterEnd
-        ) {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(2.dp),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-                horizontalArrangement = Arrangement.spacedBy(2.dp),
-                userScrollEnabled = false
-            ) {
-                items(items) { bttn ->
-                    CompactMenuButton(
-                        onClick = bttn.onClick,
-                        icon = painterResource(id = bttn.iconRes),
-                        isEnabled = if (bttn.name.equals(MenuItem.CHECK_DINING_CAR)) isDinnerGoing
-                        else bttn.isEnable
-                    )
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun MonitoringProcessScreen(
@@ -187,10 +67,7 @@ fun MonitoringProcessScreen(
     val coaches = orderViewModel.collector!!.objectsMap.values.toList()
     var isAdditionalParamsChecked by remember { mutableStateOf(false) }
     val isDinnerChecked by remember { mutableStateOf(false) }
-    val isCCTVUsing = orderViewModel.isTrainHasCamera
-    val isProgressiveUsing = orderViewModel.isTrainUsingProgressive
     val train = orderViewModel.collector as? TrainDomain
-    val isDinnerGoing = train!!.isDinnerCar
     var showBottomSheet by remember { mutableStateOf(false) }
     var showExitDialog by remember { mutableStateOf(false) }
     var showSaveDialog by remember { mutableStateOf(false) }
@@ -199,6 +76,7 @@ fun MonitoringProcessScreen(
     val scope = rememberCoroutineScope()
     val uncheckedCoaches = stringResource(R.string.unchecked_coaches)
     val uncheckedParams = stringResource(R.string.unchecked_params)
+    val nfcAvailable = context.packageManager.hasSystemFeature(PackageManager.FEATURE_NFC)
 
     BackHandler(
         enabled = true
@@ -208,32 +86,26 @@ fun MonitoringProcessScreen(
 
     val buttons = listOf(
         MenuElementData(
-            MenuItem.CHECK_ADD_PARAMS,
+            MonitoringMenuItem.CHECK_ADD_PARAMS,
             R.drawable.ic_list_24_white,
             {
                 showBottomSheet = true
             },
-            true
+            true,
+            description = stringResource(R.string.additional_params)
         ),
         MenuElementData(
-            MenuItem.CHECK_DINING_CAR,
+            MonitoringMenuItem.CHECK_DINING_CAR,
             R.drawable.ic_dinner_24,
             {
                 navController.navigate("monitoringDinner/${(orderViewModel.collector as TrainDomain).dinnerCar.number}")
             },
-            true
+            isEnable = train!!.isDinnerCar,
+            description = stringResource(R.string.dinner_going)
         ),
         MenuElementData(
-            MenuItem.IMPORT_DATA,
-            R.drawable.ic_import_24_white,
-            {
-                /* import data */
-            },
-            false
-        ),
-        MenuElementData(
-            MenuItem.EXPORT_DATA,
-            R.drawable.ic_export_24_white,
+            MonitoringMenuItem.EXPORT_DATA,
+            R.drawable.ic_nfc_icon,
             {
                 val gson = orderViewModel.makeJsonFromRevObjects()
                 val bottomSheet = NfcBottomSheetFragment.newInstance(gson).apply {
@@ -246,7 +118,8 @@ fun MonitoringProcessScreen(
                     "NFC_BOTTOM_SHEET"
                 )
             },
-            true
+            nfcAvailable,
+            description = stringResource(R.string.export_data)
         )
     )
 
@@ -303,11 +176,10 @@ fun MonitoringProcessScreen(
                     stringResource(R.string.static_block_string),
                     content = {
                         InfoBlock(
-                            isCCTVUsing = isCCTVUsing,
-                            isProgressiveUsing = isProgressiveUsing,
+                            isCCTVUsing = orderViewModel.isTrainHasCamera,
+                            isProgressiveUsing = orderViewModel.isTrainUsingProgressive,
                             isDinnerChecked = isDinnerChecked,
                             isAdditionalParamsChecked = isAdditionalParamsChecked,
-                            isDinnerGoing = isDinnerGoing,
                             items = buttons
                         )
                     }
@@ -385,14 +257,16 @@ fun MonitoringProcessScreen(
             onConfirm = {
                 if (orderViewModel.checkUncheckedObjects()) {
                     scope.launch {
-                        snackbarHostState.showSnackbar(message = uncheckedCoaches)
+                        snackbarHostState.showSnackbar(
+                            visuals = ErrorSnackbar(uncheckedCoaches)
+                        )
                     }
                     showSaveDialog = false
                     return@ConfirmDialog
                 }
                 if (!isAdditionalParamsChecked) {
                     scope.launch {
-                        snackbarHostState.showSnackbar(message = uncheckedParams)
+                        snackbarHostState.showSnackbar(visuals = ErrorSnackbar(uncheckedParams))
                     }
                     showSaveDialog = false
                     return@ConfirmDialog
@@ -406,5 +280,90 @@ fun MonitoringProcessScreen(
                 showSaveDialog = false
             }
         )
+    }
+}
+
+@Composable
+private fun InfoBlock(
+    isCCTVUsing: Boolean,
+    isProgressiveUsing: Boolean,
+    isAdditionalParamsChecked: Boolean,
+    isDinnerChecked: Boolean,
+    items: List<MenuElementData>
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .weight(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(6.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                ServiceRowBlock(
+                    painter = painterResource(R.drawable.ic_person_14),
+                    title = stringResource(R.string.progress_using),
+                    isState = isProgressiveUsing
+                )
+
+                ServiceRowBlock(
+                    painter = painterResource(R.drawable.ic_camera_14),
+                    title = stringResource(R.string.cctv_using),
+                    isState = isCCTVUsing
+                )
+
+                HorizontalDivider()
+
+                ServiceRowBlock(
+                    painter = painterResource(R.drawable.ic_dinner_24),
+                    title = stringResource(R.string.dinner_going),
+                    isState = isDinnerChecked
+                )
+
+                ServiceRowBlock(
+                    painter = painterResource(R.drawable.ic_list_24_white),
+                    title = stringResource(R.string.additional_params_checked),
+                    isState = isAdditionalParamsChecked
+                )
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .weight(1f),
+            contentAlignment = Alignment.CenterEnd
+        ) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(1),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(2.dp),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                userScrollEnabled = false
+            ) {
+                items(items) { bttn ->
+                    MediumMenuButton(
+                        onClick = bttn.onClick,
+                        isEnable = bttn.isEnable,
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = bttn.iconRes),
+                                contentDescription = null
+                            )
+                        },
+                        text = bttn.description,
+                        color = null
+                    )
+                }
+            }
+        }
     }
 }
