@@ -46,7 +46,7 @@ android {
 
             if (isCi) {
 
-                val storeFile = System.getenv("STORE_FILE")
+                val storeFile = System.getenv("KEYSTORE_FILE")
                 val storePassword = System.getenv("STORE_PASSWORD")
                 val keyAlias = System.getenv("KEY_ALIAS")
                 val keyPassword = System.getenv("KEY_PASSWORD")
