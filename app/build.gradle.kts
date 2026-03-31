@@ -46,35 +46,44 @@ android {
 
             if (isCi) {
 
-                val storeFile = System.getenv("KEYSTORE_FILE")
-                val storePassword = System.getenv("STORE_PASSWORD")
-                val keyAlias = System.getenv("KEY_ALIAS")
-                val keyPassword = System.getenv("KEY_PASSWORD")
+                val storeFilePath = System.getenv("KEYSTORE_FILE")
+                    ?: throw GradleException("KEYSTORE_FILE is missing in CI")
 
-                if (storeFile != null &&
-                    storePassword != null &&
-                    keyAlias != null &&
-                    keyPassword != null
-                ) {
-                    this.storeFile = file(storeFile)
-                    this.storePassword = storePassword
-                    this.keyAlias = keyAlias
-                    this.keyPassword = keyPassword
+                val storePassword = System.getenv("KEYSTORE_PASSWORD")
+                    ?: throw GradleException("KEYSTORE_PASSWORD is missing")
+
+                val keyAlias = System.getenv("KEY_ALIAS")
+                    ?: throw GradleException("KEY_ALIAS is missing")
+
+                val keyPassword = System.getenv("KEY_PASSWORD")
+                    ?: throw GradleException("KEY_PASSWORD is missing")
+
+                val fileRef = file(storeFilePath)
+                if (!fileRef.exists()) {
+                    throw GradleException("Keystore file not found: $storeFilePath")
                 }
+
+                storeFile = fileRef
+                this.storePassword = storePassword
+                this.keyAlias = keyAlias
+                this.keyPassword = keyPassword
 
             } else {
 
-                val keystoreProperties = Properties()
-                val keystoreFile = rootProject.file("keystore.properties")
+                val propsFile = rootProject.file("keystore.properties")
 
-                if (keystoreFile.exists()) {
-                    keystoreProperties.load(FileInputStream(keystoreFile))
-
-                    this.storeFile = file(keystoreProperties["storeFile"].toString())
-                    this.storePassword = keystoreProperties["storePassword"].toString()
-                    this.keyAlias = keystoreProperties["keyAlias"].toString()
-                    this.keyPassword = keystoreProperties["keyPassword"].toString()
+                if (!propsFile.exists()) {
+                    throw GradleException("keystore.properties is missing for local build")
                 }
+
+                val props = Properties().apply {
+                    load(FileInputStream(propsFile))
+                }
+
+                storeFile = file(props["storeFile"].toString())
+                storePassword = props["storePassword"].toString()
+                keyAlias = props["keyAlias"].toString()
+                keyPassword = props["keyPassword"].toString()
             }
         }
     }
