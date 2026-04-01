@@ -11,7 +11,7 @@ interface DocRequestApi {
     @POST("getnumber")
     suspend fun getNumber(@Body request: NameRequest): NumberResponse
 
-    @POST("lastlogs")
+    @POST("gottennumbers")
     suspend fun getLastLogs(
         @Body request: Map<String, String> = emptyMap()
     ): List<LogEntry>
