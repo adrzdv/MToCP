@@ -2,22 +2,26 @@ package com.adrzdv.mtocp.ui.screen
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.Row
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import java.text.SimpleDateFormat
-import java.util.*
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,40 +30,37 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.enums.OrdersTypes
 import com.adrzdv.mtocp.ui.component.AutocompleteTextField
-import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
-import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.navigation.NavController
-import com.adrzdv.mtocp.MessageCodes
-import com.adrzdv.mtocp.ui.component.buttons.CompactMenuButton
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
-import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.ReadOnlyDatePickerField
 import com.adrzdv.mtocp.ui.component.RevisionTypeDropdown
+import com.adrzdv.mtocp.ui.component.buttons.CompactMenuButton
 import com.adrzdv.mtocp.ui.component.dialogs.AddTempTrainDialog
+import com.adrzdv.mtocp.ui.component.dialogs.ConfirmDialog
+import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.theme.CustomTypography
-import com.adrzdv.mtocp.ui.viewmodel.AutocompleteViewModel
-import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.AutocompleteViewModelJvm
+import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 import kotlinx.coroutines.launch
 import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import java.util.Locale
 
+@Deprecated("for remove")
 @Composable
 fun StartRevisionScreen(
     orderViewModel: OrderViewModel,
-    autocompleteViewModel: AutocompleteViewModel,
+    autocompleteViewModelJvm: AutocompleteViewModelJvm,
     orderTypes: List<String>,
     navController: NavController,
     onBackClick: () -> Unit
@@ -74,8 +75,8 @@ fun StartRevisionScreen(
     var isTypeError by remember { mutableStateOf(false) }
     var isObjectNumberError by remember { mutableStateOf(false) }
     //Other val/var
-    val query by autocompleteViewModel.query.observeAsState("")
-    val suggestions by autocompleteViewModel.filteredItems.observeAsState(emptyList())
+    val query by autocompleteViewModelJvm.query.observeAsState("")
+    val suggestions by autocompleteViewModelJvm.filteredItems.observeAsState(emptyList())
     val format = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
     val localDateTimeFormater = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
     val context = LocalContext.current
@@ -265,7 +266,7 @@ fun StartRevisionScreen(
                         selectedOrderType = it
                         isTypeError = false
                         orderViewModel.selectedType = OrdersTypes.getFromString(it)
-                        autocompleteViewModel.setOrderType(OrdersTypes.getFromString(it))
+                        autocompleteViewModelJvm.setOrderType(OrdersTypes.getFromString(it))
                     }
                 )
             }
@@ -282,7 +283,7 @@ fun StartRevisionScreen(
                         query = query,
                         suggestions = suggestions,
                         onQueryChanged = { input ->
-                            autocompleteViewModel.onQueryChanged(input)
+                            autocompleteViewModelJvm.onQueryChanged(input)
                         },
                         onSuggestionSelected = { selected ->
                             selectedObjectNumber = selected

@@ -4,7 +4,7 @@ import static com.adrzdv.mtocp.MessageCodes.SUCCESS;
 
 import com.adrzdv.mtocp.data.db.entity.CompanyEntity;
 import com.adrzdv.mtocp.data.importmodel.CompanyImport;
-import com.adrzdv.mtocp.domain.repository.CompanyRepository;
+import com.adrzdv.mtocp.domain.repository.old.CompanyRepository;
 import com.adrzdv.mtocp.mapper.CompanyMapper;
 
 import java.util.List;

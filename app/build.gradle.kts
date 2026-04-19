@@ -1,3 +1,6 @@
+import com.android.build.api.dsl.ApplicationExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -27,14 +30,10 @@ android {
 
     defaultConfig {
         applicationId = "com.adrzdv.mtocp"
-        minSdk = 29                                                 //Android 10+
+        minSdk = 34
         targetSdk = 35
         versionCode = 1
-        versionName = "0.9.8-beta-hf-01042026-2"
-
-        buildConfigField("String", "BASE_URL", "\"${project.findProperty("BASE_URL") ?: ""}\"")
-        buildConfigField("String", "UPDATE_URL", "\"${project.findProperty("UPDATE_URL") ?: ""}\"")
-
+        versionName = "0.9.6-beta-rb-03032026"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -99,7 +98,7 @@ android {
 
     buildFeatures {
         compose = true
-        buildConfig = true
+        viewBinding = true
     }
 
     composeOptions {
@@ -107,9 +106,12 @@ android {
     }
 
     buildTypes {
-        release {
-            signingConfig = signingConfigs.getByName("release")
+        getByName("release") {
             isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -137,6 +139,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.room.ktx)
     implementation(libs.androidx.recyclerview)
     testImplementation(libs.junit.jupiter)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -168,7 +172,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation("androidx.room:room-runtime:$roomVersion")
 
-    testImplementation(libs.junit)
+    //testImplementation(libs.junit)
 
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -183,4 +187,14 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.squareup.retrofit2:converter-gson:3.0.0")
 
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    // Added testing dependencies
+    testImplementation("io.mockk:mockk:1.13.8")
+    testImplementation("app.cash.turbine:turbine:1.0.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("com.google.truth:truth:1.1.5")
 }

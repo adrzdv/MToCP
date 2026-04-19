@@ -6,7 +6,7 @@ import java.io.File
 import java.util.Locale
 
 class DeleteViolationPhotoUseCase {
-    fun invoke(code: Int, orderNumb: String, coachNumber: String) {
+    fun invoke(code: Int, orderNumb: String, coachNumber: String?) {
         val path = DirectoryHandler.MEDIA_DIRECTORY + "/" + orderNumb + "/" + coachNumber
         val dir = File(path)
         val files = dir.listFiles()

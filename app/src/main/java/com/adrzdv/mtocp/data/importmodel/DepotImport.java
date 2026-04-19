@@ -7,7 +7,7 @@ import java.util.Objects;
 
 /**
  * Depot import model
- * This model is using for import depot data from json
+ * This model is using for import depot data from JSON
  */
 public class DepotImport {
     private Integer id;

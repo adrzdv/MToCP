@@ -6,10 +6,11 @@ import com.adrzdv.mtocp.domain.model.revisionobject.basic.coach.PassengerCar;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 public class CountMainAutodoorsUseCase {
 
-    public int execute(Map<String, RevisionObject> revMap) {
+    public int execute(Map<UUID, RevisionObject> revMap) {
         return (int) revMap.values().stream()
                 .filter(object ->
                         object instanceof PassengerCar that

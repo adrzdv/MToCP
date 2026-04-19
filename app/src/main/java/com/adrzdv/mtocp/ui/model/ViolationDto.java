@@ -1,6 +1,5 @@
 package com.adrzdv.mtocp.ui.model;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class ViolationDto {

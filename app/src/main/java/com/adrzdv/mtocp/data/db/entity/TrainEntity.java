@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.Objects;
@@ -13,7 +14,14 @@ import java.util.Objects;
                 entity = DepotEntity.class,
                 parentColumns = "id",
                 childColumns = "depot_id"
-        )
+        ),
+        indices = {
+                @Index(
+                        name = "train_nmb_idx",
+                        value = {"number"},
+                        unique = true
+                )
+        }
 )
 public class TrainEntity {
     @NonNull

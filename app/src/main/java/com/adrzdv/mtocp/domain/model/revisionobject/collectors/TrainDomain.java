@@ -11,6 +11,7 @@ import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -105,6 +106,10 @@ public class TrainDomain extends ObjectCollector {
         workerMap.remove(worker.getWorkerType().getDescription());
     }
 
+    public void removeWorker(String position) {
+        workerMap.remove(position);
+    }
+
     public int countPassCoachType(PassengerCoachType type) {
         return (int) getObjectsMap().values().stream()
                 .filter(o -> o instanceof PassengerCar)
@@ -140,7 +145,7 @@ public class TrainDomain extends ObjectCollector {
 
 
     @Override
-    public Map<String, RevisionObject> getCheckedObjects() {
+    public Map<UUID, RevisionObject> getCheckedObjects() {
         return this.getObjectsMap().entrySet()
                 .stream().filter(o -> o.getValue().getRevisionDateEnd() != null)
                 .collect(Collectors.toMap(Map.Entry::getKey,

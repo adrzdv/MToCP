@@ -7,7 +7,7 @@ import java.util.Objects;
 
 /**
  * Company import model
- * This model is using for import company data from json
+ * This model is using for import company data from JSON
  */
 public class CompanyImport {
     private Long els;

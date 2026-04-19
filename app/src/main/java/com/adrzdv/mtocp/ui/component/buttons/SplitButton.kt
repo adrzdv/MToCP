@@ -29,7 +29,8 @@ import com.adrzdv.mtocp.ui.theme.AppTypography
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SplitButton(
-    actions: Map<String, Pair<Painter, () -> Unit>>
+    actions: Map<String, Pair<Painter, () -> Unit>>,
+    enabled: Boolean = true
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedAction by remember { mutableStateOf(actions.keys.first()) }
@@ -42,13 +43,15 @@ fun SplitButton(
                         actions[selectedAction]?.second?.invoke()
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = AppColors.MAIN_GREEN.color,
-                        contentColor = AppColors.OFF_WHITE.color
-                    )
+                        containerColor = AppColors.MAIN_COLOR.color,
+                        contentColor = AppColors.SURFACE_COLOR.color,
+                    ),
+                    enabled = enabled
                 ) {
                     actions[selectedAction]?.first?.let {
                         Icon(
                             painter = it,
+                            tint = AppColors.SURFACE_COLOR.color,
                             contentDescription = null
                         )
                     }
@@ -63,11 +66,12 @@ fun SplitButton(
             trailingButton = {
                 Box {
                     SplitButtonDefaults.TrailingButton(
+                        enabled = enabled,
                         checked = expanded,
                         onCheckedChange = { expanded = it },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = AppColors.MAIN_GREEN.color,
-                            contentColor = AppColors.OFF_WHITE.color
+                            containerColor = AppColors.MAIN_COLOR.color,
+                            contentColor = AppColors.SURFACE_COLOR.color
                         )
                     ) {
                         val rotation: Float by
@@ -88,7 +92,7 @@ fun SplitButton(
                         expanded = expanded,
                         onDismissRequest = { expanded = false },
                         modifier = Modifier.align(Alignment.TopEnd),
-                        containerColor = AppColors.OFF_WHITE.color
+                        containerColor = AppColors.SURFACE_COLOR.color
                     ) {
                         actions.keys.forEach { item ->
                             DropdownMenuItem(
@@ -96,6 +100,7 @@ fun SplitButton(
                                     actions[item]?.first?.let {
                                         Icon(
                                             painter = it,
+                                            tint = AppColors.MAIN_COLOR.color,
                                             contentDescription = null
                                         )
                                     }

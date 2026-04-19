@@ -25,7 +25,8 @@ public class TrainImportHandler extends BaseImportHandler<TrainImport> {
         List<TrainEntity> entities = items.stream()
                 .map(TrainMapper::fromImportToEntity)
                 .toList();
-        repository.saveAll(entities);
+
+        //repository.saveAll(entities);
         showSuccessToast(SUCCESS.toString());
     }
 }

@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class GetGlobalViolationStringUseCase {
 
-    public List<String> execute(Map<String, RevisionObject> objectMap) {
+    public List<String> execute(Map<UUID, RevisionObject> objectMap) {
         List<String> result = new ArrayList<>();
         Map<Integer, ViolationDomain> tempViolationMap = new HashMap<>();
 

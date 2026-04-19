@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 public abstract class RegularValidator {
 
-    public final void addRevisionObject(RevisionObject o) {
+    public final void addRevisionObject(RevisionObject o) throws IllegalArgumentException {
         if (o instanceof Coach c) {
             validateCoach(c);
             validateCoachType(c);
@@ -45,7 +45,7 @@ public abstract class RegularValidator {
         }
     }
 
-    private void validateCoach(RevisionObject o) {
+    private void validateCoach(RevisionObject o) throws IllegalArgumentException {
         String typicalCoach = "\\d{3}-\\d{5}";
         String suburbCoach = "\\d{5}";
         if (!Pattern.matches(typicalCoach, o.getNumber())
@@ -54,7 +54,7 @@ public abstract class RegularValidator {
         }
     }
 
-    private void validateCoachType(RevisionObject o) {
+    private void validateCoachType(RevisionObject o) throws IllegalArgumentException {
         Map<PassengerCoachType, List<Integer>> patterns = Map.of(
                 PassengerCoachType.LUXURY, List.of(0),
                 PassengerCoachType.FIRST_CLASS_SLEEPER, List.of(0),
@@ -76,7 +76,7 @@ public abstract class RegularValidator {
                 throw new IllegalArgumentException(MessageCodes.PATTERN_MATCHES_ERROR.toString());
             }
         } else if (o instanceof DinnerCar c && !c.getNumber().isEmpty()) {
-            DinnerCarsType type = c.getType();
+            DinnerCarsType type = c.getDinnerType();
             if (!dinnerPatterns.get(type).contains(firstDigit)) {
                 throw new IllegalArgumentException(MessageCodes.PATTERN_MATCHES_ERROR.toString());
             }

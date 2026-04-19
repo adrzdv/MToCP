@@ -7,16 +7,18 @@ import java.util.List;
  * Enum of revision types
  */
 public enum RevisionType {
-    ALL("Полный список"),
-    IN_TRANSIT("В пути"),
-    AT_START_POINT("В пункте формирования"),
-    AT_TURNROUND_POINT("В пункте оборота"),
-    AT_TICKET_OFFICE("В пункте продажи");
+    ALL("Полный список", 0),
+    IN_TRANSIT("В пути", 1),
+    AT_START_POINT("В пункте формирования", 1),
+    AT_TURNROUND_POINT("В пункте оборота", 1),
+    AT_TICKET_OFFICE("В пункте продажи", 2);
 
     private final String revisionTypeTitle;
+    private final int objType;
 
-    RevisionType(String revisionTypeTitle) {
+    RevisionType(String revisionTypeTitle, int objType) {
         this.revisionTypeTitle = revisionTypeTitle;
+        this.objType = objType;
     }
 
     public String getRevisionTypeTitle() {
@@ -33,8 +35,14 @@ public enum RevisionType {
     }
 
     public static List<String> getListOfTypes() {
-
         return Arrays.stream(RevisionType.values())
+                .map(RevisionType::getRevisionTypeTitle)
+                .toList();
+    }
+
+    public static List<String> getMovableTypes() {
+        return Arrays.stream(RevisionType.values())
+                .filter(revisionType -> revisionType.objType == 1)
                 .map(RevisionType::getRevisionTypeTitle)
                 .toList();
     }

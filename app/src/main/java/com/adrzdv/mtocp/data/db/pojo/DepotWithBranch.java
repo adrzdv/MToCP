@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.data.db.pojo;
 
+import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
@@ -15,4 +16,10 @@ public class DepotWithBranch {
             entityColumn = "id"
     )
     public BranchEntity branch;
+
+    @NonNull
+    @Override
+    public String toString() {
+        return depot.getShortName();
+    }
 }

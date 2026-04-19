@@ -1,7 +1,6 @@
 package com.adrzdv.mtocp.ui.screen
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -28,24 +27,29 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.data.api.RetrofitClient
+import com.adrzdv.mtocp.data.repository.AuthRepositoryImpl
+import com.adrzdv.mtocp.ui.component.ChangePasswordBottomSheet
 import com.adrzdv.mtocp.ui.component.newelements.Divider
 import com.adrzdv.mtocp.ui.component.newelements.SettingsRow
 import com.adrzdv.mtocp.ui.component.newelements.SwitchRow
 import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.component.snackbar.InfoSnackbar
-import com.adrzdv.mtocp.ui.fragment.ChangePasswordBottomSheetFragment
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.ServiceViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.ChangePasswordBottomSheetViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
+import com.adrzdv.mtocp.ui.viewmodel.service.AssistedViewModelFactory
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ServiceScreen(
-    serviceVM: ServiceViewModel,
+    serviceScreenVM: ServiceViewModel,
     onCleanRepositoryClick: ((Boolean) -> Unit) -> Unit,
     onLoadCatalog: () -> Unit,
     onDeleteProfile: () -> Unit,
@@ -59,21 +63,34 @@ fun ServiceScreen(
     val prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
     val username = prefs.getString("username", "null")
 
+    val changePasswordVM: ChangePasswordBottomSheetViewModel = viewModel(
+        factory = AssistedViewModelFactory {
+            ChangePasswordBottomSheetViewModel(
+                authRepository = AuthRepositoryImpl(RetrofitClient.authApi, null),
+                lengthError = context.getString(R.string.password_rule_4),
+                digitError = context.getString(R.string.password_rule_1),
+                upperCaseError = context.getString(R.string.password_rule_2),
+                specDigitError = context.getString(R.string.password_rule_3),
+                passwordNotMatchedError = context.getString(R.string.password_not_match)
+            )
+        }
+    )
+
     var showBottomSheet by remember { mutableStateOf(false) }
-    val snackMessage by serviceVM.snackMessage.collectAsState()
-    val errorSnackMessage by serviceVM.errorMessage.collectAsState()
+    val snackMessage by serviceScreenVM.snackMessage.collectAsState()
+    val errorSnackMessage by serviceScreenVM.errorMessage.collectAsState()
 
     LaunchedEffect(snackMessage) {
         snackMessage?.let {
             snackbarHostState.showSnackbar(visuals = InfoSnackbar(it))
-            serviceVM.clearMessage()
+            serviceScreenVM.clearMessage()
         }
     }
 
     LaunchedEffect(errorSnackMessage) {
         errorSnackMessage?.let {
             snackbarHostState.showSnackbar(visuals = ErrorSnackbar(it))
-            serviceVM.clearMessage()
+            serviceScreenVM.clearMessage()
         }
     }
 
@@ -226,11 +243,10 @@ fun ServiceScreen(
     }
 
     if (showBottomSheet) {
-        ChangePasswordBottomSheetFragment(
+        ChangePasswordBottomSheet(
+            viewModel = changePasswordVM,
+            serviceScreenVM = serviceScreenVM,
             onDismiss = { showBottomSheet = false }
-        ).show(
-            (context as AppCompatActivity).supportFragmentManager,
-            "CHANGE_PASSWORD_BOTTOM_SHEET"
         )
     }
 }

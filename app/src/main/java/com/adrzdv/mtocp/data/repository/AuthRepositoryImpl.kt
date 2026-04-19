@@ -31,12 +31,8 @@ class AuthRepositoryImpl(
                         secId = response.secId ?: ""
                     )
                 } else {
-                    AuthResult(
-                        isSuccess = false,
-                        errorMessage = response.error ?: "Unknown error"
-                    )
+                    AuthResult(isSuccess = false, errorMessage = response.error ?: "Unknown error")
                 }
-
             } catch (e: Exception) {
                 AuthResult(isSuccess = false, errorMessage = e.message ?: "Network error")
             }

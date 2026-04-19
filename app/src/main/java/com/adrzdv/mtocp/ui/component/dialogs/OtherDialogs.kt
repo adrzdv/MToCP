@@ -35,20 +35,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
-import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TrainDomain
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
 import com.adrzdv.mtocp.ui.component.AppFullscreenDialog
-import com.adrzdv.mtocp.ui.component.buttons.CustomOutlinedButton
 import com.adrzdv.mtocp.ui.component.CustomOutlinedTextField
 import com.adrzdv.mtocp.ui.component.DropdownMenuField
+import com.adrzdv.mtocp.ui.component.buttons.CustomOutlinedButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.theme.CustomTypography
-import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
-import com.adrzdv.mtocp.ui.viewmodel.OrderViewModel
-import com.adrzdv.mtocp.ui.viewmodel.RequestWebViewModel
-import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
-import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.RequestWebViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.old.ViewModelFactoryProviderOld
+import com.adrzdv.mtocp.ui.viewmodel.model.old.ViolationViewModelOld
 
 @Composable
 fun CustomAlertDialog(
@@ -124,13 +123,13 @@ fun AddTempTrainDialog(
     var trainDepot by remember { mutableStateOf("") }
 
     val depotVM: DepotViewModel = viewModel(
-        factory = ViewModelFactoryProvider.provideFactory()
+        factory = ViewModelFactoryProviderOld.provideFactory()
     )
 
     fun addTempTrain() {
         val depot: DepotDomain = depotVM.getDepotDomain(trainDepot)
-        val tempTrain: TrainDomain =
-            TrainDomain(trainNumber, trainRoute, depot, false, false, false)
+//        val tempTrain: TrainDomain =
+//            TrainDomain(trainNumber, trainRoute, depot)
         orderVM.setObjectNumber(trainNumber)
     }
 
@@ -215,8 +214,8 @@ fun AddViolationToCoachDialog(
     onDismiss: () -> Unit,
     onError: () -> Unit
 ) {
-    var violationViewModel: ViolationViewModel =
-        viewModel(factory = ViewModelFactoryProvider.provideFactory())
+    var violationViewModel: ViolationViewModelOld =
+        viewModel(factory = ViewModelFactoryProviderOld.provideFactory())
     violationViewModel.filterDataByRevisionType(revisionType)
 
     var searchText by remember { mutableStateOf("") }
