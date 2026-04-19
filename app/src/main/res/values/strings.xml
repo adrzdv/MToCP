@@ -9,10 +9,7 @@
     <string name="app_title">Мобильный терминал сбора контроллируемых параметров</string>
     <string name="main_menu_text">Главное меню</string>
     <string name="search_depot_hint">Поиск предприятия</string>
-    <string name="search_train">Поиск поезда</string>
     <string name="train_number">Номер поезда</string>
-    <string name="search_kri">Поиск вагона</string>
-    <string name="ooops">Упс…</string>
     <string name="search_train">Поиск поезда</string>
     <string name="search_kri">Поиск вагона</string>
     <string name="ooops">Упс…</string>
@@ -122,10 +119,6 @@
     <string name="unchecked_params">Не проверены дополнительные параметры</string>
     <string name="params_coach">Вагоны</string>
     <string name="params_train">Состав</string>
-    <string name="export_data">Передача данных</string>
-    <string name="additional_params">Прочие параметры</string>
-    <string name="trains">Поезда</string>
-    <string name="kri">КРИ</string>
 
     <string name="export_data">Передача данных</string>
     <string name="additional_params">Прочие параметры</string>
@@ -140,48 +133,7 @@
     <string name="nfc_sender">Отправляю данные…</string>
     <string name="nfc_file_received">Данные получены</string>
     <string name="nfc_help_info">Отправка данных по NFC. Приложите телефон к NFC-модулю другого телефона</string>
-    <string name="title_activity_register">MToCP</string>
 
-    <string name="login_button">ВОЙТИ</string>
-    <string name="login">Имя пользователя</string>
-    <string name="password">Пароль</string>
-    <string name="remember">Запомнить</string>
-    <string name="welcome">Здравствуйте!</string>
-    <string name="greeting_message">Пожалуйста, введите имя пользователя и пароль для начала работы</string>
-    <string name="show_password">Показать пароль</string>
-    <string name="login_length">Логин содержит мало символов</string>
-    <string name="password_length">Пароль содержит мало символов</string>
-    <string name="unknown_error">Неизвестная ошибка</string>
-
-    <string name="settings_main">Основные</string>
-    <string name="settings_personal">Пользовательские</string>
-    <string name="change_password">Изменить пароль</string>
-    <string name="settings_share">Общие</string>
-    <string name="about_app">О приложении</string>
-    <string name="username">Пользователь</string>
-    <string name="user_id">Табельный номер</string>
-    <string name="user_sec_id">Открытый лист</string>
-    <string name="clear_dirs_sub">Очистка программных директорий</string>
-    <string name="update_catalog_sub">Обновить программные справочники из файла</string>
-    <string name="notifications">Уведомления</string>
-    <string name="notifications_sub">Управление настройкамми уведомления</string>
-    <string name="del_profile">Выход</string>
-    <string name="del_profile_sub">Выйти из профиля</string>
-
-    <string name="depot_warning">Обязательно обращайте внимание на пункт формирования поезда!</string>
-
-    <string name="password_rule_title">Пароль должен содержать</string>
-    <string name="password_rule_1">Минимум 1 цифру</string>
-    <string name="password_rule_2">Минимум 1 заглавную букву</string>
-    <string name="password_rule_3">Минимум 1 специальный символ: "!@#$%^*-_=+"</string>
-    <string name="password_rule_4">Мнимальная длина пароля - 8 символов</string>
-    <string name="password_not_match">Пароли не совпадают</string>
-    <string name="password_rule">Пароль должен содержать как минимум 1 цифру, 1 заглавную букву и
-        1 специальный символ: "!@#$%^*-_=+"</string>
-    <string name="password_new_hint">Новый пароль</string>
-    <string name="password_confirm_hint">Подтвердите пароль</string>
-    <string name="error_password_change">Ошибка смены пароля</string>
-    <string name="password_changed_success">Пароль изменен</string>
     <string name="last_entries_header">Последние 20 номеров</string>
 
     <string name="number_symbol">№</string>

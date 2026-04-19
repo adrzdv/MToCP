@@ -24,7 +24,7 @@ class KriCoachViewModel(
 
     fun loadKriCoaches() {
         viewModelScope.launch(Dispatchers.IO) {
-            val dtos = kriRepo.getAllKriCoaches()
+            val dtos = kriRepo.getAll()
                 .map { it.toDomain() }
                 .map { it.toDto() }
 

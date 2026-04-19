@@ -11,7 +11,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
-android {
+
+extensions.configure<ApplicationExtension> {
     namespace = "com.adrzdv.mtocp"
     compileSdk = 36
 
@@ -30,10 +31,13 @@ android {
 
     defaultConfig {
         applicationId = "com.adrzdv.mtocp"
-        minSdk = 34
+        minSdk = 29                                                 //Android 10+
         targetSdk = 35
         versionCode = 1
-        versionName = "0.9.6-beta-rb-03032026"
+        versionName = "0.9.9-beta-hf-19042026"
+
+        buildConfigField("String", "BASE_URL", "\"${project.findProperty("BASE_URL") ?: ""}\"")
+        buildConfigField("String", "UPDATE_URL", "\"${project.findProperty("UPDATE_URL") ?: ""}\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -87,18 +91,10 @@ android {
         }
     }
 
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
-    kapt {
-        correctErrorTypes = true
-    }
-
     buildFeatures {
         compose = true
         viewBinding = true
+        buildConfig = true
     }
 
     composeOptions {
@@ -119,10 +115,20 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+}
 
-    buildFeatures {
-        viewBinding = true
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 dependencies {
