@@ -1,4 +1,4 @@
-package com.adrzdv.mtocp.data.model
+package com.adrzdv.mtocp.data.model.old
 
 sealed class ChangePasswordResult {
     data object Success : ChangePasswordResult()

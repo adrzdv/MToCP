@@ -2,6 +2,7 @@ package com.adrzdv.mtocp.data.api
 
 import com.adrzdv.mtocp.BuildConfig
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -10,9 +11,14 @@ object RetrofitClient {
     private const val BASE_URL = BuildConfig.BASE_URL
     private const val UPDATE_URL = BuildConfig.UPDATE_URL
 
+    val logging = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
+
     private val okHttpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
             .readTimeout(120, TimeUnit.SECONDS)
+            .addInterceptor(logging)
             .build()
     }
 

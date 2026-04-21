@@ -33,7 +33,7 @@ fun NavGraphBuilder.splashDestination(
     composable(Screen.Splash.route) {
         val hasToken = appDependencies
             .userDataStorage
-            .getToken()?.isNotBlank()
+            .getAccessToken()?.isNotBlank()
 
         SplashScreen(
             onTimeout = {

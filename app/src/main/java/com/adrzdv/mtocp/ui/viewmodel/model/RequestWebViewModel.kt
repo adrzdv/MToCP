@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adrzdv.mtocp.data.api.RetrofitClient
 import com.adrzdv.mtocp.data.model.LogEntry
-import com.adrzdv.mtocp.data.model.NameRequest
+import com.adrzdv.mtocp.data.model.old.NameRequest
 import kotlinx.coroutines.launch
 
 class RequestWebViewModel : ViewModel() {

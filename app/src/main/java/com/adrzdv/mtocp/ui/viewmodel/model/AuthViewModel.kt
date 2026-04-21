@@ -53,17 +53,15 @@ class AuthViewModel(
             try {
                 val authResult = repository.login(login, password)
                 if (authResult.isSuccess) {
-                    authResult.token?.let { token ->
-                        repository.saveToken(token)
-                    }
-                    authResult.name?.let { name ->
-                        repository.saveUsername(name)
-                    }
-                    authResult.id?.let { id ->
-                        repository.saveUserId(id)
-                    }
-                    authResult.secId?.let { secId ->
-                        repository.saveUserSecId(secId)
+                    with(authResult) {
+                        accessToken?.let(repository::saveAccessToken)
+                        refreshToken?.let(repository::saveRefreshToken)
+                        profileId?.let(repository::saveProfileId)
+                        userId?.let(repository::saveUserId)
+                        fullName?.let(repository::saveUsername)
+                        secondaryId?.let(repository::saveUserSecId)
+                        role?.let(repository::saveUserRole)
+                        branchName?.let(repository::saveUserBranch)
                     }
                     _regState.update { it.copy(isLoading = false, isSuccess = true) }
                 } else {
