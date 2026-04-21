@@ -1,7 +1,5 @@
 package com.adrzdv.mtocp.ui.screen
 
-import android.app.Activity
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -11,9 +9,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -37,21 +38,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.ui.activities.MainMenuActivity
-import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.newelements.RoundedButton
+import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
 import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
+import com.adrzdv.mtocp.ui.navigation.Screen
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.AuthViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.AuthViewModel
 
 @Composable
 fun RegisterScreen(
-    viewModel: AuthViewModel
+    navController: NavHostController? = null,
+    authViewModel: AuthViewModel
 ) {
-    val state by viewModel.regState.collectAsState()
+    val state by authViewModel.regState.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
     var passwordVisibility by remember { mutableStateOf(true) }
     val context = LocalContext.current
@@ -60,9 +63,7 @@ fun RegisterScreen(
         state.isSuccess
     ) {
         if (state.isSuccess) {
-            val intent = Intent(context, MainMenuActivity::class.java)
-            context.startActivity(intent)
-            (context as? Activity)?.finish()
+            navController?.navigate(Screen.MainMenu.route)
         }
     }
 
@@ -83,19 +84,21 @@ fun RegisterScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(innerPadding)
                 .background(AppColors.SURFACE_COLOR.color)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding),
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(0.5f),
+                        //.weight(0.5f),
+                        .padding(horizontal = 16.dp),
                     elevation = CardDefaults.cardElevation(8.dp),
                     shape = RoundedCornerShape(
                         topStart = 0.dp,
@@ -131,7 +134,8 @@ fun RegisterScreen(
                     }
 
                 }
-                Spacer(modifier = Modifier.weight(0.05f))
+                //Spacer(modifier = Modifier.weight(0.05f))
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = stringResource(R.string.welcome),
                     style = AppTypography.titleMedium,
@@ -143,10 +147,12 @@ fun RegisterScreen(
                     color = AppColors.MAIN_COLOR.color,
                     textAlign = TextAlign.Center
                 )
-                Spacer(modifier = Modifier.weight(0.05f))
+                //Spacer(modifier = Modifier.weight(0.05f))
+                Spacer(modifier = Modifier.height(16.dp))
                 Column(
                     modifier = Modifier
-                        .weight(0.4f)
+                        //.weight(0.4f)
+                        .fillMaxWidth()
                         .padding(32.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -154,7 +160,7 @@ fun RegisterScreen(
                     InputTextField(
                         value = state.login,
                         onValueChange = {
-                            viewModel.onLoginChange(it)
+                            authViewModel.onLoginChange(it)
                         },
                         isEnabled = !state.isLoading,
                         isError = state.loginErrorRes != null,
@@ -163,13 +169,13 @@ fun RegisterScreen(
                         } ?: "",
                         label = stringResource(R.string.login),
                         modifier = Modifier.fillMaxWidth(),
-                        trailingIcon = painterResource(R.drawable.ic_outline_person_edit_24),
+                        trailingIcon = { painterResource(R.drawable.ic_outline_person_edit_24) },
                         secretInput = false
                     )
                     InputTextField(
                         value = state.password,
                         onValueChange = {
-                            viewModel.onPasswordChange(it)
+                            authViewModel.onPasswordChange(it)
                         },
                         isEnabled = !state.isLoading,
                         isError = state.passwordErrorRes != null,
@@ -178,7 +184,7 @@ fun RegisterScreen(
                         } ?: "",
                         label = stringResource(R.string.password),
                         modifier = Modifier.fillMaxWidth(),
-                        trailingIcon = painterResource(R.drawable.ic_outline_lock_24),
+                        trailingIcon = { painterResource(R.drawable.ic_outline_lock_24) },
                         secretInput = when (passwordVisibility) {
                             true -> true
                             else -> false
@@ -202,7 +208,7 @@ fun RegisterScreen(
                     }
                     RoundedButton(
                         onClick = {
-                            viewModel.login()
+                            authViewModel.login()
                         },
                         text = stringResource(R.string.login_button),
                         isEnable = state.isFormValid && !state.isLoading,

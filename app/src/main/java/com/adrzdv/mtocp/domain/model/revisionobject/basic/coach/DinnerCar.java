@@ -2,6 +2,7 @@ package com.adrzdv.mtocp.domain.model.revisionobject.basic.coach;
 
 import com.adrzdv.mtocp.domain.model.departments.CompanyDomain;
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
+import com.adrzdv.mtocp.domain.model.enums.CoachTypes;
 import com.adrzdv.mtocp.domain.model.enums.DinnerCarsType;
 
 /**
@@ -9,11 +10,11 @@ import com.adrzdv.mtocp.domain.model.enums.DinnerCarsType;
  */
 public class DinnerCar extends Coach {
     private CompanyDomain companyDomain;
-    private DinnerCarsType type;
+    private DinnerCarsType dinnerType;
     private DepotDomain depot;
 
-    public DinnerCar(String number) {
-        super(number);
+    public DinnerCar(String number, CoachTypes type) {
+        super(number, type);
     }
 
     public CompanyDomain getCompanyDomain() {
@@ -24,12 +25,12 @@ public class DinnerCar extends Coach {
         this.companyDomain = companyDomain;
     }
 
-    public DinnerCarsType getType() {
-        return type;
+    public DinnerCarsType getDinnerType() {
+        return dinnerType;
     }
 
     public void setType(DinnerCarsType type) {
-        this.type = type;
+        this.dinnerType = type;
     }
 
     public DepotDomain getDepot() {
@@ -38,5 +39,9 @@ public class DinnerCar extends Coach {
 
     public void setDepot(DepotDomain depot) {
         this.depot = depot;
+    }
+
+    public void setDinnerType(DinnerCarsType dinnerType) {
+        this.dinnerType = dinnerType;
     }
 }

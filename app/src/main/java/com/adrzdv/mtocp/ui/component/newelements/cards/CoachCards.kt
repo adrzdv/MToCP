@@ -40,14 +40,17 @@ import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import java.time.format.DateTimeFormatter
 
+@Deprecated("Use new CoachCard")
 @Composable
 fun CoachItemCard(
     coach: PassengerCar,
-    onDeleteClick: () -> Unit
+    onCoachClick: (() -> Unit)? = null,
+    onDeleteClick: (() -> Unit)? = null
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable(onClick = { onCoachClick?.invoke() }),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = AppColors.SURFACE_COLOR.color,
@@ -86,7 +89,7 @@ fun CoachItemCard(
                     style = AppTypography.bodyMedium
                 )
             }
-            IconButton(onClick = onDeleteClick) {
+            IconButton(onClick = { onDeleteClick?.invoke() }) {
                 Icon(
                     painter = painterResource(R.drawable.ic_delete_32_white),
                     contentDescription = stringResource(R.string.delete)
@@ -96,6 +99,7 @@ fun CoachItemCard(
     }
 }
 
+@Deprecated("Use new CoachCard")
 @Composable
 fun CoachItemCardReadOnly(
     coach: PassengerCar,
@@ -168,6 +172,7 @@ fun CoachItemCardReadOnly(
     }
 }
 
+@Deprecated("Use new CoachCard")
 @Composable
 fun CoachDropDownItemCard(
     coach: Coach
@@ -186,11 +191,11 @@ fun CoachDropDownItemCard(
     }
 
     val workerDepot = when (coach) {
-        is PassengerCar -> (coach.worker as? InnerWorkerDomain)?.depotDomain?.shortName
+        is PassengerCar -> (coach.workerDomain as? InnerWorkerDomain)?.depotDomain?.shortName
         is DinnerCar -> if (coach.companyDomain != null) {
-            (coach.worker as? OuterWorkerDomain)?.company?.name
+            (coach.workerDomain as? OuterWorkerDomain)?.company?.name
         } else {
-            (coach.worker as? InnerWorkerDomain)?.depotDomain?.shortName
+            (coach.workerDomain as? InnerWorkerDomain)?.depotDomain?.shortName
         }
 
         else -> null
@@ -247,15 +252,15 @@ fun CoachDropDownItemCard(
                                     modifier = Modifier.padding(8.dp)
                                 ) {
                                     Text(
-                                        text = "${stringResource(R.string.worker)}: ${coach.worker.name}",
+                                        text = "${stringResource(R.string.worker)}: ${coach.workerDomain.name}",
                                         style = AppTypography.bodyMedium
                                     )
                                     Text(
-                                        text = "${stringResource(R.string.worker_type)}: ${coach.worker.workerType.description}",
+                                        text = "${stringResource(R.string.worker_position)}: ${coach.workerDomain.workerType.description}",
                                         style = AppTypography.bodyMedium
                                     )
                                     Text(
-                                        text = "${stringResource(R.string.worker_id)}: ${coach.worker.id}",
+                                        text = "${stringResource(R.string.worker_id)}: ${coach.workerDomain.id}",
                                         style = AppTypography.bodySmall
                                     )
                                     Text(
@@ -284,15 +289,15 @@ fun CoachDropDownItemCard(
                                                 if (violation.isResolved) {
                                                     append(" (${stringResource(R.string.resolved)})")
                                                 }
-                                                if (violation.attributeMap.isNotEmpty()) {
-                                                    append(" [")
-                                                    append(
-                                                        violation.attributeMap.values.joinToString(
-                                                            ", "
-                                                        )
-                                                    )
-                                                    append(" ]")
-                                                }
+//                                                if (violation.attributeMap.isNotEmpty()) {
+//                                                    append(" [")
+//                                                    append(
+//                                                        violation.attributeMap.values.joinToString(
+//                                                            ", "
+//                                                        )
+//                                                    )
+//                                                    append(" ]")
+//                                                }
                                             },
                                             style = AppTypography.bodyMedium
                                         )

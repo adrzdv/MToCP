@@ -1,6 +1,5 @@
 package com.adrzdv.mtocp.ui.screen
 
-import ViolationCatalogScreen
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,7 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -38,19 +37,22 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.model.MenuElementItem
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
-import com.adrzdv.mtocp.ui.viewmodel.DepotViewModel
-import com.adrzdv.mtocp.ui.viewmodel.KriCoachViewModel
-import com.adrzdv.mtocp.ui.viewmodel.TrainInfoViewModel
-import com.adrzdv.mtocp.ui.viewmodel.ViewModelFactoryProvider
-import com.adrzdv.mtocp.ui.viewmodel.ViolationViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.KriCoachViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
 import kotlinx.coroutines.launch
 
+//TODO: Redev TopAppBar using custom composable
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InfoCatalogScreen(
-    onBackClick: () -> Unit,
-    revisionTypes: List<String>
+    navPriorityHost: NavHostController,
+    violationViewModel: ViolationViewModel,
+    trainInfoViewModel: TrainInfoViewModel,
+    kriCoachViewModel: KriCoachViewModel,
+    //depotViewModel: DepotViewModel,
+    companyViewModel: CompanyViewModel
 ) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -65,16 +67,16 @@ fun InfoCatalogScreen(
             stringResource(R.string.header_catalog),
             painterResource(R.drawable.ic_outline_book_2_24)
         ),
-        MenuElementItem(
-            "depot",
-            stringResource(R.string.header_depot),
-            painterResource(R.drawable.ic_outline_home_work_24)
-        ),
-        MenuElementItem(
-            "dinner",
-            stringResource(R.string.dinner_departments),
-            painterResource(R.drawable.ic_food_waiter)
-        ),
+//        MenuElementItem(
+//            "depot",
+//            stringResource(R.string.header_depot),
+//            painterResource(R.drawable.ic_outline_home_work_24)
+//        ),
+//        MenuElementItem(
+//            "dinner",
+//            stringResource(R.string.dinner_departments),
+//            painterResource(R.drawable.ic_food_waiter)
+//        ),
         MenuElementItem(
             "company",
             stringResource(R.string.header_company),
@@ -93,12 +95,6 @@ fun InfoCatalogScreen(
     )
 
     val currentTitle = menuItems.find { it.route == currentRoute }?.title ?: ""
-    val depotViewModel: DepotViewModel = viewModel(
-        factory = ViewModelFactoryProvider.provideFactory()
-    )
-    val companyViewModel: CompanyViewModel = viewModel(
-        factory = ViewModelFactoryProvider.provideFactory()
-    )
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -164,9 +160,9 @@ fun InfoCatalogScreen(
                     },
                     actions = {
                         IconButton(onClick = {
-                            depotViewModel.resetDinnerFilter()
+                            //depotViewModel.resetDinnerFilter()
                             companyViewModel.resetDinnerFilter()
-                            onBackClick()
+                            navPriorityHost.popBackStack()
                         }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_home_24_white),
@@ -191,41 +187,31 @@ fun InfoCatalogScreen(
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable("violations") {
-                    val violationViewModel: ViolationViewModel = viewModel(
-                        factory = ViewModelFactoryProvider.provideFactory()
-                    )
                     ViolationCatalogScreen(
-                        viewModel = violationViewModel,
-                        revisionTypes = revisionTypes
+                        viewModel = violationViewModel
                     )
                 }
-                composable("depot") {
-                    DepotCatalogScreen(
-                        viewModel = depotViewModel
-                    )
-                }
+//                composable("depot") {
+//                    DepotCatalogScreen(
+//                        viewModel = depotViewModel
+//                    )
+//                }
                 composable("company") {
                     CompanyCatalogScreen(
                         viewModel = companyViewModel
                     )
                 }
-                composable("dinner") {
-                    DinnerDepotCatalogScreen(
-                        viewModel = depotViewModel
-                    )
-                }
+//                composable("dinner") {
+//                    DinnerDepotCatalogScreen(
+//                        viewModel = depotViewModel
+//                    )
+//                }
                 composable(route = "train") {
-                    val trainInfoViewModel: TrainInfoViewModel = viewModel(
-                        factory = ViewModelFactoryProvider.provideFactory()
-                    )
                     TrainInfoScreen(
                         viewModel = trainInfoViewModel
                     )
                 }
                 composable(route = "kri") {
-                    val kriCoachViewModel: KriCoachViewModel = viewModel(
-                        factory = ViewModelFactoryProvider.provideFactory()
-                    )
                     KriCoachScreen(viewModel = kriCoachViewModel)
                 }
             }

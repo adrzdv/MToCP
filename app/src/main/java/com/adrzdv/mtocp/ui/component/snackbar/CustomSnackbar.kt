@@ -25,12 +25,10 @@ import com.adrzdv.mtocp.ui.theme.AppTypography
 
 @Composable
 fun CustomSnackbarHost(
-    hostState: SnackbarHostState,
-    modifier: Modifier = Modifier
+    hostState: SnackbarHostState
 ) {
     SnackbarHost(
         hostState = hostState,
-        modifier = modifier,
         snackbar = { snackbarData ->
             val isError = snackbarData.visuals is ErrorSnackbar
             val isInfo = snackbarData.visuals is InfoSnackbar
@@ -43,7 +41,7 @@ fun CustomSnackbarHost(
                         color = when {
                             isError -> AppColors.ERROR_COLOR.color
                             isInfo -> AppColors.MAIN_COLOR.color
-                            else -> AppColors.MAIN_COLOR.color
+                            else -> AppColors.SURFACE_COLOR.color
                         },
                         shape = RoundedCornerShape(4.dp)
                     ),
@@ -80,8 +78,7 @@ fun CustomSnackbarHost(
                             style = AppTypography.labelLarge,
                             color = when {
                                 isError -> AppColors.ERROR_COLOR.color
-                                isInfo -> AppColors.MAIN_COLOR.color
-                                else -> AppColors.SURFACE_COLOR.color
+                                else -> AppColors.MAIN_COLOR.color
                             },
                             textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()

@@ -31,14 +31,14 @@ import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.newelements.RoundedButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.ChangePasswordBottomSheetViewModel
-import com.adrzdv.mtocp.ui.viewmodel.ServiceViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.ChangePasswordBottomSheetViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ChangePasswordBottomSheet(
     viewModel: ChangePasswordBottomSheetViewModel,
-    serviceViewModel: ServiceViewModel,
+    serviceScreenVM: ServiceViewModel,
     onDismiss: () -> Unit
 ) {
     val passwordRulesHint: List<String> = listOf(
@@ -59,17 +59,17 @@ fun ChangePasswordBottomSheet(
         result?.let { result ->
             when (result) {
                 is ChangePasswordResult.Success -> {
-                    serviceViewModel.showMessage(success)
+                    serviceScreenVM.showMessage(success)
                     onDismiss()
                 }
 
                 is ChangePasswordResult.ServerError -> {
-                    serviceViewModel.showErrorMessage(error)
+                    serviceScreenVM.showErrorMessage(error)
                     onDismiss()
                 }
 
                 is ChangePasswordResult.NetworkError -> {
-                    serviceViewModel.showErrorMessage(error)
+                    serviceScreenVM.showErrorMessage(error)
                     onDismiss()
                 }
             }

@@ -6,14 +6,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,8 +25,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 
@@ -95,5 +102,103 @@ fun RoundedButton(
                 style = AppTypography.labelLarge
             )
         }
+    }
+}
+
+@Composable
+fun SquaredMediumButton(
+    onClick: () -> Unit,
+    text: String,
+    icon: (@Composable () -> Unit)? = null
+) {
+    OutlinedButton(
+        onClick = onClick,
+        colors = ButtonDefaults
+            .buttonColors(containerColor = AppColors.MAIN_COLOR.color),
+        shape = RoundedCornerShape(12.dp),
+        border = null,
+        modifier = Modifier.padding(4.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            icon?.invoke()
+            Text(
+                text = text,
+                style = AppTypography.labelSmall.copy(
+                    lineBreak = LineBreak.Paragraph
+                ),
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+fun SquaredMediumButtonUnderneathText(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    text: String,
+    icon: (@Composable () -> Unit)? = null
+) {
+    OutlinedButton(
+        onClick = onClick,
+        colors = ButtonDefaults
+            .buttonColors(containerColor = AppColors.MAIN_COLOR.color),
+        shape = RoundedCornerShape(12.dp),
+        border = null,
+        modifier = modifier.fillMaxWidth().padding(4.dp),
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            icon?.invoke()
+            Text(
+                text = text,
+                style = AppTypography.labelSmall.copy(
+                    lineBreak = LineBreak.Paragraph
+                ),
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                minLines = 2
+            )
+        }
+    }
+}
+
+@Composable
+fun RoundedUnborderedButton(
+    onClick: () -> Unit,
+    text: String
+) {
+    OutlinedButton(
+        onClick = onClick,
+        border = null,
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = AppColors.MAIN_COLOR.color
+        )
+    ) {
+        Text(
+            text = text,
+            style = AppTypography.bodyMedium
+        )
+    }
+}
+
+@Composable
+fun ClearIcon(onClick: () -> Unit) {
+    IconButton(
+        onClick = {
+            onClick()
+        }
+    ) {
+        Icon(
+            imageVector = Icons.Default.Close,
+            contentDescription = stringResource(R.string.clear_text)
+        )
     }
 }

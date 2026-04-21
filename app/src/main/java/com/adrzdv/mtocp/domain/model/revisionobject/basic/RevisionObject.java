@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Domain class model for abstract revision object. Stores data about number of revision object,
@@ -16,6 +17,7 @@ import java.util.Objects;
  * and additional statistics parameters
  */
 public abstract class RevisionObject {
+    private UUID uuid;
     private String number;
     private WorkerDomain workerDomain;
     private LocalDateTime revisionDateStart;
@@ -23,7 +25,6 @@ public abstract class RevisionObject {
     private Boolean isQualityPassport;
     private Map<Integer, ViolationDomain> violationMap;
     private Map<String, StaticsParam> additionalParams;
-    private String objClass;
 
     public RevisionObject(String number) {
         this.number = number;
@@ -31,7 +32,6 @@ public abstract class RevisionObject {
         this.isQualityPassport = false;
         this.violationMap = new HashMap<>();
         this.additionalParams = new HashMap<>();
-        this.objClass = getClass().getSimpleName();
     }
 
     public int countViolation() {
@@ -70,14 +70,6 @@ public abstract class RevisionObject {
 
     public void setQualityPassport(Boolean qualityPassport) {
         isQualityPassport = qualityPassport;
-    }
-
-    public WorkerDomain getWorker() {
-        return workerDomain;
-    }
-
-    public void setWorker(WorkerDomain workerDomain) {
-        this.workerDomain = workerDomain;
     }
 
     public Map<Integer, ViolationDomain> getViolationMap() {
@@ -127,5 +119,21 @@ public abstract class RevisionObject {
     @Override
     public int hashCode() {
         return Objects.hashCode(number);
+    }
+
+    public WorkerDomain getWorkerDomain() {
+        return workerDomain;
+    }
+
+    public void setWorkerDomain(WorkerDomain workerDomain) {
+        this.workerDomain = workerDomain;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 }

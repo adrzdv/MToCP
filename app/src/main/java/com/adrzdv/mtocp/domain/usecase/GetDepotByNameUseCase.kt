@@ -5,14 +5,13 @@ import com.adrzdv.mtocp.domain.repository.DepotRepository
 import com.adrzdv.mtocp.mapper.DepotMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.Locale
 
 class GetDepotByNameUseCase(
     private val depotRepository: DepotRepository
 ) {
     suspend operator fun invoke(name: String, isDinner: Boolean): DepotDomain {
         return withContext(Dispatchers.IO) {
-            depotRepository.all.map { depot -> DepotMapper.fromJoinModelToDomain(depot) }
+            depotRepository.getAll().map { depot -> DepotMapper.fromJoinModelToDomain(depot) }
                 .filter {
                     when {
                         !isDinner -> it.dinnerDepot == isDinner || it.dinnerDepot == null
@@ -20,9 +19,10 @@ class GetDepotByNameUseCase(
                     }
                 }
                 .firstOrNull { depotDomain ->
-                    depotDomain.name.lowercase(Locale.getDefault()) == name.lowercase(
-                        Locale.getDefault()
-                    )
+                    depotDomain.name.equals(
+                        name,
+                        ignoreCase = true
+                    ) || depotDomain.shortName.equals(name, ignoreCase = true)
                 }
                 ?: throw IllegalArgumentException("Depot $name not found")
         }

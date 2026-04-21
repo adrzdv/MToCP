@@ -163,4 +163,9 @@ public class ViolationEntity {
         return Objects.hashCode(code);
     }
 
+    @Override
+    public String toString() {
+        return id + " " + name;
+    }
+
 }

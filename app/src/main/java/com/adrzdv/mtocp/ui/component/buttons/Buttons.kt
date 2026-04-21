@@ -146,7 +146,7 @@ fun CustomOutlinedButton(
         border = null,
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = Color.Transparent,
-            contentColor = AppColors.MAIN_GREEN.color
+            contentColor = AppColors.MAIN_COLOR.color
         )
     ) {
         Text(

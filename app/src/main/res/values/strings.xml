@@ -8,8 +8,8 @@
     <string name="help">Помощь</string>
     <string name="app_title">Мобильный терминал сбора контроллируемых параметров</string>
     <string name="main_menu_text">Главное меню</string>
-    <string name="search_text_hint">Поиск нарушения</string>
     <string name="search_depot_hint">Поиск предприятия</string>
+    <string name="train_number">Номер поезда</string>
     <string name="search_train">Поиск поезда</string>
     <string name="search_kri">Поиск вагона</string>
     <string name="ooops">Упс…</string>
@@ -24,7 +24,7 @@
     <string name="header_start_revision">Начало проверки</string>
     <string name="input_text_hint">Начните ввод</string>
     <string name="input_search_object_hint">Введите номер объекта проверки</string>
-    <string name="label_choose_revtype">Выберите тип проверки</string>
+    <string name="label_choose_revtype">Тип проверки</string>
     <string name="order_number_hint">Номер уведомления</string>
     <string name="order_route_hint">Место проверки</string>
     <string name="order_start_date_hint">Дата/время начала</string>
@@ -35,11 +35,9 @@
     <string name="masters_object">Руководители объекта</string>
     <string name="revision_string">Мониторинг</string>
     <string name="add_string">Добавить</string>
-    <string name="clean_string">Очистить</string>
     <string name="cancel">Отмена</string>
     <string name="worker_id">Табельный номер</string>
     <string name="worker_name">ФИО</string>
-    <string name="worker_type">Должность</string>
     <string name="worker_depot">Предприятие</string>
     <string name="delete">Удалить</string>
     <string name="new_worker">Новый работник</string>
@@ -47,12 +45,12 @@
     <string name="new_dinner">Новый вагон-ресторан</string>
     <string name="quality_passport">Паспорт качества</string>
     <string name="yes_string">Да</string>
+    <string name="no_string">Нет</string>
     <string name="coach_number">Номер вагона</string>
     <string name="trailing_route">Маршрут вагона</string>
     <string name="object_number">Номер объекта проверки</string>
     <string name="trailing_string">Прицепной</string>
     <string name="coach_type">Тип вагона</string>
-    <string name="train_scheme">Состав поезда</string>
     <string name="order_text">Уведомление</string>
     <string name="route">Маршрут</string>
     <string name="scheme">Схема</string>
@@ -60,6 +58,7 @@
     <string name="info">Информация</string>
     <string name="clear_text">Очистить</string>
     <string name="empty_string">Не может быть пустым</string>
+
     <string name="dinner_department">Дирекция питания</string>
     <string name="dinner_departments">Дирекции питания</string>
     <string name="dinner_company">Арендатор</string>
@@ -114,24 +113,40 @@
     <string name="full_violation_list">Полный список нарушений</string>
     <string name="depot_string">Предприятие</string>
     <string name="worker">Работник</string>
-    <string name="coach_data">Сведения о вагоне</string>
-    <string name="worker_data">Сведения о работнике</string>
     <string name="revision_start">Начало</string>
     <string name="revision_end">Окончание</string>
     <string name="unchecked_coaches">Есть непроверенные вагоны</string>
     <string name="unchecked_params">Не проверены дополнительные параметры</string>
     <string name="params_coach">Вагоны</string>
     <string name="params_train">Состав</string>
+
     <string name="export_data">Передача данных</string>
     <string name="additional_params">Прочие параметры</string>
     <string name="trains">Поезда</string>
     <string name="kri">КРИ</string>
 
+    <string name="train_revision">Проверка поезда</string>
+    <string name="ticket_office_revision">Проверка билетных касс</string>
+    <string name="coach_revision">Проверка вагонов</string>
 
     <string name="nfc_receiver">Получаю данные…</string>
     <string name="nfc_sender">Отправляю данные…</string>
     <string name="nfc_file_received">Данные получены</string>
     <string name="nfc_help_info">Отправка данных по NFC. Приложите телефон к NFC-модулю другого телефона</string>
+
+    <string name="last_entries_header">Последние 20 номеров</string>
+
+    <string name="number_symbol">№</string>
+    <string name="worker_table_header">Работник</string>
+    <string name="date_table_header">Дата</string>
+
+    <string name="update_available">Доступно обновление</string>
+    <string name="update">Обновить</string>
+    <string name="new_version">Новая версия</string>
+    <string name="loading">Загрузка</string>
+    <string name="later">Позже</string>
+    <string name="download_error">Ошибка при загрузке файла</string>
+
     <string name="title_activity_register">MToCP</string>
 
     <string name="login_button">ВОЙТИ</string>
@@ -174,18 +189,49 @@
     <string name="password_confirm_hint">Подтвердите пароль</string>
     <string name="error_password_change">Ошибка смены пароля</string>
     <string name="password_changed_success">Пароль изменен</string>
-    <string name="last_entries_header">Последние 20 номеров</string>
 
-    <string name="number_symbol">№</string>
-    <string name="worker_table_header">Работник</string>
-    <string name="date_table_header">Дата</string>
+    <!--LABELS-->
+    <string name="choose_time">Введите время проверки</string>
+    <string name="order_route">Участок проверки</string>
+    <string name="order_other_params">Прочее</string>
+    <string name="open">Открыть</string>
+    <string name="train_scheme">Схема поезда</string>
+    <string name="copy_train_depot">Копировать формирование состава поезда</string>
+    <string name="add_worker_data">Внести данные работника</string>
+    <string name="start_input_text">Начните ввод</string>
+    <string name="search_violation">Поиск нарушения</string>
+    <string name="choose_revision_type">Выберите тип проверки</string>
+    <string name="is_rent">Аренда</string>
+    <string name="doc_id">Номер удостоверения</string>
+    <string name="add_violation">Добавить нарушение</string>
+    <string name="coach_data">Сведения о вагоне</string>
+    <string name="worker_data">Сведения о работнике</string>
+    <string name="worker_position">Должность</string>
+    <string name="clean_string">Очистить список</string>
 
-    <string name="update_available">Доступно обновление</string>
-    <string name="update">Обновить</string>
-    <string name="new_version">Новая версия</string>
-    <string name="loading">Загрузка</string>
-    <string name="later">Позже</string>
-    <string name="download_error">Ошибка при загрузке файла</string>
+    <!--DESCRIPTIONS-->
+    <string name="revision_start_description">Заполните все поля, добавьте работников и начните проверку</string>
+    <string name="train_crew">Руководители поездной бригады</string>
+    <string name="add_crew_description">Внесите руководителей объекта проверки</string>
+    <string name="ask_train_scheme">Ввести схему поезда?</string>
+    <string name="add_car_scheme_description">Добавьте вагоны в схему поезда</string>
+    <string name="train_scheme_text">Схема поезда</string>
+    <string name="total">Всего:</string>
 
+    <!--ERRORS-->
+    <string name="number_pattern_error">Некорректный номер</string>
+    <string name="route_error">Некорректный маршрут</string>
+    <string name="date_error">Некорректная дата</string>
+    <string name="empty_crew">Отсутствуют руководители проверки</string>
+    <string name="validation_error">Ошибка валидации введенных данных</string>
+    <string name="coach_number_invalid">Несоответствие номера вагона</string>
+    <string name="coach_type_invalid">Несоответствие типа вагона</string>
+    <string name="invalid_worker_id">Неверный номер</string>
+    <string name="invalid_worker_name">Некорректное имя</string>
+    <string name="invalid_input_type">Неверный формат ввода</string>
+    <string name="empty_depot">Введите предприятие работника</string>
+    <string name="empty_position">Выберите должность работника</string>
+
+    <string name="empty"> </string>
 
 </resources>

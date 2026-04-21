@@ -6,12 +6,12 @@ public enum WorkerTypes {
     DINNER_MANAGER("Менеджер вагона-бистро", "МВБ"),
     CONDUCTOR("Проводник", "ППВ"),
     POSTAL_MANAGER("Начальник почтового вагона", "ВПН"),
-    POSTAL_MECHANIC("Проводник-механик",""),
-    SENIOR_CONDUCTOR("Старший проводник","Ст.ППВ"),
-    MECHANIC("Поездной электромеханик","ПЭМ"),
-    OUTSOURCE("Работник сторонней организации",""),
-    CASHIER("Билетный кассир","БК"),
-    SENIOR_CASHIER("Старший билетный кассир","Ст.БК");
+    POSTAL_MECHANIC("Проводник-механик", ""),
+    SENIOR_CONDUCTOR("Старший проводник", "Ст.ППВ"),
+    MECHANIC("Поездной электромеханик", "ПЭМ"),
+    OUTSOURCE("Работник сторонней организации", ""),
+    CASHIER("Билетный кассир", "БК"),
+    SENIOR_CASHIER("Старший билетный кассир", "Ст.БК");
 
     private final String description;
     private final String shortName;
@@ -25,8 +25,17 @@ public enum WorkerTypes {
         return description;
     }
 
-    public String getShortName(){
+    public String getShortName() {
         return shortName;
+    }
+
+    public static WorkerTypes fromString(String description) {
+        for (WorkerTypes workerType : WorkerTypes.values()) {
+            if (workerType.description.equalsIgnoreCase(description)) {
+                return workerType;
+            }
+        }
+        throw new IllegalArgumentException("Неизвестная должность: " + description);
     }
 
 }

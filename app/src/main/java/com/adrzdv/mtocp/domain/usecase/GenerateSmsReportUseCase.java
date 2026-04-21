@@ -6,11 +6,12 @@ import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class GenerateSmsReportUseCase {
 
-    public String execute(Map<String, RevisionObject> revMap) throws ExecutionException, InterruptedException {
+    public String execute(Map<UUID, RevisionObject> revMap) throws ExecutionException, InterruptedException {
         StringBuilder result = new StringBuilder();
         StringBuilder dinnerRes = new StringBuilder();
         Map<Integer, ViolationDomain> violationMap = new TreeMap<>();

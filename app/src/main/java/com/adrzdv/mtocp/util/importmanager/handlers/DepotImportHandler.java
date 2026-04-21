@@ -6,7 +6,7 @@ import com.adrzdv.mtocp.data.db.entity.BranchEntity;
 import com.adrzdv.mtocp.data.db.entity.DepotEntity;
 import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch;
 import com.adrzdv.mtocp.data.importmodel.DepotImport;
-import com.adrzdv.mtocp.domain.repository.DepotRepository;
+import com.adrzdv.mtocp.domain.repository.old.DepotRepository;
 import com.adrzdv.mtocp.mapper.BranchMapper;
 import com.adrzdv.mtocp.mapper.DepotMapper;
 

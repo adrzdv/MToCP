@@ -1,0 +1,39 @@
+package com.adrzdv.mtocp.ui.state.order
+
+import java.time.LocalDateTime
+
+interface OrderDraftState {
+    val orderNumber: String
+    val dateStart: LocalDateTime
+    val dateEnd: LocalDateTime
+    val route: String
+
+    val regions: List<String>
+        get() = listOf(
+            "С-ЗАП",
+            "МОСК",
+            "ПРИВ",
+            "УР",
+            "З-СИБ",
+            "В-СИБ",
+            "ГОРЬК",
+            "ДВОСТ",
+            "С-КАВ"
+        )
+
+    val isOrderNumberValid: Boolean
+        get() {
+            val regex = Regex("""\d{4}/(${regions.joinToString("|")})/\d{4}""")
+            return regex.matches(orderNumber)
+        }
+
+    val isDateStartValid: Boolean
+        get() = dateStart.isBefore(dateEnd)
+                && dateStart.isAfter(LocalDateTime.now().minusHours(1L))
+
+    val isDateEndValid: Boolean
+        get() = dateEnd.isAfter(dateStart)
+
+    val isRouteValid: Boolean
+        get() = route.isNotBlank()
+}

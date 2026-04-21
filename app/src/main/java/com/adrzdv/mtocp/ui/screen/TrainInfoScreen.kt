@@ -38,7 +38,7 @@ import com.adrzdv.mtocp.ui.component.newelements.NothingToShowPlug
 import com.adrzdv.mtocp.ui.component.newelements.cards.TrainInfoCard
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.TrainInfoViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel
 
 @Composable
 fun TrainInfoScreen(
@@ -49,6 +49,7 @@ fun TrainInfoScreen(
 
     LaunchedEffect(Unit) {
         viewModel.loadTrains()
+        viewModel.filterTrainListByString("")
     }
 
     Column(

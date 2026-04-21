@@ -5,8 +5,6 @@ import androidx.room.Ignore;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import kotlin.jvm.Transient;
-
 public class TempParametersDomain {
     private Integer id;
     private String name;

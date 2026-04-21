@@ -4,7 +4,6 @@ import com.adrzdv.mtocp.domain.model.revisionobject.basic.RevisionObject;
 import com.adrzdv.mtocp.domain.model.revisionobject.basic.TicketTerminal;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.ObjectCollector;
 import com.adrzdv.mtocp.domain.model.revisionobject.collectors.TicketOfficeDomain;
-import com.adrzdv.mtocp.domain.model.violation.ViolationDomain;
 import com.adrzdv.mtocp.domain.model.workers.InnerWorkerDomain;
 import com.adrzdv.mtocp.domain.model.workers.WorkerDomain;
 
@@ -26,7 +25,7 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
     @Override
     public void updateRevisionObject(RevisionObject o) {
         if (o instanceof TicketTerminal that) {
-            ticketOffice.getObjectsMap().put(that.getNumber(), that);
+            ticketOffice.getObjectsMap().put(that.getUuid(), that);
         }
     }
 
@@ -53,6 +52,11 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
     @Override
     public void deleteCrewWorker(WorkerDomain worker) {
         clearCrewWorkers();
+    }
+
+    @Override
+    public void removeWorker(String position) {
+
     }
 
     @Override
@@ -110,7 +114,7 @@ public class TicketOfficeOrder extends Order implements CollectableOrder {
     @Override
     protected void doAddRevisionObject(RevisionObject o) {
         if (o instanceof TicketTerminal termial) {
-            ticketOffice.getObjectsMap().put(o.getNumber(), termial);
+            ticketOffice.getObjectsMap().put(o.getUuid(), termial);
         } else {
             throw new IllegalArgumentException("Expected TicketTerminal.class; Got: "
                     + o.getClass().getSimpleName());

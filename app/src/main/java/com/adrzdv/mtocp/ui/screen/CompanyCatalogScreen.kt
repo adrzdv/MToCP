@@ -18,6 +18,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,7 +34,7 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.newelements.NothingToShowPlug
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.CompanyViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -45,6 +46,10 @@ fun CompanyCatalogScreen(
     val companies by viewModel.filteredCompanies
         .asFlow()
         .collectAsState(initial = emptyList())
+
+    LaunchedEffect(Unit) {
+        viewModel.filterByString("")
+    }
 
     Column(
         modifier = Modifier

@@ -1,6 +1,7 @@
 package com.adrzdv.mtocp.domain.model.revisionobject.basic.coach;
 
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain;
+import com.adrzdv.mtocp.domain.model.enums.CoachTypes;
 import com.adrzdv.mtocp.domain.model.enums.PassengerCoachType;
 
 /**
@@ -12,8 +13,8 @@ public class PassengerCar extends Coach {
     private DepotDomain depotDomain;
     private Boolean isTrailing;
 
-    public PassengerCar(String number) {
-        super(number);
+    public PassengerCar(String number, CoachTypes type) {
+        super(number, type);
     }
 
     public PassengerCoachType getCoachType() {

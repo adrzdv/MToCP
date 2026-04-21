@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.ui.component.newelements.cards
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -32,19 +33,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.ui.model.ViolationDto
+import com.adrzdv.mtocp.ui.model.dto.ViolationUi
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 
 @Composable
 fun ViolationCard(
-    violation: ViolationDto,
-    onChangeValueClick: () -> Unit,
-    onResolveClick: () -> Unit,
-    onDeleteClick: () -> Unit,
-    onMakePhotoClick: () -> Unit,
-    onMakeVideoClick: () -> Unit,
-    onAddTagClick: () -> Unit
+    violation: ViolationUi,
+    onChangeValueClick: (() -> Unit)? = null,
+    onResolveClick: (() -> Unit)? = null,
+    onDeleteClick: (() -> Unit)? = null,
+    onMakePhotoClick: (() -> Unit)? = null,
+    onMakeVideoClick: (() -> Unit)? = null,
+    onAddTagClick: (() -> Unit)? = null,
+    onItemClick: ((ViolationUi) -> Unit)? = null
 ) {
     var expanded by remember { mutableStateOf(false) }
     var isResolved by remember { mutableStateOf(violation.isResolved) }
@@ -60,13 +62,18 @@ fun ViolationCard(
                     }
                 )
             }
+            .border(
+                width = 1.dp,
+                color = AppColors.MAIN_COLOR.color,
+                shape = RoundedCornerShape(8.dp)
+            )
     ) {
         Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .fillMaxWidth(),
             colors = CardDefaults.cardColors(
-                containerColor = AppColors.OFF_WHITE.color,
-                contentColor = AppColors.MAIN_GREEN.color
+                containerColor = AppColors.SURFACE_COLOR.color,
+                contentColor = AppColors.MAIN_COLOR.color
             )
         ) {
             Row(
@@ -87,14 +94,14 @@ fun ViolationCard(
                 )
                 Text(
                     style = AppTypography.bodyMedium,
-                    text = violation.name,
+                    text = violation.description,
                     maxLines = 3,
                     softWrap = true,
                     overflow = TextOverflow.Ellipsis
                 )
                 DropdownMenu(
                     expanded = expanded,
-                    containerColor = AppColors.OFF_WHITE.color,
+                    containerColor = AppColors.SURFACE_COLOR.color,
                     onDismissRequest = { expanded = false }
                 ) {
                     DropdownMenuItem(
@@ -110,7 +117,7 @@ fun ViolationCard(
                         },
                         onClick = {
                             expanded = false
-                            onChangeValueClick()
+                            onChangeValueClick?.invoke()
                         }
                     )
                     DropdownMenuItem(
@@ -127,7 +134,7 @@ fun ViolationCard(
                         onClick = {
                             expanded = false
                             isResolved = !isResolved
-                            onResolveClick()
+                            onResolveClick?.invoke()
                         }
                     )
                     DropdownMenuItem(
@@ -143,7 +150,7 @@ fun ViolationCard(
                         },
                         onClick = {
                             expanded = false
-                            onAddTagClick()
+                            onAddTagClick?.invoke()
                         }
                     )
                     DropdownMenuItem(
@@ -159,7 +166,7 @@ fun ViolationCard(
                         },
                         onClick = {
                             expanded = false
-                            onMakePhotoClick()
+                            onMakePhotoClick?.invoke()
                         }
                     )
                     DropdownMenuItem(
@@ -175,7 +182,7 @@ fun ViolationCard(
                         },
                         onClick = {
                             expanded = false
-                            onMakeVideoClick()
+                            onMakeVideoClick?.invoke()
                         },
                         enabled = false
                     )
@@ -192,7 +199,7 @@ fun ViolationCard(
                         },
                         onClick = {
                             expanded = false
-                            onDeleteClick()
+                            onDeleteClick?.invoke()
                         }
                     )
                 }

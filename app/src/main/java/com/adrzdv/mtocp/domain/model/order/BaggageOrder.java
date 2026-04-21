@@ -58,6 +58,11 @@ public class BaggageOrder extends Order {
     }
 
     @Override
+    public void removeWorker(String position) {
+
+    }
+
+    @Override
     public void deleteRevisionObject(RevisionObject o) {
         coachMap.remove(o.getNumber());
     }

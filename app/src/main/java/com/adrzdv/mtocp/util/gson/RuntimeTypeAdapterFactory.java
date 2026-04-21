@@ -26,6 +26,7 @@ import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -173,7 +174,7 @@ public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
 
     /**
      * Creates a new runtime type adapter for {@code baseType} using {@code typeFieldName} as the type
-     * field name. Type field names are case sensitive.
+     * field name. Type field names are case-sensitive.
      *
      * @param maintainType true if the type field should be included in deserialized objects
      */
