@@ -17,7 +17,7 @@ import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.ui.screen.InfoCatalogScreen
 import com.adrzdv.mtocp.ui.screen.RegisterScreen
-import com.adrzdv.mtocp.ui.screen.RequestWebScreen
+import com.adrzdv.mtocp.ui.screen.RequestDocumentScreen
 import com.adrzdv.mtocp.ui.screen.ServiceScreen
 import com.adrzdv.mtocp.ui.screen.SplashScreen
 import com.adrzdv.mtocp.ui.screen.StartMenuScreen
@@ -25,6 +25,9 @@ import com.adrzdv.mtocp.ui.screen.old.NewRevisionScreen
 import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
 import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelLocator
 import com.adrzdv.mtocp.util.DirectoryHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 fun NavGraphBuilder.splashDestination(
     navController: NavHostController,
@@ -93,6 +96,7 @@ fun NavGraphBuilder.appSettingsDestination(
         }
         ServiceScreen(
             serviceScreenVM = serviceScreenVM,
+            appDependencies = appDependencies,
             onCleanRepositoryClick = { onResult ->
                 onCleanRepository(onResult)
             },
@@ -137,15 +141,17 @@ fun NavGraphBuilder.newRevisionDestination(
 
 fun NavGraphBuilder.requestsDestination(
     navController: NavHostController,
-    appDependencies: AppDependencies
+    appDependencies: AppDependencies,
+    viewModelLocator: ViewModelLocator
 ) {
     composable(Screen.Request.route) { backStackEntry ->
         val username = appDependencies
             .userDataStorage
             .getUsername() ?: ""
 
-        RequestWebScreen(
+        RequestDocumentScreen(
             username = username,
+            requestDocumentViewModel = viewModelLocator.getDocumentViewModel(backStackEntry),
             onBackClick = { navController.popBackStack() }
         )
     }
@@ -197,7 +203,12 @@ private fun onCleanRepository(onResult: (Boolean) -> Unit) {
 }
 
 private fun onDeleteProfile(navController: NavHostController, appDependencies: AppDependencies) {
-    appDependencies.userDataStorage.deleteToken()
+    CoroutineScope(Dispatchers.IO).launch {
+        appDependencies.authRepo.logout(
+            appDependencies.userDataStorage.getRefreshToken().orEmpty()
+        )
+        appDependencies.userDataStorage.deleteToken()
+    }
     navController.navigate(Screen.Register.route) {
         popUpTo(Screen.MainMenu.route) { inclusive = true }
     }

@@ -12,6 +12,7 @@ import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.KriCoachViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.RequestDocumentViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainOrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
@@ -101,6 +102,16 @@ class ViewModelLocator(
                 )
             }
         )["companyAutocompleteViewModel", AutocompleteViewModel::class.java] as AutocompleteViewModel<CompanyWithBranch>
+
+    fun getDocumentViewModel(owner: ViewModelStoreOwner) =
+        ViewModelProvider(
+            owner,
+            AssistedViewModelFactory {
+                RequestDocumentViewModel(
+                    appDependencies.documentRepository
+                )
+            }
+        )[RequestDocumentViewModel::class.java]
 
 
     //    fun getViolationViewModel(owner: ViewModelStoreOwner): ViolationViewModel {

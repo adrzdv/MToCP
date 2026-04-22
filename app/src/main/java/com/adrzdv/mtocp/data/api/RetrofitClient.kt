@@ -1,46 +1,71 @@
 package com.adrzdv.mtocp.data.api
 
 import com.adrzdv.mtocp.BuildConfig
+import com.adrzdv.mtocp.data.api.interceptor.AuthInterceptor
+import com.adrzdv.mtocp.data.api.interceptor.DeviceInterceptor
+import com.adrzdv.mtocp.data.api.interceptor.TokenAuthenticator
+import com.adrzdv.mtocp.data.model.auth.DeviceIdProvider
+import com.adrzdv.mtocp.data.repository.UserDataStorage
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-object RetrofitClient {
-    private const val BASE_URL = BuildConfig.BASE_URL
-    private const val UPDATE_URL = BuildConfig.UPDATE_URL
+class RetrofitHolder(
+    private val deviceIdProvider: DeviceIdProvider,
+    private val userDataStorage: UserDataStorage
+) {
 
-    val logging = HttpLoggingInterceptor().apply {
+    private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    private val okHttpClient: OkHttpClient by lazy {
+    private val deviceInterceptor = DeviceInterceptor(deviceIdProvider)
+    private val authInterceptor = AuthInterceptor(userDataStorage)
+
+    private val authClient: OkHttpClient by lazy {
+        OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .addInterceptor(deviceInterceptor)
+            .build()
+    }
+
+    val authApi: AuthApi by lazy {
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .client(authClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(AuthApi::class.java)
+    }
+
+    private val mainClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
             .readTimeout(120, TimeUnit.SECONDS)
             .addInterceptor(logging)
+            .addInterceptor(deviceInterceptor)
+            .addInterceptor(authInterceptor)
+            .authenticator(TokenAuthenticator(userDataStorage) {
+                authApi
+            })
             .build()
     }
 
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
+            .client(mainClient)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
             .build()
-
     }
 
-    val storage: Retrofit by lazy {
+    val storageRetrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl(UPDATE_URL)
+            .baseUrl(BuildConfig.UPDATE_URL)
+            .client(mainClient)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
             .build()
-    }
-
-    val authApi: AuthApi by lazy {
-        retrofit.create(AuthApi::class.java)
     }
 
     val docRequestApi: DocRequestApi by lazy {
@@ -48,6 +73,6 @@ object RetrofitClient {
     }
 
     val updaterApi: UpdateApi by lazy {
-        storage.create(UpdateApi::class.java)
+        storageRetrofit.create(UpdateApi::class.java)
     }
 }

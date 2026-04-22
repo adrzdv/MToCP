@@ -28,9 +28,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.adrzdv.mtocp.AppDependencies
 import com.adrzdv.mtocp.MessageCodes
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.data.api.RetrofitClient
 import com.adrzdv.mtocp.data.repository.AuthRepositoryImpl
 import com.adrzdv.mtocp.ui.component.ChangePasswordBottomSheet
 import com.adrzdv.mtocp.ui.component.newelements.Divider
@@ -50,6 +50,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ServiceScreen(
     serviceScreenVM: ServiceViewModel,
+    appDependencies: AppDependencies,
     onCleanRepositoryClick: ((Boolean) -> Unit) -> Unit,
     onLoadCatalog: () -> Unit,
     onDeleteProfile: () -> Unit,
@@ -66,7 +67,7 @@ fun ServiceScreen(
     val changePasswordVM: ChangePasswordBottomSheetViewModel = viewModel(
         factory = AssistedViewModelFactory {
             ChangePasswordBottomSheetViewModel(
-                authRepository = AuthRepositoryImpl(RetrofitClient.authApi, null),
+                authRepository = AuthRepositoryImpl(appDependencies.retrofitHolder.authApi, null),
                 lengthError = context.getString(R.string.password_rule_4),
                 digitError = context.getString(R.string.password_rule_1),
                 upperCaseError = context.getString(R.string.password_rule_2),

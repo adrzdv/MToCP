@@ -57,7 +57,6 @@ fun RegisterScreen(
     val state by authViewModel.regState.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
     var passwordVisibility by remember { mutableStateOf(true) }
-    val context = LocalContext.current
 
     LaunchedEffect(
         state.isSuccess
@@ -97,7 +96,7 @@ fun RegisterScreen(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        //.weight(0.5f),
+                        .weight(0.5f)
                         .padding(horizontal = 16.dp),
                     elevation = CardDefaults.cardElevation(8.dp),
                     shape = RoundedCornerShape(

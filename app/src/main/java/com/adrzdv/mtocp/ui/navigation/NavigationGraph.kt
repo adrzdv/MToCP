@@ -30,7 +30,7 @@ fun NavigationGraph(
         appSettingsDestination(navController, appDependencies)
         catalogsDestination(navController, viewModelLocator)
         newRevisionDestination(navController)
-        requestsDestination(navController, appDependencies)
+        requestsDestination(navController, appDependencies, viewModelLocator)
 
 
 //        trainRevisionStartDestination(navController, viewModelLocator, appDependencies)

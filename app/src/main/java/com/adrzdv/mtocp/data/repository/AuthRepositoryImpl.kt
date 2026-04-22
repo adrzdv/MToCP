@@ -3,6 +3,7 @@ package com.adrzdv.mtocp.data.repository
 import com.adrzdv.mtocp.data.api.AuthApi
 import com.adrzdv.mtocp.data.model.auth.AuthRequest
 import com.adrzdv.mtocp.data.model.auth.AuthResult
+import com.adrzdv.mtocp.data.model.auth.RefreshRequest
 import com.adrzdv.mtocp.data.model.old.ChangePasswordResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -88,6 +89,35 @@ class AuthRepositoryImpl(
     }
 
     override fun getUserBranch(): String? = userDataStorage?.getUserBranch()
+
+    override suspend fun refreshToken(refreshToken: String): AuthResult =
+        withContext(Dispatchers.IO) {
+            try {
+                val response = api.refresh(RefreshRequest(refreshToken))
+
+                if (response.accessToken != null) {
+                    AuthResult(
+                        isSuccess = true,
+                        profileId = response.profileId,
+                        userId = response.userId,
+                        fullName = response.fullName,
+                        secondaryId = response.secondaryId,
+                        accessToken = response.accessToken,
+                        refreshToken = response.refreshToken,
+                        role = response.role,
+                        branchName = response.branchName
+                    )
+                } else {
+                    AuthResult(isSuccess = false, errorMessage = "Unknown error")
+                }
+            } catch (e: Exception) {
+                AuthResult(isSuccess = false, errorMessage = e.message ?: "Network error")
+            }
+        }
+
+    override suspend fun logout(refreshToken: String) {
+        api.logout(RefreshRequest(refreshToken))
+    }
 
     override suspend fun changePassword(password: String): ChangePasswordResult {
         TODO("Not supported in new version")
