@@ -22,5 +22,7 @@ interface AuthRepository {
     fun getUserRole(): String?
     fun saveUserBranch(branch: String)
     fun getUserBranch(): String?
+    suspend fun refreshToken(refreshToken: String): AuthResult
     suspend fun changePassword(password: String): ChangePasswordResult
+    suspend fun logout(refreshToken: String)
 }

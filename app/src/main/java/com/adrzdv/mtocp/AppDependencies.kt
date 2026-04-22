@@ -3,7 +3,7 @@ package com.adrzdv.mtocp
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import com.adrzdv.mtocp.data.api.RetrofitClient
+import com.adrzdv.mtocp.data.api.RetrofitHolder
 import com.adrzdv.mtocp.data.db.AppDatabase
 import com.adrzdv.mtocp.data.importmodel.AdditionalParamImport
 import com.adrzdv.mtocp.data.importmodel.TrainImport
@@ -65,7 +65,8 @@ class AppDependencies(
     context: Context,
     database: AppDatabase,
     prefs: SharedPreferences,
-    executor: ExecutorService
+    executor: ExecutorService,
+    retrofitHolder: RetrofitHolder
 ) {
     val violationRepo: ViolationRepository = ViolationRepositoryImpl(database.violationDao())
     val depotRepo: DepotRepository = DepotRepositoryImpl(database.depotDao())
@@ -77,7 +78,9 @@ class AppDependencies(
     val kriCoachRepo: KriCoachRepo = KriCoachRepoImpl(database.kriCoachDao())
     val userDataStorage = UserDataStorage(prefs)
     val authRepo: AuthRepository =
-        AuthRepositoryImpl(RetrofitClient.authApi, userDataStorage)
+        AuthRepositoryImpl(retrofitHolder.authApi, userDataStorage)
+
+    val retrofitHolder: RetrofitHolder = retrofitHolder
     val registry: ImportHandlerRegistry = ImportHandlerRegistry().apply {
 //        register(
 //            ViolationImport::class.java,
