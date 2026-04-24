@@ -83,7 +83,7 @@ class ViolationViewModel(
                             type == null ||
                                     type == RevisionType.ALL ||
                                     info.revisionTypes.any { revisionTypeEntity ->
-                                revisionTypeEntity.name.equals(
+                                revisionTypeEntity.name.contains(
                                     type.revisionTypeTitle,
                                     ignoreCase = true
                                 )
@@ -93,16 +93,6 @@ class ViolationViewModel(
                             query.isBlank() ||
                                     info.violation.code == query.toIntOrNull() ||
                                     info.violation.description.contains(query, ignoreCase = true) ||
-                                    info.violation.criteria.contains(query, ignoreCase = true) ||
-                                    info.violation.measure.contains(query, ignoreCase = true) ||
-                                    info.departments.any {
-                                        it.shortName.contains(query, ignoreCase = true) ||
-                                                it.fullName.contains(query, ignoreCase = true)
-                                    } ||
-                                    info.divisions.any {
-                                        it.shortName.contains(query, ignoreCase = true) ||
-                                                it.name.contains(query, ignoreCase = true)
-                                    } ||
                                     info.revisionTypes.any {
                                         it.name.contains(query, ignoreCase = true)
                                     }

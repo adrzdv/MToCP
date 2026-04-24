@@ -34,7 +34,7 @@ extensions.configure<ApplicationExtension> {
         minSdk = 29                                                 //Android 10+
         targetSdk = 35
         versionCode = 1
-        versionName = "0.9.9-beta-hf-21042025"
+        versionName = "0.9.9-beta-hf-31042026"
 
         buildConfigField("String", "BASE_URL", "\"${project.findProperty("BASE_URL") ?: ""}\"")
         buildConfigField("String", "UPDATE_URL", "\"${project.findProperty("UPDATE_URL") ?: ""}\"")
@@ -134,7 +134,7 @@ kapt {
 dependencies {
 
     //implementation(libs.androidx.navigation.compose.jvmstubs)
-    implementation("androidx.navigation:navigation-compose:2.9.5")
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.room.runtime.android)
     implementation(libs.androidx.lifecycle.runtime.ktx)

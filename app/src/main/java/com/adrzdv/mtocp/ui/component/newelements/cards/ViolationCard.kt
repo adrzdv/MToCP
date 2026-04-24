@@ -1,5 +1,12 @@
 package com.adrzdv.mtocp.ui.component.newelements.cards
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -87,6 +94,7 @@ fun ViolationCard(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .animateContentSize(animationSpec = tween(durationMillis = 220))
                     .padding(12.dp)
             ) {
                 Row(
@@ -95,12 +103,12 @@ fun ViolationCard(
                     verticalAlignment = Alignment.Top
                 ) {
                     Text(
-                        style = AppTypography.bodyMedium,
+                        style = AppTypography.bodyLarge,
                         text = violation.code.toString()
                     )
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            style = AppTypography.bodyMedium,
+                            style = AppTypography.bodyLarge,
                             text = violation.description,
                             maxLines = if (expanded) Int.MAX_VALUE else 3,
                             overflow = TextOverflow.Ellipsis
@@ -201,24 +209,34 @@ fun ViolationCard(
                     }
                 }
 
-                if (expanded) {
-                    Spacer(modifier = Modifier.padding(top = 4.dp))
-                    ViolationMetaRow(
-                        title = stringResource(R.string.violation_criteria_label),
-                        value = violation.criteria
+                AnimatedVisibility(
+                    visible = expanded,
+                    enter = expandVertically(animationSpec = tween(durationMillis = 220)) + fadeIn(
+                        animationSpec = tween(durationMillis = 160)
+                    ),
+                    exit = shrinkVertically(animationSpec = tween(durationMillis = 180)) + fadeOut(
+                        animationSpec = tween(durationMillis = 120)
                     )
-                    ViolationMetaRow(
-                        title = stringResource(R.string.violation_measure_label),
-                        value = violation.measure
-                    )
-                    ViolationMetaRow(
-                        title = stringResource(R.string.violation_revision_types_label),
-                        value = violation.revisionTypes.joinToString()
-                    )
-                    ViolationMetaRow(
-                        title = stringResource(R.string.violation_departments_label),
-                        value = violation.departments.joinToString()
-                    )
+                ) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Spacer(modifier = Modifier.padding(top = 4.dp))
+                        ViolationMetaRow(
+                            title = stringResource(R.string.violation_criteria_label),
+                            value = violation.criteria
+                        )
+                        ViolationMetaRow(
+                            title = stringResource(R.string.violation_measure_label),
+                            value = violation.measure
+                        )
+                        ViolationMetaRow(
+                            title = stringResource(R.string.violation_revision_types_label),
+                            value = violation.revisionTypes.joinToString()
+                        )
+                        ViolationMetaRow(
+                            title = stringResource(R.string.violation_departments_label),
+                            value = violation.departments.joinToString()
+                        )
+                    }
                 }
             }
         }

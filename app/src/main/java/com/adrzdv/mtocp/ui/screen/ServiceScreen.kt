@@ -164,8 +164,8 @@ fun ServiceScreen(
                         icon = painterResource(R.drawable.ic_outline_password_24),
                         title = stringResource(R.string.password),
                         subtitle = stringResource(R.string.change_password),
-                        isClickable = true,
-                        onClick = { showBottomSheet = true }
+                        isClickable = false,
+                        onClick = { }
                     )
                 }
                 item {
