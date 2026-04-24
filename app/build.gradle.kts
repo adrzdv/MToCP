@@ -34,7 +34,7 @@ extensions.configure<ApplicationExtension> {
         minSdk = 29                                                 //Android 10+
         targetSdk = 35
         versionCode = 1
-        versionName = "0.9.9-beta-hf-19042026"
+        versionName = "0.9.9-beta-hf-31042026"
 
         buildConfigField("String", "BASE_URL", "\"${project.findProperty("BASE_URL") ?: ""}\"")
         buildConfigField("String", "UPDATE_URL", "\"${project.findProperty("UPDATE_URL") ?: ""}\"")
@@ -134,7 +134,7 @@ kapt {
 dependencies {
 
     //implementation(libs.androidx.navigation.compose.jvmstubs)
-    implementation("androidx.navigation:navigation-compose:2.9.5")
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.room.runtime.android)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -178,8 +178,6 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation("androidx.room:room-runtime:$roomVersion")
 
-    //testImplementation(libs.junit)
-
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
@@ -192,6 +190,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.2.1")
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")

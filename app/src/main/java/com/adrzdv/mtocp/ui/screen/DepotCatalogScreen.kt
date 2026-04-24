@@ -5,9 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +16,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.asFlow
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.component.newelements.NothingToShowPlug
+import com.adrzdv.mtocp.ui.model.DepotDto
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
@@ -108,56 +109,74 @@ fun DepotCatalogScreen(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         if (depots.isEmpty()) {
             NothingToShowPlug()
         } else {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(depots) { depot ->
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 12.dp)
-                    ) {
-                        Text(
-                            text = depot.name,
-                            style = AppTypography.bodyLarge,
-                            color = Color.Black
-                        )
-
-                        Spacer(modifier = Modifier.height(4.dp))
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                text = depot.shortName,
-                                style = AppTypography.bodyMedium,
-                                color = Color.Gray
-                            )
-
-                            Text(
-                                text = depot.phoneNumber,
-                                style = AppTypography.bodyMedium,
-                                color = Color.Black,
-                                modifier = Modifier.clickable {
-                                    val clip = ClipData.newPlainText("phone", depot.phoneNumber)
-                                    clipboard.setPrimaryClip(clip)
-                                }
-                            )
+                    DepotInfoCard(
+                        depot = depot,
+                        onPhoneClick = {
+                            if (depot.phoneNumber.isNotBlank() && depot.phoneNumber != "0") {
+                                val clip = ClipData.newPlainText("phone", depot.phoneNumber)
+                                clipboard.setPrimaryClip(clip)
+                            }
                         }
-
-                        Spacer(modifier = Modifier.height(4.dp))
-
-                        Text(
-                            text = "${depot.branchName}, ${depot.branchShortName}",
-                            style = AppTypography.bodyMedium,
-                            color = Color.DarkGray
-                        )
-                    }
+                    )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DepotInfoCard(
+    depot: DepotDto,
+    onPhoneClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = AppColors.SURFACE_COLOR.color,
+            contentColor = AppColors.MAIN_COLOR.color
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp)
+        ) {
+            Text(
+                text = depot.name,
+                style = AppTypography.bodyLarge
+            )
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Text(
+                text = depot.shortName,
+                style = AppTypography.bodyMedium,
+                color = AppColors.MAIN_COLOR.color.copy(alpha = 0.8f)
+            )
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Text(
+                text = depot.branchShortName,
+                style = AppTypography.bodyMedium
+            )
+
+            if (depot.phoneNumber.isNotBlank() && depot.phoneNumber != "0") {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = depot.phoneNumber,
+                    style = AppTypography.bodyMedium,
+                    modifier = Modifier.clickable(onClick = onPhoneClick)
+                )
             }
         }
     }

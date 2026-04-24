@@ -1,17 +1,13 @@
 package com.adrzdv.mtocp.ui.component.dialogs
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -19,7 +15,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +25,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.domain.model.departments.DepotDomain
@@ -42,70 +36,68 @@ import com.adrzdv.mtocp.ui.component.DropdownMenuField
 import com.adrzdv.mtocp.ui.component.buttons.CustomOutlinedButton
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.theme.CustomTypography
-import com.adrzdv.mtocp.ui.viewmodel.RequestWebViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.RequestDocumentViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.old.OrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.old.ViewModelFactoryProviderOld
-import com.adrzdv.mtocp.ui.viewmodel.model.old.ViolationViewModelOld
 
 @Composable
 fun CustomAlertDialog(
-    viewModel: RequestWebViewModel,
+    viewModel: RequestDocumentViewModel,
     title: String
 ) {
-    val workerName = viewModel.workerName
-
-    AlertDialog(
-        onDismissRequest = { viewModel.dismissDialogs() },
-        title = {
-            Text(
-                text = title,
-                style = AppTypography.titleMedium
-            )
-        },
-        containerColor = AppColors.LIGHT_GRAY.color,
-        confirmButton = {
-            Button(
-                onClick = {
-                    viewModel.getNumber()
-                },
-                colors = ButtonDefaults
-                    .buttonColors(containerColor = AppColors.MAIN_GREEN.color),
-                border = null
-            ) {
-                Text(
-                    stringResource(R.string.add_string),
-                    style = AppTypography.bodyMedium
-                )
-            }
-        },
-        dismissButton = {
-            CustomOutlinedButton(
-                onClick = { viewModel.dismissDialogs() },
-                stringResource(R.string.cancel)
-            )
-        },
-        text = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-
-                CustomOutlinedTextField(
-                    value = workerName,
-                    onValueChange = {
-                        viewModel.onWorkerNameChanged(it)
-                    },
-                    isError = false,
-                    errorText = "",
-                    label = stringResource(R.string.worker_name)
-                )
-            }
-        }
-    )
+//    val workerName = viewModel.workerName
+//
+//    AlertDialog(
+//        onDismissRequest = { viewModel.dismissDialogs() },
+//        title = {
+//            Text(
+//                text = title,
+//                style = AppTypography.titleMedium
+//            )
+//        },
+//        containerColor = AppColors.LIGHT_GRAY.color,
+//        confirmButton = {
+//            Button(
+//                onClick = {
+//                    viewModel.getNumber()
+//                },
+//                colors = ButtonDefaults
+//                    .buttonColors(containerColor = AppColors.MAIN_GREEN.color),
+//                border = null
+//            ) {
+//                Text(
+//                    stringResource(R.string.add_string),
+//                    style = AppTypography.bodyMedium
+//                )
+//            }
+//        },
+//        dismissButton = {
+//            CustomOutlinedButton(
+//                onClick = { viewModel.dismissDialogs() },
+//                stringResource(R.string.cancel)
+//            )
+//        },
+//        text = {
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 8.dp),
+//                verticalArrangement = Arrangement.spacedBy(12.dp)
+//            ) {
+//
+//                CustomOutlinedTextField(
+//                    value = workerName,
+//                    onValueChange = {
+//                        viewModel.onWorkerNameChanged(it)
+//                    },
+//                    isError = false,
+//                    errorText = "",
+//                    label = stringResource(R.string.worker_name)
+//                )
+//            }
+//        }
+//    )
 }
 
 @Composable
@@ -214,68 +206,68 @@ fun AddViolationToCoachDialog(
     onDismiss: () -> Unit,
     onError: () -> Unit
 ) {
-    var violationViewModel: ViolationViewModelOld =
-        viewModel(factory = ViewModelFactoryProviderOld.provideFactory())
-    violationViewModel.filterDataByRevisionType(revisionType)
-
-    var searchText by remember { mutableStateOf("") }
-    val options by violationViewModel.filteredViolations.asFlow()
-        .collectAsState(initial = emptyList())
-
-    AppFullscreenDialog(
-        title = stringResource(R.string.violation_catalog_string),
-        onConfirm = { },
-        onDismiss = onDismiss,
-        isSaveEnabled = false,
-        content = {
-            CustomOutlinedTextField(
-                label = stringResource(R.string.input_text_hint),
-                value = searchText,
-                onValueChange = {
-                    searchText = it
-                    violationViewModel.filterDataByString(it)
-                },
-                isError = false,
-                errorText = "",
-                modifier = Modifier.fillMaxWidth()
-            )
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                items(options) { option ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                val violationDomain =
-                                    ViolationDomain(option.code, option.name, option.shortName)
-                                try {
-                                    onConfirm(violationDomain)
-                                    onDismiss()
-                                } catch (e: Exception) {
-                                    onError()
-                                }
-                            }
-                            .padding(horizontal = 12.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = option.code.toString(),
-                            style = CustomTypography.bodyLarge,
-                            modifier = Modifier.weight(1f),
-                            color = Color.Black
-                        )
-                        Text(
-                            text = option.name,
-                            style = CustomTypography.bodyLarge,
-                            modifier = Modifier.weight(5f),
-                            color = Color.Black
-                        )
-                    }
-                }
-            }
-        }
-    )
+//    var violationViewModel: ViolationViewModelOld =
+//        viewModel(factory = ViewModelFactoryProviderOld.provideFactory())
+//    violationViewModel.filterDataByRevisionType(revisionType)
+//
+//    var searchText by remember { mutableStateOf("") }
+//    val options by violationViewModel.filteredViolations.asFlow()
+//        .collectAsState(initial = emptyList())
+//
+//    AppFullscreenDialog(
+//        title = stringResource(R.string.violation_catalog_string),
+//        onConfirm = { },
+//        onDismiss = onDismiss,
+//        isSaveEnabled = false,
+//        content = {
+//            CustomOutlinedTextField(
+//                label = stringResource(R.string.input_text_hint),
+//                value = searchText,
+//                onValueChange = {
+//                    searchText = it
+//                    violationViewModel.filterDataByString(it)
+//                },
+//                isError = false,
+//                errorText = "",
+//                modifier = Modifier.fillMaxWidth()
+//            )
+//            LazyColumn(
+//                modifier = Modifier.fillMaxSize()
+//            ) {
+//                items(options) { option ->
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .clickable {
+//                                val violationDomain =
+//                                    ViolationDomain(option.code, option.name, option.shortName)
+//                                try {
+//                                    onConfirm(violationDomain)
+//                                    onDismiss()
+//                                } catch (e: Exception) {
+//                                    onError()
+//                                }
+//                            }
+//                            .padding(horizontal = 12.dp, vertical = 8.dp),
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ) {
+//                        Text(
+//                            text = option.code.toString(),
+//                            style = CustomTypography.bodyLarge,
+//                            modifier = Modifier.weight(1f),
+//                            color = Color.Black
+//                        )
+//                        Text(
+//                            text = option.name,
+//                            style = CustomTypography.bodyLarge,
+//                            modifier = Modifier.weight(5f),
+//                            color = Color.Black
+//                        )
+//                    }
+//                }
+//            }
+//        }
+//    )
 }
 
 @Composable

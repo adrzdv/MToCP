@@ -61,11 +61,19 @@
 
     <string name="dinner_department">Дирекция питания</string>
     <string name="dinner_departments">Дирекции питания</string>
+    <string name="violation_criteria_label">Критерий</string>
+    <string name="violation_measure_label">Единица измерения</string>
+    <string name="violation_measure_short_label">Ед.изм</string>
+    <string name="violation_revision_types_label">Типы проверки</string>
+    <string name="violation_departments_label">Ответственное управление</string>
+    <string name="violation_departments_short_label">Подразд.</string>
+    <string name="violation_divisions_label">Дивизионы</string>
     <string name="dinner_company">Арендатор</string>
     <string name="dinner_add">Добавить ВР</string>
     <string name="dinner_remove">Удалить ВР</string>
     <string name="request_string">Запрос</string>
     <string name="web_request_string">WEB-запросы</string>
+    <string name="documents">Акты</string>
     <string name="ok_string">OK</string>
     <string name="doc_number_string">Номер акта</string>
     <string name="ask_exit_string">Вы уверены, что хотите выйти?</string>
@@ -169,7 +177,7 @@
     <string name="user_id">Табельный номер</string>
     <string name="user_sec_id">Открытый лист</string>
     <string name="clear_dirs_sub">Очистка программных директорий</string>
-    <string name="update_catalog_sub">Обновить программные справочники из файла</string>
+    <string name="update_catalog_sub">Обновить программные справочники</string>
     <string name="notifications">Уведомления</string>
     <string name="notifications_sub">Управление настройкамми уведомления</string>
     <string name="del_profile">Выход</string>

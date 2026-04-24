@@ -11,38 +11,44 @@ public class DepotMapper {
 
     public static DepotDomain fromJoinModelToDomain(DepotWithBranch depotWithBranch) {
 
-        return new DepotDomain(depotWithBranch.depot.getId(),
-                depotWithBranch.depot.getName(),
-                depotWithBranch.depot.getShortName(),
-                depotWithBranch.depot.getPhoneNumber(),
-                new BranchDomain(depotWithBranch.branch.getId(),
-                        depotWithBranch.branch.getName(),
-                        depotWithBranch.branch.getShortName()),
-                depotWithBranch.depot.getActive(),
-                depotWithBranch.depot.getDinnerDepot());
+        return null;
+
+//        return new DepotDomain(depotWithBranch.depot.getId(),
+//                depotWithBranch.depot.getName(),
+//                depotWithBranch.depot.getShortName(),
+//                depotWithBranch.depot.getPhoneNumber(),
+//                new BranchDomain(depotWithBranch.branch.getId(),
+//                        depotWithBranch.branch.getName(),
+//                        depotWithBranch.branch.getShortName()),
+//                depotWithBranch.depot.getActive(),
+//                depotWithBranch.depot.getDinnerDepot());
 
     }
 
     public static DepotEntity fromDomainToEntity(DepotDomain depot) {
 
-        return new DepotEntity(depot.getId(),
-                depot.getName(),
-                depot.getShortName(),
-                depot.getBranchDomain().getId(),
-                depot.getActive(),
-                depot.getPhoneNumber(),
-                depot.getDinnerDepot());
+        return null;
+
+//        return new DepotEntity(depot.getId(),
+//                depot.getName(),
+//                depot.getShortName(),
+//                depot.getBranchDomain().getId(),
+//                depot.getActive(),
+//                depot.getPhoneNumber(),
+//                depot.getDinnerDepot());
     }
 
     public static DepotEntity fromImportToEntity(DepotImport depot) {
 
-        return new DepotEntity(depot.getId(),
-                depot.getName(),
-                depot.getShortName(),
-                depot.getBranch().getId(),
-                depot.getBranch().getActive(),
-                depot.getPhoneNumber(),
-                depot.getDinnerDepot());
+        return null;
+
+//        return new DepotEntity(depot.getId(),
+//                depot.getName(),
+//                depot.getShortName(),
+//                depot.getBranch().getId(),
+//                depot.getBranch().getActive(),
+//                depot.getPhoneNumber(),
+//                depot.getDinnerDepot());
     }
 
     public static DepotDto fromDomainToDto(DepotDomain depot) {

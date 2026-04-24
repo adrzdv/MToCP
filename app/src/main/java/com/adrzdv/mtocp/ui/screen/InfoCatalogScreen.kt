@@ -37,7 +37,7 @@ import com.adrzdv.mtocp.R
 import com.adrzdv.mtocp.ui.model.MenuElementItem
 import com.adrzdv.mtocp.ui.theme.AppColors
 import com.adrzdv.mtocp.ui.theme.AppTypography
-import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.KriCoachViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
@@ -51,8 +51,7 @@ fun InfoCatalogScreen(
     violationViewModel: ViolationViewModel,
     trainInfoViewModel: TrainInfoViewModel,
     kriCoachViewModel: KriCoachViewModel,
-    //depotViewModel: DepotViewModel,
-    companyViewModel: CompanyViewModel
+    depotViewModel: DepotViewModel
 ) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -67,26 +66,17 @@ fun InfoCatalogScreen(
             stringResource(R.string.header_catalog),
             painterResource(R.drawable.ic_outline_book_2_24)
         ),
-//        MenuElementItem(
-//            "depot",
-//            stringResource(R.string.header_depot),
-//            painterResource(R.drawable.ic_outline_home_work_24)
-//        ),
-//        MenuElementItem(
-//            "dinner",
-//            stringResource(R.string.dinner_departments),
-//            painterResource(R.drawable.ic_food_waiter)
-//        ),
         MenuElementItem(
-            "company",
-            stringResource(R.string.header_company),
-            painterResource(R.drawable.ic_carrier)
+            "depot",
+            stringResource(R.string.header_depot),
+            painterResource(R.drawable.ic_outline_home_work_24)
         ),
-        MenuElementItem(
-            "train",
-            title = stringResource(R.string.trains),
-            painterResource(R.drawable.ic_outline_train_24)
-        ),
+//        MenuElementItem(
+//            "",
+//            //"train",
+//            title = stringResource(R.string.trains),
+//            painterResource(R.drawable.ic_outline_train_24)
+//        ),
         MenuElementItem(
             route = "kri",
             title = stringResource(R.string.kri),
@@ -160,8 +150,6 @@ fun InfoCatalogScreen(
                     },
                     actions = {
                         IconButton(onClick = {
-                            //depotViewModel.resetDinnerFilter()
-                            companyViewModel.resetDinnerFilter()
                             navPriorityHost.popBackStack()
                         }) {
                             Icon(
@@ -191,21 +179,11 @@ fun InfoCatalogScreen(
                         viewModel = violationViewModel
                     )
                 }
-//                composable("depot") {
-//                    DepotCatalogScreen(
-//                        viewModel = depotViewModel
-//                    )
-//                }
-                composable("company") {
-                    CompanyCatalogScreen(
-                        viewModel = companyViewModel
+                composable("depot") {
+                    DepotCatalogScreen(
+                        viewModel = depotViewModel
                     )
                 }
-//                composable("dinner") {
-//                    DinnerDepotCatalogScreen(
-//                        viewModel = depotViewModel
-//                    )
-//                }
                 composable(route = "train") {
                     TrainInfoScreen(
                         viewModel = trainInfoViewModel

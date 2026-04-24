@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.adrzdv.mtocp.data.model.ChangePasswordResult
+import com.adrzdv.mtocp.data.model.old.ChangePasswordResult
 import com.adrzdv.mtocp.data.repository.AuthRepository
 import com.adrzdv.mtocp.ui.state.ChangePasswordState
 import kotlinx.coroutines.flow.MutableStateFlow

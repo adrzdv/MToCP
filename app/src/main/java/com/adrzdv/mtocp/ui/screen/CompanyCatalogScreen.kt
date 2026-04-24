@@ -102,62 +102,64 @@ fun CompanyCatalogScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        if (companies.isEmpty()) {
-            NothingToShowPlug()
-        } else {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(companies) { company ->
-                    val displayText = if (company.expirationDate == LocalDate
-                            .of(9999, 1, 1)
-                    ) {
-                        "БЕССРОЧНЫЙ"
-                    } else {
-                        "до ${
-                            company.expirationDate.format(
-                                DateTimeFormatter
-                                    .ofPattern("dd.MM.yyyy")
-                            )
-                        }"
-                    }
+        NothingToShowPlug()
 
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 12.dp)
-                    ) {
-                        Text(
-                            text = company.name,
-                            style = AppTypography.bodyLarge,
-                            color = Color.Black
-                        )
-
-                        Spacer(modifier = Modifier.height(4.dp))
-
-                        Text(
-                            text = company.contractNumber,
-                            style = AppTypography.bodyMedium,
-                            color = Color.Gray
-                        )
-
-                        Spacer(modifier = Modifier.height(4.dp))
-
-                        Text(
-                            text = displayText,
-                            style = AppTypography.bodyMedium,
-                            color = Color.Gray
-                        )
-
-                        Spacer(modifier = Modifier.height(4.dp))
-
-                        Text(
-                            text = company.branch,
-                            style = AppTypography.bodyMedium,
-                            color = Color.Gray,
-                        )
-
-                    }
-                }
-            }
-        }
+//        if (companies.isEmpty()) {
+//            NothingToShowPlug()
+//        } else {
+//            LazyColumn(modifier = Modifier.fillMaxSize()) {
+//                items(companies) { company ->
+//                    val displayText = if (company.expirationDate == LocalDate
+//                            .of(9999, 1, 1)
+//                    ) {
+//                        "БЕССРОЧНЫЙ"
+//                    } else {
+//                        "до ${
+//                            company.expirationDate.format(
+//                                DateTimeFormatter
+//                                    .ofPattern("dd.MM.yyyy")
+//                            )
+//                        }"
+//                    }
+//
+//                    Column(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(horizontal = 16.dp, vertical = 12.dp)
+//                    ) {
+//                        Text(
+//                            text = company.name,
+//                            style = AppTypography.bodyLarge,
+//                            color = Color.Black
+//                        )
+//
+//                        Spacer(modifier = Modifier.height(4.dp))
+//
+//                        Text(
+//                            text = company.contractNumber,
+//                            style = AppTypography.bodyMedium,
+//                            color = Color.Gray
+//                        )
+//
+//                        Spacer(modifier = Modifier.height(4.dp))
+//
+//                        Text(
+//                            text = displayText,
+//                            style = AppTypography.bodyMedium,
+//                            color = Color.Gray
+//                        )
+//
+//                        Spacer(modifier = Modifier.height(4.dp))
+//
+//                        Text(
+//                            text = company.branch,
+//                            style = AppTypography.bodyMedium,
+//                            color = Color.Gray,
+//                        )
+//
+//                    }
+//                }
+//            }
+//        }
     }
 }

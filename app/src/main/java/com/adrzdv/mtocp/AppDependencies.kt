@@ -3,7 +3,7 @@ package com.adrzdv.mtocp
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import com.adrzdv.mtocp.data.api.RetrofitClient
+import com.adrzdv.mtocp.data.api.RetrofitHolder
 import com.adrzdv.mtocp.data.db.AppDatabase
 import com.adrzdv.mtocp.data.importmodel.AdditionalParamImport
 import com.adrzdv.mtocp.data.importmodel.TrainImport
@@ -11,6 +11,8 @@ import com.adrzdv.mtocp.data.repository.AuthRepository
 import com.adrzdv.mtocp.data.repository.AuthRepositoryImpl
 import com.adrzdv.mtocp.data.repository.CompanyRepositoryImpl
 import com.adrzdv.mtocp.data.repository.DepotRepositoryImpl
+import com.adrzdv.mtocp.data.repository.DictionaryRepository
+import com.adrzdv.mtocp.data.repository.DocumentRepository
 import com.adrzdv.mtocp.data.repository.KriCoachRepoImpl
 import com.adrzdv.mtocp.data.repository.TrainRepositoryImpl
 import com.adrzdv.mtocp.data.repository.UserDataStorage
@@ -65,10 +67,20 @@ class AppDependencies(
     context: Context,
     database: AppDatabase,
     prefs: SharedPreferences,
-    executor: ExecutorService
+    executor: ExecutorService,
+    retrofitHolder: RetrofitHolder
 ) {
     val violationRepo: ViolationRepository = ViolationRepositoryImpl(database.violationDao())
-    val depotRepo: DepotRepository = DepotRepositoryImpl(database.depotDao())
+    val depotRepo: DepotRepository =
+        DepotRepositoryImpl(database.depotDao(), database.branchDao())
+
+    val dictionaryRepository = DictionaryRepository(
+        database.branchDao(),
+        database.departmentDao(),
+        database.depotDao(),
+        database.divisionDao(),
+        database.revisionTypeDao()
+    )
     val companyRepo: CompanyRepository = CompanyRepositoryImpl(database.companyDao())
     val trainRepo: TrainRepository =
         TrainRepositoryImpl(database.trainDao(), database.depotDao())
@@ -77,26 +89,12 @@ class AppDependencies(
     val kriCoachRepo: KriCoachRepo = KriCoachRepoImpl(database.kriCoachDao())
     val userDataStorage = UserDataStorage(prefs)
     val authRepo: AuthRepository =
-        AuthRepositoryImpl(RetrofitClient.authApi, userDataStorage)
+        AuthRepositoryImpl(retrofitHolder.authApi, userDataStorage)
+
+    val retrofitHolder: RetrofitHolder = retrofitHolder
+
+    val documentRepository = DocumentRepository(retrofitHolder.docRequestApi, userDataStorage)
     val registry: ImportHandlerRegistry = ImportHandlerRegistry().apply {
-//        register(
-//            ViolationImport::class.java,
-//            ViolationImportHandler(
-//                violationRepo,
-//                Consumer { msg: String? -> Log.d("IMPORT", msg!!) })
-//        )
-//        register(
-//            DepotImport::class.java,
-//            DepotImportHandler(
-//                depotRepo,
-//                Consumer { msg: String? -> Log.d("IMPORT", msg!!) })
-//        )
-//        register(
-//            CompanyImport::class.java,
-//            CompanyImportHandler(
-//                companyRepo,
-//                Consumer { msg: String? -> Log.d("IMPORT", msg!!) })
-//        )
         register(
             TrainImport::class.java,
             TrainImportHandler(
@@ -117,7 +115,8 @@ class AppDependencies(
     val createPassengerCoachUseCase = CreatePassengerCoachUseCase(getDepotByNameUseCase)
     val getTrainSchemeUseCase = GetTrainSchemeUseCase()
     val getCompanyByNameUseCase = GetCompanyByNameUseCase(companyRepo)
-    val createDinnerCarUseCase = CreateDinnerCarUseCase(getDepotByNameUseCase, getCompanyByNameUseCase)
+    val createDinnerCarUseCase =
+        CreateDinnerCarUseCase(getDepotByNameUseCase, getCompanyByNameUseCase)
 
 
     //val violationRepo: ViolationRepository = ViolationRepositoryImpl(database.violationDao())

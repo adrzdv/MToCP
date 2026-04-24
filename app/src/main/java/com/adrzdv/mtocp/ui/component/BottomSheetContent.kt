@@ -26,7 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.adrzdv.mtocp.R
-import com.adrzdv.mtocp.data.model.ChangePasswordResult
+import com.adrzdv.mtocp.data.model.old.ChangePasswordResult
 import com.adrzdv.mtocp.ui.component.newelements.InputTextField
 import com.adrzdv.mtocp.ui.component.newelements.RoundedButton
 import com.adrzdv.mtocp.ui.theme.AppColors

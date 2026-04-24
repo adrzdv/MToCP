@@ -7,11 +7,14 @@ import com.adrzdv.mtocp.data.db.entity.CompanyWithBranch
 import com.adrzdv.mtocp.data.db.entity.TrainEntity
 import com.adrzdv.mtocp.data.db.pojo.DepotWithBranch
 import com.adrzdv.mtocp.data.repository.refcache.CacheRepository
+import com.adrzdv.mtocp.domain.usecase.LoadAllViolationsUseCase
 import com.adrzdv.mtocp.ui.viewmodel.model.AuthViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.AutocompleteViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.CompanyViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.DepotViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.KriCoachViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.RequestDocumentViewModel
+import com.adrzdv.mtocp.ui.viewmodel.model.ServiceViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainInfoViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.TrainOrderViewModel
 import com.adrzdv.mtocp.ui.viewmodel.model.ViolationViewModel
@@ -22,12 +25,27 @@ class ViewModelLocator(
 ) {
     private val factory = ViewModelFactoryProvider(appDependencies)
 
+    fun getViolationViewModel(owner: ViewModelStoreOwner) =
+        ViewModelProvider(
+            owner,
+            AssistedViewModelFactory {
+                ViolationViewModel(
+                    appCache
+                )
+            }
+        )[ViolationViewModel::class.java]
+
     fun getTrainOrderViewModel(owner: ViewModelStoreOwner): TrainOrderViewModel {
         return ViewModelProvider(owner, factory.provideFactory())[TrainOrderViewModel::class.java]
     }
 
     fun getDepotViewModel(owner: ViewModelStoreOwner): DepotViewModel {
-        return ViewModelProvider(owner, factory.provideFactory())[DepotViewModel::class.java]
+        return ViewModelProvider(
+            owner,
+            AssistedViewModelFactory {
+                DepotViewModel(appCache)
+            }
+        )[DepotViewModel::class.java]
     }
 
     fun getCompanyViewModel(owner: ViewModelStoreOwner): CompanyViewModel {
@@ -81,16 +99,6 @@ class ViewModelLocator(
             }
         )["workerDepotAutocompleteViewModel", AutocompleteViewModel::class.java] as AutocompleteViewModel<DepotWithBranch>
 
-    fun getViolationViewModel(owner: ViewModelStoreOwner) =
-        ViewModelProvider(
-            owner,
-            AssistedViewModelFactory {
-                ViolationViewModel(
-                    appCache
-                )
-            }
-        )[ViolationViewModel::class.java]
-
     fun getCompanyAutocompleteViewModel(owner: ViewModelStoreOwner) =
         ViewModelProvider(
             owner,
@@ -101,6 +109,29 @@ class ViewModelLocator(
                 )
             }
         )["companyAutocompleteViewModel", AutocompleteViewModel::class.java] as AutocompleteViewModel<CompanyWithBranch>
+
+    fun getDocumentViewModel(owner: ViewModelStoreOwner) =
+        ViewModelProvider(
+            owner,
+            AssistedViewModelFactory {
+                RequestDocumentViewModel(
+                    appDependencies.documentRepository
+                )
+            }
+        )[RequestDocumentViewModel::class.java]
+
+    fun getServiceViewModel(owner: ViewModelStoreOwner) =
+        ViewModelProvider(
+            owner,
+            AssistedViewModelFactory {
+                ServiceViewModel(
+                    LoadAllViolationsUseCase(appDependencies.retrofitHolder.dictionaryApi),
+                    appDependencies.dictionaryRepository,
+                    appDependencies.violationRepo,
+                    appCache
+                )
+            }
+        )[ServiceViewModel::class.java]
 
 
     //    fun getViolationViewModel(owner: ViewModelStoreOwner): ViolationViewModel {

@@ -2,14 +2,15 @@ package com.adrzdv.mtocp.ui.viewmodel.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.adrzdv.mtocp.data.db.entity.ViolationEntity
+import com.adrzdv.mtocp.data.db.entity.ViolationFullInfo
 import com.adrzdv.mtocp.data.repository.refcache.CacheRepository
 import com.adrzdv.mtocp.domain.model.enums.RevisionType
 import com.adrzdv.mtocp.domain.model.violation.ViolationDomain
-import com.adrzdv.mtocp.mapper.ViolationMapper
+import com.adrzdv.mtocp.mapper.toDomain
 import com.adrzdv.mtocp.mapper.toUi
 import com.adrzdv.mtocp.ui.model.dto.ViolationUi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -32,11 +33,11 @@ class ViolationViewModel(
     private val _revisionType = MutableStateFlow<RevisionType?>(null)
     val revisionType: StateFlow<RevisionType?> = _revisionType
 
-    private val allEntities: List<ViolationEntity> =
+    private val allEntities: List<ViolationFullInfo> =
         cacheRepository.violationCache.getAll()
 
-    private val _items = MutableStateFlow<List<ViolationDomain>>(emptyList())
-    val items: StateFlow<List<ViolationDomain>> = _items
+    private val _items = MutableStateFlow<List<ViolationFullInfo>>(emptyList())
+    val items: StateFlow<List<ViolationFullInfo>> = _items
 
     val suggestions: StateFlow<List<ViolationUi>> =
         _items
@@ -64,10 +65,10 @@ class ViolationViewModel(
     }
 
     fun getDomainByCode(code: Int): ViolationDomain {
-        return _items.value.first { it.code == code }
+        return _items.value.first { it.violation.code == code }.toDomain()
     }
 
-    @OptIn(FlowPreview::class)
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     private fun observeFilters() {
 
         viewModelScope.launch {
@@ -78,21 +79,23 @@ class ViolationViewModel(
                 .mapLatest { (query, type) ->
                     allEntities
                         .asSequence()
-                        .filter { entity ->
-                            val typeMatch = when (type) {
-                                RevisionType.IN_TRANSIT -> entity.inTransit
-                                RevisionType.AT_START_POINT -> entity.atStartPoint
-                                RevisionType.AT_TURNROUND_POINT -> entity.atTurnroundPoint
-                                RevisionType.AT_TICKET_OFFICE -> entity.atTicketOffice
-                                else -> true
+                        .filter { info ->
+                            type == null ||
+                                    type == RevisionType.ALL ||
+                                    info.revisionTypes.any { revisionTypeEntity ->
+                                revisionTypeEntity.name.contains(
+                                    type.revisionTypeTitle,
+                                    ignoreCase = true
+                                )
                             }
-                            typeMatch
                         }
-                        .map { ViolationMapper.fromEntityToDomain(it) }
-                        .filter { domain ->
+                        .filter { info ->
                             query.isBlank() ||
-                                    domain.code == query.toIntOrNull() ||
-                                    domain.name.contains(query, ignoreCase = true)
+                                    info.violation.code == query.toIntOrNull() ||
+                                    info.violation.description.contains(query, ignoreCase = true) ||
+                                    info.revisionTypes.any {
+                                        it.name.contains(query, ignoreCase = true)
+                                    }
                         }
                         .toList()
                 }

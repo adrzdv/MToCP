@@ -155,7 +155,8 @@ fun StartMenuScreen(
                         SquaredBigButton(
                             text = stringResource(R.string.start_revision_text),
                             icon = painterResource(R.drawable.ic_start_revision_32_white),
-                            onClick = onStartRevisionClick
+                            onClick = onStartRevisionClick,
+                            enabled = false
                         )
                         SquaredBigButton(
                             text = stringResource(R.string.violation_catalog_string),
@@ -167,7 +168,7 @@ fun StartMenuScreen(
                         horizontalArrangement = Arrangement.spacedBy(24.dp)
                     ) {
                         SquaredBigButton(
-                            text = stringResource(R.string.web_request_string),
+                            text = stringResource(R.string.documents),
                             icon = painterResource(R.drawable.ic_outline_globe_24),
                             onClick = onRequestWebClick
                         )
