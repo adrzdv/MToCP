@@ -1,5 +1,6 @@
 package com.adrzdv.mtocp.data.api.interceptor
 
+import android.util.Log
 import com.adrzdv.mtocp.data.api.AuthApi
 import com.adrzdv.mtocp.data.model.auth.RefreshRequest
 import com.adrzdv.mtocp.data.repository.UserDataStorage
@@ -8,6 +9,8 @@ import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
+import retrofit2.HttpException
+import java.io.IOException
 
 class TokenAuthenticator(
     private val userDataStorage: UserDataStorage,
@@ -29,9 +32,15 @@ class TokenAuthenticator(
                     .build()
             }
 
+            var shouldClearTokens = false
+
             val newToken = runBlocking {
                 try {
-                    val refreshToken = userDataStorage.getRefreshToken() ?: return@runBlocking null
+                    val refreshToken = userDataStorage.getRefreshToken()
+                    if (refreshToken.isNullOrBlank()) {
+                        shouldClearTokens = true
+                        return@runBlocking null
+                    }
 
                     val refreshResponse = authApiProvider().refresh(
                         RefreshRequest(refreshToken)
@@ -40,9 +49,20 @@ class TokenAuthenticator(
                     if (refreshResponse.accessToken.isNotBlank()) {
                         userDataStorage.saveAccessToken(refreshResponse.accessToken)
                         refreshResponse.accessToken
-                    } else null
+                    } else {
+                        shouldClearTokens = true
+                        null
+                    }
 
+                } catch (e: HttpException) {
+                    shouldClearTokens = e.code() == 401 || e.code() == 403
+                    Log.w("TokenAuthenticator", "Token refresh failed with HTTP ${e.code()}", e)
+                    null
+                } catch (e: IOException) {
+                    Log.w("TokenAuthenticator", "Token refresh failed due to network error", e)
+                    null
                 } catch (e: Exception) {
+                    Log.w("TokenAuthenticator", "Token refresh failed", e)
                     null
                 }
             }
@@ -52,7 +72,9 @@ class TokenAuthenticator(
                     .header("Authorization", "Bearer $newToken")
                     .build()
             } else {
-                userDataStorage.deleteToken()
+                if (shouldClearTokens) {
+                    userDataStorage.deleteToken()
+                }
                 null
             }
         }

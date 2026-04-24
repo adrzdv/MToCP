@@ -27,7 +27,7 @@ fun NavigationGraph(
         splashDestination(navController, appDependencies)
         mainMenuDestination(navController, appDependencies, version)
         authUserDestination(navController, viewModelLocator)
-        appSettingsDestination(navController, appDependencies)
+        appSettingsDestination(navController, appDependencies, viewModelLocator)
         catalogsDestination(navController, viewModelLocator)
         newRevisionDestination(navController)
         requestsDestination(navController, appDependencies, viewModelLocator)

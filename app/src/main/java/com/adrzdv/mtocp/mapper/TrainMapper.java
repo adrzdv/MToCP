@@ -48,17 +48,17 @@ public class TrainMapper {
 
     public static TrainDomain fromTrainWithDepotAndBranchToDomain(TrainWithDepotAndBranch pojo) {
 
-        BranchDomain branch = new BranchDomain(pojo.getBranch().getId(),
-                pojo.getBranch().getName(),
-                pojo.getBranch().getShortName());
+//        BranchDomain branch = new BranchDomain(pojo.getBranch().getId(),
+//                pojo.getBranch().getName(),
+//                pojo.getBranch().getShortName());
 
-        DepotDomain depot = new DepotDomain(pojo.getDepot().getId(),
-                pojo.getDepot().getName(),
-                pojo.getDepot().getShortName(),
-                pojo.getDepot().getPhoneNumber(),
-                branch,
-                pojo.getDepot().getActive(),
-                pojo.getDepot().getDinnerDepot());
+//        DepotDomain depot = new DepotDomain(pojo.getDepot().getId(),
+//                pojo.getDepot().getName(),
+//                pojo.getDepot().getShortName(),
+//                pojo.getDepot().getPhoneNumber(),
+//                branch,
+//                pojo.getDepot().getActive(),
+//                pojo.getDepot().getDinnerDepot());
 
         boolean isProgressiveService = false;
 
@@ -77,7 +77,8 @@ public class TrainMapper {
 
         return new TrainDomain(pojo.getTrain().getNumber(),
                 pojo.getTrain().getRoute(),
-                depot,
+                //depot,
+                null,
                 pojo.getTrain().getVideo(),
                 isProgressiveService,
                 false);

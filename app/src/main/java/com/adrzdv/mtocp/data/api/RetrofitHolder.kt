@@ -16,6 +16,9 @@ class RetrofitHolder(
     private val deviceIdProvider: DeviceIdProvider,
     private val userDataStorage: UserDataStorage
 ) {
+    companion object {
+        private const val NETWORK_TIMEOUT_SECONDS = 120L
+    }
 
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
@@ -26,6 +29,9 @@ class RetrofitHolder(
 
     private val authClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
+            .connectTimeout(NETWORK_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(NETWORK_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .writeTimeout(NETWORK_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .addInterceptor(logging)
             .addInterceptor(deviceInterceptor)
             .build()
@@ -42,7 +48,9 @@ class RetrofitHolder(
 
     private val mainClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
-            .readTimeout(120, TimeUnit.SECONDS)
+            .connectTimeout(NETWORK_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(NETWORK_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .writeTimeout(NETWORK_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .addInterceptor(logging)
             .addInterceptor(deviceInterceptor)
             .addInterceptor(authInterceptor)
@@ -74,5 +82,9 @@ class RetrofitHolder(
 
     val updaterApi: UpdateApi by lazy {
         storageRetrofit.create(UpdateApi::class.java)
+    }
+
+    val dictionaryApi: DictionaryApi by lazy {
+        retrofit.create(DictionaryApi::class.java)
     }
 }

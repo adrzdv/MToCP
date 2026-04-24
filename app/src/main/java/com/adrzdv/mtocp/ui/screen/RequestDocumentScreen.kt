@@ -48,6 +48,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun RequestDocumentScreen(
     username: String,
+    prefix: String? = null,
     requestDocumentViewModel: RequestDocumentViewModel,
     onBackClick: () -> Unit
 ) {
@@ -66,6 +67,9 @@ fun RequestDocumentScreen(
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
+        if (!prefix.isNullOrEmpty()) {
+            requestDocumentViewModel.setWorkerPrefixIfExist(prefix)
+        }
         requestDocumentViewModel.loadFirstPage()
     }
 
@@ -147,7 +151,10 @@ fun RequestDocumentScreen(
                                 if (username.isNotEmpty() && username != "Unknown") {
                                     requestDocumentViewModel.setWorkerIfTokenExist(username)
                                 }
-                                requestDocumentViewModel.requestRender()
+                                if (!prefix.isNullOrEmpty()) {
+                                    requestDocumentViewModel.setWorkerPrefixIfExist(prefix)
+                                }
+                                requestDocumentViewModel.requestList()
                             }
                         )
                     }

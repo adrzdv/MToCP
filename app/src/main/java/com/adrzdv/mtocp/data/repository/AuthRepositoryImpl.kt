@@ -1,10 +1,12 @@
 package com.adrzdv.mtocp.data.repository
 
+import android.util.Log
 import com.adrzdv.mtocp.data.api.AuthApi
 import com.adrzdv.mtocp.data.model.auth.AuthRequest
 import com.adrzdv.mtocp.data.model.auth.AuthResult
 import com.adrzdv.mtocp.data.model.auth.RefreshRequest
 import com.adrzdv.mtocp.data.model.old.ChangePasswordResult
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.UUID
@@ -116,7 +118,17 @@ class AuthRepositoryImpl(
         }
 
     override suspend fun logout(refreshToken: String) {
-        api.logout(RefreshRequest(refreshToken))
+        if (refreshToken.isBlank()) return
+
+        withContext(Dispatchers.IO) {
+            try {
+                api.logout(RefreshRequest(refreshToken))
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.w("AuthRepository", "Logout request failed", e)
+            }
+        }
     }
 
     override suspend fun changePassword(password: String): ChangePasswordResult {

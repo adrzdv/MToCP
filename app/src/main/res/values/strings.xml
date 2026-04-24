@@ -61,6 +61,13 @@
 
     <string name="dinner_department">Дирекция питания</string>
     <string name="dinner_departments">Дирекции питания</string>
+    <string name="violation_criteria_label">Критерий</string>
+    <string name="violation_measure_label">Единица измерения</string>
+    <string name="violation_measure_short_label">Ед.изм</string>
+    <string name="violation_revision_types_label">Типы проверки</string>
+    <string name="violation_departments_label">Ответственное управление</string>
+    <string name="violation_departments_short_label">Подразд.</string>
+    <string name="violation_divisions_label">Дивизионы</string>
     <string name="dinner_company">Арендатор</string>
     <string name="dinner_add">Добавить ВР</string>
     <string name="dinner_remove">Удалить ВР</string>

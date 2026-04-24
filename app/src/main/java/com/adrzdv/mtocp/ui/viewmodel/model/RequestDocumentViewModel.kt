@@ -28,6 +28,9 @@ class RequestDocumentViewModel(
     var workerName by mutableStateOf("")
         private set
 
+    var workerPrefix by mutableStateOf("")
+        private set
+
     var logs by mutableStateOf<List<DocumentUserDataDto>>(emptyList())
         private set
 
@@ -44,11 +47,15 @@ class RequestDocumentViewModel(
         workerName = username
     }
 
+    fun setWorkerPrefixIfExist(prefix: String) {
+        workerPrefix = prefix
+    }
+
     fun onWorkerNameChanged(newName: String) {
         workerName = newName
     }
 
-    fun requestRender() {
+    fun requestList() {
         viewModelScope.launch {
             isLoading = true
 
@@ -106,7 +113,8 @@ class RequestDocumentViewModel(
             try {
                 val response = repository.getDocumentsPage(
                     page = currentPage,
-                    size = pageSize
+                    size = pageSize,
+                    prefix = workerPrefix
                 )
 
                 logs = logs + response.entities

@@ -11,6 +11,7 @@ import com.adrzdv.mtocp.data.repository.AuthRepository
 import com.adrzdv.mtocp.data.repository.AuthRepositoryImpl
 import com.adrzdv.mtocp.data.repository.CompanyRepositoryImpl
 import com.adrzdv.mtocp.data.repository.DepotRepositoryImpl
+import com.adrzdv.mtocp.data.repository.DictionaryRepository
 import com.adrzdv.mtocp.data.repository.DocumentRepository
 import com.adrzdv.mtocp.data.repository.KriCoachRepoImpl
 import com.adrzdv.mtocp.data.repository.TrainRepositoryImpl
@@ -70,7 +71,16 @@ class AppDependencies(
     retrofitHolder: RetrofitHolder
 ) {
     val violationRepo: ViolationRepository = ViolationRepositoryImpl(database.violationDao())
-    val depotRepo: DepotRepository = DepotRepositoryImpl(database.depotDao())
+    val depotRepo: DepotRepository =
+        DepotRepositoryImpl(database.depotDao(), database.branchDao())
+
+    val dictionaryRepository = DictionaryRepository(
+        database.branchDao(),
+        database.departmentDao(),
+        database.depotDao(),
+        database.divisionDao(),
+        database.revisionTypeDao()
+    )
     val companyRepo: CompanyRepository = CompanyRepositoryImpl(database.companyDao())
     val trainRepo: TrainRepository =
         TrainRepositoryImpl(database.trainDao(), database.depotDao())
@@ -85,24 +95,6 @@ class AppDependencies(
 
     val documentRepository = DocumentRepository(retrofitHolder.docRequestApi, userDataStorage)
     val registry: ImportHandlerRegistry = ImportHandlerRegistry().apply {
-//        register(
-//            ViolationImport::class.java,
-//            ViolationImportHandler(
-//                violationRepo,
-//                Consumer { msg: String? -> Log.d("IMPORT", msg!!) })
-//        )
-//        register(
-//            DepotImport::class.java,
-//            DepotImportHandler(
-//                depotRepo,
-//                Consumer { msg: String? -> Log.d("IMPORT", msg!!) })
-//        )
-//        register(
-//            CompanyImport::class.java,
-//            CompanyImportHandler(
-//                companyRepo,
-//                Consumer { msg: String? -> Log.d("IMPORT", msg!!) })
-//        )
         register(
             TrainImport::class.java,
             TrainImportHandler(

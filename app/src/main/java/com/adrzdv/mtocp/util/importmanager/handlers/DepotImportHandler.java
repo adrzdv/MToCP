@@ -29,29 +29,29 @@ public class DepotImportHandler extends BaseImportHandler<DepotImport> {
     @Override
     public void handle(List<DepotImport> items) {
 
-        List<DepotEntity> depotEntities = items.stream()
-                .map(DepotMapper::fromImportToEntity)
-                .toList();
-
-        Map<Integer, BranchEntity> branchMap = new HashMap<>();
-
-        for (DepotImport depotImport : items) {
-            BranchEntity branchEntity = BranchMapper.fromImportToEntity(depotImport.getBranch());
-            branchMap.put(branchEntity.getId(), branchEntity);
-        }
-
-        List<DepotWithBranch> depWithBrList = new ArrayList<>();
-
-        for (DepotEntity depot : depotEntities) {
-            DepotWithBranch depotWithBranch = new DepotWithBranch();
-            depotWithBranch.depot = depot;
-            if (branchMap.containsKey(depot.getBranchId())) {
-                depotWithBranch.branch = branchMap.get(depot.getBranchId());
-            }
-            depWithBrList.add(depotWithBranch);
-        }
-
-        repository.saveAll(depWithBrList);
-        showSuccessToast(SUCCESS.toString());
+//        List<DepotEntity> depotEntities = items.stream()
+//                .map(DepotMapper::fromImportToEntity)
+//                .toList();
+//
+//        Map<Integer, BranchEntity> branchMap = new HashMap<>();
+//
+//        for (DepotImport depotImport : items) {
+//            BranchEntity branchEntity = BranchMapper.fromImportToEntity(depotImport.getBranch());
+//            branchMap.put(branchEntity.getId(), branchEntity);
+//        }
+//
+//        List<DepotWithBranch> depWithBrList = new ArrayList<>();
+//
+//        for (DepotEntity depot : depotEntities) {
+//            DepotWithBranch depotWithBranch = new DepotWithBranch();
+//            depotWithBranch.depot = depot;
+//            if (branchMap.containsKey(depot.getBranchId())) {
+//                depotWithBranch.branch = branchMap.get(depot.getBranchId());
+//            }
+//            depWithBrList.add(depotWithBranch);
+//        }
+//
+//        repository.saveAll(depWithBrList);
+//        showSuccessToast(SUCCESS.toString());
     }
 }

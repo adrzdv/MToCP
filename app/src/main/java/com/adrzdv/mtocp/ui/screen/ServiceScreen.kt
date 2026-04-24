@@ -1,11 +1,17 @@
 package com.adrzdv.mtocp.ui.screen
 
 import android.content.Context
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,10 +28,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adrzdv.mtocp.AppDependencies
@@ -80,6 +89,7 @@ fun ServiceScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
     val snackMessage by serviceScreenVM.snackMessage.collectAsState()
     val errorSnackMessage by serviceScreenVM.errorMessage.collectAsState()
+    val isSyncing by serviceScreenVM.isSyncing.collectAsState()
 
     LaunchedEffect(snackMessage) {
         snackMessage?.let {
@@ -95,159 +105,192 @@ fun ServiceScreen(
         }
     }
 
-    Scaffold(
-        containerColor = AppColors.SURFACE_COLOR.color,
-        topBar = {
-            TopAppBar(
-                title = {
-                    Spacer(modifier = Modifier.height(0.dp))
-                    Text(
-                        text = stringResource(R.string.settings),
-                        style = AppTypography.titleLarge
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        onBackClick()
-                    }) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_back_32_white),
-                            contentDescription = stringResource(R.string.menu_string)
+    Box(modifier = Modifier.fillMaxSize()) {
+        Scaffold(
+            containerColor = AppColors.SURFACE_COLOR.color,
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Spacer(modifier = Modifier.height(0.dp))
+                        Text(
+                            text = stringResource(R.string.settings),
+                            style = AppTypography.titleLarge
                         )
-                    }
-                },
-                colors = TopAppBarColors(
-                    containerColor = AppColors.MAIN_COLOR.color,
-                    scrolledContainerColor = AppColors.MAIN_COLOR.color,
-                    navigationIconContentColor = AppColors.SURFACE_COLOR.color,
-                    titleContentColor = AppColors.SURFACE_COLOR.color,
-                    actionIconContentColor = AppColors.SURFACE_COLOR.color,
-                    subtitleContentColor = AppColors.SURFACE_COLOR.color
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            onBackClick()
+                        }) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_back_32_white),
+                                contentDescription = stringResource(R.string.menu_string)
+                            )
+                        }
+                    },
+                    colors = TopAppBarColors(
+                        containerColor = AppColors.MAIN_COLOR.color,
+                        scrolledContainerColor = AppColors.MAIN_COLOR.color,
+                        navigationIconContentColor = AppColors.SURFACE_COLOR.color,
+                        titleContentColor = AppColors.SURFACE_COLOR.color,
+                        actionIconContentColor = AppColors.SURFACE_COLOR.color,
+                        subtitleContentColor = AppColors.SURFACE_COLOR.color
+                    )
                 )
-            )
-        },
-        snackbarHost = { CustomSnackbarHost(hostState = snackbarHostState) }
-    ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            item {
-                Text(
-                    text = stringResource(R.string.settings_personal),
-                    style = AppTypography.titleSmall,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                )
-            }
-            item {
-                SettingsRow(
-                    icon = painterResource(R.drawable.ic_outline_person_shield_24),
-                    title = stringResource(R.string.username),
-                    subtitle = username,
-                    onClick = {}
-                )
-            }
-            item {
-                SettingsRow(
-                    icon = painterResource(R.drawable.ic_outline_password_24),
-                    title = stringResource(R.string.password),
-                    subtitle = stringResource(R.string.change_password),
-                    isClickable = true,
-                    onClick = { showBottomSheet = true }
-                )
-            }
-            item {
-                SettingsRow(
-                    icon = painterResource(R.drawable.ic_exit_24_white),
-                    title = stringResource(R.string.del_profile),
-                    subtitle = stringResource(R.string.del_profile_sub),
-                    isClickable = true,
-                    onClick = {
-                        onDeleteProfile()
-                    }
-                )
-            }
-            item {
-                Divider()
-            }
-            item {
-                Text(
-                    text = stringResource(R.string.settings_main),
-                    style = AppTypography.titleSmall,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                )
-            }
-            item {
-                SettingsRow(
-                    icon = painterResource(R.drawable.ic_clear_data_24_white),
-                    title = stringResource(R.string.clean_dir_string),
-                    subtitle = stringResource(R.string.clear_dirs_sub),
-                    isClickable = true,
-                    onClick = {
-                        onCleanRepositoryClick { success ->
-                            coroutineScope.launch {
-                                if (success) {
-                                    snackbarHostState.showSnackbar(
-                                        visuals = InfoSnackbar(MessageCodes.DIRECTORY_SUCCESS.messageTitle)
-                                    )
-                                } else {
-                                    snackbarHostState.showSnackbar(
-                                        visuals = ErrorSnackbar(MessageCodes.DIRECTORY_FAIL.messageTitle)
-                                    )
+            },
+            snackbarHost = { CustomSnackbarHost(hostState = snackbarHostState) }
+        ) { innerPadding ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            ) {
+                item {
+                    Text(
+                        text = stringResource(R.string.settings_personal),
+                        style = AppTypography.titleSmall,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
+                item {
+                    SettingsRow(
+                        icon = painterResource(R.drawable.ic_outline_person_shield_24),
+                        title = stringResource(R.string.username),
+                        subtitle = username,
+                        onClick = {}
+                    )
+                }
+                item {
+                    SettingsRow(
+                        icon = painterResource(R.drawable.ic_outline_password_24),
+                        title = stringResource(R.string.password),
+                        subtitle = stringResource(R.string.change_password),
+                        isClickable = true,
+                        onClick = { showBottomSheet = true }
+                    )
+                }
+                item {
+                    SettingsRow(
+                        icon = painterResource(R.drawable.ic_exit_24_white),
+                        title = stringResource(R.string.del_profile),
+                        subtitle = stringResource(R.string.del_profile_sub),
+                        isClickable = true,
+                        onClick = {
+                            onDeleteProfile()
+                        }
+                    )
+                }
+                item {
+                    Divider()
+                }
+                item {
+                    Text(
+                        text = stringResource(R.string.settings_main),
+                        style = AppTypography.titleSmall,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
+                item {
+                    SettingsRow(
+                        icon = painterResource(R.drawable.ic_clear_data_24_white),
+                        title = stringResource(R.string.clean_dir_string),
+                        subtitle = stringResource(R.string.clear_dirs_sub),
+                        isClickable = true,
+                        onClick = {
+                            onCleanRepositoryClick { success ->
+                                coroutineScope.launch {
+                                    if (success) {
+                                        snackbarHostState.showSnackbar(
+                                            visuals = InfoSnackbar(MessageCodes.DIRECTORY_SUCCESS.messageTitle)
+                                        )
+                                    } else {
+                                        snackbarHostState.showSnackbar(
+                                            visuals = ErrorSnackbar(MessageCodes.DIRECTORY_FAIL.messageTitle)
+                                        )
+                                    }
                                 }
                             }
                         }
-                    }
-                )
+                    )
+                }
+                item {
+                    SettingsRow(
+                        icon = painterResource(R.drawable.ic_catalog_24_white),
+                        title = stringResource(R.string.load_catalog_string),
+                        subtitle = stringResource(R.string.update_catalog_sub),
+                        isClickable = true,
+                        onClick = { onLoadCatalog() }
+                    )
+                }
+                item {
+                    Divider()
+                }
+                item {
+                    Text(
+                        text = stringResource(R.string.settings_share),
+                        style = AppTypography.titleSmall,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
+                item {
+                    SwitchRow(
+                        icon = painterResource(R.drawable.ic_outline_notifications_24),
+                        title = stringResource(R.string.notifications),
+                        subtitle = stringResource(R.string.notifications_sub),
+                        initialState = true,
+                        onStateChange = {}
+                    )
+                }
+                item {
+                    SettingsRow(
+                        icon = painterResource(R.drawable.ic_information_24_white),
+                        title = stringResource(R.string.about_app),
+                        subtitle = appVersion as String?,
+                        onClick = {}
+                    )
+                }
+                item {
+                    Divider()
+                }
             }
-            item {
-                SettingsRow(
-                    icon = painterResource(R.drawable.ic_catalog_24_white),
-                    title = stringResource(R.string.load_catalog_string),
-                    subtitle = stringResource(R.string.update_catalog_sub),
-                    isClickable = true,
-                    onClick = { onLoadCatalog() }
-                )
-            }
-            item {
-                Divider()
-            }
-            item {
-                Text(
-                    text = stringResource(R.string.settings_share),
-                    style = AppTypography.titleSmall,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                )
-            }
-            item {
-                SwitchRow(
-                    icon = painterResource(R.drawable.ic_outline_notifications_24),
-                    title = stringResource(R.string.notifications),
-                    subtitle = stringResource(R.string.notifications_sub),
-                    initialState = true,
-                    onStateChange = {}
-                )
-            }
-            item {
-                SettingsRow(
-                    icon = painterResource(R.drawable.ic_information_24_white),
-                    title = stringResource(R.string.about_app),
-                    subtitle = appVersion as String?,
-                    onClick = {}
-                )
-            }
-            item {
-                Divider()
-            }
+        }
+
+        if (isSyncing) {
+            DictionarySyncOverlay()
         }
     }
 
-    if (showBottomSheet) {
+    if (showBottomSheet && !isSyncing) {
         ChangePasswordBottomSheet(
             viewModel = changePasswordVM,
             serviceScreenVM = serviceScreenVM,
             onDismiss = { showBottomSheet = false }
         )
+    }
+}
+
+@Composable
+private fun DictionarySyncOverlay() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(alpha = 0.45f))
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = {}
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            CircularProgressIndicator(color = AppColors.SURFACE_COLOR.color)
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Обновляем справочники...",
+                style = AppTypography.bodyMedium,
+                color = AppColors.SURFACE_COLOR.color,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 24.dp)
+            )
+        }
     }
 }

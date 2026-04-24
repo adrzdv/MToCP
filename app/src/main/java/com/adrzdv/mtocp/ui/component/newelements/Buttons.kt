@@ -37,7 +37,8 @@ import com.adrzdv.mtocp.ui.theme.AppTypography
 fun SquaredBigButton(
     onClick: () -> Unit,
     text: String,
-    icon: Painter
+    icon: Painter,
+    enabled: Boolean = true
 ) {
     Box(
         modifier = Modifier
@@ -46,6 +47,7 @@ fun SquaredBigButton(
     ) {
         ElevatedButton(
             onClick = onClick,
+            enabled = enabled,
             elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp),
             colors = ButtonDefaults
                 .buttonColors(containerColor = AppColors.MAIN_COLOR.color),

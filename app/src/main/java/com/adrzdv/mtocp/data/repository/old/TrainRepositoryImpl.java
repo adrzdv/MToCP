@@ -12,39 +12,39 @@ import com.adrzdv.mtocp.mapper.DepotMapper;
 import com.adrzdv.mtocp.mapper.TrainMapper;
 
 import java.util.List;
-
-public class TrainRepositoryImpl implements TrainRepository {
-
-    private final TrainDao dao;
-    private final DepotDao depotDao;
-
-    public TrainRepositoryImpl(TrainDao dao, DepotDao depotDao) {
-        this.dao = dao;
-        this.depotDao = depotDao;
-    }
-
-    @Override
-    public List<TrainEntity> getAll() {
-        return dao.getAll();
-    }
-
-    @Override
-    public TrainDomain getTrain(String str) {
-
-        TrainEntity trainEntity = dao.getTrainByString(str);
-        DepotWithBranch depotPojo = depotDao.getDepotById(trainEntity.getDepotId());
-        DepotDomain depotDomain = DepotMapper.fromJoinModelToDomain(depotPojo);
-
-        return TrainMapper.fromEntityToDomain(trainEntity, depotDomain);
-    }
-
-    @Override
-    public void saveAll(List<TrainEntity> entities) {
-        dao.insertAll(entities);
-    }
-
-    @Override
-    public List<TrainWithDepotAndBranch> getTrainsWithFullData() {
-        return dao.getTrainWithFullData();
-    }
-}
+//
+//public class TrainRepositoryImpl implements TrainRepository {
+//
+//    private final TrainDao dao;
+//    private final DepotDao depotDao;
+//
+//    public TrainRepositoryImpl(TrainDao dao, DepotDao depotDao) {
+//        this.dao = dao;
+//        this.depotDao = depotDao;
+//    }
+//
+//    @Override
+//    public List<TrainEntity> getAll() {
+//        return dao.getAll();
+//    }
+//
+//    @Override
+//    public TrainDomain getTrain(String str) {
+//
+//        TrainEntity trainEntity = dao.getTrainByString(str);
+//        DepotWithBranch depotPojo = depotDao.getDepotById(trainEntity.getDepotId());
+//        DepotDomain depotDomain = DepotMapper.fromJoinModelToDomain(depotPojo);
+//
+//        return TrainMapper.fromEntityToDomain(trainEntity, depotDomain);
+//    }
+//
+//    @Override
+//    public void saveAll(List<TrainEntity> entities) {
+//        dao.insertAll(entities);
+//    }
+//
+//    @Override
+//    public List<TrainWithDepotAndBranch> getTrainsWithFullData() {
+//        return dao.getTrainWithFullData();
+//    }
+//}
