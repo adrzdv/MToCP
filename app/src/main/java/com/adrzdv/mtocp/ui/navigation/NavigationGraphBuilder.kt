@@ -16,6 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -48,6 +49,7 @@ fun NavGraphBuilder.splashDestination(
 ) {
     composable(Screen.Splash.route) {
         val activity = LocalActivity.current
+        val context = LocalContext.current
         val coroutineScope = rememberCoroutineScope()
         val snackbarHostState = remember { SnackbarHostState() }
         var animationFinished by remember { mutableStateOf(false) }
@@ -125,14 +127,16 @@ fun NavGraphBuilder.splashDestination(
                                 coroutineScope.launch {
                                     isDownloading = true
 
-                                    val directory = File(DirectoryHandler.UPDATER_DIRECTORY)
+                                    val directory = File(context.cacheDir, "update")
                                     if (!directory.exists()) directory.mkdirs()
 
                                     val apkFile = File(directory, "app.apk")
-                                    val success = UpdateManager.downloadApk(config.apkUrl, apkFile)
+                                    val success = resolveApkDownloadUrls(config.apkUrl).any { url ->
+                                        UpdateManager.downloadApk(url, apkFile)
+                                    }
 
-                                    if (success && activity != null) {
-                                        UpdateManager.installApk(activity, apkFile)
+                                    if (success) {
+                                        UpdateManager.installApk(context, apkFile)
                                     } else {
                                         snackbarHostState.showSnackbar(
                                             visuals = ErrorSnackbar(
@@ -312,4 +316,18 @@ private fun onDeleteProfile(navController: NavHostController, appDependencies: A
     navController.navigate(Screen.Register.route) {
         popUpTo(Screen.MainMenu.route) { inclusive = true }
     }
+}
+
+private fun resolveApkDownloadUrls(apkUrl: String): List<String> {
+    val updateBaseUrl = BuildConfig.UPDATE_URL.trimEnd('/')
+    val apkFileName = apkUrl.substringBefore('?').substringAfterLast('/')
+    val urls = mutableListOf<String>()
+
+    if (updateBaseUrl.isNotBlank() && apkFileName.isNotBlank()) {
+        urls += "$updateBaseUrl/$apkFileName"
+    }
+
+    urls += apkUrl
+
+    return urls.distinct()
 }

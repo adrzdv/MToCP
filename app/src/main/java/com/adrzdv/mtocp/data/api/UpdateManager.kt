@@ -33,6 +33,7 @@ object UpdateManager {
                 if (!response.isSuccessful) {
                     result = false
                 } else {
+                    targetFile.parentFile?.mkdirs()
                     val body = response.body
                     body.byteStream().use { input ->
                         targetFile.outputStream().use { output ->
