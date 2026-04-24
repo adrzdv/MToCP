@@ -1,10 +1,32 @@
 package com.adrzdv.mtocp.ui.navigation
 
 import androidx.activity.compose.LocalActivity
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.adrzdv.mtocp.AppDependencies
+import com.adrzdv.mtocp.BuildConfig
+import com.adrzdv.mtocp.R
+import com.adrzdv.mtocp.data.api.UpdateManager
+import com.adrzdv.mtocp.data.model.UpdateConfig
+import com.adrzdv.mtocp.ui.component.snackbar.CustomSnackbarHost
+import com.adrzdv.mtocp.ui.component.snackbar.ErrorSnackbar
 import com.adrzdv.mtocp.ui.screen.InfoCatalogScreen
 import com.adrzdv.mtocp.ui.screen.RegisterScreen
 import com.adrzdv.mtocp.ui.screen.RequestDocumentScreen
@@ -16,29 +38,135 @@ import com.adrzdv.mtocp.ui.viewmodel.service.ViewModelLocator
 import com.adrzdv.mtocp.util.DirectoryHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.File
 
 fun NavGraphBuilder.splashDestination(
     navController: NavHostController,
     appDependencies: AppDependencies
 ) {
     composable(Screen.Splash.route) {
+        val activity = LocalActivity.current
+        val coroutineScope = rememberCoroutineScope()
+        val snackbarHostState = remember { SnackbarHostState() }
+        var animationFinished by remember { mutableStateOf(false) }
+        var updateCheckFinished by remember { mutableStateOf(false) }
+        var updateConfig by remember { mutableStateOf<UpdateConfig?>(null) }
+        var isDownloading by remember { mutableStateOf(false) }
+        var hasProceeded by remember { mutableStateOf(false) }
         val hasToken = appDependencies
             .userDataStorage
             .getAccessToken()?.isNotBlank()
 
-        SplashScreen(
-            onTimeout = {
-                val nextDestination = if (hasToken == true) {
-                    Screen.MainMenu.route
-                } else {
-                    Screen.Register.route
-                }
-                navController.navigate(nextDestination) {
-                    popUpTo(Screen.Splash.route) { inclusive = true }
-                }
+        fun proceedNext() {
+            if (hasProceeded) return
+            hasProceeded = true
+
+            val nextDestination = if (hasToken == true) {
+                Screen.MainMenu.route
+            } else {
+                Screen.Register.route
             }
-        )
+            navController.navigate(nextDestination) {
+                popUpTo(Screen.Splash.route) { inclusive = true }
+            }
+        }
+
+        LaunchedEffect(Unit) {
+            try {
+                val response = appDependencies.retrofitHolder.updaterApi.getUpdateInfo()
+                val config = response.body()
+
+                if (response.isSuccessful &&
+                    config != null &&
+                    config.newVersionCode != BuildConfig.VERSION_NAME
+                ) {
+                    updateConfig = config
+                }
+            } catch (_: Exception) {
+                updateConfig = null
+            } finally {
+                updateCheckFinished = true
+            }
+        }
+
+        LaunchedEffect(animationFinished, updateCheckFinished, updateConfig) {
+            if (animationFinished && updateCheckFinished && updateConfig == null) {
+                proceedNext()
+            }
+        }
+
+        Box(modifier = Modifier.fillMaxSize()) {
+            SplashScreen(
+                onTimeout = {
+                    animationFinished = true
+                }
+            )
+
+            Box(modifier = Modifier.align(Alignment.BottomCenter)) {
+                CustomSnackbarHost(hostState = snackbarHostState)
+            }
+
+            updateConfig?.let { config ->
+                AlertDialog(
+                    onDismissRequest = { },
+                    title = { Text(stringResource(R.string.update_available)) },
+                    text = {
+                        Text(
+                            stringResource(R.string.new_version) +
+                                ": ${config.newVersionCode}\n\n${config.releaseNotes}"
+                        )
+                    },
+                    confirmButton = {
+                        Button(
+                            enabled = !isDownloading,
+                            onClick = {
+                                coroutineScope.launch {
+                                    isDownloading = true
+
+                                    val directory = File(DirectoryHandler.UPDATER_DIRECTORY)
+                                    if (!directory.exists()) directory.mkdirs()
+
+                                    val apkFile = File(directory, "app.apk")
+                                    val success = UpdateManager.downloadApk(config.apkUrl, apkFile)
+
+                                    if (success && activity != null) {
+                                        UpdateManager.installApk(activity, apkFile)
+                                    } else {
+                                        snackbarHostState.showSnackbar(
+                                            visuals = ErrorSnackbar(
+                                                activity?.getString(R.string.download_error)
+                                                    ?: "Ошибка при загрузке файла"
+                                            )
+                                        )
+                                        delay(2000)
+                                        updateConfig = null
+                                        proceedNext()
+                                    }
+                                }
+                            }
+                        ) {
+                            Text(
+                                if (isDownloading) stringResource(R.string.loading)
+                                else stringResource(R.string.update)
+                            )
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(
+                            enabled = !isDownloading,
+                            onClick = {
+                                updateConfig = null
+                                proceedNext()
+                            }
+                        ) {
+                            Text(stringResource(R.string.later))
+                        }
+                    }
+                )
+            }
+        }
     }
 }
 
