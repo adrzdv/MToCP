@@ -29,15 +29,30 @@ extensions.configure<ApplicationExtension> {
         localProperties.load(FileInputStream(localPropertiesFile))
     }
 
+    fun stringProperty(name: String): String {
+        return localProperties
+            .getProperty(name, project.findProperty(name)?.toString() ?: "")
+            .trim()
+            .removeSurrounding("\"")
+    }
+
     defaultConfig {
         applicationId = "com.adrzdv.mtocp"
         minSdk = 29                                                 //Android 10+
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.9.9-rc240420262"
+        versionCode = (project.findProperty("VERSION_CODE") as String?)?.toInt() ?: 1
+        versionName = project.findProperty("VERSION_NAME") as String? ?: "0.9.9-rc-24042026-2"
 
-        buildConfigField("String", "BASE_URL", "\"${project.findProperty("BASE_URL") ?: ""}\"")
-        buildConfigField("String", "UPDATE_URL", "\"${project.findProperty("UPDATE_URL") ?: ""}\"")
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            "\"${stringProperty("BASE_URL")}\""
+        )
+        buildConfigField(
+            "String",
+            "UPDATE_URL",
+            "\"${stringProperty("UPDATE_URL")}\""
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -103,6 +118,7 @@ extensions.configure<ApplicationExtension> {
 
     buildTypes {
         getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
